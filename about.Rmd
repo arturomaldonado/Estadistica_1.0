@@ -5,3 +5,5 @@ title: "Acerca de este website"
 Primer webpage creada para el curso de Estadística para el Análisis Político 1 de la especialidad de Ciencia Política, de la Facultad de Ciencias Sociales de la Pontificia Universidad Católica del Perú.
 
 Semestre 2021-1
+
+![](pucp.jpeg)

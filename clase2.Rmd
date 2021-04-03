@@ -132,7 +132,7 @@ Variable de éxito: cambio en los ingresos.
 
 ```{r base}
 library(rio)
-LL <- import("LL.csv")
+LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
 
 ```
 

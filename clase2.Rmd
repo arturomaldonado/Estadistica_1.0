@@ -131,7 +131,9 @@ Variable de éxito: cambio en los ingresos.
 # Leyendo la base de datos en R
 
 ```{r base}
-LL <- read.csv("~/OneDrive - Vanderbilt/A Cursos/Estadistica_1/Sesión 2 Centralidad Dispersión/Caso/LL.csv")
+library(rio)
+LL <- import("LL.csv")
+
 ```
 
 # Variables en la base de datos

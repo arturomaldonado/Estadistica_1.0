@@ -1,5 +1,3 @@
 ---
-title: "About"
+title: "Acerca de este website"
 ---
-
-# Acerca de este website

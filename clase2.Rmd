@@ -1,7 +1,7 @@
 ---
 title: 'Clase 2: Trabajo práctico LaLonde (1996)'
 author: "Arturo Maldonado"
-date: "3/22/2021"
+date: "6/4/2021"
 output:
   html_document: default
 editor_options:
@@ -53,11 +53,15 @@ $$
 
 ## Resumen
 
++---------+-----------+-----------+-----------+
 | TC      | Nominales | Ordinales | Numéricas |
-|---------|:---------:|:---------:|:---------:|
-| Moda    |    Sí     |    Sí     |    Sí     |
-| Mediana |    No     |    Sí     |    Sí     |
-| Media   |    No     |    No     |    Sí     |
++=========+:=========:+:=========:+:=========:+
+| Moda    | Sí        | Sí        | Sí        |
++---------+-----------+-----------+-----------+
+| Mediana | No        | Sí        | Sí        |
++---------+-----------+-----------+-----------+
+| Media   | No        | No        | Sí        |
++---------+-----------+-----------+-----------+
 
 -   Moda aplica para cualquier tipo de variable, pero menos útil.
 

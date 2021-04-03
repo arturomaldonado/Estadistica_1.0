@@ -14,8 +14,7 @@ El curso de Estadística para el Análisis Político 1 introduce al estudiant
 
 # Resultados del aprendizaje
 
--   Familiarizar a los estudiantes con los conceptos centrales de la estadística y el contexto en el
-    que fueron desarrollados.
+-   Familiarizar a los estudiantes con los conceptos centrales de la estadística y el contexto en el que fueron desarrollados.
 
 -   Introducir al estudiante al uso de software especializado para analizar información.
 

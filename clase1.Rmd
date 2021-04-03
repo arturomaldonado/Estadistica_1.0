@@ -5,4 +5,20 @@ date: "4/3/2021"
 output: html_document
 ---
 
-# Introducción
+# Niveles de medición
+
+## Variables categóricas
+
+-   Variables nominales
+
+-   Variables ordinales
+
+Ambas son llamadas "factor" en R.
+
+## Variables numéricas
+
+-   Continua
+
+-   Discreta
+
+Ambas son llamdas "num" en R.

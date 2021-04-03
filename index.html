@@ -16,7 +16,7 @@
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -29,8 +29,13 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
@@ -55,6 +60,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 
 
@@ -215,7 +225,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -225,6 +301,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -262,6 +348,13 @@ $(document).ready(function () {
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
 
 
 
@@ -337,8 +430,11 @@ $(document).ready(function () {
 </table>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXN0YWTDrXN0aWNhIHBhcmEgZWwgQW7DoWxpc2lzIFBvbMOtdGljbyAxIgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogY29zbW8KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUKLS0tCgoKIyBTdW1pbGxhCgpJbnRyb2R1Y2Npw7NuIGFsIGFuw6FsaXNpcyBjdWFudGl0YXRpdm8gZW4gY2llbmNpYSBwb2zDrXRpY2EuIERlZmluaWNpw7NuIGRlIHZhcmlhYmxlcywgaW5kaWNhZG9yZXMgeSBlc2NhbGFzIGRlIG1lZGljacOzbi4gVXNvIGRlIGJhc2VzIGRlIGRhdG9zIHBhcmEgZWwgZXN0dWRpbyBkZSBjYXNvcyBlbiBjaWVuY2lhIHBvbMOtdGljYS4gSGVycmFtaWVudGFzIGRlIGVzdGFkw61zdGljYSBkZXNjcmlwdGl2YSBwYXJhIGxhIGV4cGxvcmFjacOzbiBkZSBjYXNvczogbcOpdG9kb3MgdGFidWxhcmVzIHkgZ3LDoWZpY29zOyBlc3RhZMOtc3RpY29zIGRlc2NyaXB0aXZvcyB1bml2YXJpYWJsZXMuIERlIGxhIGRlc2NyaXBjacOzbiBhbCBwbGFudGVhbWllbnRvIHkgY29tcHJvYmFjacOzbiBkZSBoaXDDs3Rlc2lzLiBFc3RyYXRlZ2lhcyBwYXJhIGFuYWxpemFyIGxhIHJlbGFjacOzbiBlbnRyZSBkb3MgdmFyaWFibGVzOiBjb25zdHJ1Y2Npw7NuIHkgbGVjdHVyYXMgZGUgdGFibGFzIGRlIGNvbnRpbmdlbmNpYSwgeSBjb2VmaWNpZW50ZXMgZGUgYXNvY2lhY2nDs24uIFBydWViYXMgZGUgc2lnbmlmaWNhbmNpYSBlc3RhZMOtc3RpY2EuIEFuw6FsaXNpcyBkZSB0cmVzIHZhcmlhYmxlcy4gQ29ycmVsYWNpw7NuIGUgaW50cm9kdWNjacOzbiBhbCBhbsOhbGlzaXMgZGUgcmVncmVzacOzbi4KCiMgUHJlc2VudGFjacOzbgoKTGEgY2llbmNpYSBwb2xpzIF0aWNhIHRpZW5lIGNvbW8gdW5hIGRlIHN1cyB0YXJlYXMgZWwgYW5hzIFsaXNpcyBkZSBkYXRvcyBlbXBpzIFyaWNvcyBjb24gZWwgb2JqZXRpdm8gZGUgYW5hbGl6YXIgeSBjb21wcmVuZGVyIHVuYSByZWFsaWRhZC4gVW5hIGhlcnJhbWllbnRhIGNpZW50acyBZmljYSBwYXJhIGxvZ3JhciBlc3RlIG9iamV0aXZvIGVzIGxhIGVzdGFkacyBc3RpY2EuIEEgdHJhdmXMgXMgZGUgZWxsYSBzZSBkZXNjcmliZSwgc2UgcG9uZW4gYSBwcnVlYmEgaGlwb8yBdGVzaXMsIHkgc2UgbW9kZWxhIGxhIHJlYWxpZGFkIHNvY2lhbCwgZWNvbm/MgW1pY2EgeSBwb2xpzIF0aWNhIGRlIG51ZXN0cm8gZW50b3Juby4gRW4gZXNlIHNlbnRpZG8sIGVzdGUgY3Vyc28gYXBveWEgbm8gc2/MgWxvIGVsIHBlcmZpbCBhY2FkZcyBbWljbyBkZWwgZXN0dWRpYW50ZSBzaW5vIHN1IHBlcmZpbCBwcm9mZXNpb25hbCwgcG90ZW5jaWFuZG8gc3VzIGhhYmlsaWRhZGVzIHBhcmEgZWwgYW5hzIFsaXNpcyBwb2xpzIF0aWNvIHkgc29jaWFsLCB5IHByb3BvcmNpb25hzIFuZG9sZSBsYXMgYmFzZXMgY3VhbnRpdGF0aXZhcyBwYXJhIGVsIGRlc2Fycm9sbG8gZGUgc3UgdGVzaXMgZGUgcHJlZ3JhZG8uCgpFbCBjdXJzbyBkZSBFc3RhZGnMgXN0aWNhIHBhcmEgZWwgQW5hzIFsaXNpcyBQb2xpzIF0aWNvIDEgaW50cm9kdWNlIGFsIGVzdHVkaWFudGUgZW4gYXNwZWN0b3MgZXNlbmNpYWxlcyBkZWwgYW5hzIFsaXNpcyBjdWFudGl0YXRpdm8gZW4gY2llbmNpYSBwb2xpzIF0aWNhLiBTZSBwcmVzdGFyYcyBIGF0ZW5jaW/MgW4gZXNwZWNpYWwgZW4gbGEgaW50ZXJwcmV0YWNpb8yBbiB5IHByZXNlbnRhY2lvzIFuIGRlIHJlc3VsdGFkb3MgZXN0YWRpzIFzdGljb3MuIFNpIGJpZW4gdW5hIHBhcnRlIGRlbCBjdXJzbyBpbnZvbHVjcmEgZWwgbWFuZWpvIGRlIHVuIHNvZnR3YXJlIGVzdGFkacyBc3RpY28sIGxhIHBhcnRlIG1hzIFzIGltcG9ydGFudGUgZXMgbGEgbGVjdHVyYSBkZSBsb3MgcmVzdWx0YWRvcywgc29icmUgbGEgYmFzZSBkZSBsYSB0ZW9yacyBYSB5IGRlIGxhIHJlYWxpZGFkLgoKIyBSZXN1bHRhZG9zIGRlbCBhcHJlbmRpemFqZQoKLSAgIEZhbWlsaWFyaXphciBhIGxvcyBlc3R1ZGlhbnRlcyBjb24gbG9zIGNvbmNlcHRvcyBjZW50cmFsZXMgZGUgbGEgZXN0YWRpzIFzdGljYSB5IGVsIGNvbnRleHRvIGVuIGVsIHF1ZSBmdWVyb24gZGVzYXJyb2xsYWRvcy4KCi0gICBJbnRyb2R1Y2lyIGFsIGVzdHVkaWFudGUgYWwgdXNvIGRlIHNvZnR3YXJlIGVzcGVjaWFsaXphZG8gcGFyYSBhbmFsaXphciBpbmZvcm1hY2lvzIFuLgoKLSAgIEFwbGljYXIgdGXMgWNuaWNhcyBlc3RhZGnMgXN0aWNhcyBhIGZlbm/MgW1lbm9zIHBvbGnMgXRpY29zLgoKLSAgIENvbXByZW5kZXIgbGFzIHTDqWNuaWNhcyBlc3RhZMOtc3RpY2FzIGFwbGljYWRhcyBlbiBlbCB0cmFiYWpvIGFjYWTDqW1pY28geSBwcm9mZXNpb25hbC4KCiMgTWV0b2RvbG9nw61hCgpFbCBjdXJzbyBjb250ZW1wbGE6CgotICAgU2VzaW9uZXMgdGXDs3JpY2FzCgotICAgU2VzaW9uZXMgcHLDoWN0aWNhcwoKLSAgIFRyYWJham8gZ3J1cGFsCgojIEV2YWx1YWNpw7NuCgorLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tKwp8IENhbnRpZGFkIHwgVGlwbyBkZSBldmFsdWFjacOzbiAgICB8IFBvbmRlcmFjacOzbiB8Cis6PT09PT09PT06Kzo9PT09PT09PT09PT09PT09PT09PT06Kzo9PT09PT09PT09PTorCnwgMSAgICAgICAgfCBFeGFtZW4gcGFyY2lhbCAgICAgICAgfCAyNSUgICAgICAgICB8CistLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0rCnwgMSAgICAgICAgfCBFeGFtZW4gZmluYWwgICAgICAgICAgfCAyNSUgICAgICAgICB8CistLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0rCnwgNSAgICAgICAgfCBQcsOhY3RpY2FzIGNhbGlmaWNhZGFzIHwgMzAlICAgICAgICAgfAorLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tKwp8IDEgICAgICAgIHwgVHJhYmFqbyBncnVwYWwgICAgICAgIHwgMjAlICAgICAgICAgfAorLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tKwo=</div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -370,7 +466,38 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("index.Rmd");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

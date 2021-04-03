@@ -3,7 +3,15 @@ title: 'Clase 2: Trabajo práctico LaLonde (1996)'
 author: "Arturo Maldonado"
 date: "6/4/2021"
 output:
-  html_document: default
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: cosmo
+    highlight: textmate
 editor_options:
   markdown:
     wrap: sentence
@@ -112,7 +120,9 @@ $$
 
 ![](desviacion.png){width="634"}
 
-# Paper "Evaluating the Econometric Evaluations of Training Programs with Experimental Data" [@lalondeEvaluatingEconometricEvaluations1986]
+# Paper práctico
+
+"Evaluating the Econometric Evaluations of Training Programs with Experimental Data" [@lalondeEvaluatingEconometricEvaluations1986]
 
 Pregunta: ¿tiene un efecto los programas de entrenamiento en la empleabilidad?
 

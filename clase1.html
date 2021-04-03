@@ -17,7 +17,7 @@
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,8 +30,13 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">
@@ -56,6 +61,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 
 
@@ -216,7 +226,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -226,6 +302,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -264,6 +350,13 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Clase 1</h1>
@@ -278,23 +371,199 @@ $(document).ready(function () {
 <div id="variables-categóricas" class="section level2">
 <h2>Variables categóricas</h2>
 <ul>
-<li><p>Variables nominales</p></li>
-<li><p>Variables ordinales</p></li>
+<li><p>Variables nominales</p>
+<ul>
+<li><p>Individuos: Sexo (Hombre=1, Mujer=2). Religión (Católico=1, Evangélico=2, Otro=3). Algún miembro de su familia se ha contagiado de COVID (Sí=1, No=0).</p></li>
+<li><p>Distritos: Región (Costa=1, Sierra=2, Selva=3). Partido del alcalde (AP=1, APP=2,…., Otro=XX). Alcalde reelegido (Si=1, No=0).</p></li>
+</ul></li>
+<li><p>Variables ordinales</p>
+<ul>
+<li><p>Individuos: Educación (Analf=0, Prim=1, Sec=2, Tec=3, Univ=4, Post=5). Importancia de religión en su vida (Nada importante=1, Poco importante=2, Algo importante=3, Muy importante=4). Gravedad de contagio de COVID (Nada grave=1, Poco grave=2, Algo grave=3, Muy grave=4).</p></li>
+<li><p>Distritos: Calidad del servicio de agua (Muy mala=1, Mala=2, Regular=3, Buena=4, Muy buena=5).</p></li>
+</ul></li>
 </ul>
 <p>Ambas son llamadas “factor” en R.</p>
 </div>
 <div id="variables-numéricas" class="section level2">
 <h2>Variables numéricas</h2>
 <ul>
-<li><p>Continua</p></li>
-<li><p>Discreta</p></li>
+<li><p>Continua</p>
+<ul>
+<li><p>Individuos: estatura, peso, ingreso mensual.</p></li>
+<li><p>Distritos: extensión, PBI per cápita, ingreso mensual promedio.</p></li>
+</ul></li>
+<li><p>Discreta</p>
+<ul>
+<li><p>Individuos: número de hijos, edad.</p></li>
+<li><p>Distritos: número de revocatorias, número de postas médicas, población.</p></li>
+</ul></li>
 </ul>
-<p>Ambas son llamdas “num” en R.</p>
+<p>Ambas son llamadas “num” en R.</p>
+</div>
+</div>
+<div id="bases-de-datos" class="section level1">
+<h1>Bases de datos</h1>
+<p>De manera convencional (y así es en R), las bases de datos (o “dataframes” en R) se organizan en filas y columnas. Cada una de las filas corresponde a una observación (ya sea un individuo, un distrito o la unidad de análisis que se use). Cada columna corresponde a una variable (una característica de la unidad de análisis).</p>
+<div id="ejemplo-1" class="section level2">
+<h2>Ejemplo 1</h2>
+<ul>
+<li><p>Unidad de análisis: individuos</p></li>
+<li><p>Muestra: 10 individuos</p></li>
+<li><p>Variables</p>
+<ul>
+<li><p>Sexo. 10 observaciones: H, H, M, H, M, M, M, H, M, H</p></li>
+<li><p>Nivel educativo. 10 observaciones: S, S, U, U, P, S, S, P, U, U</p></li>
+<li><p>Edad. 9 observaciones + 1 valor perdido: 25, 54, 37, 65, NA, 73, 48, 32, 51, 37</p></li>
+</ul></li>
+</ul>
+<p>En formato de base de datos o de “dataframe”:</p>
+<table style="width:36%;">
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">id</th>
+<th align="center">sexo</th>
+<th align="center">educ</th>
+<th align="center">edad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">25</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">54</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">37</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">65</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">73</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">48</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">32</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">51</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">37</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ejemplo-2" class="section level2">
+<h2>Ejemplo 2</h2>
+<ul>
+<li><p>Unidad de análisis: distritos del Perú</p></li>
+<li><p>Muestra: 1821 distritos</p></li>
+<li><p>Variables</p>
+<ul>
+<li><p>Región. 1821 observaciones: C, C, C, S, S, Se, C, C, S…….Se</p></li>
+<li><p>Calidad de agua. 1821 observaciones: M, MM, M, MM, R, B……M</p></li>
+<li><p>Número de postal. 1821 observaciones: 2, 1, 0, 0, 2, 3, 1, 0…..0</p></li>
+</ul></li>
+</ul>
+<table style="width:43%;">
+<colgroup>
+<col width="9%" />
+<col width="12%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">id</th>
+<th align="center">region</th>
+<th align="center">agua</th>
+<th align="center">posta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">…</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="center">1821</td>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgMSIKYXV0aG9yOiAiQXJ0dXJvIE1hbGRvbmFkbyIKZGF0ZTogIjMwLzMvMjAyMSIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGNvc21vCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlCi0tLQoKIyBOaXZlbGVzIGRlIG1lZGljacOzbgoKIyMgVmFyaWFibGVzIGNhdGVnw7NyaWNhcwoKLSAgIFZhcmlhYmxlcyBub21pbmFsZXMKCiAgICAtICAgSW5kaXZpZHVvczogU2V4byAoSG9tYnJlPTEsIE11amVyPTIpLiBSZWxpZ2nDs24gKENhdMOzbGljbz0xLCBFdmFuZ8OpbGljbz0yLCBPdHJvPTMpLiBBbGfDum4gbWllbWJybyBkZSBzdSBmYW1pbGlhIHNlIGhhIGNvbnRhZ2lhZG8gZGUgQ09WSUQgKFPDrT0xLCBObz0wKS4KCiAgICAtICAgRGlzdHJpdG9zOiBSZWdpw7NuIChDb3N0YT0xLCBTaWVycmE9MiwgU2VsdmE9MykuIFBhcnRpZG8gZGVsIGFsY2FsZGUgKEFQPTEsIEFQUD0yLC4uLi4sIE90cm89WFgpLiBBbGNhbGRlIHJlZWxlZ2lkbyAoU2k9MSwgTm89MCkuCgotICAgVmFyaWFibGVzIG9yZGluYWxlcwoKICAgIC0gICBJbmRpdmlkdW9zOiBFZHVjYWNpw7NuIChBbmFsZj0wLCBQcmltPTEsIFNlYz0yLCBUZWM9MywgVW5pdj00LCBQb3N0PTUpLiBJbXBvcnRhbmNpYSBkZSByZWxpZ2nDs24gZW4gc3UgdmlkYSAoTmFkYSBpbXBvcnRhbnRlPTEsIFBvY28gaW1wb3J0YW50ZT0yLCBBbGdvIGltcG9ydGFudGU9MywgTXV5IGltcG9ydGFudGU9NCkuIEdyYXZlZGFkIGRlIGNvbnRhZ2lvIGRlIENPVklEIChOYWRhIGdyYXZlPTEsIFBvY28gZ3JhdmU9MiwgQWxnbyBncmF2ZT0zLCBNdXkgZ3JhdmU9NCkuCgogICAgLSAgIERpc3RyaXRvczogQ2FsaWRhZCBkZWwgc2VydmljaW8gZGUgYWd1YSAoTXV5IG1hbGE9MSwgTWFsYT0yLCBSZWd1bGFyPTMsIEJ1ZW5hPTQsIE11eSBidWVuYT01KS4KCkFtYmFzIHNvbiBsbGFtYWRhcyAiZmFjdG9yIiBlbiBSLgoKIyMgVmFyaWFibGVzIG51bcOpcmljYXMKCi0gICBDb250aW51YQoKICAgIC0gICBJbmRpdmlkdW9zOiBlc3RhdHVyYSwgcGVzbywgaW5ncmVzbyBtZW5zdWFsLgoKICAgIC0gICBEaXN0cml0b3M6IGV4dGVuc2nDs24sIFBCSSBwZXIgY8OhcGl0YSwgaW5ncmVzbyBtZW5zdWFsIHByb21lZGlvLgoKLSAgIERpc2NyZXRhCgogICAgLSAgIEluZGl2aWR1b3M6IG7Dum1lcm8gZGUgaGlqb3MsIGVkYWQuCgogICAgLSAgIERpc3RyaXRvczogbsO6bWVybyBkZSByZXZvY2F0b3JpYXMsIG7Dum1lcm8gZGUgcG9zdGFzIG3DqWRpY2FzLCBwb2JsYWNpw7NuLgoKQW1iYXMgc29uIGxsYW1hZGFzICJudW0iIGVuIFIuCgojIEJhc2VzIGRlIGRhdG9zCgpEZSBtYW5lcmEgY29udmVuY2lvbmFsICh5IGFzw60gZXMgZW4gUiksIGxhcyBiYXNlcyBkZSBkYXRvcyAobyAiZGF0YWZyYW1lcyIgZW4gUikgc2Ugb3JnYW5pemFuIGVuIGZpbGFzIHkgY29sdW1uYXMuIENhZGEgdW5hIGRlIGxhcyBmaWxhcyBjb3JyZXNwb25kZSBhIHVuYSBvYnNlcnZhY2nDs24gKHlhIHNlYSB1biBpbmRpdmlkdW8sIHVuIGRpc3RyaXRvIG8gbGEgdW5pZGFkIGRlIGFuw6FsaXNpcyBxdWUgc2UgdXNlKS4gQ2FkYSBjb2x1bW5hIGNvcnJlc3BvbmRlIGEgdW5hIHZhcmlhYmxlICh1bmEgY2FyYWN0ZXLDrXN0aWNhIGRlIGxhIHVuaWRhZCBkZSBhbsOhbGlzaXMpLgoKIyMgRWplbXBsbyAxCgotICAgVW5pZGFkIGRlIGFuw6FsaXNpczogaW5kaXZpZHVvcwoKLSAgIE11ZXN0cmE6IDEwIGluZGl2aWR1b3MKCi0gICBWYXJpYWJsZXMKCiAgICAtICAgU2V4by4gMTAgb2JzZXJ2YWNpb25lczogSCwgSCwgTSwgSCwgTSwgTSwgTSwgSCwgTSwgSAoKICAgIC0gICBOaXZlbCBlZHVjYXRpdm8uIDEwIG9ic2VydmFjaW9uZXM6IFMsIFMsIFUsIFUsIFAsIFMsIFMsIFAsIFUsIFUKCiAgICAtICAgRWRhZC4gOSBvYnNlcnZhY2lvbmVzICsgMSB2YWxvciBwZXJkaWRvOiAyNSwgNTQsIDM3LCA2NSwgTkEsIDczLCA0OCwgMzIsIDUxLCAzNwoKRW4gZm9ybWF0byBkZSBiYXNlIGRlIGRhdG9zIG8gZGUgImRhdGFmcmFtZSI6CgorLS0tLSstLS0tLS0rLS0tLS0tKy0tLS0tLSsKfCBpZCB8IHNleG8gfCBlZHVjIHwgZWRhZCB8Cis6PT06Kzo9PT09Ois6PT09PTorOj09PT06Kwp8IDEgIHwgMSAgICB8IDIgICAgfCAyNSAgIHwKKy0tLS0rLS0tLS0tKy0tLS0tLSstLS0tLS0rCnwgMiAgfCAxICAgIHwgMiAgICB8IDU0ICAgfAorLS0tLSstLS0tLS0rLS0tLS0tKy0tLS0tLSsKfCAzICB8IDIgICAgfCAzICAgIHwgMzcgICB8CistLS0tKy0tLS0tLSstLS0tLS0rLS0tLS0tKwp8IDQgIHwgMSAgICB8IDMgICAgfCA2NSAgIHwKKy0tLS0rLS0tLS0tKy0tLS0tLSstLS0tLS0rCnwgNSAgfCAyICAgIHwgMSAgICB8IE5BICAgfAorLS0tLSstLS0tLS0rLS0tLS0tKy0tLS0tLSsKfCA2ICB8IDIgICAgfCAyICAgIHwgNzMgICB8CistLS0tKy0tLS0tLSstLS0tLS0rLS0tLS0tKwp8IDcgIHwgMiAgICB8IDIgICAgfCA0OCAgIHwKKy0tLS0rLS0tLS0tKy0tLS0tLSstLS0tLS0rCnwgOCAgfCAxICAgIHwgMSAgICB8IDMyICAgfAorLS0tLSstLS0tLS0rLS0tLS0tKy0tLS0tLSsKfCA5ICB8IDIgICAgfCAzICAgIHwgNTEgICB8CistLS0tKy0tLS0tLSstLS0tLS0rLS0tLS0tKwp8IDEwIHwgMSAgICB8IDMgICAgfCAzNyAgIHwKKy0tLS0rLS0tLS0tKy0tLS0tLSstLS0tLS0rCgojIyBFamVtcGxvIDIKCi0gICBVbmlkYWQgZGUgYW7DoWxpc2lzOiBkaXN0cml0b3MgZGVsIFBlcsO6CgotICAgTXVlc3RyYTogMTgyMSBkaXN0cml0b3MKCi0gICBWYXJpYWJsZXMKCiAgICAtICAgUmVnacOzbi4gMTgyMSBvYnNlcnZhY2lvbmVzOiBDLCBDLCBDLCBTLCBTLCBTZSwgQywgQywgUy4uLi4uLi5TZQoKICAgIC0gICBDYWxpZGFkIGRlIGFndWEuIDE4MjEgb2JzZXJ2YWNpb25lczogTSwgTU0sIE0sIE1NLCBSLCBCLi4uLi4uTQoKICAgIC0gICBOw7ptZXJvIGRlIHBvc3RhbC4gMTgyMSBvYnNlcnZhY2lvbmVzOiAyLCAxLCAwLCAwLCAyLCAzLCAxLCAwLi4uLi4wCgorLS0tLS0tKy0tLS0tLS0tKy0tLS0tLSstLS0tLS0tKwp8IGlkICAgfCByZWdpb24gfCBhZ3VhIHwgcG9zdGEgfAorOj09PT06Kzo9PT09PT06Kzo9PT09Ois6PT09PT06Kwp8IDEgICAgfCAxICAgICAgfCAyICAgIHwgMiAgICAgfAorLS0tLS0tKy0tLS0tLS0tKy0tLS0tLSstLS0tLS0tKwp8IDIgICAgfCAxICAgICAgfCAxICAgIHwgMSAgICAgfAorLS0tLS0tKy0tLS0tLS0tKy0tLS0tLSstLS0tLS0tKwp8IDMgICAgfCAxICAgICAgfCAyICAgIHwgMCAgICAgfAorLS0tLS0tKy0tLS0tLS0tKy0tLS0tLSstLS0tLS0tKwp8IC4uLiAgfCAgICAgICAgfCAgICAgIHwgICAgICAgfAorLS0tLS0tKy0tLS0tLS0tKy0tLS0tLSstLS0tLS0tKwp8IDE4MjEgfCAzICAgICAgfCAxICAgIHwgMCAgICAgfAorLS0tLS0tKy0tLS0tLS0tKy0tLS0tLSstLS0tLS0tKwo=</div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -326,7 +595,38 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase1.Rmd");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

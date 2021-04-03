@@ -1,9 +1,19 @@
 ---
 title: "Acerca de este website"
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
 ---
 
-Primer webpage creada para el curso de Estadística para el Análisis Político 1 de la especialidad de Ciencia Política, de la Facultad de Ciencias Sociales de la Pontificia Universidad Católica del Perú.
+Primer webpage creada para el curso de Estadística para el Análisis Político 1 de la especialidad de [Ciencia Política y Gobierno](https://www.pucp.edu.pe/carrera/ciencia-politica-y-gobierno/), de la [Facultad de Ciencias Sociales](https://facultad.pucp.edu.pe/ciencias-sociales/) de la [Pontificia Universidad Católica del Perú](www.pucp.edu.pe)
 
 Semestre 2021-1
+
+Contacto:
+
+1.  Mensaje en Paideia
+
+2.  Correo electrónico del profesor: arturo.maldonado\@pucp.pe
 
 ![](pucp.jpeg)

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase 2: Trabajo práctico LaLonde (1996)</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="clase1.html">Clase1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase2</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 2: Trabajo práctico LaLonde (1996)</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">3/22/2021</h4>
+
+</div>
+
+
+<div id="medidas-de-tendencia-central" class="section level1">
+<h1>Medidas de tendencia central</h1>
+<ul>
+<li><p>Resumen de un conjunto de datos.</p></li>
+<li><p>Se resume mediante un valor “representativo.”</p></li>
+<li><p>Cada observación se puede comparar con este valor de resumen. Se puede estar por debajo o por encima de este valor.</p></li>
+</ul>
+<div id="moda" class="section level2">
+<h2>Moda</h2>
+<ul>
+<li><p>Valor mas frecuente de un conjunto de datos</p></li>
+<li><p>Es apropiada para todo tipo de datos</p></li>
+<li><p>Se puede observar directamente en una tabla de distribución de frecuencias.</p></li>
+</ul>
+<p><img src="Captura%20de%20Pantalla%202021-04-02%20a%20la(s)%2012.12.02.png" width="589" /></p>
+</div>
+<div id="mediana" class="section level2">
+<h2>Mediana</h2>
+<ul>
+<li>El valor de la observación central de un conjunto de datos ordenados de menor a mayor.</li>
+</ul>
+<p><img src="mediana.png" width="591" /></p>
+</div>
+<div id="media" class="section level2">
+<h2>Media</h2>
+<ul>
+<li><p>Medida más conocida y “útil.”</p></li>
+<li><p>Suma del valor de las observaciones dividida entre el número de observaciones</p></li>
+</ul>
+<p><span class="math display">\[
+\sum \frac{x_i} {n} = \frac{(x_1 + x_2 +x_3 +...+ x_n)} {n}
+\]</span></p>
+<p><img src="media.png" width="594" /></p>
+</div>
+<div id="resumen" class="section level2">
+<h2>Resumen</h2>
+<table style="width:64%;">
+<colgroup>
+<col width="13%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>TC</th>
+<th align="center">Nominales</th>
+<th align="center">Ordinales</th>
+<th align="center">Numéricas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Moda</td>
+<td align="center">Sí</td>
+<td align="center">Sí</td>
+<td align="center">Sí</td>
+</tr>
+<tr class="even">
+<td>Mediana</td>
+<td align="center">No</td>
+<td align="center">Sí</td>
+<td align="center">Sí</td>
+</tr>
+<tr class="odd">
+<td>Media</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">Sí</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Moda aplica para cualquier tipo de variable, pero menos útil.</p></li>
+<li><p>Media aplica solo para variables numéricas, pero más útil.</p></li>
+</ul>
+</div>
+</div>
+<div id="medidas-de-dispersión" class="section level1">
+<h1>Medidas de dispersión</h1>
+<ul>
+<li><p>Describir la centralidad no es suficiente. Dos distribuciones pueden tener la misma medida de tendencia central, pero diferentes realidades.</p></li>
+<li><p>Ejemplo: distribución de puntaje en área matemática de prueba PISA aplicada en 2 países pueden tener la misma media, pero diferente forma.</p></li>
+<li><p>¿Cómo describiría las diferencias entre el País A y el País B?</p></li>
+</ul>
+<p><img src="distr.png" width="631" /></p>
+<div id="rango" class="section level2">
+<h2>Rango</h2>
+<ul>
+<li><p>Diferencia entre el valor máximo y el mínimo. En ejemplo de edades: 68-19 = 49 años.</p></li>
+<li><p>No un una medida muy útil.</p></li>
+</ul>
+</div>
+<div id="rango-intercuartil" class="section level2">
+<h2>Rango intercuartil</h2>
+<ul>
+<li>Se verá cuando se vean percentiles.</li>
+</ul>
+</div>
+<div id="desviación-estándar" class="section level2">
+<h2>Desviación estándar</h2>
+<ul>
+<li><p>Cada observación está a una “distancia” de la media. Esta distancia se llama desviación <span class="math inline">\((x_i-\bar{x})\)</span></p></li>
+<li><p>Observaciones por encima de la media tendrán desviaciones positivas. Observaciones por debajo de la media tendrán desviaciones negativas.</p></li>
+<li><p>No se puede calcular un promedio de desviaciones porque valores positivos se cancelan con negativos.</p></li>
+<li><p>Se eleva al cuadrado las observaciones para que todas sean positivas. Se promedian esas desviaciones al cuadrado.</p></li>
+<li><p>La desviación estándar es la raíz cuadrada de ese promedio de desviaciones al cuadrado.</p></li>
+<li><p>Se divide entre n-1 por un tema técnico.</p></li>
+</ul>
+<p><span class="math display">\[
+\sum \frac{(x_i-\bar{x})^2} {n-1} 
+\]</span></p>
+<p><img src="desviacion.png" width="634" /></p>
+</div>
+</div>
+<div id="paper-evaluating-the-econometric-evaluations-of-training-programs-with-experimental-data-lalondeevaluatingeconometricevaluations1986" class="section level1">
+<h1>Paper “Evaluating the Econometric Evaluations of Training Programs with Experimental Data” <span class="citation">(LaLonde 1986)</span></h1>
+<p>Pregunta: ¿tiene un efecto los programas de entrenamiento en la empleabilidad?</p>
+<p>Supuesto: entrenando a trabajadores que no tienen las habilidades básicas hará que se muevan en el mercado laboral, dándoles experiencia laboral y consejería. Se trata de un programa estatal que garantiza un trabajo entre 9 a 18 meses. Luego de este periodo eran forzados a encontrar un trabajo regular.</p>
+<p>Metodología: evaluación experimental. Un grupo fue parte del programa. Otro grupo comparable no fue parte del programa. Se recolectó una línea de base con información de ingresos y datos sociodemográficos. Luego se hizo recojo de información de seguimiento.</p>
+<p>Variable de éxito: cambio en los ingresos.</p>
+</div>
+<div id="leyendo-la-base-de-datos-en-r" class="section level1">
+<h1>Leyendo la base de datos en R</h1>
+<pre class="r"><code>LL &lt;- read.csv(&quot;~/OneDrive - Vanderbilt/A Cursos/Estadistica_1/Sesión 2 Centralidad Dispersión/Caso/LL.csv&quot;)</code></pre>
+</div>
+<div id="variables-en-la-base-de-datos" class="section level1">
+<h1>Variables en la base de datos</h1>
+<ul>
+<li>treated: variable dummy si el participante recibió el tratamiento (1) o no (0)</li>
+<li>age: edad</li>
+<li>education: años de educación</li>
+<li>black: variable dummy si el participante es Afroamericano</li>
+<li>married: variable dummy si el participante es casado</li>
+<li>nodegree: variable dummy de no tener estudios secundarios completos (high school)</li>
+<li>re74: ingresos reales en 1974</li>
+<li>re75: ingresos reales en 1975</li>
+<li>re78: ingresos reales en 1978</li>
+<li>hispanic: variable dummy si el participantes es hispano</li>
+<li>u74: variable dummy si era desempleado en 1974</li>
+<li>u75: variable dummy si era desempleado en 1975</li>
+</ul>
+</div>
+<div id="medidas-de-tendencia-central-1" class="section level1">
+<h1>Medidas de tendencia central</h1>
+<div id="media-1" class="section level2">
+<h2>Media</h2>
+<p>¿Cual es la media de ingresos de los participantes antes de entrar al estudio? Ojo que algunos de ellos pueden haber entrado al programa y otros ser parte del grupo de comparación.</p>
+<pre class="r"><code>mean(LL$re74)</code></pre>
+<pre><code>## [1] 3630.738</code></pre>
+<p>Aparentemente, el ingreso de los participantes del estudio en la línea de base es bastante bueno. Pero, es necesario hacer ver si ese dato refleja la “realidad” de los ingresos del conjunto de participantes del estudio. Una manera de analizar eso, es ver la distribución de respuestas de forma gráfica, por ejemplo, usando un histograma. En este gráfico, además, se puede incluir una línea que marque el punto de la media.</p>
+<pre class="r"><code>hist(LL$re74)
+abline(v=mean(LL$re74), col=&quot;red&quot;)</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Como se observa, la distribución de esta variable está sesgada hacia los valores altos de la variable. ¿Qué pasa con la media en estas situaciones?</p>
+</div>
+<div id="mediana-1" class="section level2">
+<h2>Mediana</h2>
+<p>Para estos casos, se tiene otra medida de tendencia central, la mediana. La mediana es el punto medio de un conjunto de datos ordenados. Por ejemplo, si tengo 5 personas con los siguientes ingresos ordenados: 800, 1200, 1500, 3000, 5000. La mediana es el ingreso de la persona que está al medio de la fila ordenada, es decir, la persona en la posición 3. La mediana sería 1500 soles. La media de estas 5 observaciones sería 2300 soles. Si se quisiera “encontrar” la mediana en la base de datos, ¿qué se debería hacer? ¿Si son 722 observaciones, cuál es el punto medio?</p>
+<p>La fila sería de observación 1…..411 / 412……822 La mediana sería el promedio simple del valor del ingreso que tiene la persona ubicada en la posición 411 (823.2544) y del de la posición 412 (824.3886).</p>
+<p>Para calcular la mediana del grupo del estudio, se usa.</p>
+<pre class="r"><code>median(LL$re74)</code></pre>
+<pre><code>## [1] 823.8215</code></pre>
+<p>Como se observa la mediana es mucho menor que la media y, en este caso, es un mejor resumen de la “realidad” del conjunto de ingresos de los participantes en este estudio.</p>
+<p>¿Qué pasa si en mi ejemplo de la fila, la última persona que gana 5000 recibe un súper aumento y pasa a ganar 15000 soles. ¿Cambia la media? ¿Cambia la mediana?</p>
+</div>
+<div id="resumen-de-una-variable" class="section level2">
+<h2>Resumen de una variable</h2>
+<p>Si se quisiera ver la media y la mediana con un solo comando, se puede usar <code>summary</code>.</p>
+<pre class="r"><code>summary(LL$re74)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0     0.0   823.8  3630.7  5211.8 39570.7</code></pre>
+<p>Se observa claramente que la media es mucho mayor que la mediana. Lo cual también se puede graficar</p>
+<pre class="r"><code>hist(LL$re74, breaks = 15)
+abline(v=mean(LL$re74), col=&quot;red&quot;)
+abline(v=median(LL$re74), col=&quot;blue&quot;)</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Con el comando <code>summary</code>se puede ver que la mediana aparece como un caso particular de los cuartiles. Los cuartiles dividen a la distribución en grupos de igual tamaño. Así como la mediana divide a la “fila ordenada” en 2 grupos, cada uno con 411 observaciones, los cuartiles dividen la distribución en 4 grupos, cada uno con el 25% del total de observaciones (180.5 observaciones). ¿Qué significa que el Min=0? ¿Qué significa 1st Qu = 0? ¿Median a qué porcentaje corresponde? ¿3rd Qu a qué porcentaje corresponde? ¿Qué significa Max? ¿Máximo observado puede ser atípico?</p>
+</div>
+<div id="gráfico-de-cajas" class="section level2">
+<h2>Gráfico de cajas</h2>
+<p>Una forma de graficar los cuartiles es mediante el gráfico de cajas o boxplot (ver ppt). Este gráfico muestra una caja central y dos bigotes. El gráfico para la variable ingresos de la línea de base es:</p>
+<pre class="r"><code>boxplot(LL$re74)</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>¿Por qué no se muestra el bigote inferior? ¿Qué significan los puntos superiores?</p>
+<p>Los cuartiles son una posibilidad de los percentiles. Una opción bastante usada es los deciles.</p>
+<pre class="r"><code>quantile(LL$re74)</code></pre>
+<pre><code>##         0%        25%        50%        75%       100% 
+##     0.0000     0.0000   823.8215  5211.7946 39570.6797</code></pre>
+<pre class="r"><code>quantile(LL$re74, c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))</code></pre>
+<pre><code>##         0%        10%        20%        30%        40%        50%        60% 
+##     0.0000     0.0000     0.0000     0.0000     0.0000   823.8215  1837.2208 
+##        70%        80%        90%       100% 
+##  3343.5705  6651.6747 10393.2177 39570.6797</code></pre>
+</div>
+<div id="tablas-de-frecuencias" class="section level2">
+<h2>Tablas de frecuencias</h2>
+<p>El ingreso descrito anteriormente es para toda la muestra. El estudio, sin embargo, dividió a los participantes en 2 grupos: tratados y control. ¿Cuántos hay en cada grupo?</p>
+<pre class="r"><code>table(LL$treated)</code></pre>
+<pre><code>## 
+##   0   1 
+## 425 297</code></pre>
+<p>La línea de base también recogió información sociodemográfica de los participantes. En particular, nos interesa saber cuántos afroamericanos hay en el grupo.</p>
+<pre class="r"><code>table(LL$black)</code></pre>
+<pre><code>## 
+##   0   1 
+## 144 578</code></pre>
+<p>Y sobre todo saber qué nivel educativo tienen.</p>
+<pre class="r"><code>table(LL$education)</code></pre>
+<pre><code>## 
+##   3   4   5   6   7   8   9  10  11  12  13  14  15  16 
+##   1   6   5   7  15  62 110 162 195 122  23  11   2   1</code></pre>
+<p>Las frecuencias absolutas no nos ayudan mucho, es mejor tener las frecuencias relativas.</p>
+<pre class="r"><code>100*table(LL$education)/sum(table(LL$education))</code></pre>
+<pre><code>## 
+##          3          4          5          6          7          8          9 
+##  0.1385042  0.8310249  0.6925208  0.9695291  2.0775623  8.5872576 15.2354571 
+##         10         11         12         13         14         15         16 
+## 22.4376731 27.0083102 16.8975069  3.1855956  1.5235457  0.2770083  0.1385042</code></pre>
+<p>O, se puede usar el comando <code>prop.table</code> que nos da la proporción (en escala 0-1). Para reportar el porcentaje se multiplica por 100.</p>
+<pre class="r"><code>prop.table(table(LL$education))*100</code></pre>
+<pre><code>## 
+##          3          4          5          6          7          8          9 
+##  0.1385042  0.8310249  0.6925208  0.9695291  2.0775623  8.5872576 15.2354571 
+##         10         11         12         13         14         15         16 
+## 22.4376731 27.0083102 16.8975069  3.1855956  1.5235457  0.2770083  0.1385042</code></pre>
+<p>Esta variable se podría considerar como numérica, por lo que se podría describir.</p>
+<pre class="r"><code>summary(LL$education)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    3.00    9.00   10.00   10.27   11.00   16.00</code></pre>
+<p>Y se podría graficar</p>
+<pre class="r"><code>boxplot(LL$education)</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>O con un gráfico de barras.</p>
+<pre class="r"><code>hist(LL$education)</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>O mediante</p>
+<pre class="r"><code>barplot(table(LL$education),xlab=&quot;Años de educación&quot;,ylab=&quot;Frecuencia&quot;,cex.axis=.9,cex.names=.9,ylim=c(0,200))
+abline(h=0,col=&#39;gray60&#39;)
+box()</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+</div>
+<div id="medidas-de-dispersión-1" class="section level1">
+<h1>Medidas de dispersión</h1>
+<div id="rango-intercuartil-1" class="section level2">
+<h2>Rango intercuartil</h2>
+<p>Distancia entre Q3 y Q1, que acumula el 50% de los datos centrales.</p>
+<pre class="r"><code>IQR(LL$re74)</code></pre>
+<pre><code>## [1] 5211.795</code></pre>
+<p>Para una variable numérica, la medida más usada es la desviación estándar.</p>
+<pre class="r"><code>sd(LL$re74)</code></pre>
+<pre><code>## [1] 6220.637</code></pre>
+<p>¿Calcule una medida de dispersión basada en la mediana?</p>
+</div>
+</div>
+<div id="inspeccionando-la-hipótesis-de-lalonde" class="section level1">
+<h1>Inspeccionando la hipótesis de LaLonde</h1>
+<p>Hasta ahora se ha calculado la media de ingresos para el total de los participantes del estudio en 1974. La idea es analizar cómo cambiaron estos ingresos entre 1974 y 1978 para cada grupo. Para empezar, ¿cómo eran los ingresos de los participantes que fueron tratados y que fueron al grupo control al inicio del estudio? Para esto se tiene que calcular la media para cada uno de estos grupos. Hay varias maneras de hacer esto. Una es usando los []</p>
+<pre class="r"><code>mean(LL$re74[LL$treated==0])</code></pre>
+<pre><code>## [1] 3672.485</code></pre>
+<pre class="r"><code>mean(LL$re74[LL$treated==1])</code></pre>
+<pre><code>## [1] 3570.999</code></pre>
+<p>Otra opción es creando otros “dataframes” para cada grupo con el comando <code>subset</code>.</p>
+<pre class="r"><code>trata &lt;- subset(LL, LL$treated==1)
+control &lt;- subset(LL, LL$treated==0)</code></pre>
+<p>Y en cada subgrupo calcular la media. En este caso calcularemos la media en 1978 para ver si se generaron diferencias.</p>
+<pre class="r"><code>mean(control$re78)</code></pre>
+<pre><code>## [1] 5090.048</code></pre>
+<pre class="r"><code>mean(trata$re78)</code></pre>
+<pre><code>## [1] 5976.352</code></pre>
+<p>A simple vista, ¿se cumple la hipótesis de LaLonde?</p>
+</div>
+<div id="bibliografía" class="section level1 unnumbered">
+<h1 class="unnumbered">Bibliografía</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lalondeEvaluatingEconometricEvaluations1986" class="csl-entry">
+LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations of Training Programs with Experimental Data.”</span> <em>The American Economic Review</em> 76 (4): 604–20. <a href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

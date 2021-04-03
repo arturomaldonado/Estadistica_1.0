@@ -1,9 +1,13 @@
-name: "my-website"
+name: "Estadística_1"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Estadística_1"
   left:
     - text: "Home"
       href: index.html
+    - text: "Clase1"
+      href: clase1.html
+    - text: "Clase2"
+      href: clase2.html
     - text: "About"
       href: about.html

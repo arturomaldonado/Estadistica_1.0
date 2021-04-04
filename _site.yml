@@ -2,7 +2,8 @@ name: "Estadística_1"
 output_dir: "."
 navbar:
   title: "Estadística_1"
-  left:
+  google_analytics: "UA-54607327-1"
+  right:
     - text: "Home"
       href: index.html
     - text: "Clase1"
@@ -11,3 +12,5 @@ navbar:
       href: clase2.html
     - text: "About"
       href: about.html
+    - icon: fab fa-github
+      href: https://github.com/arturomaldonado/Estadistica_1.0

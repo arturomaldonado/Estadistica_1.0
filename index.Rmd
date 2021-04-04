@@ -12,16 +12,21 @@ output:
     highlight: textmate
 ---
 
+\
 
 # Sumilla
 
 Introducción al análisis cuantitativo en ciencia política. Definición de variables, indicadores y escalas de medición. Uso de bases de datos para el estudio de casos en ciencia política. Herramientas de estadística descriptiva para la exploración de casos: métodos tabulares y gráficos; estadísticos descriptivos univariables. De la descripción al planteamiento y comprobación de hipótesis. Estrategias para analizar la relación entre dos variables: construcción y lecturas de tablas de contingencia, y coeficientes de asociación. Pruebas de significancia estadística. Análisis de tres variables. Correlación e introducción al análisis de regresión.
+
+\
 
 # Presentación
 
 La ciencia política tiene como una de sus tareas el análisis de datos empíricos con el objetivo de analizar y comprender una realidad. Una herramienta científica para lograr este objetivo es la estadística. A través de ella se describe, se ponen a prueba hipótesis, y se modela la realidad social, económica y política de nuestro entorno. En ese sentido, este curso apoya no sólo el perfil académico del estudiante sino su perfil profesional, potenciando sus habilidades para el análisis político y social, y proporcionándole las bases cuantitativas para el desarrollo de su tesis de pregrado.
 
 El curso de Estadística para el Análisis Político 1 introduce al estudiante en aspectos esenciales del análisis cuantitativo en ciencia política. Se prestará atención especial en la interpretación y presentación de resultados estadísticos. Si bien una parte del curso involucra el manejo de un software estadístico, la parte más importante es la lectura de los resultados, sobre la base de la teoría y de la realidad.
+
+\
 
 # Resultados del aprendizaje
 
@@ -33,6 +38,8 @@ El curso de Estadística para el Análisis Político 1 introduce al estudiant
 
 -   Comprender las técnicas estadísticas aplicadas en el trabajo académico y profesional.
 
+\
+
 # Metodología
 
 El curso contempla:
@@ -42,6 +49,8 @@ El curso contempla:
 -   Sesiones prácticas
 
 -   Trabajo grupal
+
+\
 
 # Evaluación
 

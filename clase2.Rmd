@@ -241,17 +241,6 @@ summary(LL$re74)
 ```
 
 Se observa claramente que la media es mucho mayor que la mediana.
-Lo cual también se puede graficar
-
-```{r}
-hist(LL$re74, breaks = 15)
-abline(v=mean(LL$re74), col="red")
-abline(v=median(LL$re74), col="blue")
-```
-
-Con el comando `summary`se puede ver que la mediana aparece como un caso particular de los cuartiles.
-Los cuartiles dividen a la distribución en grupos de igual tamaño.
-Así como la mediana divide a la "fila ordenada" en 2 grupos, cada uno con 411 observaciones, los cuartiles dividen la distribución en 4 grupos, cada uno con el 25% del total de observaciones (180.5 observaciones).
 ¿Qué significa que el Min=0?
 ¿Qué significa 1st Qu = 0?
 ¿Median a qué porcentaje corresponde?
@@ -259,7 +248,33 @@ Así como la mediana divide a la "fila ordenada" en 2 grupos, cada uno con 411 o
 ¿Qué significa Max?
 ¿Máximo observado puede ser atípico?
 
+Para observar la posición relativa de media y mediana, se puede graficar el histograma marcando ambas medidas.
+
+```{r}
+hist(LL$re74, breaks = 15)
+abline(v=mean(LL$re74), col="red")
+abline(v=median(LL$re74), col="blue")
+```
+
+Con el comando `summary` se puede ver que la mediana aparece como un caso particular de los cuartiles, una medida de posición.
+
 ------------------------------------------------------------------------
+
+## Medidas de posición
+
+Los cuartiles dividen a la distribución en cuatro grupos de igual tamaño.
+Así como la mediana divide a la "fila ordenada" en 2 grupos, cada uno con 411 observaciones, los cuartiles dividen la distribución en 4 grupos, cada uno con el 25% del total de observaciones (180.5 observaciones).
+
+Los cuartiles son las medidas de posición más usadas, pues tienen una expresión gráfica en el "boxplot".
+Sin embargo, una distribución ordenada se puede dividir en tres grupos iguales, los "terciles".
+Por ejemplo, en la universidad, a los alumnos se los clasifica en tercio superior, tercio medio y tercio inferior.
+
+Una distribución ordenada también puede ser dividida en cinco grupos, los "quintiles" o en diez grupos iguales, los "deciles".
+
+```{r}
+quantile(LL$re74)
+quantile(LL$re74, c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))
+```
 
 ## Gráfico de cajas
 
@@ -273,14 +288,6 @@ boxplot(LL$re74)
 
 ¿Por qué no se muestra el bigote inferior?
 ¿Qué significan los puntos superiores?
-
-Los cuartiles son una posibilidad de los percentiles.
-Una opción bastante usada es los deciles.
-
-```{r}
-quantile(LL$re74)
-quantile(LL$re74, c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))
-```
 
 ------------------------------------------------------------------------
 

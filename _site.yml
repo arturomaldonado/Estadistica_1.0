@@ -10,6 +10,8 @@ navbar:
       href: clase1.html
     - text: "Clase2"
       href: clase2.html
+    - text: "Clase3"
+      href: clase3.html
     - text: "About"
       href: about.html
     - icon: fab fa-github

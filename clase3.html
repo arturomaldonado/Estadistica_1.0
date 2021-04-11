@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase 3 y Trabajo práctico LaLonde (1996)</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="clase1.html">Clase1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase3</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase 3 y Trabajo práctico LaLonde (1996)</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">13/4/2021</h4>
+
+</div>
+
+
+<hr />
+<div id="estimación-puntual" class="section level1">
+<h1>Estimación puntual</h1>
+<p>De una variable numérica, la medida de tendencia central más útil es la media. Por ejemplo, siguiendo con el ejemplo de <span class="citation">LaLonde (1986)</span>, podemos calcular la media de ingresos antes y después de la intervención.</p>
+<p>Primero leemos la base de datos.</p>
+<pre class="r"><code>library(rio)
+LL &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv&quot;)</code></pre>
+<p>Y calculamos las medias en ambos años.</p>
+<pre class="r"><code>mean(LL$re74)</code></pre>
+<pre><code>## [1] 3630.738</code></pre>
+<pre class="r"><code>mean(LL$re78)</code></pre>
+<pre><code>## [1] 5454.636</code></pre>
+<p>La manera de describir una variable categórica es a través de una tabla de frecuencias. Siguiendo con el artículo, se puede calcular la tabla de frecuencias de los individuos afroamericanos y de los latinos.</p>
+<pre class="r"><code>table(LL$black)</code></pre>
+<pre><code>## 
+##   0   1 
+## 144 578</code></pre>
+<pre class="r"><code>table(LL$hispanic)</code></pre>
+<pre><code>## 
+##   0   1 
+## 646  76</code></pre>
+<p>El comando <code>table</code> nos ofrece las frecuencias absolutas. Para obtener los porcentajes (las frecuencias relativas) se puede anidar este comando dentro de <code>prop.table</code>.</p>
+<pre class="r"><code>prop.table(table(LL$black))*100</code></pre>
+<pre><code>## 
+##       0       1 
+## 19.9446 80.0554</code></pre>
+<pre class="r"><code>prop.table(table(LL$hispanic))*100</code></pre>
+<pre><code>## 
+##        0        1 
+## 89.47368 10.52632</code></pre>
+<p>Se encuentra que los participantes del estudio son mayoritariamente afroamericanos y minoritariamente latinos.</p>
+<p>En el caso de las tablas de frecuencias, se puede hallar la proporción (una forma de llamar a los porcentajes) de cada categoría de la variable. Esta muestra de individuos tendrá un 80.1% de afroamericanos y un 10.5% de latinos.</p>
+<p>Tanto la media, como la proporción, son estimaciones puntuales, basados en los resultados de la muestra. Es decir, estas son estimaciones correspondientes a las 722 observaciones que son parte de este estudio. Sin embargo, esta muestra forma parte de un universo o población (el conjunto de individuos que carecen de habilidades laborales para insertarse en el mercado de trabajo), del que seguramente se quiere decir algo.</p>
+<p>El proceso mediante el cual se parte de una muestra para decir algo de un universo o población es un proceso de inferencia y es parte de la estadística inferencial. La estadística inferencial introduce la incertidumbre en los estimados, debido al hecho de estar trabajando con una muestra y no con el total de observaciones del universo.</p>
+<div id="un-breve-paseo-por-las-probabilidades" class="section level2">
+<h2>Un breve paseo por las probabilidades</h2>
+<p>Partimos del hecho que en el común de las investigaciones uno tiene que seleccionar un conjunto de observaciones que son parte del total, que es muy costoso e ineficiente hacer un estudio de la población completa. A esto le sumamos el otro hecho que nuestras herramientas de recojo de información son imperfectas. Un estudio transversal, por ejemplo, debería recoger información de los individuos en un corte en el tiempo, sin embargo, muchos estudios no son una “foto del momento” pues las observaciones toman tiempo y abarcan horas, días o semanas, sino meses.</p>
+<p>Es por este motivo que para un estudio se selecciona “una” muestra, un conjunto de observaciones que son una fracción del total. Esta única muestra es solo una de las múltiples muestras teóricas que se podrían seleccionar de un universo determinado.</p>
+<p>Partamos de un ejemplo muy simple. Para un universo de 5 personas, se pueden extraer 10 muestras de tamaño 2 diferentes.</p>
+<p><img src="c3.1.png" /></p>
+<p>La fórmula para calcular el número de muestras probables es la de combinatorias, que incluye el operador factorial. Si aplicamos esta fórmula a un ejemplo de un universo más grande, por ejemplo, un salón de clase de 47 alumnos, donde se quiere saber cuántas muestras diferentes de tamaño 4 se pueden extraer. Según la fórmula:</p>
+<p><span class="math display">\[
+\frac{47!} {(47-4)! 4!} = \frac{47!} {43! 4!} = \frac{47*46*45*44} {4*3*2} = 178365
+\]</span></p>
+<p>Para un sondeo de opinión, donde el universo son 20 millones de individuos y se quiere saber cuántas muestras diferentes de tamaño 1,500 se pueden extraer, este número de muestras es muuuuy grande.</p>
+<p>Volviendo al ejemplo muy simple de 5 personas donde se quiere extraer una muestra de 2 y se quiere inferir los datos de la muestra de dos variables: sexo y edad.</p>
+<p>Se tiene un universo de 5 individuos, cada uno con su sexo y edad. En la población la proporción de hombres es de 60% y la media de edad es de 34 años.</p>
+<p><img src="c3.2.png" /></p>
+<p>Si queremos extraer una muestra de tamaño de 2 de ese universo, se tienen 10 posibles muestras, cada una tendrá una aproximación de la proporción de hombres y de la media de edad. Dependiendo de qué muestra de todas las posibles sea la que se observa, los estadísticos serán una aproximación de los parámetros poblacionales.</p>
+<p>En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.</p>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="56%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Resultados muestrales</th>
+<th align="center">Número de muestras que arrojaron ese resultado</th>
+<th align="left">Frecuencia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0%</td>
+<td align="center">1</td>
+<td align="left">X</td>
+</tr>
+<tr class="even">
+<td align="center">50%</td>
+<td align="center">5</td>
+<td align="left">XXXXX</td>
+</tr>
+<tr class="odd">
+<td align="center">100%</td>
+<td align="center">4</td>
+<td align="left">XXXX</td>
+</tr>
+</tbody>
+</table>
+<p>Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+…+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.</p>
+<p>Este mismo procedimiento se podría hacer para todas las 178,365 muestras probables de tamaño 4 de un universo de 47 alumnos. Cada uno de los 47 alumnos será hombre o mujer y la proporción poblacional de hombres se puede calcular en ese total. A su vez, cada muestra de 4, tendrá una proporción muestral que tendrá valores (0 si no hay ningún hombre, 25% si hay 1 hombre, 50% si hay 2 hombres, 75% si hay 3 hombres y 100% si todos son hombres). Finalmente, se puede contar cuántas de las 178,365 muestras probables tuvieron 0%, 25%, 50%, 75% y 100% de hombres. Esta distribución se llama “distribución de muestreo.”</p>
+<p>Si quisiéramos ampliar el tamaño de muestra a 10, entonces los resultados posibles serían, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90 y 100%. También podríamos contar cuántas muestras tienen estos resultados.</p>
+<p>De un universo más grande, se puede plantear extraer muestras de tamaño más grande. Por ejemplo, teóricamente se puede pensar que de un universo de 20 millones, se pueden extraer casi infinitas muestras de tamaño 1,500. Cada una de estas muestras tendrá un estadístico que será una aproximación del parámetro. Los estadísticos de todas estas casi infinitas muestras se pueden tabular y graficar.</p>
+</div>
+<div id="teorema-del-límite-central" class="section level2">
+<h2>Teorema del límite central</h2>
+<p>Este teorema muestra que la distribución de muestreo se aproxima a una distribución normal, con centro en el parámetro, en la medida que el tamaño de muestra aumenta.</p>
+<p>Por lo tanto, la distribución de muestreo de N grandes seguirá las características de cualquier curva normal. Toda curva normal es simétrica y sabemos que si desde el centro se desplaza 1 desviación estándar en ambas direcciones, entre esos límites estarán el 68.3% de todas las observaciones. Si se desplaza 2 desviaciones estándar en ambas direcciones, se acumularían el 95.4% de todas las observaciones. Con 3 desviaciones estándar hacia ambos lados, se acumularía el 99.7% de todas las observaciones.</p>
+<p><img src="c3.3.png" width="510" /></p>
+<p>Traduciendo a la distribución de muestreo, la idea es que si se tabulan y se hace un gráfico de barras de los resultados de todas las muestras probables, se tendría una curva normal con centro en el parámetro. Sabríamos que si desde ese centro nos desplazamos 2 desviaciones estándar en ambas direcciones, entre esos límites estarían el 95% de todas las muestra probables.</p>
+</div>
+</div>
+<div id="estimación-de-intervalo" class="section level1">
+<h1>Estimación de intervalo</h1>
+<p>La distribución de muestreo es teórica, muy difícilmente se puede calcular en la realidad. Regularmente tampoco sabemos los datos del universo. Lo que tenemos a mano es 1 muestra observada. Es decir, en un estudio de las muuuuuchas muestras probables, se selecciona 1 muestra.</p>
+<p>En el caso de <span class="citation">LaLonde (1986)</span>, por ejemplo, del universo de desempleados sin habilidades laborales, se seleccionó 1 muestra de 722 observaciones, de las muuuuchas muestras de 722 individuos de la población total.</p>
+<p>Si teóricamente sabemos que en la distribución muestral, el 95% de todas las muestras están a +/- 2 desviaciones estándar<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> del centro, que coincide con el parámetro poblacional, es muy probable que la única muestra que se ha observado sea parte de ese conjunto. De hecho, se puede decir que se tiene 95% de probabilidades de que sea parte de ese grupo.</p>
+<p>Por lo tanto, si a partir del estadístico muestral, se aplica esta distancia de +/- 2 errores estándar, se tiene 95% de probabilidades que entre esos límites se incluya al valor del parámetro. Para verlo de manera más visual, en la siguiente figura se tiene la distribución de muestreo teórica (y desconocida), donde se marca la región que acumula el 95% de todas las muestras probables.</p>
+<p>Más abajo se marca los resultados de 2 muestras probables. La primera proporción muestral subestima la proporción poblacional. La segunda, por el contrario, sobreestima la proporción poblacional. En el primer caso, si a partir del estadístico muestral se aplica +/- 1.96 errores estándar (línea horizontal en negrita), se observa que el parámetro poblacional está incluido en esos límites.</p>
+<p>Es probable, como en el segundo caso, que otra muestra probable, cuando se le aplique el intervalo de +/- 1.96 errores estándar, no incluya al parámetro. Se observa que la línea en negrita no incluye la linea vertical entrecortada que marca el valor del parámetro poblacional.</p>
+<p><img src="c3.4.png" width="581" /></p>
+<p>Sin embargo, sabemos que es mucho más probable (95% de probabilidades) que si mi muestra es parte del 95% de muestras alrededor del parámetro, este intervalo incluya al parámetro poblacional. A estos límites le llamamos “intervalos de confianza.”</p>
+<div id="teoría-en-la-práctica" class="section level2">
+<h2>Teoría en la práctica</h2>
+<p>Usaremos el ejemplo de <span class="citation">LaLonde (1986)</span> para graficar estas divagaciones teóricas. Asumamos que la base de datos de este artículo es el universo de personas. Las 722 personas en esa base de datos serían todos los miembros que se podrían escoger. De ese universo, queremos extraer muestras de tamaño 100. Según una calculadora de combinaciones, existen 5.7x10^124 combinaciones de tamaño 100 de un universo de 722. Hay menos átomos en el universo que muestras probables.</p>
+<p>Sabemos cuál es el valor poblacional si calculamos la media de los 722 casos.</p>
+<pre class="r"><code>mean(LL$age)</code></pre>
+<pre><code>## [1] 24.52078</code></pre>
+<p>El parámetro es igual a 24.5 años. Como ejemplo, calcularemos 3000 muestras para calcular el estadístico (la aproximación muestral) del parámetro de la variable edad y guardaremos todos esos resultados en un objeto de tipo vector.</p>
+<pre class="r"><code>library(dplyr)
+x&lt;-c(1:3000)
+for (i in 1:3000) {
+  sub &lt;- sample_n(LL, 100, replace=F)
+  x[i]&lt;- mean(sub$age, na.rm=T) 
+  rm(sub)
+}
+x</code></pre>
+<pre><code>##    [1] 24.97 25.17 24.42 25.13 23.80 24.17 24.62 25.44 24.26 25.33 24.08 23.22
+##   [13] 23.99 25.11 24.36 25.25 24.21 24.36 24.59 25.19 24.20 24.47 23.78 24.51
+##   [25] 23.94 24.36 25.40 24.96 24.14 25.19 24.04 23.91 24.49 25.07 24.28 24.17
+##   [37] 24.09 25.66 22.94 24.22 24.98 24.88 24.46 25.73 24.01 24.58 24.04 23.81
+##   [49] 23.23 24.16 26.16 25.41 24.08 24.43 23.79 23.97 25.39 23.62 25.71 23.73
+##   [61] 24.31 24.53 25.09 24.95 24.48 24.75 24.30 23.69 24.82 23.74 24.23 25.78
+##   [73] 23.75 24.58 24.24 24.60 24.55 24.53 24.79 25.42 25.48 24.34 24.27 25.31
+##   [85] 24.09 24.71 24.11 23.96 25.28 25.28 24.10 24.19 23.65 23.63 25.22 24.01
+##   [97] 24.18 23.33 24.16 23.82 25.21 24.31 24.02 24.90 24.12 23.66 24.19 24.32
+##  [109] 24.36 24.89 24.32 24.36 24.88 24.59 25.27 24.43 24.07 24.05 26.21 23.62
+##  [121] 24.33 25.12 25.09 24.79 23.72 25.00 24.65 24.81 25.48 24.56 25.59 23.80
+##  [133] 24.04 24.99 25.11 24.89 25.07 24.35 24.75 24.87 24.71 25.25 24.61 23.88
+##  [145] 24.98 24.14 25.45 23.40 25.48 24.33 24.67 24.10 24.65 25.42 23.66 23.28
+##  [157] 24.33 24.80 24.33 24.61 24.71 24.57 24.60 24.97 24.35 24.61 24.48 24.62
+##  [169] 24.18 23.07 23.93 24.70 24.16 24.22 24.38 24.50 24.99 24.40 24.75 24.70
+##  [181] 24.41 24.58 24.77 23.84 23.18 23.99 24.48 25.14 24.75 25.21 25.06 25.02
+##  [193] 24.87 24.02 24.96 24.16 25.80 24.71 25.35 24.51 24.27 23.12 23.93 24.40
+##  [205] 23.91 22.76 23.30 25.65 24.31 24.93 24.38 25.46 25.30 25.09 24.05 24.24
+##  [217] 24.46 25.28 25.20 23.89 25.28 25.72 23.78 24.42 24.70 25.16 24.35 24.40
+##  [229] 25.36 24.68 23.58 24.55 24.78 25.02 24.31 24.53 24.85 24.65 24.86 23.92
+##  [241] 26.10 23.87 25.79 23.66 24.57 26.04 24.41 24.30 24.88 24.51 23.81 25.20
+##  [253] 23.32 24.29 23.62 23.87 25.18 24.82 25.10 24.31 23.50 24.97 23.89 23.63
+##  [265] 24.25 24.41 25.76 24.07 24.49 23.71 25.64 24.46 25.03 25.69 23.75 24.36
+##  [277] 24.07 23.22 25.38 24.47 24.46 24.63 23.83 23.21 24.72 23.57 24.67 25.23
+##  [289] 24.67 23.05 23.09 24.01 24.14 23.65 24.24 24.87 25.31 24.37 24.43 25.08
+##  [301] 24.93 24.87 23.68 24.35 24.46 25.48 25.38 23.70 24.88 24.55 24.44 24.09
+##  [313] 24.93 23.35 25.22 24.53 25.61 23.87 24.09 25.26 24.59 23.99 24.14 23.86
+##  [325] 24.40 25.26 24.85 24.99 24.41 24.91 24.58 24.28 24.31 24.80 23.76 24.92
+##  [337] 26.14 23.85 23.55 25.17 23.94 24.17 24.29 24.53 25.76 24.38 24.52 23.93
+##  [349] 24.46 25.15 24.07 24.77 23.57 24.75 24.27 24.59 24.80 23.97 24.36 24.40
+##  [361] 25.12 24.67 23.94 24.88 25.32 24.12 25.38 23.83 24.13 23.15 25.28 24.42
+##  [373] 25.78 24.42 24.83 24.32 24.43 25.00 25.09 25.23 24.61 23.83 24.99 24.38
+##  [385] 24.25 24.47 24.00 25.43 24.75 23.81 24.46 23.28 24.76 23.45 23.86 24.76
+##  [397] 24.99 24.85 24.50 25.42 24.64 24.14 25.38 25.05 24.42 25.08 23.87 25.43
+##  [409] 25.12 24.51 23.87 24.32 24.72 24.04 24.00 23.82 24.35 24.57 24.78 23.26
+##  [421] 24.09 23.94 24.27 24.86 23.56 24.54 25.70 24.67 25.65 24.71 24.67 25.00
+##  [433] 23.89 24.22 24.68 23.40 24.99 25.04 25.17 22.82 24.70 24.10 24.30 25.42
+##  [445] 24.60 24.74 24.64 24.64 24.93 23.79 24.13 23.37 25.44 24.20 24.05 24.29
+##  [457] 24.80 24.16 23.56 24.71 23.43 25.41 23.86 25.27 24.22 25.33 25.47 25.13
+##  [469] 24.77 25.02 24.74 24.14 26.24 24.67 24.26 24.35 23.47 24.88 24.65 24.49
+##  [481] 25.34 24.48 24.25 24.79 24.53 23.95 24.36 24.43 24.85 25.34 24.88 23.78
+##  [493] 26.04 25.15 25.53 26.01 24.53 23.91 24.93 23.99 24.83 25.51 23.22 25.15
+##  [505] 25.65 24.70 23.81 24.22 24.27 24.83 23.94 23.67 23.97 24.44 25.00 24.40
+##  [517] 26.67 25.04 25.81 24.97 23.76 24.36 24.29 23.89 23.78 24.53 25.63 24.89
+##  [529] 24.58 23.75 23.49 24.10 24.67 24.20 24.63 23.97 23.17 24.06 24.18 23.84
+##  [541] 23.78 25.30 25.22 24.39 23.69 24.87 24.68 23.46 24.58 25.34 24.12 24.07
+##  [553] 24.31 24.06 25.27 24.30 23.30 24.20 24.22 24.74 25.20 24.94 24.38 23.77
+##  [565] 24.00 24.89 24.00 25.04 24.83 23.44 24.66 25.03 23.98 24.97 24.23 24.45
+##  [577] 24.11 24.71 25.18 24.97 25.13 24.24 24.35 23.06 25.41 24.40 23.81 25.43
+##  [589] 24.82 24.38 25.09 24.79 24.14 24.69 24.06 24.15 25.46 25.87 24.05 23.29
+##  [601] 24.33 24.43 24.24 24.03 23.49 25.96 24.62 24.68 24.35 24.81 24.11 23.79
+##  [613] 24.60 23.49 24.22 25.01 23.47 25.38 24.32 24.17 25.12 24.77 25.15 24.66
+##  [625] 25.03 24.66 24.18 23.78 23.50 24.26 25.43 24.21 23.92 24.06 25.10 24.31
+##  [637] 25.45 24.57 24.73 25.22 24.76 23.58 24.22 23.48 25.45 25.15 24.27 24.10
+##  [649] 24.22 24.15 26.32 24.45 25.57 25.29 24.33 25.28 24.20 24.76 24.18 24.37
+##  [661] 23.81 25.55 24.21 24.72 24.31 24.16 24.24 24.73 24.49 24.27 24.24 24.30
+##  [673] 23.78 24.07 25.05 24.30 23.92 24.12 24.47 23.86 25.54 24.83 24.34 23.57
+##  [685] 25.19 24.72 23.97 25.62 23.99 24.18 23.51 25.33 24.20 25.01 25.85 24.87
+##  [697] 24.67 23.07 24.11 25.17 24.47 23.51 24.01 24.65 24.03 25.18 22.98 25.04
+##  [709] 24.80 23.65 23.46 25.12 23.49 24.84 24.34 23.63 24.48 25.01 24.98 24.86
+##  [721] 25.60 23.76 25.55 24.64 24.05 25.39 24.81 25.67 23.55 25.19 25.06 24.42
+##  [733] 24.34 24.67 24.43 24.08 24.59 24.52 24.16 25.03 25.37 23.49 25.10 24.23
+##  [745] 25.88 25.08 24.22 23.81 24.40 24.16 25.36 24.18 23.71 23.85 24.86 24.00
+##  [757] 24.56 24.56 25.36 24.64 23.95 24.41 24.28 24.58 25.06 24.46 24.73 24.29
+##  [769] 24.98 24.99 23.72 23.49 24.04 24.53 25.45 25.26 25.13 25.09 24.43 24.33
+##  [781] 24.88 24.11 23.99 24.18 25.40 24.68 24.48 25.17 24.70 24.90 24.55 23.44
+##  [793] 24.67 24.67 24.71 24.54 24.22 24.46 23.70 23.37 23.58 24.05 24.09 23.73
+##  [805] 23.84 24.71 25.30 24.71 24.52 24.02 23.97 24.23 23.77 24.11 24.89 24.29
+##  [817] 23.09 24.30 24.05 24.24 24.59 25.28 24.59 23.54 24.23 23.55 25.05 24.45
+##  [829] 24.09 25.20 24.24 24.42 24.06 24.56 24.85 24.60 24.15 24.35 24.64 24.72
+##  [841] 23.46 24.68 25.69 24.27 24.59 24.82 24.47 24.72 24.02 24.68 23.20 25.47
+##  [853] 24.12 24.30 24.48 24.17 24.18 24.16 24.26 23.37 23.34 23.20 24.10 24.92
+##  [865] 25.42 24.01 23.16 23.74 23.15 25.08 24.71 24.11 25.62 24.93 24.75 23.85
+##  [877] 24.77 24.46 24.69 24.36 24.35 25.13 24.99 23.72 24.68 25.15 24.88 24.57
+##  [889] 24.54 23.69 24.45 24.82 23.53 23.68 24.80 25.44 24.89 23.87 25.68 24.88
+##  [901] 24.51 25.15 24.83 24.85 24.80 24.79 24.52 24.33 23.12 24.20 24.42 25.82
+##  [913] 24.96 25.07 24.75 23.68 23.64 25.04 25.31 25.67 25.56 24.61 24.52 24.37
+##  [925] 24.44 23.79 24.61 24.07 24.01 25.26 24.54 23.56 23.90 24.39 24.89 25.12
+##  [937] 25.72 25.54 25.00 24.80 25.20 25.29 23.28 23.66 23.99 25.14 24.94 25.84
+##  [949] 24.62 23.83 24.28 23.97 25.27 24.68 25.31 24.66 23.60 23.71 24.37 24.61
+##  [961] 23.89 25.17 25.15 24.12 25.10 25.12 24.82 23.84 23.77 25.50 24.07 25.56
+##  [973] 24.84 25.27 23.08 24.27 25.39 25.58 24.69 24.97 24.84 25.20 24.27 24.31
+##  [985] 24.64 24.98 25.03 25.29 25.38 24.61 23.65 25.86 24.22 23.77 24.11 24.93
+##  [997] 24.05 23.97 24.69 24.87 24.88 23.68 23.72 22.40 23.57 24.77 24.54 25.20
+## [1009] 23.19 23.49 24.16 25.38 25.04 23.86 24.28 25.10 24.10 24.41 24.92 24.77
+## [1021] 24.45 24.30 23.26 25.27 24.50 24.93 24.01 23.34 23.88 24.41 24.68 24.53
+## [1033] 24.13 23.86 24.99 24.08 24.23 24.16 24.31 24.16 23.62 25.39 23.79 23.97
+## [1045] 24.75 24.23 23.40 25.21 24.53 24.63 24.72 24.11 24.90 24.19 24.70 23.70
+## [1057] 24.13 24.36 25.32 24.93 23.29 24.69 25.48 24.98 23.83 23.44 25.01 24.31
+## [1069] 24.94 24.82 24.63 25.37 24.96 23.94 24.19 23.46 24.29 24.94 25.02 24.93
+## [1081] 24.61 24.73 25.00 24.02 24.36 25.26 24.25 25.06 24.61 24.33 25.11 24.73
+## [1093] 24.28 25.07 24.49 24.92 23.64 25.11 23.82 23.96 23.68 25.10 23.91 23.95
+## [1105] 24.93 24.92 23.25 24.56 24.94 23.78 23.78 24.74 23.94 24.80 24.29 25.72
+## [1117] 23.09 25.37 24.71 25.05 24.09 24.87 24.02 23.54 23.98 25.08 24.30 24.26
+## [1129] 24.63 24.89 24.19 24.71 24.18 25.38 24.57 23.69 24.72 25.43 23.39 25.54
+## [1141] 23.79 24.54 24.29 24.96 23.82 24.33 25.25 23.80 23.60 24.45 25.33 23.74
+## [1153] 24.88 25.64 24.67 24.02 24.44 24.17 24.03 23.90 25.42 23.96 24.77 25.02
+## [1165] 24.63 23.85 25.04 24.76 24.71 24.97 24.92 24.24 24.60 24.79 23.66 24.45
+## [1177] 23.97 24.44 24.40 23.37 25.56 24.61 24.48 25.59 24.24 24.59 23.83 25.11
+## [1189] 24.76 24.53 25.02 24.66 24.58 23.97 23.99 24.26 24.67 24.84 23.89 24.78
+## [1201] 24.06 25.10 24.54 24.09 24.98 22.84 24.32 24.81 24.68 25.28 24.60 24.64
+## [1213] 24.36 24.59 25.14 24.24 24.96 24.05 24.19 25.33 25.19 24.68 24.61 24.37
+## [1225] 24.46 24.75 24.32 25.17 24.67 24.00 25.08 24.12 24.08 23.59 24.61 25.48
+## [1237] 25.29 23.00 25.27 24.07 24.71 23.95 24.79 24.54 24.19 24.59 25.05 23.87
+## [1249] 23.25 25.33 25.03 24.88 25.40 24.06 25.39 24.38 24.15 24.52 24.56 24.19
+## [1261] 24.30 24.87 24.10 24.28 25.54 25.04 24.52 24.30 23.86 23.97 24.85 25.23
+## [1273] 24.22 24.37 24.05 24.29 24.31 24.70 23.30 24.59 25.00 23.42 24.48 24.80
+## [1285] 24.35 24.86 24.35 25.73 23.89 23.26 23.78 26.09 23.50 24.54 24.15 24.38
+## [1297] 23.86 25.00 25.33 24.65 24.26 25.02 25.30 24.16 25.12 24.09 25.58 24.05
+## [1309] 22.82 23.99 24.69 25.30 24.54 24.61 23.58 24.76 25.18 24.01 25.10 23.68
+## [1321] 25.23 25.04 24.59 25.58 24.24 23.83 24.83 24.29 24.44 24.03 23.95 25.90
+## [1333] 25.31 24.90 25.07 25.22 24.08 24.24 25.00 24.10 25.43 24.40 24.51 24.94
+## [1345] 24.18 26.16 24.10 23.90 24.13 24.63 25.25 24.66 24.45 23.09 24.89 24.27
+## [1357] 24.58 23.04 24.62 24.27 24.27 23.33 26.09 25.38 23.87 25.64 24.42 24.71
+## [1369] 23.84 24.66 24.58 23.43 23.64 24.15 23.74 24.45 24.89 24.31 23.45 25.65
+## [1381] 24.11 24.22 25.24 24.57 25.92 25.03 24.39 25.01 24.44 24.17 24.65 24.77
+## [1393] 24.28 23.98 25.21 25.35 23.56 24.36 24.03 24.38 23.68 23.75 24.53 23.92
+## [1405] 25.35 25.95 25.58 25.97 25.64 24.35 23.94 25.02 24.97 24.09 24.24 24.80
+## [1417] 25.15 25.76 24.57 25.10 24.84 23.82 24.74 24.38 25.33 23.94 24.83 25.19
+## [1429] 24.56 25.33 24.14 24.50 24.66 25.33 23.38 23.64 23.56 25.46 25.20 24.92
+## [1441] 25.13 23.21 25.29 24.50 24.22 24.92 25.11 24.03 24.09 24.66 25.05 24.32
+## [1453] 24.01 24.10 24.29 24.98 23.87 25.54 25.35 24.97 23.87 24.51 24.79 23.44
+## [1465] 23.73 24.47 23.92 24.42 24.94 25.06 25.02 23.82 24.39 23.70 25.19 23.94
+## [1477] 23.92 23.80 24.82 24.78 24.49 23.86 24.90 24.56 25.17 24.18 23.72 24.84
+## [1489] 23.82 24.99 24.62 24.59 25.53 24.32 24.74 23.92 25.52 25.00 25.58 25.30
+## [1501] 24.81 25.31 24.88 25.59 23.94 24.44 24.23 25.02 24.02 25.09 24.03 24.19
+## [1513] 25.41 25.26 25.88 25.30 24.78 24.19 24.90 25.69 24.66 24.47 23.76 23.69
+## [1525] 24.09 24.96 25.31 25.69 24.20 23.52 25.14 24.25 23.71 24.50 24.20 24.48
+## [1537] 24.27 23.88 23.35 24.62 24.14 24.07 25.67 23.63 25.82 25.39 24.38 24.11
+## [1549] 25.28 24.49 24.33 24.70 24.99 24.41 25.32 24.96 24.82 24.61 24.11 24.38
+## [1561] 24.01 25.21 24.44 24.38 23.73 23.58 24.32 24.35 25.40 24.50 24.64 25.25
+## [1573] 24.03 24.74 25.48 24.45 24.31 25.50 25.55 25.60 24.61 24.34 24.78 25.12
+## [1585] 24.18 23.83 24.56 24.38 24.35 24.38 23.80 24.08 24.49 23.64 23.89 24.47
+## [1597] 24.61 23.46 25.10 24.25 23.66 23.88 24.28 24.52 23.17 25.01 24.26 25.53
+## [1609] 25.12 24.75 24.08 24.12 24.24 23.89 24.87 25.58 23.83 24.77 24.78 24.68
+## [1621] 23.68 24.45 24.48 23.86 24.88 25.00 24.45 24.75 24.44 24.89 23.19 24.47
+## [1633] 23.88 24.89 24.84 24.12 24.97 24.81 24.59 24.64 23.98 24.88 24.40 24.14
+## [1645] 24.39 24.59 25.44 25.43 24.40 23.84 24.84 23.49 24.69 25.51 23.87 25.21
+## [1657] 24.07 25.13 25.84 24.06 24.72 24.98 24.43 24.26 23.28 24.97 23.84 25.26
+## [1669] 24.41 25.10 25.29 25.03 23.89 24.48 23.17 23.24 24.09 24.99 23.83 24.40
+## [1681] 24.56 25.43 24.54 23.17 24.80 24.81 24.33 23.66 23.89 24.16 22.85 24.54
+## [1693] 23.90 24.24 24.38 25.04 24.93 25.25 26.12 24.53 24.36 24.33 24.35 23.86
+## [1705] 24.92 25.04 24.19 24.54 24.90 24.88 24.66 24.42 24.35 24.33 25.00 23.46
+## [1717] 24.85 24.67 24.11 24.63 24.45 25.04 24.76 24.57 24.44 23.87 23.63 24.14
+## [1729] 24.61 24.76 24.12 24.31 24.51 24.79 23.57 24.63 24.04 24.29 24.30 24.10
+## [1741] 25.42 24.92 24.99 25.09 23.52 25.02 24.24 25.10 25.44 24.35 24.34 23.79
+## [1753] 25.08 24.34 24.41 25.24 23.70 25.11 23.95 24.96 25.08 23.19 24.88 24.16
+## [1765] 24.70 23.99 24.44 24.63 24.00 24.59 24.94 25.03 24.37 24.81 23.95 24.89
+## [1777] 23.84 24.80 24.71 24.81 24.53 24.51 24.63 23.34 25.53 24.55 23.49 24.56
+## [1789] 25.21 25.09 24.37 25.64 24.66 24.92 23.73 24.31 24.44 23.85 24.52 24.12
+## [1801] 23.89 23.86 24.84 24.46 23.98 24.05 25.47 24.29 23.99 23.69 24.32 24.34
+## [1813] 24.92 24.93 25.47 25.06 24.12 24.87 23.43 25.21 24.22 24.47 23.66 25.03
+## [1825] 24.32 24.25 23.91 24.05 23.78 24.78 24.61 23.81 24.85 23.91 24.98 24.08
+## [1837] 23.22 24.85 23.07 25.25 24.98 24.47 24.22 26.25 24.92 23.88 24.45 24.16
+## [1849] 24.16 23.48 25.42 24.60 24.66 24.59 24.40 24.41 23.99 25.26 24.27 24.28
+## [1861] 25.06 23.99 24.40 24.23 24.65 24.27 24.11 24.90 25.75 24.34 24.74 24.69
+## [1873] 26.19 24.95 24.24 24.42 24.17 24.90 24.66 24.05 24.62 22.83 24.17 25.42
+## [1885] 25.06 24.68 24.37 25.24 24.54 24.20 25.84 24.00 26.45 24.91 24.03 24.51
+## [1897] 23.68 24.20 24.50 24.13 23.82 23.77 23.67 24.47 25.32 24.49 23.46 24.40
+## [1909] 24.77 23.99 24.82 25.94 24.88 24.08 24.13 25.12 24.14 24.54 24.50 23.82
+## [1921] 24.11 24.51 24.59 23.59 24.12 24.19 23.80 24.65 24.40 24.58 25.41 23.51
+## [1933] 23.65 23.78 24.06 25.53 23.30 24.58 24.87 24.17 24.30 24.74 24.44 24.08
+## [1945] 23.38 23.52 25.18 25.34 24.42 23.76 26.03 26.01 23.91 24.06 24.01 25.14
+## [1957] 24.32 25.20 25.00 24.79 24.65 25.73 24.21 25.65 24.79 24.48 24.06 24.06
+## [1969] 24.14 25.78 25.29 23.98 25.38 25.16 23.96 24.63 24.53 24.02 25.09 24.56
+## [1981] 24.68 24.21 24.27 24.59 24.39 24.35 24.48 24.53 25.19 24.81 24.54 23.75
+## [1993] 24.24 24.37 24.30 24.07 24.46 23.61 23.54 24.40 24.30 24.71 23.76 24.26
+## [2005] 24.41 24.19 24.61 23.50 24.38 24.16 25.35 24.66 23.84 24.23 25.27 25.19
+## [2017] 23.94 23.20 23.44 23.61 23.97 24.53 24.92 25.18 24.67 25.13 23.97 24.41
+## [2029] 24.70 25.82 24.09 24.56 24.37 23.91 23.40 25.70 25.22 24.37 25.52 24.45
+## [2041] 23.22 23.47 23.60 23.54 23.79 23.52 23.97 24.48 23.25 24.44 23.85 25.20
+## [2053] 23.90 24.11 23.11 24.79 25.16 23.83 25.06 24.61 24.53 25.07 25.04 23.87
+## [2065] 24.15 24.78 25.55 24.85 25.71 23.82 24.16 24.77 23.90 24.83 24.60 24.43
+## [2077] 25.73 24.39 24.41 24.75 24.58 23.99 23.57 24.48 24.54 24.97 24.28 24.92
+## [2089] 24.81 24.32 23.40 25.06 23.71 24.87 23.83 25.92 24.05 23.87 24.61 23.77
+## [2101] 23.95 24.40 23.78 25.06 25.03 24.05 25.11 24.68 24.18 25.18 25.45 24.62
+## [2113] 24.05 24.40 25.49 24.40 24.23 25.25 25.64 24.16 24.37 24.73 25.85 23.25
+## [2125] 24.89 24.07 25.23 25.63 24.53 24.81 25.68 24.16 25.30 24.62 23.63 24.93
+## [2137] 24.90 24.30 23.76 23.91 24.01 24.87 25.00 24.76 24.65 24.63 24.61 24.07
+## [2149] 24.12 25.65 24.06 23.45 23.40 24.92 23.46 24.36 23.81 25.50 24.24 24.20
+## [2161] 24.30 25.15 24.27 24.08 24.77 25.28 24.76 25.19 24.21 24.87 25.69 24.81
+## [2173] 24.05 23.62 24.76 24.35 23.85 24.01 24.81 24.45 23.43 25.62 24.25 24.42
+## [2185] 25.08 24.70 25.26 24.11 23.77 24.56 24.31 25.48 24.34 23.68 24.83 25.60
+## [2197] 24.20 25.58 24.76 24.32 24.92 24.27 23.85 24.61 24.64 24.39 24.18 24.54
+## [2209] 23.68 24.62 24.03 23.17 23.56 23.99 24.22 23.51 25.07 24.65 24.69 24.46
+## [2221] 24.83 23.90 24.77 24.39 25.06 24.11 23.91 25.15 24.14 23.78 24.97 25.17
+## [2233] 24.87 24.64 24.55 24.91 23.81 22.74 24.57 24.40 23.33 24.89 24.10 23.54
+## [2245] 25.08 24.78 23.90 24.19 23.42 25.43 25.58 24.35 24.43 25.16 24.85 24.16
+## [2257] 24.03 24.59 24.24 24.92 24.50 24.95 24.75 24.90 23.33 24.52 23.90 24.31
+## [2269] 25.51 24.96 23.34 24.39 24.06 23.78 25.37 24.32 24.23 24.79 25.15 23.59
+## [2281] 24.22 24.06 23.85 24.07 24.19 25.60 23.90 24.93 25.26 24.97 24.42 24.76
+## [2293] 24.48 23.73 24.05 25.44 24.25 23.91 25.70 23.57 25.01 24.59 23.60 25.44
+## [2305] 24.44 25.15 24.19 24.99 24.65 24.87 23.54 24.15 24.70 25.04 24.91 24.14
+## [2317] 25.37 24.33 23.74 25.46 24.56 24.84 24.04 24.19 23.97 24.16 24.82 24.59
+## [2329] 25.78 23.39 25.32 23.76 25.03 25.20 24.71 24.45 24.19 24.86 24.23 23.55
+## [2341] 23.76 23.98 24.82 23.28 24.18 24.75 23.63 26.88 24.34 24.95 24.28 24.32
+## [2353] 24.21 24.25 24.59 23.82 24.65 24.34 23.71 23.99 24.45 23.91 25.02 24.23
+## [2365] 24.54 24.95 24.96 24.56 23.71 24.09 24.90 24.54 25.26 25.39 24.63 24.99
+## [2377] 24.37 23.49 24.08 24.91 24.12 23.36 23.97 24.58 23.06 24.11 24.89 24.48
+## [2389] 25.04 25.10 23.78 25.09 23.90 24.57 24.48 24.46 24.52 25.33 24.93 25.29
+## [2401] 24.32 24.35 24.25 24.51 25.17 24.05 24.89 25.14 24.81 24.33 25.46 24.90
+## [2413] 25.35 25.13 23.40 23.84 24.32 24.79 24.05 23.85 25.41 24.65 23.89 23.21
+## [2425] 24.63 24.63 23.80 24.76 24.71 23.97 23.87 25.27 26.54 24.37 24.74 24.16
+## [2437] 24.39 24.83 24.44 24.37 24.61 25.30 25.40 24.88 24.58 24.74 24.84 25.22
+## [2449] 24.37 24.27 24.24 25.57 24.61 24.78 24.63 24.41 23.94 23.79 24.11 22.75
+## [2461] 24.35 24.89 25.61 24.33 23.12 24.75 24.75 25.83 24.12 23.92 24.70 24.62
+## [2473] 24.13 25.37 24.33 24.10 23.82 24.07 24.53 24.14 23.66 25.17 24.95 24.68
+## [2485] 25.40 24.76 24.36 24.11 23.37 25.25 23.78 25.32 23.73 23.85 25.49 25.10
+## [2497] 25.33 23.78 24.63 24.08 23.82 24.96 24.42 25.29 25.15 25.02 24.77 24.00
+## [2509] 25.38 23.65 24.47 24.46 25.93 24.38 24.15 25.17 24.13 25.63 24.68 24.22
+## [2521] 24.97 24.72 25.02 24.40 23.82 24.51 23.79 24.67 23.75 24.96 25.02 24.67
+## [2533] 26.00 23.97 24.97 24.78 25.89 24.70 24.19 25.48 24.44 23.97 24.95 25.39
+## [2545] 24.24 24.92 24.89 25.57 23.81 24.06 24.33 24.03 24.96 24.22 23.33 24.40
+## [2557] 24.34 25.02 23.96 25.02 25.06 25.28 25.11 24.77 23.92 24.60 24.72 25.21
+## [2569] 24.28 24.06 26.30 23.10 23.91 23.58 24.74 24.72 25.99 23.88 23.72 24.84
+## [2581] 24.93 24.03 25.05 24.55 24.51 23.63 24.55 24.79 24.31 23.41 24.12 25.04
+## [2593] 23.99 24.13 25.38 24.54 23.55 24.48 26.15 24.27 24.64 23.88 24.74 24.59
+## [2605] 24.97 25.40 24.57 24.29 24.40 24.82 23.50 24.74 24.81 25.10 24.55 24.62
+## [2617] 24.95 23.86 24.58 25.44 25.01 24.17 25.03 25.20 25.11 24.12 24.15 23.99
+## [2629] 24.67 24.72 24.20 24.33 24.47 24.10 23.76 24.13 24.77 24.30 25.15 24.42
+## [2641] 24.52 25.24 24.77 24.01 24.78 24.93 26.16 24.55 24.15 24.70 24.59 25.09
+## [2653] 23.69 24.79 24.02 24.35 25.99 23.51 24.44 24.91 24.36 24.46 23.72 25.17
+## [2665] 24.98 25.16 24.90 25.40 24.52 24.84 23.71 23.78 24.87 23.77 24.38 23.60
+## [2677] 25.11 23.84 24.48 24.59 24.36 24.19 24.28 23.98 24.18 24.32 24.40 24.10
+## [2689] 24.60 24.84 25.56 24.44 22.92 25.27 24.66 24.47 24.40 23.89 26.54 24.65
+## [2701] 25.02 23.50 24.93 23.45 25.69 24.30 25.72 23.98 24.71 24.24 23.85 23.40
+## [2713] 24.53 23.73 24.30 24.61 24.94 24.15 24.27 24.47 25.01 23.42 24.34 24.34
+## [2725] 25.12 24.69 24.47 26.06 25.37 25.04 25.51 24.85 23.97 23.62 25.12 24.63
+## [2737] 24.82 24.12 24.65 23.59 24.11 25.40 24.81 23.97 23.57 24.34 24.74 24.49
+## [2749] 24.47 24.10 24.45 25.37 24.12 24.38 22.70 23.91 24.63 25.20 25.72 25.15
+## [2761] 24.46 23.43 24.39 24.72 24.77 25.49 24.16 23.52 24.76 24.50 24.13 24.26
+## [2773] 23.61 24.37 25.01 24.48 24.94 25.13 25.32 25.90 23.73 24.89 24.87 25.29
+## [2785] 24.36 24.45 23.86 25.18 24.82 25.82 23.30 24.84 25.08 24.92 24.75 23.75
+## [2797] 24.29 25.41 24.38 24.99 25.66 23.84 24.36 25.33 26.41 23.57 23.46 24.45
+## [2809] 23.37 25.28 24.03 24.61 24.32 25.59 24.22 25.14 24.02 24.50 25.30 25.20
+## [2821] 24.75 24.37 24.88 25.14 25.46 24.59 24.60 24.85 25.73 25.51 25.66 24.09
+## [2833] 23.72 24.57 24.19 23.99 24.70 24.55 24.97 25.08 24.37 24.63 23.88 23.09
+## [2845] 24.79 24.89 24.51 24.39 24.26 24.70 24.48 24.40 24.33 25.11 24.46 23.13
+## [2857] 25.11 23.97 24.23 25.17 24.69 25.00 24.05 23.52 23.56 24.57 24.52 24.70
+## [2869] 25.14 24.19 25.13 24.98 24.76 24.38 24.47 23.30 24.93 25.61 25.15 24.39
+## [2881] 25.66 24.93 23.72 24.56 25.26 24.21 24.52 24.31 25.06 23.93 24.83 24.74
+## [2893] 24.20 24.67 25.62 25.26 24.90 23.83 23.74 24.52 24.84 26.49 24.49 24.20
+## [2905] 24.03 24.58 23.89 23.96 25.11 24.86 24.90 24.73 24.71 24.06 23.46 25.17
+## [2917] 24.52 24.68 24.97 24.81 24.65 24.27 24.93 24.24 24.24 24.62 24.37 24.54
+## [2929] 25.43 24.97 23.97 24.91 24.43 23.11 24.61 25.43 22.92 25.09 24.05 23.64
+## [2941] 24.14 25.32 25.62 24.50 25.01 25.11 25.22 23.77 24.57 24.48 24.80 24.03
+## [2953] 24.44 23.38 24.94 24.88 25.27 24.25 25.33 25.23 23.78 24.24 24.97 23.93
+## [2965] 24.36 24.78 25.08 24.35 24.78 23.82 24.89 24.99 25.79 24.55 24.34 23.81
+## [2977] 23.36 23.83 24.45 24.13 24.77 25.70 24.56 24.53 24.88 23.96 25.13 24.17
+## [2989] 24.11 24.50 25.66 24.74 25.15 25.56 26.31 24.46 25.06 24.58 24.87 24.37</code></pre>
+<p>Cada uno de estos números corresponde a la media muestral de la variable edad de cada una de las 3000 muestras aleatorias que hemos calculado. Vemos que algunas medias muestrasles subestiman y otras sobreestiman el valor del parámetro poblacional. Si graficamos el histograma de todos estos valores, vemos que se dibuja una curva aproximadamente normal.</p>
+<pre class="r"><code>hist(x)</code></pre>
+<p><img src="clase3_files/figure-html/distribucio%CC%81n%20de%20muestreo-1.png" width="672" /></p>
+</div>
+<div id="intervalos-de-confianza" class="section level2">
+<h2>Intervalos de confianza</h2>
+<p>En cualquier investigación solo se cuenta con 1 muestra única, cuyo estadístico muestral, sea una media o un proporción, es una aproximación del parámetro poblacional.</p>
+<p>Para poder extrapolar desde la muestra hasta la población, se tiene que construir un intervalo de confianza alrededor del estadístico muestral. Este intervalo se construye aplicando la “distancia” de +/- 2 errores estándar, para tener una confianza de 95% de incluir al parámetro poblacional.</p>
+<p>Si se está extrapolando para una variable numérica, mediante la media, el error estándar (o se) es:</p>
+<p><span class="math display">\[
+se = 1.96 * \frac{s} {\sqrt{n}}
+\]</span></p>
+<p>Si se está extrapolando para una variable categórica, mediante una proporción, el error estándar (o se) es:</p>
+<p><span class="math display">\[
+se = 1.96 * \sqrt{\frac{(p * (1-p))} {n}}
+\]</span></p>
+<p>A manera de resumen, la siguiente tabla nos muestra el parámetro, el estadístico puntual y el error estándar para cada tipo de variable y cómo se forma el intervalo de confianza.</p>
+<p><img src="c3.5.png" /></p>
+<p>En estas fórmulas, se usa el símbolo “t” y “z” para referir a las distribuciones teóricas que se usan. Para fines prácticos, cuando la muestra es grande, ambas distribuciones son iguales. El valor de “t” o “z” depende del nivel de confianza que queremos. Es decir, de la probabilidad que queremos de que el intervalo incluya al parámetro. De esta manera:</p>
+<ul>
+<li><p>Z al 90% = 1.645</p></li>
+<li><p>Z al 95% = 1.98</p></li>
+<li><p>Z al 98% = 2.326</p></li>
+<li><p>Z al 99% = 2.576</p></li>
+</ul>
+<p>¿Qué para con el IC cuando se quiere mayor confianza? ¿Se vuelve más o menos preciso?</p>
+<hr />
+</div>
+</div>
+<div id="ejemplo-de-lalonde" class="section level1">
+<h1>Ejemplo de LaLonde</h1>
+<p>En el trabajo de LaLonde se han recogido 722 observaciones de un universo desconocido, pero que se asume grande. La idea es pasar de estimaciones puntuales a estimaciones por intervalos, es decir de datos que corresponden a los 722 participantes del estudio hacia el universo de personas sin habilidades laborales para insertarse en el mercado de trabajo. Por ejemplo, los datos de los ingresos puntuales en el año 1974 y 1978 corresponden a esos 722 individuos.</p>
+<pre class="r"><code>mean(LL$re74)</code></pre>
+<pre><code>## [1] 3630.738</code></pre>
+<pre class="r"><code>mean(LL$re78)</code></pre>
+<pre><code>## [1] 5454.636</code></pre>
+<p>Para extrapolar a la población, se tiene que construir el intervalo de confianza de cada media. Para aplicar la fórmula, se requiere la desviación estándar y el N. Sabemos que el N = 722, pues no hay valores perdidos para estas variables. La desviación estándar la obtenemos con el comando <code>sd</code>.</p>
+<pre class="r"><code>sd(LL$re74)</code></pre>
+<pre><code>## [1] 6220.637</code></pre>
+<pre class="r"><code>sd(LL$re78)</code></pre>
+<pre><code>## [1] 6252.943</code></pre>
+<p>Por lo tanto para los ingresos en 1974 se tendría:</p>
+<p><span class="math display">\[
+I.C. = media +/- t*se = 3630.7 +/- 1.96 * \frac{6220.6} {\sqrt{722}} = 3630.7 +/- 453.8
+\]</span></p>
+<ul>
+<li><p>Límite Inferior del IC es: 3630.7 - 453.8 = 3176.9</p></li>
+<li><p>Límite Superior es: 3630.7 + 453.8 = 4084.5</p></li>
+</ul>
+<p>Por lo tanto el IC es [3176.9, 4084.5] y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido.</p>
+<p>El parámetro poblacional podría ser entendido como el promedio de ingresos en 1974 de TODOS los individuos sin habilidades laborales, si es que esa información fuera recogida de manera perfecta, es decir, en un mismo momento, en las mismas condiciones.</p>
+<p>Como eso es imposible de hacer o poco eficiente, confiamos en el IC que se genera a partir de una muestra.</p>
+<p>Para evitar el cálculo manual del IC, se puede usar el comando</p>
+<pre class="r"><code>library(lsr)
+ci74 &lt;- ciMean(LL$re74)
+ci74</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 3176.227 4085.249</code></pre>
+<p>De la misma manera se puede calcular el IC de los ingresos en 1978.</p>
+<pre class="r"><code>ci78 &lt;- ciMean(LL$re78)
+ci78</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 4997.765 5911.507</code></pre>
+<p>Para variables categóricas, lo primero es inspeccionar las tablas de distribución de frecuencias, por ejemplo para la proporción (o porcentaje) de afroamericanos e hispanos en la muestra. Se tiene 0.80 (o 80%) de afroamericanos y 0.105 (o 10.5%) de hispanos en la muestra.</p>
+<pre class="r"><code>prop.table(table(LL$black))</code></pre>
+<pre><code>## 
+##        0        1 
+## 0.199446 0.800554</code></pre>
+<pre class="r"><code>prop.table(table(LL$hispanic))</code></pre>
+<pre><code>## 
+##         0         1 
+## 0.8947368 0.1052632</code></pre>
+<p>Para extrapolar estos resultados a la población, se puede aplicar la fórmula. Por ejemplo, para los afroamericanos:</p>
+<p><span class="math display">\[
+I.C. = prop +/- z * se = 0.8 +/- 1.96 * \sqrt{\frac{0.8*0.2}{722}} = 0.8 +/- 0.029
+\]</span></p>
+<ul>
+<li><p>Límite inferior: 0.8 - 0.029 = 0.771 o 77.1%</p></li>
+<li><p>Límite superior: 0.8 + 0.029 = 0.829 o 82.9%</p></li>
+</ul>
+<p>Por lo tanto el IC es [77.1%, 82.9%] y asumimos que en ese rango se encuentra la proporción poblacional de afroamericanos al 95% de confianza.</p>
+<p>En R no se cuenta con un comando particular para el cálculo directo de ICs de proporciones. Pero, cuando las variables categóricas son variables “dummy,” es decir codificadas como 0/1, entonces la media de la variable es igual a la proporción y se puede usar el comando <code>CI</code> para el cálculo del IC.</p>
+<pre class="r"><code>ciafro &lt;- ciMean(LL$black)
+cihisp &lt;- ciMean(LL$hispanic)
+ciafro</code></pre>
+<pre><code>##           2.5%     97.5%
+## [1,] 0.7713382 0.8297698</code></pre>
+<pre class="r"><code>cihisp</code></pre>
+<pre><code>##            2.5%     97.5%
+## [1,] 0.08282455 0.1277018</code></pre>
+<p>Para los hispanos, se puede decir que la proporción poblacional está entre 8.3% y 12.8% al 95% de confianza.</p>
+</div>
+<div id="bibliografía" class="section level1 unnumbered">
+<h1 class="unnumbered">Bibliografía</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lalondeEvaluatingEconometricEvaluations1986" class="csl-entry">
+LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations of Training Programs with Experimental Data.”</span> <em>The American Economic Review</em> 76 (4): 604–20. <a href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>En realidad es a +/- 2 errores estándar del centro. El error estándar se entiende como la desviación estándar de la distribución de muestreo.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAnQ2xhc2UgMyB5IFRyYWJham8gcHLDoWN0aWNvIExhTG9uZGUgKDE5OTYpJwphdXRob3I6ICJBcnR1cm8gTWFsZG9uYWRvIgpkYXRlOiAiMTMvNC8yMDIxIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjb2xsYXBzZWQ6IGZhbHNlCiAgICBudW1iZXJfc2VjdGlvbnM6IGZhbHNlCiAgICB0b2NfZGVwdGg6IDEKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjb3NtbwogICAgaGlnaGxpZ2h0OiB0ZXh0bWF0ZQplZGl0b3Jfb3B0aW9uczoKICBtYXJrZG93bjoKICAgIHdyYXA6IHNlbnRlbmNlCmJpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWIKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQpgYGAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyBFc3RpbWFjacOzbiBwdW50dWFsCgpEZSB1bmEgdmFyaWFibGUgbnVtw6lyaWNhLCBsYSBtZWRpZGEgZGUgdGVuZGVuY2lhIGNlbnRyYWwgbcOhcyDDunRpbCBlcyBsYSBtZWRpYS4KUG9yIGVqZW1wbG8sIHNpZ3VpZW5kbyBjb24gZWwgZWplbXBsbyBkZSBAbGFsb25kZUV2YWx1YXRpbmdFY29ub21ldHJpY0V2YWx1YXRpb25zMTk4NiwgcG9kZW1vcyBjYWxjdWxhciBsYSBtZWRpYSBkZSBpbmdyZXNvcyBhbnRlcyB5IGRlc3B1w6lzIGRlIGxhIGludGVydmVuY2nDs24uCgpQcmltZXJvIGxlZW1vcyBsYSBiYXNlIGRlIGRhdG9zLgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pCkxMIDwtIGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9hcnR1cm9tYWxkb25hZG8vRXN0YWRpc3RpY2FfMS4wL21haW4vTEwuY3N2IikKYGBgCgpZIGNhbGN1bGFtb3MgbGFzIG1lZGlhcyBlbiBhbWJvcyBhw7Fvcy4KCmBgYHtyIG1lZGlhfQptZWFuKExMJHJlNzQpCm1lYW4oTEwkcmU3OCkKYGBgCgpMYSBtYW5lcmEgZGUgZGVzY3JpYmlyIHVuYSB2YXJpYWJsZSBjYXRlZ8OzcmljYSBlcyBhIHRyYXbDqXMgZGUgdW5hIHRhYmxhIGRlIGZyZWN1ZW5jaWFzLgpTaWd1aWVuZG8gY29uIGVsIGFydMOtY3Vsbywgc2UgcHVlZGUgY2FsY3VsYXIgbGEgdGFibGEgZGUgZnJlY3VlbmNpYXMgZGUgbG9zIGluZGl2aWR1b3MgYWZyb2FtZXJpY2Fub3MgeSBkZSBsb3MgbGF0aW5vcy4KCmBgYHtyIHRhYmxhfQp0YWJsZShMTCRibGFjaykKdGFibGUoTEwkaGlzcGFuaWMpCmBgYAoKRWwgY29tYW5kbyBgdGFibGVgIG5vcyBvZnJlY2UgbGFzIGZyZWN1ZW5jaWFzIGFic29sdXRhcy4KUGFyYSBvYnRlbmVyIGxvcyBwb3JjZW50YWplcyAobGFzIGZyZWN1ZW5jaWFzIHJlbGF0aXZhcykgc2UgcHVlZGUgYW5pZGFyIGVzdGUgY29tYW5kbyBkZW50cm8gZGUgYHByb3AudGFibGVgLgoKYGBge3IgdGFibGEgZGUgZnJlY3VlbmNpYXN9CnByb3AudGFibGUodGFibGUoTEwkYmxhY2spKSoxMDAKcHJvcC50YWJsZSh0YWJsZShMTCRoaXNwYW5pYykpKjEwMApgYGAKClNlIGVuY3VlbnRyYSBxdWUgbG9zIHBhcnRpY2lwYW50ZXMgZGVsIGVzdHVkaW8gc29uIG1heW9yaXRhcmlhbWVudGUgYWZyb2FtZXJpY2Fub3MgeSBtaW5vcml0YXJpYW1lbnRlIGxhdGlub3MuCgpFbiBlbCBjYXNvIGRlIGxhcyB0YWJsYXMgZGUgZnJlY3VlbmNpYXMsIHNlIHB1ZWRlIGhhbGxhciBsYSBwcm9wb3JjacOzbiAodW5hIGZvcm1hIGRlIGxsYW1hciBhIGxvcyBwb3JjZW50YWplcykgZGUgY2FkYSBjYXRlZ29yw61hIGRlIGxhIHZhcmlhYmxlLgpFc3RhIG11ZXN0cmEgZGUgaW5kaXZpZHVvcyB0ZW5kcsOhIHVuIDgwLjElIGRlIGFmcm9hbWVyaWNhbm9zIHkgdW4gMTAuNSUgZGUgbGF0aW5vcy4KClRhbnRvIGxhIG1lZGlhLCBjb21vIGxhIHByb3BvcmNpw7NuLCBzb24gZXN0aW1hY2lvbmVzIHB1bnR1YWxlcywgYmFzYWRvcyBlbiBsb3MgcmVzdWx0YWRvcyBkZSBsYSBtdWVzdHJhLgpFcyBkZWNpciwgZXN0YXMgc29uIGVzdGltYWNpb25lcyBjb3JyZXNwb25kaWVudGVzIGEgbGFzIDcyMiBvYnNlcnZhY2lvbmVzIHF1ZSBzb24gcGFydGUgZGUgZXN0ZSBlc3R1ZGlvLgpTaW4gZW1iYXJnbywgZXN0YSBtdWVzdHJhIGZvcm1hIHBhcnRlIGRlIHVuIHVuaXZlcnNvIG8gcG9ibGFjacOzbiAoZWwgY29uanVudG8gZGUgaW5kaXZpZHVvcyBxdWUgY2FyZWNlbiBkZSBoYWJpbGlkYWRlcyBsYWJvcmFsZXMgcGFyYSBpbnNlcnRhcnNlIGVuIGVsIG1lcmNhZG8gZGUgdHJhYmFqbyksIGRlbCBxdWUgc2VndXJhbWVudGUgc2UgcXVpZXJlIGRlY2lyIGFsZ28uCgpFbCBwcm9jZXNvIG1lZGlhbnRlIGVsIGN1YWwgc2UgcGFydGUgZGUgdW5hIG11ZXN0cmEgcGFyYSBkZWNpciBhbGdvIGRlIHVuIHVuaXZlcnNvIG8gcG9ibGFjacOzbiBlcyB1biBwcm9jZXNvIGRlIGluZmVyZW5jaWEgeSBlcyBwYXJ0ZSBkZSBsYSBlc3RhZMOtc3RpY2EgaW5mZXJlbmNpYWwuCkxhIGVzdGFkw61zdGljYSBpbmZlcmVuY2lhbCBpbnRyb2R1Y2UgbGEgaW5jZXJ0aWR1bWJyZSBlbiBsb3MgZXN0aW1hZG9zLCBkZWJpZG8gYWwgaGVjaG8gZGUgZXN0YXIgdHJhYmFqYW5kbyBjb24gdW5hIG11ZXN0cmEgeSBubyBjb24gZWwgdG90YWwgZGUgb2JzZXJ2YWNpb25lcyBkZWwgdW5pdmVyc28uCgojIyBVbiBicmV2ZSBwYXNlbyBwb3IgbGFzIHByb2JhYmlsaWRhZGVzCgpQYXJ0aW1vcyBkZWwgaGVjaG8gcXVlIGVuIGVsIGNvbcO6biBkZSBsYXMgaW52ZXN0aWdhY2lvbmVzIHVubyB0aWVuZSBxdWUgc2VsZWNjaW9uYXIgdW4gY29uanVudG8gZGUgb2JzZXJ2YWNpb25lcyBxdWUgc29uIHBhcnRlIGRlbCB0b3RhbCwgcXVlIGVzIG11eSBjb3N0b3NvIGUgaW5lZmljaWVudGUgaGFjZXIgdW4gZXN0dWRpbyBkZSBsYSBwb2JsYWNpw7NuIGNvbXBsZXRhLgpBIGVzdG8gbGUgc3VtYW1vcyBlbCBvdHJvIGhlY2hvIHF1ZSBudWVzdHJhcyBoZXJyYW1pZW50YXMgZGUgcmVjb2pvIGRlIGluZm9ybWFjacOzbiBzb24gaW1wZXJmZWN0YXMuClVuIGVzdHVkaW8gdHJhbnN2ZXJzYWwsIHBvciBlamVtcGxvLCBkZWJlcsOtYSByZWNvZ2VyIGluZm9ybWFjacOzbiBkZSBsb3MgaW5kaXZpZHVvcyBlbiB1biBjb3J0ZSBlbiBlbCB0aWVtcG8sIHNpbiBlbWJhcmdvLCBtdWNob3MgZXN0dWRpb3Mgbm8gc29uIHVuYSAiZm90byBkZWwgbW9tZW50byIgcHVlcyBsYXMgb2JzZXJ2YWNpb25lcyB0b21hbiB0aWVtcG8geSBhYmFyY2FuIGhvcmFzLCBkw61hcyBvIHNlbWFuYXMsIHNpbm8gbWVzZXMuCgpFcyBwb3IgZXN0ZSBtb3Rpdm8gcXVlIHBhcmEgdW4gZXN0dWRpbyBzZSBzZWxlY2Npb25hICJ1bmEiIG11ZXN0cmEsIHVuIGNvbmp1bnRvIGRlIG9ic2VydmFjaW9uZXMgcXVlIHNvbiB1bmEgZnJhY2Npw7NuIGRlbCB0b3RhbC4KRXN0YSDDum5pY2EgbXVlc3RyYSBlcyBzb2xvIHVuYSBkZSBsYXMgbcO6bHRpcGxlcyBtdWVzdHJhcyB0ZcOzcmljYXMgcXVlIHNlIHBvZHLDrWFuIHNlbGVjY2lvbmFyIGRlIHVuIHVuaXZlcnNvIGRldGVybWluYWRvLgoKUGFydGFtb3MgZGUgdW4gZWplbXBsbyBtdXkgc2ltcGxlLgpQYXJhIHVuIHVuaXZlcnNvIGRlIDUgcGVyc29uYXMsIHNlIHB1ZWRlbiBleHRyYWVyIDEwIG11ZXN0cmFzIGRlIHRhbWHDsW8gMiBkaWZlcmVudGVzLgoKIVtdKGMzLjEucG5nKQoKTGEgZsOzcm11bGEgcGFyYSBjYWxjdWxhciBlbCBuw7ptZXJvIGRlIG11ZXN0cmFzIHByb2JhYmxlcyBlcyBsYSBkZSBjb21iaW5hdG9yaWFzLCBxdWUgaW5jbHV5ZSBlbCBvcGVyYWRvciBmYWN0b3JpYWwuClNpIGFwbGljYW1vcyBlc3RhIGbDs3JtdWxhIGEgdW4gZWplbXBsbyBkZSB1biB1bml2ZXJzbyBtw6FzIGdyYW5kZSwgcG9yIGVqZW1wbG8sIHVuIHNhbMOzbiBkZSBjbGFzZSBkZSA0NyBhbHVtbm9zLCBkb25kZSBzZSBxdWllcmUgc2FiZXIgY3XDoW50YXMgbXVlc3RyYXMgZGlmZXJlbnRlcyBkZSB0YW1hw7FvIDQgc2UgcHVlZGVuIGV4dHJhZXIuClNlZ8O6biBsYSBmw7NybXVsYToKCiQkClxmcmFjezQ3IX0geyg0Ny00KSEgNCF9ID0gXGZyYWN7NDchfSB7NDMhIDQhfSA9IFxmcmFjezQ3KjQ2KjQ1KjQ0fSB7NCozKjJ9ID0gMTc4MzY1CiQkCgpQYXJhIHVuIHNvbmRlbyBkZSBvcGluacOzbiwgZG9uZGUgZWwgdW5pdmVyc28gc29uIDIwIG1pbGxvbmVzIGRlIGluZGl2aWR1b3MgeSBzZSBxdWllcmUgc2FiZXIgY3XDoW50YXMgbXVlc3RyYXMgZGlmZXJlbnRlcyBkZSB0YW1hw7FvIDEsNTAwIHNlIHB1ZWRlbiBleHRyYWVyLCBlc3RlIG7Dum1lcm8gZGUgbXVlc3RyYXMgZXMgbXV1dXV5IGdyYW5kZS4KClZvbHZpZW5kbyBhbCBlamVtcGxvIG11eSBzaW1wbGUgZGUgNSBwZXJzb25hcyBkb25kZSBzZSBxdWllcmUgZXh0cmFlciB1bmEgbXVlc3RyYSBkZSAyIHkgc2UgcXVpZXJlIGluZmVyaXIgbG9zIGRhdG9zIGRlIGxhIG11ZXN0cmEgZGUgZG9zIHZhcmlhYmxlczogc2V4byB5IGVkYWQuCgpTZSB0aWVuZSB1biB1bml2ZXJzbyBkZSA1IGluZGl2aWR1b3MsIGNhZGEgdW5vIGNvbiBzdSBzZXhvIHkgZWRhZC4KRW4gbGEgcG9ibGFjacOzbiBsYSBwcm9wb3JjacOzbiBkZSBob21icmVzIGVzIGRlIDYwJSB5IGxhIG1lZGlhIGRlIGVkYWQgZXMgZGUgMzQgYcOxb3MuCgohW10oYzMuMi5wbmcpCgpTaSBxdWVyZW1vcyBleHRyYWVyIHVuYSBtdWVzdHJhIGRlIHRhbWHDsW8gZGUgMiBkZSBlc2UgdW5pdmVyc28sIHNlIHRpZW5lbiAxMCBwb3NpYmxlcyBtdWVzdHJhcywgY2FkYSB1bmEgdGVuZHLDoSB1bmEgYXByb3hpbWFjacOzbiBkZSBsYSBwcm9wb3JjacOzbiBkZSBob21icmVzIHkgZGUgbGEgbWVkaWEgZGUgZWRhZC4KRGVwZW5kaWVuZG8gZGUgcXXDqSBtdWVzdHJhIGRlIHRvZGFzIGxhcyBwb3NpYmxlcyBzZWEgbGEgcXVlIHNlIG9ic2VydmEsIGxvcyBlc3RhZMOtc3RpY29zIHNlcsOhbiB1bmEgYXByb3hpbWFjacOzbiBkZSBsb3MgcGFyw6FtZXRyb3MgcG9ibGFjaW9uYWxlcy4KCkVuIGVsIGNhc28gZGUgbGEgcHJvcG9yY2nDs24gZGUgaG9tYnJlcywgc2UgcHVlZGUgdGFidWxhciBsb3MgcmVzdWx0YWRvcyBkZSBjYWRhIG11ZXN0cmEgcHJvYmFibGUuCgorLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLSsKfCBSZXN1bHRhZG9zIG11ZXN0cmFsZXMgfCBOw7ptZXJvIGRlIG11ZXN0cmFzIHF1ZSBhcnJvamFyb24gZXNlIHJlc3VsdGFkbyB8IEZyZWN1ZW5jaWEgfAorOj09PT09PT09PT09PT09PT09PT09PTorOj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT06Kzo9PT09PT09PT09PSsKfCAwJSAgICAgICAgICAgICAgICAgICAgfCAxICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgWCAgICAgICAgICB8CistLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tKwp8IDUwJSAgICAgICAgICAgICAgICAgICB8IDUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBYWFhYWCAgICAgIHwKKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSstLS0tLS0tLS0tLS0rCnwgMTAwJSAgICAgICAgICAgICAgICAgIHwgNCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IFhYWFggICAgICAgfAorLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tLSsKCkluY2x1c28gc2UgcG9kcsOtYSBjYWxjdWxhciB1biBwcm9tZWRpbyBkZSB0b2RhcyBlc2FzIHByb3BvcmNpb25lcyBtdWVzdHJhbGVzICgxMDArNTArMTAwKy4uLis1MC8xMCksIHkgZXNlIHJlc3VsdGFkbyBzZXLDrWEgNjUlLCB1biByZXN1bHRhZG8gYWxnbyBjZXJjYSBkZSBsYSBwcm9wb3JjacOzbiBwb2JsYWNpb25hbCBkZSA2MCUuCgpFc3RlIG1pc21vIHByb2NlZGltaWVudG8gc2UgcG9kcsOtYSBoYWNlciBwYXJhIHRvZGFzIGxhcyAxNzgsMzY1IG11ZXN0cmFzIHByb2JhYmxlcyBkZSB0YW1hw7FvIDQgZGUgdW4gdW5pdmVyc28gZGUgNDcgYWx1bW5vcy4KQ2FkYSB1bm8gZGUgbG9zIDQ3IGFsdW1ub3Mgc2Vyw6EgaG9tYnJlIG8gbXVqZXIgeSBsYSBwcm9wb3JjacOzbiBwb2JsYWNpb25hbCBkZSBob21icmVzIHNlIHB1ZWRlIGNhbGN1bGFyIGVuIGVzZSB0b3RhbC4KQSBzdSB2ZXosIGNhZGEgbXVlc3RyYSBkZSA0LCB0ZW5kcsOhIHVuYSBwcm9wb3JjacOzbiBtdWVzdHJhbCBxdWUgdGVuZHLDoSB2YWxvcmVzICgwIHNpIG5vIGhheSBuaW5nw7puIGhvbWJyZSwgMjUlIHNpIGhheSAxIGhvbWJyZSwgNTAlIHNpIGhheSAyIGhvbWJyZXMsIDc1JSBzaSBoYXkgMyBob21icmVzIHkgMTAwJSBzaSB0b2RvcyBzb24gaG9tYnJlcykuCkZpbmFsbWVudGUsIHNlIHB1ZWRlIGNvbnRhciBjdcOhbnRhcyBkZSBsYXMgMTc4LDM2NSBtdWVzdHJhcyBwcm9iYWJsZXMgdHV2aWVyb24gMCUsIDI1JSwgNTAlLCA3NSUgeSAxMDAlIGRlIGhvbWJyZXMuCkVzdGEgZGlzdHJpYnVjacOzbiBzZSBsbGFtYSAiZGlzdHJpYnVjacOzbiBkZSBtdWVzdHJlbyIuCgpTaSBxdWlzacOpcmFtb3MgYW1wbGlhciBlbCB0YW1hw7FvIGRlIG11ZXN0cmEgYSAxMCwgZW50b25jZXMgbG9zIHJlc3VsdGFkb3MgcG9zaWJsZXMgc2Vyw61hbiwgMCwgMTAsIDIwLCAzMCwgNDAsIDUwLCA2MCwgNzAsIDgwLCA5MCB5IDEwMCUuClRhbWJpw6luIHBvZHLDrWFtb3MgY29udGFyIGN1w6FudGFzIG11ZXN0cmFzIHRpZW5lbiBlc3RvcyByZXN1bHRhZG9zLgoKRGUgdW4gdW5pdmVyc28gbcOhcyBncmFuZGUsIHNlIHB1ZWRlIHBsYW50ZWFyIGV4dHJhZXIgbXVlc3RyYXMgZGUgdGFtYcOxbyBtw6FzIGdyYW5kZS4KUG9yIGVqZW1wbG8sIHRlw7NyaWNhbWVudGUgc2UgcHVlZGUgcGVuc2FyIHF1ZSBkZSB1biB1bml2ZXJzbyBkZSAyMCBtaWxsb25lcywgc2UgcHVlZGVuIGV4dHJhZXIgY2FzaSBpbmZpbml0YXMgbXVlc3RyYXMgZGUgdGFtYcOxbyAxLDUwMC4KQ2FkYSB1bmEgZGUgZXN0YXMgbXVlc3RyYXMgdGVuZHLDoSB1biBlc3RhZMOtc3RpY28gcXVlIHNlcsOhIHVuYSBhcHJveGltYWNpw7NuIGRlbCBwYXLDoW1ldHJvLgpMb3MgZXN0YWTDrXN0aWNvcyBkZSB0b2RhcyBlc3RhcyBjYXNpIGluZmluaXRhcyBtdWVzdHJhcyBzZSBwdWVkZW4gdGFidWxhciB5IGdyYWZpY2FyLgoKIyMgVGVvcmVtYSBkZWwgbMOtbWl0ZSBjZW50cmFsCgpFc3RlIHRlb3JlbWEgbXVlc3RyYSBxdWUgbGEgZGlzdHJpYnVjacOzbiBkZSBtdWVzdHJlbyBzZSBhcHJveGltYSBhIHVuYSBkaXN0cmlidWNpw7NuIG5vcm1hbCwgY29uIGNlbnRybyBlbiBlbCBwYXLDoW1ldHJvLCBlbiBsYSBtZWRpZGEgcXVlIGVsIHRhbWHDsW8gZGUgbXVlc3RyYSBhdW1lbnRhLgoKUG9yIGxvIHRhbnRvLCBsYSBkaXN0cmlidWNpw7NuIGRlIG11ZXN0cmVvIGRlIE4gZ3JhbmRlcyBzZWd1aXLDoSBsYXMgY2FyYWN0ZXLDrXN0aWNhcyBkZSBjdWFscXVpZXIgY3VydmEgbm9ybWFsLgpUb2RhIGN1cnZhIG5vcm1hbCBlcyBzaW3DqXRyaWNhIHkgc2FiZW1vcyBxdWUgc2kgZGVzZGUgZWwgY2VudHJvIHNlIGRlc3BsYXphIDEgZGVzdmlhY2nDs24gZXN0w6FuZGFyIGVuIGFtYmFzIGRpcmVjY2lvbmVzLCBlbnRyZSBlc29zIGzDrW1pdGVzIGVzdGFyw6FuIGVsIDY4LjMlIGRlIHRvZGFzIGxhcyBvYnNlcnZhY2lvbmVzLgpTaSBzZSBkZXNwbGF6YSAyIGRlc3ZpYWNpb25lcyBlc3TDoW5kYXIgZW4gYW1iYXMgZGlyZWNjaW9uZXMsIHNlIGFjdW11bGFyw61hbiBlbCA5NS40JSBkZSB0b2RhcyBsYXMgb2JzZXJ2YWNpb25lcy4KQ29uIDMgZGVzdmlhY2lvbmVzIGVzdMOhbmRhciBoYWNpYSBhbWJvcyBsYWRvcywgc2UgYWN1bXVsYXLDrWEgZWwgOTkuNyUgZGUgdG9kYXMgbGFzIG9ic2VydmFjaW9uZXMuCgohW10oYzMuMy5wbmcpe3dpZHRoPSI1MTAifQoKVHJhZHVjaWVuZG8gYSBsYSBkaXN0cmlidWNpw7NuIGRlIG11ZXN0cmVvLCBsYSBpZGVhIGVzIHF1ZSBzaSBzZSB0YWJ1bGFuIHkgc2UgaGFjZSB1biBncsOhZmljbyBkZSBiYXJyYXMgZGUgbG9zIHJlc3VsdGFkb3MgZGUgdG9kYXMgbGFzIG11ZXN0cmFzIHByb2JhYmxlcywgc2UgdGVuZHLDrWEgdW5hIGN1cnZhIG5vcm1hbCBjb24gY2VudHJvIGVuIGVsIHBhcsOhbWV0cm8uClNhYnLDrWFtb3MgcXVlIHNpIGRlc2RlIGVzZSBjZW50cm8gbm9zIGRlc3BsYXphbW9zIDIgZGVzdmlhY2lvbmVzIGVzdMOhbmRhciBlbiBhbWJhcyBkaXJlY2Npb25lcywgZW50cmUgZXNvcyBsw61taXRlcyBlc3RhcsOtYW4gZWwgOTUlIGRlIHRvZGFzIGxhcyBtdWVzdHJhIHByb2JhYmxlcy4KCiMgRXN0aW1hY2nDs24gZGUgaW50ZXJ2YWxvCgpMYSBkaXN0cmlidWNpw7NuIGRlIG11ZXN0cmVvIGVzIHRlw7NyaWNhLCBtdXkgZGlmw61jaWxtZW50ZSBzZSBwdWVkZSBjYWxjdWxhciBlbiBsYSByZWFsaWRhZC4KUmVndWxhcm1lbnRlIHRhbXBvY28gc2FiZW1vcyBsb3MgZGF0b3MgZGVsIHVuaXZlcnNvLgpMbyBxdWUgdGVuZW1vcyBhIG1hbm8gZXMgMSBtdWVzdHJhIG9ic2VydmFkYS4KRXMgZGVjaXIsIGVuIHVuIGVzdHVkaW8gZGUgbGFzIG11dXV1dWNoYXMgbXVlc3RyYXMgcHJvYmFibGVzLCBzZSBzZWxlY2Npb25hIDEgbXVlc3RyYS4KCkVuIGVsIGNhc28gZGUgQGxhbG9uZGVFdmFsdWF0aW5nRWNvbm9tZXRyaWNFdmFsdWF0aW9uczE5ODYsIHBvciBlamVtcGxvLCBkZWwgdW5pdmVyc28gZGUgZGVzZW1wbGVhZG9zIHNpbiBoYWJpbGlkYWRlcyBsYWJvcmFsZXMsIHNlIHNlbGVjY2lvbsOzIDEgbXVlc3RyYSBkZSA3MjIgb2JzZXJ2YWNpb25lcywgZGUgbGFzIG11dXV1Y2hhcyBtdWVzdHJhcyBkZSA3MjIgaW5kaXZpZHVvcyBkZSBsYSBwb2JsYWNpw7NuIHRvdGFsLgoKU2kgdGXDs3JpY2FtZW50ZSBzYWJlbW9zIHF1ZSBlbiBsYSBkaXN0cmlidWNpw7NuIG11ZXN0cmFsLCBlbCA5NSUgZGUgdG9kYXMgbGFzIG11ZXN0cmFzIGVzdMOhbiBhICsvLSAyIGRlc3ZpYWNpb25lcyBlc3TDoW5kYXJbXjFdIGRlbCBjZW50cm8sIHF1ZSBjb2luY2lkZSBjb24gZWwgcGFyw6FtZXRybyBwb2JsYWNpb25hbCwgZXMgbXV5IHByb2JhYmxlIHF1ZSBsYSDDum5pY2EgbXVlc3RyYSBxdWUgc2UgaGEgb2JzZXJ2YWRvIHNlYSBwYXJ0ZSBkZSBlc2UgY29uanVudG8uCkRlIGhlY2hvLCBzZSBwdWVkZSBkZWNpciBxdWUgc2UgdGllbmUgOTUlIGRlIHByb2JhYmlsaWRhZGVzIGRlIHF1ZSBzZWEgcGFydGUgZGUgZXNlIGdydXBvLgoKW14xXTogRW4gcmVhbGlkYWQgZXMgYSArLy0gMiBlcnJvcmVzIGVzdMOhbmRhciBkZWwgY2VudHJvLgogICAgRWwgZXJyb3IgZXN0w6FuZGFyIHNlIGVudGllbmRlIGNvbW8gbGEgZGVzdmlhY2nDs24gZXN0w6FuZGFyIGRlIGxhIGRpc3RyaWJ1Y2nDs24gZGUgbXVlc3RyZW8uCgpQb3IgbG8gdGFudG8sIHNpIGEgcGFydGlyIGRlbCBlc3RhZMOtc3RpY28gbXVlc3RyYWwsIHNlIGFwbGljYSBlc3RhIGRpc3RhbmNpYSBkZSArLy0gMiBlcnJvcmVzIGVzdMOhbmRhciwgc2UgdGllbmUgOTUlIGRlIHByb2JhYmlsaWRhZGVzIHF1ZSBlbnRyZSBlc29zIGzDrW1pdGVzIHNlIGluY2x1eWEgYWwgdmFsb3IgZGVsIHBhcsOhbWV0cm8uClBhcmEgdmVybG8gZGUgbWFuZXJhIG3DoXMgdmlzdWFsLCBlbiBsYSBzaWd1aWVudGUgZmlndXJhIHNlIHRpZW5lIGxhIGRpc3RyaWJ1Y2nDs24gZGUgbXVlc3RyZW8gdGXDs3JpY2EgKHkgZGVzY29ub2NpZGEpLCBkb25kZSBzZSBtYXJjYSBsYSByZWdpw7NuIHF1ZSBhY3VtdWxhIGVsIDk1JSBkZSB0b2RhcyBsYXMgbXVlc3RyYXMgcHJvYmFibGVzLgoKTcOhcyBhYmFqbyBzZSBtYXJjYSBsb3MgcmVzdWx0YWRvcyBkZSAyIG11ZXN0cmFzIHByb2JhYmxlcy4KTGEgcHJpbWVyYSBwcm9wb3JjacOzbiBtdWVzdHJhbCBzdWJlc3RpbWEgbGEgcHJvcG9yY2nDs24gcG9ibGFjaW9uYWwuCkxhIHNlZ3VuZGEsIHBvciBlbCBjb250cmFyaW8sIHNvYnJlZXN0aW1hIGxhIHByb3BvcmNpw7NuIHBvYmxhY2lvbmFsLgpFbiBlbCBwcmltZXIgY2Fzbywgc2kgYSBwYXJ0aXIgZGVsIGVzdGFkw61zdGljbyBtdWVzdHJhbCBzZSBhcGxpY2EgKy8tIDEuOTYgZXJyb3JlcyBlc3TDoW5kYXIgKGzDrW5lYSBob3Jpem9udGFsIGVuIG5lZ3JpdGEpLCBzZSBvYnNlcnZhIHF1ZSBlbCBwYXLDoW1ldHJvIHBvYmxhY2lvbmFsIGVzdMOhIGluY2x1aWRvIGVuIGVzb3MgbMOtbWl0ZXMuCgpFcyBwcm9iYWJsZSwgY29tbyBlbiBlbCBzZWd1bmRvIGNhc28sIHF1ZSBvdHJhIG11ZXN0cmEgcHJvYmFibGUsIGN1YW5kbyBzZSBsZSBhcGxpcXVlIGVsIGludGVydmFsbyBkZSArLy0gMS45NiBlcnJvcmVzIGVzdMOhbmRhciwgbm8gaW5jbHV5YSBhbCBwYXLDoW1ldHJvLgpTZSBvYnNlcnZhIHF1ZSBsYSBsw61uZWEgZW4gbmVncml0YSBubyBpbmNsdXllIGxhIGxpbmVhIHZlcnRpY2FsIGVudHJlY29ydGFkYSBxdWUgbWFyY2EgZWwgdmFsb3IgZGVsIHBhcsOhbWV0cm8gcG9ibGFjaW9uYWwuCgohW10oYzMuNC5wbmcpe3dpZHRoPSI1ODEifQoKU2luIGVtYmFyZ28sIHNhYmVtb3MgcXVlIGVzIG11Y2hvIG3DoXMgcHJvYmFibGUgKDk1JSBkZSBwcm9iYWJpbGlkYWRlcykgcXVlIHNpIG1pIG11ZXN0cmEgZXMgcGFydGUgZGVsIDk1JSBkZSBtdWVzdHJhcyBhbHJlZGVkb3IgZGVsIHBhcsOhbWV0cm8sIGVzdGUgaW50ZXJ2YWxvIGluY2x1eWEgYWwgcGFyw6FtZXRybyBwb2JsYWNpb25hbC4KQSBlc3RvcyBsw61taXRlcyBsZSBsbGFtYW1vcyAiaW50ZXJ2YWxvcyBkZSBjb25maWFuemEiLgoKIyMgVGVvcsOtYSBlbiBsYSBwcsOhY3RpY2EKClVzYXJlbW9zIGVsIGVqZW1wbG8gZGUgQGxhbG9uZGVFdmFsdWF0aW5nRWNvbm9tZXRyaWNFdmFsdWF0aW9uczE5ODYgcGFyYSBncmFmaWNhciBlc3RhcyBkaXZhZ2FjaW9uZXMgdGXDs3JpY2FzLgpBc3VtYW1vcyBxdWUgbGEgYmFzZSBkZSBkYXRvcyBkZSBlc3RlIGFydMOtY3VsbyBlcyBlbCB1bml2ZXJzbyBkZSBwZXJzb25hcy4KTGFzIDcyMiBwZXJzb25hcyBlbiBlc2EgYmFzZSBkZSBkYXRvcyBzZXLDrWFuIHRvZG9zIGxvcyBtaWVtYnJvcyBxdWUgc2UgcG9kcsOtYW4gZXNjb2dlci4KRGUgZXNlIHVuaXZlcnNvLCBxdWVyZW1vcyBleHRyYWVyIG11ZXN0cmFzIGRlIHRhbWHDsW8gMTAwLgpTZWfDum4gdW5hIGNhbGN1bGFkb3JhIGRlIGNvbWJpbmFjaW9uZXMsIGV4aXN0ZW4gNS43eDEwXF4xMjQgY29tYmluYWNpb25lcyBkZSB0YW1hw7FvIDEwMCBkZSB1biB1bml2ZXJzbyBkZSA3MjIuCkhheSBtZW5vcyDDoXRvbW9zIGVuIGVsIHVuaXZlcnNvIHF1ZSBtdWVzdHJhcyBwcm9iYWJsZXMuCgpTYWJlbW9zIGN1w6FsIGVzIGVsIHZhbG9yIHBvYmxhY2lvbmFsIHNpIGNhbGN1bGFtb3MgbGEgbWVkaWEgZGUgbG9zIDcyMiBjYXNvcy4KCmBgYHtyIGVkYWR9Cm1lYW4oTEwkYWdlKQpgYGAKCkVsIHBhcsOhbWV0cm8gZXMgaWd1YWwgYSAyNC41IGHDsW9zLgpDb21vIGVqZW1wbG8sIGNhbGN1bGFyZW1vcyAzMDAwIG11ZXN0cmFzIHBhcmEgY2FsY3VsYXIgZWwgZXN0YWTDrXN0aWNvIChsYSBhcHJveGltYWNpw7NuIG11ZXN0cmFsKSBkZWwgcGFyw6FtZXRybyBkZSBsYSB2YXJpYWJsZSBlZGFkIHkgZ3VhcmRhcmVtb3MgdG9kb3MgZXNvcyByZXN1bHRhZG9zIGVuIHVuIG9iamV0byBkZSB0aXBvIHZlY3Rvci4KCmBgYHtyIGxvb3AsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZHBseXIpCng8LWMoMTozMDAwKQpmb3IgKGkgaW4gMTozMDAwKSB7CiAgc3ViIDwtIHNhbXBsZV9uKExMLCAxMDAsIHJlcGxhY2U9RikKICB4W2ldPC0gbWVhbihzdWIkYWdlLCBuYS5ybT1UKSAKICBybShzdWIpCn0KeApgYGAKCkNhZGEgdW5vIGRlIGVzdG9zIG7Dum1lcm9zIGNvcnJlc3BvbmRlIGEgbGEgbWVkaWEgbXVlc3RyYWwgZGUgbGEgdmFyaWFibGUgZWRhZCBkZSBjYWRhIHVuYSBkZSBsYXMgMzAwMCBtdWVzdHJhcyBhbGVhdG9yaWFzIHF1ZSBoZW1vcyBjYWxjdWxhZG8uClZlbW9zIHF1ZSBhbGd1bmFzIG1lZGlhcyBtdWVzdHJhc2xlcyBzdWJlc3RpbWFuIHkgb3RyYXMgc29icmVlc3RpbWFuIGVsIHZhbG9yIGRlbCBwYXLDoW1ldHJvIHBvYmxhY2lvbmFsLgpTaSBncmFmaWNhbW9zIGVsIGhpc3RvZ3JhbWEgZGUgdG9kb3MgZXN0b3MgdmFsb3JlcywgdmVtb3MgcXVlIHNlIGRpYnVqYSB1bmEgY3VydmEgYXByb3hpbWFkYW1lbnRlIG5vcm1hbC4KCmBgYHtyIGRpc3RyaWJ1Y2nDs24gZGUgbXVlc3RyZW99Cmhpc3QoeCkKYGBgCgojIyBJbnRlcnZhbG9zIGRlIGNvbmZpYW56YQoKRW4gY3VhbHF1aWVyIGludmVzdGlnYWNpw7NuIHNvbG8gc2UgY3VlbnRhIGNvbiAxIG11ZXN0cmEgw7puaWNhLCBjdXlvIGVzdGFkw61zdGljbyBtdWVzdHJhbCwgc2VhIHVuYSBtZWRpYSBvIHVuIHByb3BvcmNpw7NuLCBlcyB1bmEgYXByb3hpbWFjacOzbiBkZWwgcGFyw6FtZXRybyBwb2JsYWNpb25hbC4KClBhcmEgcG9kZXIgZXh0cmFwb2xhciBkZXNkZSBsYSBtdWVzdHJhIGhhc3RhIGxhIHBvYmxhY2nDs24sIHNlIHRpZW5lIHF1ZSBjb25zdHJ1aXIgdW4gaW50ZXJ2YWxvIGRlIGNvbmZpYW56YSBhbHJlZGVkb3IgZGVsIGVzdGFkw61zdGljbyBtdWVzdHJhbC4KRXN0ZSBpbnRlcnZhbG8gc2UgY29uc3RydXllIGFwbGljYW5kbyBsYSAiZGlzdGFuY2lhIiBkZSArLy0gMiBlcnJvcmVzIGVzdMOhbmRhciwgcGFyYSB0ZW5lciB1bmEgY29uZmlhbnphIGRlIDk1JSBkZSBpbmNsdWlyIGFsIHBhcsOhbWV0cm8gcG9ibGFjaW9uYWwuCgpTaSBzZSBlc3TDoSBleHRyYXBvbGFuZG8gcGFyYSB1bmEgdmFyaWFibGUgbnVtw6lyaWNhLCBtZWRpYW50ZSBsYSBtZWRpYSwgZWwgZXJyb3IgZXN0w6FuZGFyIChvIHNlKSBlczoKCiQkCnNlID0gMS45NiAqIFxmcmFje3N9IHtcc3FydHtufX0KJCQKClNpIHNlIGVzdMOhIGV4dHJhcG9sYW5kbyBwYXJhIHVuYSB2YXJpYWJsZSBjYXRlZ8OzcmljYSwgbWVkaWFudGUgdW5hIHByb3BvcmNpw7NuLCBlbCBlcnJvciBlc3TDoW5kYXIgKG8gc2UpIGVzOgoKJCQKc2UgPSAxLjk2ICogXHNxcnR7XGZyYWN7KHAgKiAoMS1wKSl9IHtufX0KJCQKCkEgbWFuZXJhIGRlIHJlc3VtZW4sIGxhIHNpZ3VpZW50ZSB0YWJsYSBub3MgbXVlc3RyYSBlbCBwYXLDoW1ldHJvLCBlbCBlc3RhZMOtc3RpY28gcHVudHVhbCB5IGVsIGVycm9yIGVzdMOhbmRhciBwYXJhIGNhZGEgdGlwbyBkZSB2YXJpYWJsZSB5IGPDs21vIHNlIGZvcm1hIGVsIGludGVydmFsbyBkZSBjb25maWFuemEuCgohW10oYzMuNS5wbmcpCgpFbiBlc3RhcyBmw7NybXVsYXMsIHNlIHVzYSBlbCBzw61tYm9sbyAidCIgeSAieiIgcGFyYSByZWZlcmlyIGEgbGFzIGRpc3RyaWJ1Y2lvbmVzIHRlw7NyaWNhcyBxdWUgc2UgdXNhbi4KUGFyYSBmaW5lcyBwcsOhY3RpY29zLCBjdWFuZG8gbGEgbXVlc3RyYSBlcyBncmFuZGUsIGFtYmFzIGRpc3RyaWJ1Y2lvbmVzIHNvbiBpZ3VhbGVzLgpFbCB2YWxvciBkZSAidCIgbyAieiIgZGVwZW5kZSBkZWwgbml2ZWwgZGUgY29uZmlhbnphIHF1ZSBxdWVyZW1vcy4KRXMgZGVjaXIsIGRlIGxhIHByb2JhYmlsaWRhZCBxdWUgcXVlcmVtb3MgZGUgcXVlIGVsIGludGVydmFsbyBpbmNsdXlhIGFsIHBhcsOhbWV0cm8uCkRlIGVzdGEgbWFuZXJhOgoKLSAgIFogYWwgOTAlID0gMS42NDUKCi0gICBaIGFsIDk1JSA9IDEuOTgKCi0gICBaIGFsIDk4JSA9IDIuMzI2CgotICAgWiBhbCA5OSUgPSAyLjU3NgoKwr9RdcOpIHBhcmEgY29uIGVsIElDIGN1YW5kbyBzZSBxdWllcmUgbWF5b3IgY29uZmlhbnphPwrCv1NlIHZ1ZWx2ZSBtw6FzIG8gbWVub3MgcHJlY2lzbz8KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyBFamVtcGxvIGRlIExhTG9uZGUKCkVuIGVsIHRyYWJham8gZGUgTGFMb25kZSBzZSBoYW4gcmVjb2dpZG8gNzIyIG9ic2VydmFjaW9uZXMgZGUgdW4gdW5pdmVyc28gZGVzY29ub2NpZG8sIHBlcm8gcXVlIHNlIGFzdW1lIGdyYW5kZS4KTGEgaWRlYSBlcyBwYXNhciBkZSBlc3RpbWFjaW9uZXMgcHVudHVhbGVzIGEgZXN0aW1hY2lvbmVzIHBvciBpbnRlcnZhbG9zLCBlcyBkZWNpciBkZSBkYXRvcyBxdWUgY29ycmVzcG9uZGVuIGEgbG9zIDcyMiBwYXJ0aWNpcGFudGVzIGRlbCBlc3R1ZGlvIGhhY2lhIGVsIHVuaXZlcnNvIGRlIHBlcnNvbmFzIHNpbiBoYWJpbGlkYWRlcyBsYWJvcmFsZXMgcGFyYSBpbnNlcnRhcnNlIGVuIGVsIG1lcmNhZG8gZGUgdHJhYmFqby4KUG9yIGVqZW1wbG8sIGxvcyBkYXRvcyBkZSBsb3MgaW5ncmVzb3MgcHVudHVhbGVzIGVuIGVsIGHDsW8gMTk3NCB5IDE5NzggY29ycmVzcG9uZGVuIGEgZXNvcyA3MjIgaW5kaXZpZHVvcy4KCmBgYHtyIG1lZGlhIDJ9Cm1lYW4oTEwkcmU3NCkKbWVhbihMTCRyZTc4KQpgYGAKClBhcmEgZXh0cmFwb2xhciBhIGxhIHBvYmxhY2nDs24sIHNlIHRpZW5lIHF1ZSBjb25zdHJ1aXIgZWwgaW50ZXJ2YWxvIGRlIGNvbmZpYW56YSBkZSBjYWRhIG1lZGlhLgpQYXJhIGFwbGljYXIgbGEgZsOzcm11bGEsIHNlIHJlcXVpZXJlIGxhIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciB5IGVsIE4uClNhYmVtb3MgcXVlIGVsIE4gPSA3MjIsIHB1ZXMgbm8gaGF5IHZhbG9yZXMgcGVyZGlkb3MgcGFyYSBlc3RhcyB2YXJpYWJsZXMuCkxhIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciBsYSBvYnRlbmVtb3MgY29uIGVsIGNvbWFuZG8gYHNkYC4KCmBgYHtyIGRlc2NyaXB0aXZvc30Kc2QoTEwkcmU3NCkKc2QoTEwkcmU3OCkKYGBgCgpQb3IgbG8gdGFudG8gcGFyYSBsb3MgaW5ncmVzb3MgZW4gMTk3NCBzZSB0ZW5kcsOtYToKCiQkCkkuQy4gPSBtZWRpYSArLy0gdCpzZSA9IDM2MzAuNyArLy0gMS45NiAqIFxmcmFjezYyMjAuNn0ge1xzcXJ0ezcyMn19ID0gMzYzMC43ICsvLSA0NTMuOAokJAoKLSAgIEzDrW1pdGUgSW5mZXJpb3IgZGVsIElDIGVzOiAzNjMwLjcgLSA0NTMuOCA9IDMxNzYuOQoKLSAgIEzDrW1pdGUgU3VwZXJpb3IgZXM6IDM2MzAuNyArIDQ1My44ID0gNDA4NC41CgpQb3IgbG8gdGFudG8gZWwgSUMgZXMgWzMxNzYuOSwgNDA4NC41XSB5IGFzdW1pbW9zIHF1ZSBjb24gZXNlIHJhbmdvIHRlbmVtb3MgOTUlIGRlIGNvbmZpYW56YSBxdWUgaW5jbHV5YSBhbCBwYXLDoW1ldHJvIHBvYmxhY2lvbmFsIGRlc2Nvbm9jaWRvLgoKRWwgcGFyw6FtZXRybyBwb2JsYWNpb25hbCBwb2Ryw61hIHNlciBlbnRlbmRpZG8gY29tbyBlbCBwcm9tZWRpbyBkZSBpbmdyZXNvcyBlbiAxOTc0IGRlIFRPRE9TIGxvcyBpbmRpdmlkdW9zIHNpbiBoYWJpbGlkYWRlcyBsYWJvcmFsZXMsIHNpIGVzIHF1ZSBlc2EgaW5mb3JtYWNpw7NuIGZ1ZXJhIHJlY29naWRhIGRlIG1hbmVyYSBwZXJmZWN0YSwgZXMgZGVjaXIsIGVuIHVuIG1pc21vIG1vbWVudG8sIGVuIGxhcyBtaXNtYXMgY29uZGljaW9uZXMuCgpDb21vIGVzbyBlcyBpbXBvc2libGUgZGUgaGFjZXIgbyBwb2NvIGVmaWNpZW50ZSwgY29uZmlhbW9zIGVuIGVsIElDIHF1ZSBzZSBnZW5lcmEgYSBwYXJ0aXIgZGUgdW5hIG11ZXN0cmEuCgpQYXJhIGV2aXRhciBlbCBjw6FsY3VsbyBtYW51YWwgZGVsIElDLCBzZSBwdWVkZSB1c2FyIGVsIGNvbWFuZG8KCmBgYHtyIElDNzR9CmxpYnJhcnkobHNyKQpjaTc0IDwtIGNpTWVhbihMTCRyZTc0KQpjaTc0CmBgYAoKRGUgbGEgbWlzbWEgbWFuZXJhIHNlIHB1ZWRlIGNhbGN1bGFyIGVsIElDIGRlIGxvcyBpbmdyZXNvcyBlbiAxOTc4LgoKYGBge3IgSUM3OH0KY2k3OCA8LSBjaU1lYW4oTEwkcmU3OCkKY2k3OApgYGAKClBhcmEgdmFyaWFibGVzIGNhdGVnw7NyaWNhcywgbG8gcHJpbWVybyBlcyBpbnNwZWNjaW9uYXIgbGFzIHRhYmxhcyBkZSBkaXN0cmlidWNpw7NuIGRlIGZyZWN1ZW5jaWFzLCBwb3IgZWplbXBsbyBwYXJhIGxhIHByb3BvcmNpw7NuIChvIHBvcmNlbnRhamUpIGRlIGFmcm9hbWVyaWNhbm9zIGUgaGlzcGFub3MgZW4gbGEgbXVlc3RyYS4KU2UgdGllbmUgMC44MCAobyA4MCUpIGRlIGFmcm9hbWVyaWNhbm9zIHkgMC4xMDUgKG8gMTAuNSUpIGRlIGhpc3Bhbm9zIGVuIGxhIG11ZXN0cmEuCgpgYGB7ciB0YWJsYXN9CnByb3AudGFibGUodGFibGUoTEwkYmxhY2spKQpwcm9wLnRhYmxlKHRhYmxlKExMJGhpc3BhbmljKSkKYGBgCgpQYXJhIGV4dHJhcG9sYXIgZXN0b3MgcmVzdWx0YWRvcyBhIGxhIHBvYmxhY2nDs24sIHNlIHB1ZWRlIGFwbGljYXIgbGEgZsOzcm11bGEuClBvciBlamVtcGxvLCBwYXJhIGxvcyBhZnJvYW1lcmljYW5vczoKCiQkCkkuQy4gPSBwcm9wICsvLSB6ICogc2UgPSAwLjggKy8tIDEuOTYgKiBcc3FydHtcZnJhY3swLjgqMC4yfXs3MjJ9fSA9IDAuOCArLy0gMC4wMjkKJCQKCi0gICBMw61taXRlIGluZmVyaW9yOiAwLjggLSAwLjAyOSA9IDAuNzcxIG8gNzcuMSUKCi0gICBMw61taXRlIHN1cGVyaW9yOiAwLjggKyAwLjAyOSA9IDAuODI5IG8gODIuOSUKClBvciBsbyB0YW50byBlbCBJQyBlcyBbNzcuMSUsIDgyLjklXSB5IGFzdW1pbW9zIHF1ZSBlbiBlc2UgcmFuZ28gc2UgZW5jdWVudHJhIGxhIHByb3BvcmNpw7NuIHBvYmxhY2lvbmFsIGRlIGFmcm9hbWVyaWNhbm9zIGFsIDk1JSBkZSBjb25maWFuemEuCgpFbiBSIG5vIHNlIGN1ZW50YSBjb24gdW4gY29tYW5kbyBwYXJ0aWN1bGFyIHBhcmEgZWwgY8OhbGN1bG8gZGlyZWN0byBkZSBJQ3MgZGUgcHJvcG9yY2lvbmVzLgpQZXJvLCBjdWFuZG8gbGFzIHZhcmlhYmxlcyBjYXRlZ8OzcmljYXMgc29uIHZhcmlhYmxlcyAiZHVtbXkiLCBlcyBkZWNpciBjb2RpZmljYWRhcyBjb21vIDAvMSwgZW50b25jZXMgbGEgbWVkaWEgZGUgbGEgdmFyaWFibGUgZXMgaWd1YWwgYSBsYSBwcm9wb3JjacOzbiB5IHNlIHB1ZWRlIHVzYXIgZWwgY29tYW5kbyBgQ0lgIHBhcmEgZWwgY8OhbGN1bG8gZGVsIElDLgoKYGBge3IgSUMgcHJvcG9yY2nDs259CmNpYWZybyA8LSBjaU1lYW4oTEwkYmxhY2spCmNpaGlzcCA8LSBjaU1lYW4oTEwkaGlzcGFuaWMpCmNpYWZybwpjaWhpc3AKYGBgCgpQYXJhIGxvcyBoaXNwYW5vcywgc2UgcHVlZGUgZGVjaXIgcXVlIGxhIHByb3BvcmNpw7NuIHBvYmxhY2lvbmFsIGVzdMOhIGVudHJlIDguMyUgeSAxMi44JSBhbCA5NSUgZGUgY29uZmlhbnphLgoKIyBCaWJsaW9ncmFmw61hCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase3.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

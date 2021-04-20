@@ -107,11 +107,15 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
++-----------------------+------------------------------------------------+------------+
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
-|          0%           |                       1                        | X          |
-|          50%          |                       5                        | XXXXX      |
-|         100%          |                       4                        | XXXX       |
++:=====================:+:==============================================:+:===========+
+| 0%                    | 1                                              | X          |
++-----------------------+------------------------------------------------+------------+
+| 50%                   | 5                                              | XXXXX      |
++-----------------------+------------------------------------------------+------------+
+| 100%                  | 4                                              | XXXX       |
++-----------------------+------------------------------------------------+------------+
 
 Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+...+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.
 
@@ -209,6 +213,7 @@ Si graficamos el histograma de todos estos valores, vemos que se dibuja una curv
 
 ```{r distribución de muestreo}
 hist(x)
+mean(x)
 ```
 
 ## Intervalos de confianza

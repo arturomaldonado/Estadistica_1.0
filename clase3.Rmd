@@ -107,15 +107,11 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
-+-----------------------+------------------------------------------------+------------+
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-+:=====================:+:==============================================:+:===========+
-| 0%                    | 1                                              | X          |
-+-----------------------+------------------------------------------------+------------+
-| 50%                   | 5                                              | XXXXX      |
-+-----------------------+------------------------------------------------+------------+
-| 100%                  | 4                                              | XXXX       |
-+-----------------------+------------------------------------------------+------------+
+|:---------------------:|:----------------------------------------------:|:-----------|
+|          0%           |                       1                        | X          |
+|          50%          |                       5                        | XXXXX      |
+|         100%          |                       4                        | XXXX       |
 
 Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+...+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.
 
@@ -190,7 +186,7 @@ Hay menos átomos en el universo que muestras probables.
 Sabemos cuál es el valor poblacional si calculamos la media de los 722 casos.
 
 ```{r edad}
-mean(LL$age)
+mean(LL$age, na.rm=T)
 ```
 
 El parámetro es igual a 24.5 años.
@@ -212,7 +208,7 @@ Vemos que algunas medias muestrasles subestiman y otras sobreestiman el valor de
 Si graficamos el histograma de todos estos valores, vemos que se dibuja una curva aproximadamente normal.
 
 ```{r distribución de muestreo}
-hist(x)
+hist(x, breaks=100)
 mean(x)
 ```
 
@@ -247,7 +243,7 @@ De esta manera:
 
 -   Z al 90% = 1.645
 
--   Z al 95% = 1.98
+-   Z al 95% = 1.96
 
 -   Z al 98% = 2.326
 

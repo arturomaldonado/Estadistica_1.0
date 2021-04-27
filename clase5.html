@@ -17,7 +17,7 @@
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,8 +30,13 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
@@ -58,6 +63,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 <style type="text/css">
 /* for pandoc --citeproc since 2.11 */
@@ -240,7 +250,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -250,6 +326,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -302,6 +388,13 @@ $(document).ready(function () {
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
 
 
 
@@ -370,7 +463,7 @@ t_{\overline{x1}-\overline{x2}}=\frac{\overline{X}_1-\overline{X}_2}{s_{\overlin
 </ul>
 <p><img src="5.2.png" width="112" /></p>
 <ul>
-<li>Si el p-value &lt;= 0, entonces se rechaza H0 y se afirma HA. Esto indicaría que la probabilidad de observar una diferencia de medias como la observada en la muestra es baja (menor a 5%). Como sí se ha observado esa diferencia de medias en la muestra, entonces se concluye que lo más probable es que la hipótesis que indica que la diferencia de medias poblacional es 0 sea falsa.</li>
+<li>Si el p-value &lt;= 0.05 entonces se rechaza H0 y se afirma HA. Esto indicaría que la probabilidad de observar una diferencia de medias como la observada en la muestra es baja (menor a 5%). Como sí se ha observado esa diferencia de medias en la muestra, entonces se concluye que lo más probable es que la hipótesis que indica que la diferencia de medias poblacional es 0 sea falsa.</li>
 </ul>
 <p><img src="5.3.png" width="150" /></p>
 </div>
@@ -384,7 +477,7 @@ t_{\overline{x1}-\overline{x2}}=\frac{\overline{X}_1-\overline{X}_2}{s_{\overlin
 </div>
 <div id="ejemplo" class="section level1">
 <h1>Ejemplo</h1>
-<p>En la sección anterior se hizo referencia al texto de <span class="citation">(Galarza, Kogan, and Yamada 2012)</span>. Para este ejemplo vamos a usar el paper original de <span class="citation">(Bertrand and Mullainathan 2004)</span> que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos. Estos investigadores enviaron CVs manipulando la raza percibida mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.</p>
+<p>En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan <span class="citation">(Galarza, Kogan, and Yamada 2012)</span>. Para este ejemplo vamos a usar el paper original <span class="citation">(Bertrand and Mullainathan 2004)</span> que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos. Estos investigadores enviaron CVs manipulando la raza percibida mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.</p>
 <pre class="r"><code>library(rio)
 cv &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv&quot;)</code></pre>
 <p>Esta base de datos tiene 4 variables relevantes:</p>
@@ -405,6 +498,53 @@ cv &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/mai
 <p>Para los CVs con nombres que resuenan a blancos, la proporción de CVs que recibieron una llamada fue de 9.7%, mientras que para los CVs con nombres afros, la proporción fue de 6.4%, es decir una diferencia de 3.2%</p>
 <p>Es esta diferencia extrapolable a la población. Esto es lo mismo que decir, si la diferencia en la proporción de llamadas entre blancos y afros fuera cero, qué tan probable sería obtener una diferencia de 3.2% en una muestra cualquiera. Si esa probabilidad fuera alta, entonces es muy probable que la diferencia poblacional sea 0. Si esa probabilidad fuera muy baja, entonces es probable que la diferencia poblacional no sea 0.</p>
 <p>Para poner a prueba esto, requerimos ir paso por paso en la inferencia estadística.</p>
+<p>Lo primero es plantear la hipótesis 0 del estudio y la hipótesis alternativa.</p>
+<ul>
+<li>Luego, plantear la distribución muestral. Como el error estándar depende de si las varianzas parecen ser iguales o no, tenemos que correr una prueba para definir esto. Esta prueba se llama tests de Levene. Este test está disponible en la librería <code>Desctools</code>, con el comando <code>LeveneTest</code>.</li>
+</ul>
+<p>La hipótesis 0 de esta prueba es que las varianzas con iguales.</p>
+<pre class="r"><code>library(DescTools)</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;DescTools&#39;:
+##   method         from  
+##   reorder.factor gplots</code></pre>
+<pre><code>## 
+## Attaching package: &#39;DescTools&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:gplots&#39;:
+## 
+##     reorder.factor</code></pre>
+<pre class="r"><code>LeveneTest(cv$call, cv$race)</code></pre>
+<pre><code>## Warning in LeveneTest.default(cv$call, cv$race): cv$race coerced to factor.</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##         Df F value    Pr(&gt;F)    
+## group    1  16.931 3.941e-05 ***
+##       4868                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ul>
+<li><p>Si p-value de Levene &lt;= 0.05, entonces rechazo Ho y afirmo que las varianzas son diferentes. Eso significa que <code>var.equal=F</code>.</p></li>
+<li><p>Si el p-value &gt; 0.05, entonces no puedo rechazar la Ho y trabajo con varianzas iguales. Eso significa que <code>var.equal=T</code>.</p></li>
+</ul>
+<p>De acuerdo a estos resultados, podemos rechazar la H0 y afirmar que las varianzas parecen diferentes. Por lo tanto, usamos esa fórmula en la aproximación de la distrinución muestral.</p>
+<p>El siguiente paso es establecer el nivel de significancia que de manera convencional se define al 0.05. Con esto, procedemos al cálculo del estadístico de la prueba y el p-value. Estos cálculos se hacen automáticamente con el comando <code>t.test.</code></p>
+<pre class="r"><code>t.test(call ~ race, data = cv, var.equal=F)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  call by race
+## t = -4.1147, df = 4711.6, p-value = 3.943e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.04729503 -0.01677067
+## sample estimates:
+## mean in group black mean in group white 
+##          0.06447639          0.09650924</code></pre>
+<p>El estadístico de la prueba es el valor de t, con un nivel de grados de libertad. Con estos datos se podría ir a una tabla de distribución de t y averiguar la probabilidad. En R, este valor de p-value es calculado automáticamente.</p>
+<p>Este p-value se entiende como la probabilidad de observar una diferencia como la observada en los datos, si la diferencia poblacional fuera 0. Como esa probabilidad es muy baja (&lt;0.05), entonces se concluye que la diferencia poblacional no es cero (es decir, se rechaza la H0) y se afirma que sí existen diferencias entre ambos grupos (se afirma la HA).</p>
+<ul>
+<li><p>Si el p-value de la prueba t es &lt;= 0.05, se rechaza la H0 y se afirma la HA.</p></li>
+<li><p>Si el p-value es &gt; 0.05, se falla en rechazar la H0.</p></li>
+</ul>
+<p>En este caso, el p-value = 0.0000394 &lt; 0.05, entonces se rechaza la hipótesis que las medias poblacionales de las llamadas a CVs son iguales entre anglos y afros, por lo que se afirma que las tasas de llamadas son diferentes (a favor de los anglos) en la población, confirmándose con este que existiría una discriminación por raza en el mercado laboral americano. A iguales CVs, aquellos con nombres afros tienen una menor tasa de llamada a entrevistas de trabajo que aquellos con nombre anglos.</p>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bertrandAreEmilyGreg2004" class="csl-entry">
 Bertrand, Marianne, and Sendhil Mullainathan. 2004. <span>“Are <span>Emily</span> and <span>Greg More Employable Than Lakisha</span> and <span>Jamal</span>? <span>A Field Experiment</span> on <span>Labor Market Discrimination</span>.”</span> <em>American Economic Review</em> 94 (4): 991–1013. <a href="https://doi.org/10.1257/0002828042002561">https://doi.org/10.1257/0002828042002561</a>.
@@ -415,8 +555,11 @@ Galarza, Francisco, Liuba Kogan, and Gustavo Yamada. 2012. <span>“Detectando D
 </div>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgNSIKYXV0aG9yOiAiQXJ0dXJvIE1hbGRvbmFkbyIKZGF0ZTogIjQvMjYvMjAyMSIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogY29zbW8KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUKZWRpdG9yX29wdGlvbnM6CiAgbWFya2Rvd246CiAgICB3cmFwOiBzZW50ZW5jZQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKYGBgCgojIEludHJvZHVjY2nDs24KCkxhIGNvbXBhcmFjacOzbiBkZSBsb3MgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEgZGUgMiBncnVwb3MgZXMgdW4gbcOpdG9kbyAiaW5mb3JtYWwiIHBhcmEgc2FiZXIgc2kgbGFzIGRpZmVyZW5jaWFzIGVuIGxhcyBtZWRpYXMgbyBsYXMgcHJvcG9yY2lvbmVzIGVudHJlIGRvcyBncnVwb3Mgc2UgcHVlZGVuIGV4dHJhcG9sYXIgYSBsYSBwb2JsYWNpw7NuLgpMYSBpZGVhIGVyYSBjYWxjdWxhciBsb3MgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEgcGFyYSBjYWRhIGdydXBvIHkgdmVyIHNpIGxvcyBpbnRlcnZhbG9zIHNlIGludGVyY2VwdGFuIG8gbm8uCkxhIHJlZ2xhIGVyYSBxdWUgc2kgbG9zIGludGVydmFsb3MgZGUgYW1ib3MgZ3J1cG9zIG5vIHNlIGludGVyY2VwdGFiYW4sIHBvZMOtYW1vcyBleHRyYXBvbGFyIHF1ZSBsYSBkaWZlcmVuY2lhIG11ZXN0cmFsIGV4aXN0ZSBlbiBsYSBwb2JsYWNpw7NuIGFsIDk1JSBkZSBjb25maWFuemEuClNpIGxvcyBpbnRlcnZhbG9zIG5vIHNlIHRyYXNsYXBhbiwgZW50b25jZXMgbm8gcG9kZW1vcyBhZmlybWFyIHF1ZSBsYXMgZGlmZXJlbmNpYXMgc2VhbiBzaWduaWZpY2F0aXZhcy4KRW4gZXN0YSBzZWNjacOzbiBzZSB2ZXLDoSBjw7NtbyBwYXNhciBkZSBsYSBldmFsdWFjacOzbiAiaW5mb3JtYWwiIGEgbGEgImZvcm1hbCIgbWVkaWFudGUgbGEgaW50cm9kdWNjacOzbiBhIGxhIHBydWViYSB0IGRlIGRpZmVyZW5jaWEgZGUgbWVkaWFzLgoKIyBQcnVlYmEgdCBkZSBkaWZlcmVuY2lhIGRlIG1lZGlhcwoKRXN0YSBwcnVlYmEgY29tcGFyYSBsYSBtZWRpYSBkZSB1bmEgdmFyaWFibGUgZGUgbnVtw6lyaWNhIHBhcmEgZG9zIGdydXBvcyBvIGNhdGVnb3LDrWFzIGRlIHVuYSB2YXJpYWJsZSBub21pbmFsIHUgb3JkaW5hbC4KTG9zIGdydXBvcyBxdWUgZm9ybWFuIGxhIHZhcmlhYmxlIG5vbWluYWwvb3JkaW5hbCB0aWVuZW4gcXVlIHNlciBpbmRlcGVuZGllbnRlcy4KRXMgZGVjaXIsIGNhZGEgb2JzZXJ2YWNpw7NuIGRlYmUgcGVydGVuZWNlciBhIHVuIGdydXBvIG8gYWwgb3RybywgcGVybyBubyBhIGFtYm9zLgoKUG9yIGVqZW1wbG8sIHNpIHNlIHF1aXNpZXJhIGV2YWx1YXIgc2kgZXhpc3RlbiBkaWZlcmVuY2lhcyBlbiBlbCByZW5kaW1pZW50byBhY2Fkw6ltaWNvIGVudHJlIGFsdW1ub3MgaG9tYnJlcyB5IG11amVyZXMgZW4gbGEgUFVDUCwgdGXDs3JpY2FtZW50ZSwgc2UgaGFicsOtYSByZWdpc3RyYWRvIGVsIENSQUVTVCBkZSB0b2RvcyBsb3MgYWx1bW5vcyBkZSBsYSB1bml2ZXJzaWRhZCAoVmFyaWFibGUgWCkgeSBwb3IgbG8gdGFudG8gc2UgcG9kcsOtYSB0ZW5lciBsb3MgcGFyw6FtZXRyb3MgZGVsIENSQUVTVCBwYXJhIGxvcyBhbHVtbm9zIGhvbWJyZXMgeSBsYXMgYWx1bW5hcyBtdWplcmVzLgoKQ29tbyBubyBzZSB0aWVuZSByZWN1cnNvcyBwYXJhIGxsZWdhciBhIHRvZGEgbGEgcG9ibGFjacOzbiwgc2UgZXh0cmFlIHVuYSBtdWVzdHJhLCBxdWUgaW5jbHV5ZSBhbHVtbm9zIHkgYWx1bW5hcy4KRW4gY2FkYSBncnVwbyBzZSBwdWVkZSBjYWxjdWxhciBlbCBwcm9tZWRpbyBkZWwgQ1JBRVNUIHkgc2UgcHVlZGVuIGNvbXBhcmFyIGVzb3MgcHJvbWVkaW9zIG11ZXN0cmFsZXMuCgohW10oNS4xLnBuZyl7d2lkdGg9IjM4NiJ9CgpFcyBkZWNpciwgZXN0YSBwcnVlYmEgYnVzY2FyIGRhciBsdWNlcyBzaSBsYSBkaWZlcmVuY2lhICRcb3ZlcmxpbmV7WH1fMSAtIFxvdmVybGluZXtYfV8yJCBzZSBwdWVkZSBleHRyYXBvbGFyIGEgbGEgZGlmZXJlbmNpYSAkXG11X3t4MX0gLSBcbXVfe3gyfSQuCgojIExvcyA2IHBhc29zIGRlIGxhIGluZmVyZW5jaWEgZXN0YWTDrXN0aWNhCgpFc3RvcyA2IHBhc29zIGLDoXNpY2FtZW50ZSBzZSBzZWd1aXLDoW4gZW4gdG9kYSBwcnVlYmEgaW5mZXJlbmNpYWwsIGRvbmRlIHNlIHF1aWVyYSBleHRyYXBvbGFyIHVuIHJlc3VsdGFkbyBkZSBsYSBtdWVzdHJhIGEgbGEgcG9ibGFjacOzbi4KCiMjIFBhc28gMTogaGlww7N0ZXNpcwoKRm9ybXVsYXIgbGEgaGlww7N0ZXNpcyBudWxhIHkgbGEgaGlww7N0ZXNpcyBhbHRlcm5hdGl2YS4KQW1iYXMgaGlww7N0ZXNpcyBzb24gYWNlcmNhIGRlIGxvcyBwYXLDoW1ldHJvcy4KCkgwOiAkXG11X3t4MX0gLSBcbXVfe3gyfSA9IDAkCgpIQTogJFxtdV97eDF9IC0gXG11X3t4Mn0gXG5lIDAkCgpMYSBIMCBlcyBnZW5lcmFsbWVudGUgbGEgaGlww7N0ZXNpcyBkZSBubyBlZmVjdG8sIGRlIG5vIGRpZmVyZW5jaWFzLgpMYSBpZGVhIGNlbnRyYWwgZXMgcXVlIHNpIGxhIEgwIGVzIGNpZXJ0YSBlbiBsYSBwb2JsYWNpw7NuLCBsb3MgcmVzdWx0YWRvcyBtdWVzdHJhbGVzIG9jdXJyaXLDoW4gbXV5IGNlcmNhIGEgMCBlbiBtdWNoYXMgbXVlc3RyYXMgeSBwb2NhcyBtdWVzdHJhcyB0ZW5kcsOhbiB2YWxvcmVzIG11eSBkaWZlcmVudGVzIGRlIGNlcm8uCgojIyBQYXNvIDI6IGRpc3RyaWJ1Y2nDs24gbXVlc3RyYWwKClNpIGxhIEgwIGVzIHZlcmRhZGVyYSB5IHNlIGV4dHJhZW4gbXVlc3RyYXMgcmVwZXRpZGFtZW50ZSwgbGFzIGRpZmVyZW5jaWFzIG11ZXN0cmFsZXMgc2UgY2VudHJhcsOhbiBhbHJlZGVkb3IgZGUgY2VybyBjb21vIHVuYSBkaXN0cmlidWNpw7NuIHQgYXByb3hpbWFkYW1lbnRlIG5vcm1hbC4KRXN0YSBkaXN0cmlidWNpw7NuIHRlbmRyw6EgdW4gZXJyb3IgZXN0w6FuZGFyIGNhbGN1bGFkbwoKLSAgIFNpIGxhcyB2YXJpYW56YXMgcG9ibGFjaW9uYWxlcyBzb24gaWd1YWxlcyBkZToKCiQkCnNfe1xvdmVybGluZXt4MX0tXG92ZXJsaW5le3gyfX0gPSBcc3FydHtcZnJhY3sobl8xLTEpc197eDF9XjIrKG5fMi0xKXNfe3gyfV4yfXtuXzErbl8yLTJ9fSpcc3FydHtcZnJhY3tuXzErbl8yfXtuXzFuXzJ9fQokJAoKLSAgIFNpIGxhcyB2YXJpYW56YXMgcG9ibGFjaW9uYWxlcyBzb24gZGlmZXJlbnRlcyBkZToKCiQkCnNfe1xvdmVybGluZXt4MX0tXG92ZXJsaW5le3gyfX0gPSBcc3FydHtcZnJhY3tzX3tYMX1eMn17bl8xLTF9K1xmcmFje3Nfe1gyfV4yfXtuXzItMX19CiQkCgojIyBQYXNvIDM6IG5pdmVsIGRlIHNpZ25pZmljYW5jaWEKClNlIHRyYXRhIGRlIGxhIHByb2JhYmlsaWRhZCBxdWUgZGVmaW5lIHF1w6kgdGFuIGludXN1YWwgZGViZSBzZXIgbGEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgbXVlc3RyYWxlcyBwYXJhIHJlY2hhemFyIGxhIEgwIChxdWUgbGEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgcG9ibGFjaW9uYWxlcyBzZWEgMCkuCkVsIHZhbG9yIG3DoXMgY29tw7puIGVzIGRlICRcYWxwaGE9MC4wNSQuCgojIyBQYXNvIDQ6IG9ic2VydmFjacOzbgoKU2UgY2FsY3VsYSBlbCBlc3RhZMOtc3RpY28gZGUgbGEgcHJ1ZWJhOgoKJCQKdF97XG92ZXJsaW5le3gxfS1cb3ZlcmxpbmV7eDJ9fT1cZnJhY3tcb3ZlcmxpbmV7WH1fMS1cb3ZlcmxpbmV7WH1fMn17c197XG92ZXJsaW5le1h9XzEtXG92ZXJsaW5le1h9XzJ9fQokJAoKRXN0ZSB2YWxvciBkZWwgZXN0YWTDrXN0aWNvIGRlIGxhIHBydWViYSBlc3TDoSBlbiB1bmlkYWRlcyBkZWwgZXJyb3IgZXN0w6FuZGFyLCBlcyBkZWNpciwgcXXDqSB0YW4gY2VyY2EgbyBsZWpvcyBzZSBlbmN1ZW50cmEgZGVsIGNlbnRybyBkZSBsYSBkaXN0cmlidWNpw7NuIChjZW50cmFkYSBlbiAwKS4KQ29uIGVzdGUgdmFsb3IsIGVuIGxhIGRpc3RyaWJ1Y2nDs24gdCBzZSBjYWxjdWxhIGxhIHByb2JhYmlsaWRhZCBkZSBxdWUgZXN0ZSB2YWxvciBvY3VycmEsIGVsIHZhbG9yIGRlIHAtdmFsdWUuCkVzIGRlY2lyLCBlbCBwLXZhbHVlIG1pZGUgbGEgcHJvYmFiaWxpZGFkIGRlIG9ic2VydmFyIGVuIHVuYSBtdWVzdHJhIHVuYSBkaWZlcmVuY2lhIGRlIG1lZGlhcyBjb21vIGxhIG9ic2VydmFkYSwgc2kgbGEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgcG9ibGFjaW9uYWwgZnVlcmEgY2Vyby4KClNlIHB1ZWRlIHVzYXIgdW5hIGNhbGN1bGFkb3JhIGRlIHAtdmFsdWUgZGUgbGEgZGlzdHJpYnVjacOzbiB0IGRpc3BvbmlibGUgW2FxdcOtXShodHRwczovL3d3dy5zb2NzY2lzdGF0aXN0aWNzLmNvbS90ZXN0cy8pCgojIyBQYXNvIDU6IGRlY2lzacOzbgoKLSAgIFNpIGVsIHAtdmFsdWUgXD4gMC4wNSwgZW50b25jZXMgc2UgZmFsbGEgZW4gcmVjaGF6YXIgbGEgSG8uIEVzdG8gaW5kaWNhcsOtYSBxdWUgZXhpc3RlIG3DoXMgZGUgNSUgZGUgcHJvYmFiaWxpZGFkZXMgcXVlIHVuYSBtdWVzdHJhIGFsZWF0b3JpYSBjdWFscXVpZXJhIGVuY3VlbnRyZSB1bmEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgY29tbyBsYSBvYnNlcnZhZGEgc2kgZXMgcXVlIGxhIGRpZmVyZW5jaWEgZGUgbWVkaWFzIHBvYmxhY2lvbmFsIGZ1ZXNlIDAuCgohW10oNS4yLnBuZyl7d2lkdGg9IjExMiJ9CgotICAgU2kgZWwgcC12YWx1ZSBcPD0gMC4wNSBlbnRvbmNlcyBzZSByZWNoYXphIEgwIHkgc2UgYWZpcm1hIEhBLiBFc3RvIGluZGljYXLDrWEgcXVlIGxhIHByb2JhYmlsaWRhZCBkZSBvYnNlcnZhciB1bmEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgY29tbyBsYSBvYnNlcnZhZGEgZW4gbGEgbXVlc3RyYSBlcyBiYWphIChtZW5vciBhIDUlKS4gQ29tbyBzw60gc2UgaGEgb2JzZXJ2YWRvIGVzYSBkaWZlcmVuY2lhIGRlIG1lZGlhcyBlbiBsYSBtdWVzdHJhLCBlbnRvbmNlcyBzZSBjb25jbHV5ZSBxdWUgbG8gbcOhcyBwcm9iYWJsZSBlcyBxdWUgbGEgaGlww7N0ZXNpcyBxdWUgaW5kaWNhIHF1ZSBsYSBkaWZlcmVuY2lhIGRlIG1lZGlhcyBwb2JsYWNpb25hbCBlcyAwIHNlYSBmYWxzYS4KCiFbXSg1LjMucG5nKXt3aWR0aD0iMTUwIn0KCiMjIFBhc28gNjogaW50ZXJwcmV0YWNpw7NuCgotICAgQ29uIGxvcyBkYXRvcyBvYnRlbmlkb3MsIG5vIHNlIHB1ZWRlIGRlY2lyIHF1ZSBleGlzdGUgdW5hIGRpZmVyZW5jaWEgZGUgbWVkaWFzIGVudHJlIGFtYm9zIGdydXBvcy4KCi0gICBTZSBhZmlybWEgcXVlIHPDrSBleGlzdGUgdW5hIGRpZmVyZW5jaWEgZGUgbWVkaWFzIGVudHJlIGFtYm9zIGdydXBvcyBjb24gdW4gOTUlIGRlIGNvbmZpYW56YS4KCiMgRWplbXBsbwoKRW4gbGEgc2VjY2nDs24gYW50ZXJpb3Igc2UgaGl6byByZWZlcmVuY2lhIGFsIHRleHRvIGRlIEdhbGFyemEsIFlhbWFkYSB5IEtvZ2FuIFtAZ2FsYXJ6YURldGVjdGFuZG9EaXNjcmltaW5hY2lvblNleHVhbDIwMTJdLiBQYXJhIGVzdGUgZWplbXBsbyB2YW1vcyBhIHVzYXIgZWwgcGFwZXIgb3JpZ2luYWwgW0BiZXJ0cmFuZEFyZUVtaWx5R3JlZzIwMDRdIHF1ZSBidXNjYW4gZXZhbHVhciBzaSBoYXkgdW5hIGRpc2NyaW1pbmFjacOzbiBlbiBlbCBtZXJjYWRvIGxhYm9yYWwgZW50cmUgYWZyb2FtZXJpY2Fub3MgeSBhbmdsb2FtZXJpY2Fub3MuCkVzdG9zIGludmVzdGlnYWRvcmVzIGVudmlhcm9uIENWcyBtYW5pcHVsYW5kbyBsYSByYXphIHBlcmNpYmlkYSBtZWRpYW50ZSBub21icmVzIGNsYXJhbWVudGUgYXNvY2lhZG9zIGEgbG9zIGFmcm9hbWVyaWNhbm9zIHkgbm9tYnJlcyBjbGFyYW1lbnRlIGFzb2NpYWRvcyBhIGFuZ2xvYW1lcmljYW5vcywgdGFudG8gbm9tYnJlcyBtYXNjdWxpbm9zIGNvbW8gZmVtZW5pbm9zLgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pCmN2IDwtIGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9hcnR1cm9tYWxkb25hZG8vRXN0YWRpc3RpY2FfMS4wL21haW4vY3YuY3N2IikKYGBgCgpFc3RhIGJhc2UgZGUgZGF0b3MgdGllbmUgNCB2YXJpYWJsZXMgcmVsZXZhbnRlczoKCi0gICBmaXJzdG5hbWU6IG5vbWJyZSBkZSBwb3N0dWxhbnRlIGZpY3RpY2lvCgotICAgc2V4OiBzZXhvIGRlbCBwb3N0dWxhbnRlIChtdWplciBvIGhvbWJyZSkKCi0gICByYWNlOiByYXphIGRlbCBwb3N0dWxhbnRlIChhZnJvIG8gYmxhbmNvKQoKLSAgIGNhbGw6IHNpIGVsIHBvc3R1bGFudGUgcmVjaWJpw7MgdW5hIGxsYW1hZGEgKDE9c8OtLCAwPW5vKQoKTGEgdmFyaWFibGUgZGUgcmVzcHVlc3RhIGVzICJjYWxsIi4KRW4gZWwgdG90YWwgZGUgbGEgbXVlc3RyYSwgc29sbyBlbCA4JSBkZSBwb3N0dWxhbnRlIHJlY2liacOzIHVuYSBsbGFtYWRhIHBhcmEgcGFzYXIgYSB1bmEgZW50cmV2aXN0YSBkZSB0cmFiYWpvLgoKYGBge3IgdG90YWx9Cm1lYW4oY3YkY2FsbCkqMTAwCmBgYAoKTGEgcHJlZ3VudGEgZGUgbG9zIGF1dG9yZXMgZGUgc2kgZXhpc3RlIGRpc2NyaW1pbmFjacOzbiByYWNpYWwgZW4gZWwgbWVyY2FkbyBsYWJvcmFsIGluZGljYSBxdWUgZWwgcG9yY2VudGFqZSBkZSBsbGFtYWRhcyBxdWUgcmVjaWJlbiBsb3MgYWZyb3Mgc2Vyw6EgbWVub3IgYWwgcXVlIHJlY2liZW4gbG9zIGJsYW5jb3MsIGEgaWd1YWwgY2FsaWZpY2FjaW9uZXMgeSBjcmVkZW5jaWFsZXMuClBhcmEgZXN0bywgc2UgdGllbmUgcXVlIGNhbGN1bGFyIGxhIHByb3BvcmNpw7NuIHF1ZSByZWNpYmnDsyB1bmEgbGxhbWFkYSBwb3IgcmF6YS4KCmBgYHtyIHJhemF9Cm1lYW4oY3YkY2FsbFtjdiRyYWNlPT0id2hpdGUiXSkqMTAwCm1lYW4oY3YkY2FsbFtjdiRyYWNlPT0iYmxhY2siXSkqMTAwCmBgYAoKUGFyYSBsb3MgQ1ZzIGNvbiBub21icmVzIHF1ZSByZXN1ZW5hbiBhIGJsYW5jb3MsIGxhIHByb3BvcmNpw7NuIGRlIENWcyBxdWUgcmVjaWJpZXJvbiB1bmEgbGxhbWFkYSBmdWUgZGUgOS43JSwgbWllbnRyYXMgcXVlIHBhcmEgbG9zIENWcyBjb24gbm9tYnJlcyBhZnJvcywgbGEgcHJvcG9yY2nDs24gZnVlIGRlIDYuNCUsIGVzIGRlY2lyIHVuYSBkaWZlcmVuY2lhIGRlIDMuMiUKCkVzIGVzdGEgZGlmZXJlbmNpYSBleHRyYXBvbGFibGUgYSBsYSBwb2JsYWNpw7NuLgpFc3RvIGVzIGxvIG1pc21vIHF1ZSBkZWNpciwgc2kgbGEgZGlmZXJlbmNpYSBlbiBsYSBwcm9wb3JjacOzbiBkZSBsbGFtYWRhcyBlbnRyZSBibGFuY29zIHkgYWZyb3MgZnVlcmEgY2VybywgcXXDqSB0YW4gcHJvYmFibGUgc2Vyw61hIG9idGVuZXIgdW5hIGRpZmVyZW5jaWEgZGUgMy4yJSBlbiB1bmEgbXVlc3RyYSBjdWFscXVpZXJhLgpTaSBlc2EgcHJvYmFiaWxpZGFkIGZ1ZXJhIGFsdGEsIGVudG9uY2VzIGVzIG11eSBwcm9iYWJsZSBxdWUgbGEgZGlmZXJlbmNpYSBwb2JsYWNpb25hbCBzZWEgMC4KU2kgZXNhIHByb2JhYmlsaWRhZCBmdWVyYSBtdXkgYmFqYSwgZW50b25jZXMgZXMgcHJvYmFibGUgcXVlIGxhIGRpZmVyZW5jaWEgcG9ibGFjaW9uYWwgbm8gc2VhIDAuCgpQYXJhIHBvbmVyIGEgcHJ1ZWJhIGVzdG8sIHJlcXVlcmltb3MgaXIgcGFzbyBwb3IgcGFzbyBlbiBsYSBpbmZlcmVuY2lhIGVzdGFkw61zdGljYS4KCkxvIHByaW1lcm8gZXMgcGxhbnRlYXIgbGEgaGlww7N0ZXNpcyAwIGRlbCBlc3R1ZGlvIHkgbGEgaGlww7N0ZXNpcyBhbHRlcm5hdGl2YS4KCi0gICBMdWVnbywgcGxhbnRlYXIgbGEgZGlzdHJpYnVjacOzbiBtdWVzdHJhbC4KICAgIENvbW8gZWwgZXJyb3IgZXN0w6FuZGFyIGRlcGVuZGUgZGUgc2kgbGFzIHZhcmlhbnphcyBwYXJlY2VuIHNlciBpZ3VhbGVzIG8gbm8sIHRlbmVtb3MgcXVlIGNvcnJlciB1bmEgcHJ1ZWJhIHBhcmEgZGVmaW5pciBlc3RvLgogICAgRXN0YSBwcnVlYmEgc2UgbGxhbWEgdGVzdHMgZGUgTGV2ZW5lLgogICAgRXN0ZSB0ZXN0IGVzdMOhIGRpc3BvbmlibGUgZW4gbGEgbGlicmVyw61hIGBEZXNjdG9vbHNgLCBjb24gZWwgY29tYW5kbyBgTGV2ZW5lVGVzdGAuCgpMYSBoaXDDs3Rlc2lzIDAgZGUgZXN0YSBwcnVlYmEgZXMgcXVlIGxhcyB2YXJpYW56YXMgY29uIGlndWFsZXMuCgpgYGB7ciBMZXZlbmV9CmxpYnJhcnkoRGVzY1Rvb2xzKQpMZXZlbmVUZXN0KGN2JGNhbGwsIGN2JHJhY2UpCmBgYAoKLSAgIFNpIHAtdmFsdWUgZGUgTGV2ZW5lIFw8PSAwLjA1LCBlbnRvbmNlcyByZWNoYXpvIEhvIHkgYWZpcm1vIHF1ZSBsYXMgdmFyaWFuemFzIHNvbiBkaWZlcmVudGVzLgogICAgRXNvIHNpZ25pZmljYSBxdWUgYHZhci5lcXVhbD1GYC4KCi0gICBTaSBlbCBwLXZhbHVlIFw+IDAuMDUsIGVudG9uY2VzIG5vIHB1ZWRvIHJlY2hhemFyIGxhIEhvIHkgdHJhYmFqbyBjb24gdmFyaWFuemFzIGlndWFsZXMuCiAgICBFc28gc2lnbmlmaWNhIHF1ZSBgdmFyLmVxdWFsPVRgLgoKRGUgYWN1ZXJkbyBhIGVzdG9zIHJlc3VsdGFkb3MsIHBvZGVtb3MgcmVjaGF6YXIgbGEgSDAgeSBhZmlybWFyIHF1ZSBsYXMgdmFyaWFuemFzIHBhcmVjZW4gZGlmZXJlbnRlcy4KUG9yIGxvIHRhbnRvLCB1c2Ftb3MgZXNhIGbDs3JtdWxhIGVuIGxhIGFwcm94aW1hY2nDs24gZGUgbGEgZGlzdHJpbnVjacOzbiBtdWVzdHJhbC4KCkVsIHNpZ3VpZW50ZSBwYXNvIGVzIGVzdGFibGVjZXIgZWwgbml2ZWwgZGUgc2lnbmlmaWNhbmNpYSBxdWUgZGUgbWFuZXJhIGNvbnZlbmNpb25hbCBzZSBkZWZpbmUgYWwgMC4wNS4KQ29uIGVzdG8sIHByb2NlZGVtb3MgYWwgY8OhbGN1bG8gZGVsIGVzdGFkw61zdGljbyBkZSBsYSBwcnVlYmEgeSBlbCBwLXZhbHVlLgpFc3RvcyBjw6FsY3Vsb3Mgc2UgaGFjZW4gYXV0b23DoXRpY2FtZW50ZSBjb24gZWwgY29tYW5kbyBgdC50ZXN0LmAKCmBgYHtyIHBydWViYSB0fQp0LnRlc3QoY2FsbCB+IHJhY2UsIGRhdGEgPSBjdiwgdmFyLmVxdWFsPUYpCmBgYAoKRWwgZXN0YWTDrXN0aWNvIGRlIGxhIHBydWViYSBlcyBlbCB2YWxvciBkZSB0LCBjb24gdW4gbml2ZWwgZGUgZ3JhZG9zIGRlIGxpYmVydGFkLgpDb24gZXN0b3MgZGF0b3Mgc2UgcG9kcsOtYSBpciBhIHVuYSB0YWJsYSBkZSBkaXN0cmlidWNpw7NuIGRlIHQgeSBhdmVyaWd1YXIgbGEgcHJvYmFiaWxpZGFkLgpFbiBSLCBlc3RlIHZhbG9yIGRlIHAtdmFsdWUgZXMgY2FsY3VsYWRvIGF1dG9tw6F0aWNhbWVudGUuCgpFc3RlIHAtdmFsdWUgc2UgZW50aWVuZGUgY29tbyBsYSBwcm9iYWJpbGlkYWQgZGUgb2JzZXJ2YXIgdW5hIGRpZmVyZW5jaWEgY29tbyBsYSBvYnNlcnZhZGEgZW4gbG9zIGRhdG9zLCBzaSBsYSBkaWZlcmVuY2lhIHBvYmxhY2lvbmFsIGZ1ZXJhIDAuCkNvbW8gZXNhIHByb2JhYmlsaWRhZCBlcyBtdXkgYmFqYSAoXDwwLjA1KSwgZW50b25jZXMgc2UgY29uY2x1eWUgcXVlIGxhIGRpZmVyZW5jaWEgcG9ibGFjaW9uYWwgbm8gZXMgY2VybyAoZXMgZGVjaXIsIHNlIHJlY2hhemEgbGEgSDApIHkgc2UgYWZpcm1hIHF1ZSBzw60gZXhpc3RlbiBkaWZlcmVuY2lhcyBlbnRyZSBhbWJvcyBncnVwb3MgKHNlIGFmaXJtYSBsYSBIQSkuCgotICAgU2kgZWwgcC12YWx1ZSBkZSBsYSBwcnVlYmEgdCBlcyBcPD0gMC4wNSwgc2UgcmVjaGF6YSBsYSBIMCB5IHNlIGFmaXJtYSBsYSBIQS4KCi0gICBTaSBlbCBwLXZhbHVlIGVzIFw+IDAuMDUsIHNlIGZhbGxhIGVuIHJlY2hhemFyIGxhIEgwLgoKRW4gZXN0ZSBjYXNvLCBlbCBwLXZhbHVlID0gMC4wMDAwMzk0IFw8IDAuMDUsIGVudG9uY2VzIHNlIHJlY2hhemEgbGEgaGlww7N0ZXNpcyBxdWUgbGFzIG1lZGlhcyBwb2JsYWNpb25hbGVzIGRlIGxhcyBsbGFtYWRhcyBhIENWcyBzb24gaWd1YWxlcyBlbnRyZSBhbmdsb3MgeSBhZnJvcywgcG9yIGxvIHF1ZSBzZSBhZmlybWEgcXVlIGxhcyB0YXNhcyBkZSBsbGFtYWRhcyBzb24gZGlmZXJlbnRlcyAoYSBmYXZvciBkZSBsb3MgYW5nbG9zKSBlbiBsYSBwb2JsYWNpw7NuLCBjb25maXJtw6FuZG9zZSBjb24gZXN0ZSBxdWUgZXhpc3RpcsOtYSB1bmEgZGlzY3JpbWluYWNpw7NuIHBvciByYXphIGVuIGVsIG1lcmNhZG8gbGFib3JhbCBhbWVyaWNhbm8uCkEgaWd1YWxlcyBDVnMsIGFxdWVsbG9zIGNvbiBub21icmVzIGFmcm9zIHRpZW5lbiB1bmEgbWVub3IgdGFzYSBkZSBsbGFtYWRhIGEgZW50cmV2aXN0YXMgZGUgdHJhYmFqbyBxdWUgYXF1ZWxsb3MgY29uIG5vbWJyZSBhbmdsb3MuCg==</div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -448,7 +591,38 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase5.Rmd");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

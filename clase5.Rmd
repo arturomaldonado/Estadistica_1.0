@@ -115,7 +115,8 @@ Se puede usar una calculadora de p-value de la distribución t disponible [aquí
 
 # Ejemplo
 
-En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012]. Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
+En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012].
+Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
 Estos investigadores enviaron CVs manipulando la raza percibida mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.
 
 ```{r base}
@@ -159,10 +160,7 @@ Para poner a prueba esto, requerimos ir paso por paso en la inferencia estadíst
 
 Lo primero es plantear la hipótesis 0 del estudio y la hipótesis alternativa.
 
--   Luego, plantear la distribución muestral.
-    Como el error estándar depende de si las varianzas parecen ser iguales o no, tenemos que correr una prueba para definir esto.
-    Esta prueba se llama tests de Levene.
-    Este test está disponible en la librería `Desctools`, con el comando `LeveneTest`.
+-   Luego, plantear la distribución muestral. Como el error estándar depende de si las varianzas parecen ser iguales o no, tenemos que correr una prueba para definir esto. Esta prueba se llama tests de Levene. Este test está disponible en la librería `Desctools`, con el comando `LeveneTest`.
 
 La hipótesis 0 de esta prueba es que las varianzas con iguales.
 
@@ -201,3 +199,126 @@ Como esa probabilidad es muy baja (\<0.05), entonces se concluye que la diferenc
 
 En este caso, el p-value = 0.0000394 \< 0.05, entonces se rechaza la hipótesis que las medias poblacionales de las llamadas a CVs son iguales entre anglos y afros, por lo que se afirma que las tasas de llamadas son diferentes (a favor de los anglos) en la población, confirmándose con este que existiría una discriminación por raza en el mercado laboral americano.
 A iguales CVs, aquellos con nombres afros tienen una menor tasa de llamada a entrevistas de trabajo que aquellos con nombre anglos.
+
+Como la base de datos incluye también la variable "sex", se puede evaluar si existen diferencias en la tasa de respuesta a los CVs con nombres de hombre y con nombre de mujer.
+Para empezar veremos cuál es la diferencia en la tasa de respuesta.
+
+```{r mujer}
+mean(cv$call[cv$sex=="female"])*100 - mean(cv$call[cv$sex=="male"])*100
+```
+
+Se observa que en este caso la diferencia en la tasa de respuesta entre hombre y mujeres es 0.86%, cifra inferior a la diferencia encontrada con respecto a la etnicidad.
+Para analizar si esta diferencia se puede extrapolar a la población se tiene que correr la prueba t, con el requisito anterior de la prueba de Levene.
+
+```{r Levene 2}
+library(DescTools)
+LeveneTest(cv$call, cv$sex)
+```
+
+En este caso, el p-value es mayor a 0.05, por lo que se falla en rechazar la hipótesis de igualdad de varianzas, con lo que se debe asumir que parecen ser iguales (por lo que `var.equal=T`).
+
+```{r prueba t 2}
+t.test(call ~ sex, data = cv, var.equal=T)
+```
+
+El resultado de la prueba t nos indica que para el estadístico de la prueba t=0.93 se tiene un p-value = 0.35.
+Como 0.35\>0.05, entonces no se puede rechazar la H0.
+Esto nos lleva a concluir que con los datos *no se puede decir* que haya diferencias en la tasa de llamadas a CVs entre hombre y mujeres.
+
+En este texto es importante notar las itálicas de *no se puede decir* o *no se puede afirmar*.
+Cuando se obtiene un p-value \<= 0.05, se rechaza la H0 y se afirma la HA, que la diferencia existe en la población con un 95% de confianza.
+Pero, cuando se obtiene un p-value \> 0.05, no se afirma la HA, lo que se concluye es que no se puede rechazar la H0.
+Esto quiere decir que no afirmamos que las medias poblacionales sean iguales, sino que, con los datos que tenemos, no podemos decir que son diferentes.
+
+Para aclarar esto, vale la pena hacer una analogía jurírica.
+
+# Analogía del juicio
+
+Ya sea mediante nuestra experiencia viendo JusticiaTV o viendo series sobre abogados, la imagen que tenemos de un juicio es como esta imagen.
+
+![](5.juicio.jpeg){width="472"}
+
+En esta imagen hay varios actores:
+
+-   El acusado: entre rejas y con el traje naranja.
+
+-   El policía que cuida al acusado, pero que también simboliza a la institución que se encarga del recojo de pruebas.
+
+-   El fiscal o parte acusadora: que se encuentra mostrando una imagen de un cuchillo, posiblemente tomada por un policía.
+
+-   Los abogados defensores: sentados.
+
+-   El jurado: que evalúan las pruebas y tienen la facultad de emitir un veredicto.
+
+-   El juez: que anuncia el veredicto y le da carácter legal.
+
+La lógica que sigue este tipo de procedimiento es similar a la que sigue una prueba de inferencia estadística.
+
+-   La H0 es la hipótesis de no efecto.
+    En el caso del juicio es el supuesto de entrada de que el acusado es inocente.
+    Se llama "presunción de inocencia".
+    La hipótesis alternativa es que es culpable, pero para llegar a ella se requiere negar la H0 mediante datos o "evidencia".
+
+-   La policía es la que recoge la evidencia para que la fiscalía pueda acusar.
+    Es decir, la policía armaría la "base de datos" de evidencia.
+
+```{=html}
+<!-- -->
+```
+-   La labor de la fiscalía (la parte que acusa) es armar el caso.
+    Es decir, presentar la evidencia recogida por la policía de tal manera que el jurado se convenza del caso.
+    La fiscalía sería como la prueba de inferencia estadística.
+
+-   Mientras más y mejor evidencia presente la fiscalía, más elementos para que el jurado rechace la H0 de "presunción de inocencia".
+
+-   Si la evidencia no es sólida, el jurado tendrá dudas y puede no rechazar la Ho de presunción de inocencia.
+
+-   En el juicio no hay una medida matemática que resuma la evidencia a favor o en contra (como el p-value) ni un valor crítico para tomar una decisión.
+    Se asume que los jurados sabrán establecer ese límite en el cual la evidencia es lo suficientemente sólida para rechazar la H0.
+
+-   Si la evidencia cruza ese umbral de los jurados, se rechazará la H0.
+    El jurado recomendará su decisión al juez.
+    El juez anunciará que el acusado es "culpable".
+    Es decir, se afirma la HA.
+
+-   Si la evidencia no cruza ese umbral de los jurados, no se rechaza la H0.
+    El jurado trasladará su decisión al juez y el juez anunciará que el acusado "no es culpable".
+    Es decir, no se puede rechazar la H0.
+
+-   Es importante notar la decisión cuando la evidencia no es sólida.
+    No es lo mismo decir "no es culpable" a decir "es inocente".
+    Decir que el acusado no es culpable involucra una situación de incertidumbre.
+    Por ejemplo, si la policía no hizo bien su trabajo y no recogió la evidencia de manera adecuada, es posible que haya dudas con respecto al acusado.
+    Decir que el acusado es inocente, por el contrario, implica una certeza, que la evidencia es contundente en apuntar en esa dirección.
+
+-   A pesar que este método es científico puede llevar a errores.
+
+-   Falso positivo (o error de tipo I): cuando declaras culpable a un inocente.
+
+-   Falso negativo (o error de tipo II): cuando declaras no culpable a un culpable.
+
+![](error%20tipo%201%20y%202.jpg){width="466"}
+
+-   Para evitar falsos positivos se propone pedir evidencia cada vez más sólida para condenar a alguien.
+    Pero, si se exige evidencia cada vez más solida, aumenta la probabilidad de falsos negativos.
+    Ambos tipos de errores se contrabalancean mutuamente.
+
+![](chef.png){width="439"}
+
+¿Qué tipo de error es más pernicioso?
+Es un tema que los filósofos tratan de responder.
+
+"There are two ways to be fooled. One is to believe what isn´t true. The other is to refuse to believe what is true" (Soren Kierkegaard).
+
+# Nota final
+
+Este procedimiento se podría decir que es parte del método científico, en el sentido popperiano de "falseabilidad".
+Desde esta perspectiva, una investigación científica parte de una hipótesis de no efecto que busca negar con evidencia empírica para llegar a la conclusión que sí existen ese efecto.
+Las conclusiones a las que se llegan siempre tienen un componente de incertidumbre.
+
+Este método es contraintuitivo.
+El ser humano, por el contrario, generalmente busca evidencia para afirmar una hipótesis de que existe un efecto o relación.
+En cierto sentido, se busca reafirmar las prenociones.
+
+Por ejemplo, no es lo mismo partir de la hipótesis que la "revolución capitalista" en el Perú trajo bienestar y desarrollo y buscar evidencia que apoyo esta hipótesis, que partir de la hipótesis que la "revolución capitalista" NO trajo bienestar y desarrollo y buscar evidencia suficiente para negar esa hipótesis y afirmar que sí lo hizo.
+Para una muestra de esta diferencia ver el [comentario de Cotler al libro de Althaus](https://www.youtube.com/watch?v=935LKOuri54&t=43s).

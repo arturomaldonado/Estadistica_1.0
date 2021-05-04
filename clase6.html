@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase6</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="clase1.html">Clase1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase6</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase6</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">5/3/2021</h4>
+
+</div>
+
+
+<div id="introducción" class="section level1">
+<h1>Introducción</h1>
+<p>Hasta el momento se ha visto una prueba, la prueba t, para comparar medias de solo 2 grupos. En esta sección veremos cómo expandir la comparación para varias medias usando otra prueba de inferencia. Es decir, se busca analizar la relación entre una variable dependiente cuantitativa (o numérica) y una variable independiente categórica (o de factor).</p>
+<p>La media de la variable dependiente es comparada para cada grupo de la variable independiente categórica, típicamente una variable nominal. Por ejemplo:</p>
+<ul>
+<li><p>Ingresos entre grupos étnicos.</p></li>
+<li><p>CRAEST entre alumnos de especialidades de Ciencias Sociales.</p></li>
+<li><p>Posición ideológica entre simpatizantes de diferentes partidos.</p></li>
+</ul>
+<p>Para poder hacer estas comparaciones entre varios grupos vamos a usar el test del ANOVA</p>
+</div>
+<div id="test-de-anova" class="section level1">
+<h1>Test de ANOVA</h1>
+<p>El test de ANOVA sirve para comparar la media (o la proporción de una variable dummy) de una variable dependiente numérica entre grupos de una variable de tipo factor (con más de 2 grupos.</p>
+<p>Este test parte teóricamente de la distribución general de la variable numérica, la que tiene una media poblacional <span class="math inline">\(\mu\)</span>, y compara esta media poblacional general, con las medias poblacionales de la variable numérica por cada grupo de la variable de factor con n grupos, <span class="math inline">\(\mu_1...\mu_2...\mu_3...\mu_n\)</span>.</p>
+<p><img src="anova1.png" width="534" /></p>
+<p>Esta prueba se basa en la distribución F y propone la siguiente hipótesis nula para la comparación de una variable numérica X entre n grupos de la variable de factor.</p>
+<p><span class="math display">\[
+H0: \mu_{x1} = \mu_{x2} = \mu_{x1} =...= \mu_{xn}
+\]</span></p>
+<p>La hipótesis alternativa que propone es que al menos una media poblacional de un grupo es diferente. Es decir, si se rechaza la H0, quizá todas las medias poblacionales entre grupos sean distintas, quizá algunas o quizá solo una difiere de las otras.</p>
+<p>Esta prueba se basa en una comparación entre la variabilidad entre (between) y la variabilidad intra (within).</p>
+<div id="variabilidad-entre" class="section level2">
+<h2>Variabilidad entre</h2>
+<ul>
+<li><p>La variabilidad entre se refiere a la comparación de la media muestral grupal <span class="math inline">\(\overline{X}_1\)</span> y la media general <span class="math inline">\(\overline{X}\)</span>.</p></li>
+<li><p>Se entiende como un promedio ponderado de las distancias <span class="math inline">\(\overline{X_g}-\overline{X}\)</span>.</p></li>
+<li><p>Para evitar que sea una distancia negativa se eleva al cuadrado <span class="math inline">\((\overline{X_g}-\overline{X})^2\)</span>.</p></li>
+<li><p>Se pondera por el número de observaciones de cada grupo <span class="math inline">\(n_g*(\overline{X_g}-\overline{X})^2\)</span>.</p></li>
+<li><p>Se suma estas cantidades de cada grupo: <span class="math inline">\(\sum n_g*(\overline{X_g}-\overline{X})^2\)</span>.</p></li>
+<li><p>Esa suma se divide entre los grados de libertad g-1 (número de grupos -1).</p></li>
+</ul>
+</div>
+<div id="variabilidad-intra" class="section level2">
+<h2>Variabilidad intra</h2>
+<ul>
+<li><p>Es la variabilidad entre las observaciones de cada grupo con su media grupal.</p></li>
+<li><p>Se entiende como el cálculo de la desviación estándar en cada grupo.</p></li>
+<li><p>Se calcula <span class="math inline">\(\sum (X_i-\overline{X_g})^2\)</span> en cada grupo. Estas sumatorias se suman.</p></li>
+<li><p>Esa suma total se divide entre los grados de libertad N-g (total de observaciones - número de grupos).</p></li>
+</ul>
+</div>
+<div id="estadístico-de-la-prueba-f" class="section level2">
+<h2>Estadístico de la prueba F</h2>
+<ul>
+<li>Se calcula como F = estimado de la variabilidad entre / estimado de la variabilidad intra</li>
+</ul>
+<p>El estadístico F se hace grande cuando: hay mayor variabilidad entre y/o menos variabilidad intra.</p>
+<p>El estadístico F se hace pequeño cuando: hay menor variabilidad entre y/o mayor variabilidad intra.</p>
+<p>A medida que el estadístico F es más grande, se ubica más en la cola de la distribución, por lo que el p-value será menor, con los que se tendría una mayor evidencia en contra de la H0 sobre la igualdad de medias poblacionales.</p>
+<p><img src="anova2.png" width="534" /></p>
+<p>Por lo tanto se concluiría que al menos una de las medias grupales sería significativamente diferente de las otras medias grupales. El tema es que la prueba de ANOVA no llega hasta ahí, no nos indica qué medias son diferentes. Para saber qué media(s) es(son) diferente(s) se tiene que hacer un test posterior.</p>
+</div>
+<div id="post-hoc-test-de-tukey" class="section level2">
+<h2>Post hoc: Test de Tukey</h2>
+<p>Este test sirve para analizar qué diferencias entre grupos son significativas. Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pareja corre una prueba t de diferencia de medias y la reporta.</p>
+</div>
+</div>
+<div id="ejemplo" class="section level1">
+<h1>Ejemplo</h1>
+<p>En esta sección seguiremos usando el paper sobre discriminación en CVs <span class="citation">(Bertrand and Mullainathan 2004)</span> que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres. Estos investigadores enviaron CVs manipulando la raza y el género percibidos mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.</p>
+<p>En la sección anterior se encontró que sí había un sesgo en contra de los afroamericanos, pero que no se podía decir que hubiera un sesgo en contra de las mujeres en el mercado laboral. En los resultados comparando género, cuando se compara hombre y mujeres, en ambos grupos hay afroamericanos y angloamericanos.</p>
+<p>Una posibilidad es que haya una discriminación en el mercado laboral aún mayor en contra de las mujeres afroamericanos con respecto a los hombres afroamericanos, y de estos con respecto a los angloamericanos, sean hombre o mujeres. Es decir, que la tasa de respuesta a CVs sería menor para las mujeres afro que para los hombres afro y estos menores que la tasa de respuesta a los CVs de hombre o mujeres angloamericanos.</p>
+<p>Para evaluar esta hipótesis, primero cargamos nuevamente la base de datos.</p>
+<pre class="r"><code>library(rio)
+cv &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv&quot;)</code></pre>
+<p>En esta base de datos se tiene la raza y el género como variables separadas. Para hacer la evaluación que se busca se requiere crear una nueva variable de factor que combine los 4 grupos de raza y género.</p>
+<pre class="r"><code>cv$rxg &lt;- NA
+cv$rxg[cv$race==&quot;black&quot; &amp; cv$sex==&quot;female&quot;] &lt;- 1
+cv$rxg[cv$race==&quot;black&quot; &amp; cv$sex==&quot;male&quot;] &lt;- 2
+cv$rxg[cv$race==&quot;white&quot; &amp; cv$sex==&quot;female&quot;] &lt;- 3
+cv$rxg[cv$race==&quot;white&quot; &amp; cv$sex==&quot;male&quot;] &lt;- 4
+cv$rxg = as.factor(cv$rxg)
+levels(cv$rxg) &lt;- c(&quot;Black woman&quot;, &quot;Black man&quot;, &quot;White woman&quot;, &quot;White man&quot;)
+table(cv$rxg)</code></pre>
+<pre><code>## 
+## Black woman   Black man White woman   White man 
+##        1886         549        1860         575</code></pre>
+<p>Lo primero es recordar que la tasa de respuesta general es de 8% para toda la muestra.</p>
+<pre class="r"><code>mean(cv$call)*100</code></pre>
+<pre><code>## [1] 8.049281</code></pre>
+<p>Ahora podemos calcular la tasa de respuesta a los CVs por cada grupo. Esta comparación se puede guardar en un objeto “tabla1.”</p>
+<pre class="r"><code>library(psych)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:DescTools&#39;:
+## 
+##     AUC, ICC, SD</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre class="r"><code>tabla1 &lt;- describeBy(cv$call*100, group=cv$rxg)
+tabla1</code></pre>
+<pre><code>## 
+##  Descriptive statistics by group 
+## group: Black woman
+##    vars    n mean    sd median trimmed mad min max range skew kurtosis   se
+## X1    1 1886 6.63 24.88      0       0   0   0 100   100 3.48    10.15 0.57
+## ------------------------------------------------------------ 
+## group: Black man
+##    vars   n mean    sd median trimmed mad min max range skew kurtosis se
+## X1    1 549 5.83 23.45      0       0   0   0 100   100 3.76    12.16  1
+## ------------------------------------------------------------ 
+## group: White woman
+##    vars    n mean    sd median trimmed mad min max range skew kurtosis   se
+## X1    1 1860 9.89 29.86      0       0   0   0 100   100 2.68     5.21 0.69
+## ------------------------------------------------------------ 
+## group: White man
+##    vars   n mean    sd median trimmed mad min max range skew kurtosis   se
+## X1    1 575 8.87 28.46      0       0   0   0 100   100 2.89     6.34 1.19</code></pre>
+<p>También se puede ver esta comparación descriptiva en forma de gráfico.</p>
+<pre class="r"><code>library(gplots)
+plotmeans(cv$call*100~cv$rxg, connect=F, barwidth=3, xlab=&quot;Grupos&quot;, ylab=&quot;Tasa de respuesta&quot;,
+          ylim=c(0, 15), main=&quot;Tasa de respuesta por grupos&quot;)</code></pre>
+<p><img src="clase6_files/figure-html/plot-1.png" width="672" /></p>
+<p>Para comprobar esta comparación “informal” se tiene que correr el test de ANOVA.</p>
+<pre class="r"><code>anova &lt;- aov(cv$call*100~cv$rxg)
+summary(anova)</code></pre>
+<pre><code>##               Df  Sum Sq Mean Sq F value   Pr(&gt;F)    
+## cv$rxg         3   13224    4408   5.973 0.000464 ***
+## Residuals   4866 3591244     738                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Se obtiene un estadístico F de 5.97, con lo que se calcula un p-value &lt; 0.05. Esto nos lleva apoder rechazar la H0 de igualdad de medias grupales poblacionales. Por lo tanto concluimos que alguna de estas medias grupales es diferente.</p>
+<p>Para saber cuál es diferente se tiene que correr el Test de Tukey.</p>
+<pre class="r"><code>TukeyHSD(anova)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = cv$call * 100 ~ cv$rxg)
+## 
+## $`cv$rxg`
+##                               diff        lwr      upr     p adj
+## Black man-Black woman   -0.7990041 -4.1847039 2.586696 0.9300509
+## White woman-Black woman  3.2646894  0.9832311 5.546148 0.0013600
+## White man-Black woman    2.2417815 -1.0841019 5.567665 0.3069770
+## White woman-Black man    4.0636935  0.6726627 7.454724 0.0112033
+## White man-Black man      3.0407856 -1.1252122 7.206783 0.2385995
+## White man-White woman   -1.0229079 -4.3542181 2.308402 0.8594370</code></pre>
+<p>Este test nos brinda resultados por cada emparejamiento. Se concluye que hay 2 emparejamientos relevantes, que llevan a la conclusión que las mujeres blancas tienen una tasa de respuesta mayor que los hombre y mujeres afro.</p>
+<p>Estas diferencias se pueden ver de manera gráfica.</p>
+<pre class="r"><code>plot(TukeyHSD(anova))</code></pre>
+<p><img src="clase6_files/figure-html/plot%20Tukey-1.png" width="672" /></p>
+<p>Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-bertrandAreEmilyGreg2004" class="csl-entry">
+Bertrand, Marianne, and Sendhil Mullainathan. 2004. <span>“Are <span>Emily</span> and <span>Greg More Employable Than Lakisha</span> and <span>Jamal</span>? <span>A Field Experiment</span> on <span>Labor Market Discrimination</span>.”</span> <em>American Economic Review</em> 94 (4): 991–1013. <a href="https://doi.org/10.1257/0002828042002561">https://doi.org/10.1257/0002828042002561</a>.
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2U2IgphdXRob3I6ICJBcnR1cm8gTWFsZG9uYWRvIgpkYXRlOiAiNS8zLzIwMjEiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGNvc21vCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlCmVkaXRvcl9vcHRpb25zOgogIG1hcmtkb3duOgogICAgd3JhcDogc2VudGVuY2UKYmlibGlvZ3JhcGh5OiByZWZlcmVuY2VzLmJpYgotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCmBgYAoKIyBJbnRyb2R1Y2Npw7NuCgpIYXN0YSBlbCBtb21lbnRvIHNlIGhhIHZpc3RvIHVuYSBwcnVlYmEsIGxhIHBydWViYSB0LCBwYXJhIGNvbXBhcmFyIG1lZGlhcyBkZSBzb2xvIDIgZ3J1cG9zLgpFbiBlc3RhIHNlY2Npw7NuIHZlcmVtb3MgY8OzbW8gZXhwYW5kaXIgbGEgY29tcGFyYWNpw7NuIHBhcmEgdmFyaWFzIG1lZGlhcyB1c2FuZG8gb3RyYSBwcnVlYmEgZGUgaW5mZXJlbmNpYS4KRXMgZGVjaXIsIHNlIGJ1c2NhIGFuYWxpemFyIGxhIHJlbGFjacOzbiBlbnRyZSB1bmEgdmFyaWFibGUgZGVwZW5kaWVudGUgY3VhbnRpdGF0aXZhIChvIG51bcOpcmljYSkgeSB1bmEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSBjYXRlZ8OzcmljYSAobyBkZSBmYWN0b3IpLgoKTGEgbWVkaWEgZGUgbGEgdmFyaWFibGUgZGVwZW5kaWVudGUgZXMgY29tcGFyYWRhIHBhcmEgY2FkYSBncnVwbyBkZSBsYSB2YXJpYWJsZSBpbmRlcGVuZGllbnRlIGNhdGVnw7NyaWNhLCB0w61waWNhbWVudGUgdW5hIHZhcmlhYmxlIG5vbWluYWwuClBvciBlamVtcGxvOgoKLSAgIEluZ3Jlc29zIGVudHJlIGdydXBvcyDDqXRuaWNvcy4KCi0gICBDUkFFU1QgZW50cmUgYWx1bW5vcyBkZSBlc3BlY2lhbGlkYWRlcyBkZSBDaWVuY2lhcyBTb2NpYWxlcy4KCi0gICBQb3NpY2nDs24gaWRlb2zDs2dpY2EgZW50cmUgc2ltcGF0aXphbnRlcyBkZSBkaWZlcmVudGVzIHBhcnRpZG9zLgoKUGFyYSBwb2RlciBoYWNlciBlc3RhcyBjb21wYXJhY2lvbmVzIGVudHJlIHZhcmlvcyBncnVwb3MgdmFtb3MgYSB1c2FyIGVsIHRlc3QgZGVsIEFOT1ZBCgojIFRlc3QgZGUgQU5PVkEKCkVsIHRlc3QgZGUgQU5PVkEgc2lydmUgcGFyYSBjb21wYXJhciBsYSBtZWRpYSAobyBsYSBwcm9wb3JjacOzbiBkZSB1bmEgdmFyaWFibGUgZHVtbXkpIGRlIHVuYSB2YXJpYWJsZSBkZXBlbmRpZW50ZSBudW3DqXJpY2EgZW50cmUgZ3J1cG9zIGRlIHVuYSB2YXJpYWJsZSBkZSB0aXBvIGZhY3RvciAoY29uIG3DoXMgZGUgMiBncnVwb3MuCgpFc3RlIHRlc3QgcGFydGUgdGXDs3JpY2FtZW50ZSBkZSBsYSBkaXN0cmlidWNpw7NuIGdlbmVyYWwgZGUgbGEgdmFyaWFibGUgbnVtw6lyaWNhLCBsYSBxdWUgdGllbmUgdW5hIG1lZGlhIHBvYmxhY2lvbmFsICRcbXUkLCB5IGNvbXBhcmEgZXN0YSBtZWRpYSBwb2JsYWNpb25hbCBnZW5lcmFsLCBjb24gbGFzIG1lZGlhcyBwb2JsYWNpb25hbGVzIGRlIGxhIHZhcmlhYmxlIG51bcOpcmljYSBwb3IgY2FkYSBncnVwbyBkZSBsYSB2YXJpYWJsZSBkZSBmYWN0b3IgY29uIG4gZ3J1cG9zLCAkXG11XzEuLi5cbXVfMi4uLlxtdV8zLi4uXG11X24kLgoKIVtdKGFub3ZhMS5wbmcpe3dpZHRoPSI1MzQifQoKRXN0YSBwcnVlYmEgc2UgYmFzYSBlbiBsYSBkaXN0cmlidWNpw7NuIEYgeSBwcm9wb25lIGxhIHNpZ3VpZW50ZSBoaXDDs3Rlc2lzIG51bGEgcGFyYSBsYSBjb21wYXJhY2nDs24gZGUgdW5hIHZhcmlhYmxlIG51bcOpcmljYSBYIGVudHJlIG4gZ3J1cG9zIGRlIGxhIHZhcmlhYmxlIGRlIGZhY3Rvci4KCiQkCkgwOiBcbXVfe3gxfSA9IFxtdV97eDJ9ID0gXG11X3t4MX0gPS4uLj0gXG11X3t4bn0KJCQKCkxhIGhpcMOzdGVzaXMgYWx0ZXJuYXRpdmEgcXVlIHByb3BvbmUgZXMgcXVlIGFsIG1lbm9zIHVuYSBtZWRpYSBwb2JsYWNpb25hbCBkZSB1biBncnVwbyBlcyBkaWZlcmVudGUuCkVzIGRlY2lyLCBzaSBzZSByZWNoYXphIGxhIEgwLCBxdWl6w6EgdG9kYXMgbGFzIG1lZGlhcyBwb2JsYWNpb25hbGVzIGVudHJlIGdydXBvcyBzZWFuIGRpc3RpbnRhcywgcXVpesOhIGFsZ3VuYXMgbyBxdWl6w6Egc29sbyB1bmEgZGlmaWVyZSBkZSBsYXMgb3RyYXMuCgpFc3RhIHBydWViYSBzZSBiYXNhIGVuIHVuYSBjb21wYXJhY2nDs24gZW50cmUgbGEgdmFyaWFiaWxpZGFkIGVudHJlIChiZXR3ZWVuKSB5IGxhIHZhcmlhYmlsaWRhZCBpbnRyYSAod2l0aGluKS4KCiMjIFZhcmlhYmlsaWRhZCBlbnRyZSAKCi0gICBMYSB2YXJpYWJpbGlkYWQgZW50cmUgc2UgcmVmaWVyZSBhIGxhIGNvbXBhcmFjacOzbiBkZSBsYSBtZWRpYSBtdWVzdHJhbCBncnVwYWwgJFxvdmVybGluZXtYfV8xJCB5IGxhIG1lZGlhIGdlbmVyYWwgJFxvdmVybGluZXtYfSQuCgotICAgU2UgZW50aWVuZGUgY29tbyB1biBwcm9tZWRpbyBwb25kZXJhZG8gZGUgbGFzIGRpc3RhbmNpYXMgJFxvdmVybGluZXtYX2d9LVxvdmVybGluZXtYfSQuCgotICAgUGFyYSBldml0YXIgcXVlIHNlYSB1bmEgZGlzdGFuY2lhIG5lZ2F0aXZhIHNlIGVsZXZhIGFsIGN1YWRyYWRvICQoXG92ZXJsaW5le1hfZ30tXG92ZXJsaW5le1h9KV4yJC4KCi0gICBTZSBwb25kZXJhIHBvciBlbCBuw7ptZXJvIGRlIG9ic2VydmFjaW9uZXMgZGUgY2FkYSBncnVwbyAkbl9nKihcb3ZlcmxpbmV7WF9nfS1cb3ZlcmxpbmV7WH0pXjIkLgoKLSAgIFNlIHN1bWEgZXN0YXMgY2FudGlkYWRlcyBkZSBjYWRhIGdydXBvOiAkXHN1bSBuX2cqKFxvdmVybGluZXtYX2d9LVxvdmVybGluZXtYfSleMiQuCgotICAgRXNhIHN1bWEgc2UgZGl2aWRlIGVudHJlIGxvcyBncmFkb3MgZGUgbGliZXJ0YWQgZy0xIChuw7ptZXJvIGRlIGdydXBvcyAtMSkuCgojIyBWYXJpYWJpbGlkYWQgaW50cmEKCi0gICBFcyBsYSB2YXJpYWJpbGlkYWQgZW50cmUgbGFzIG9ic2VydmFjaW9uZXMgZGUgY2FkYSBncnVwbyBjb24gc3UgbWVkaWEgZ3J1cGFsLgoKLSAgIFNlIGVudGllbmRlIGNvbW8gZWwgY8OhbGN1bG8gZGUgbGEgZGVzdmlhY2nDs24gZXN0w6FuZGFyIGVuIGNhZGEgZ3J1cG8uCgotICAgU2UgY2FsY3VsYSAkXHN1bSAoWF9pLVxvdmVybGluZXtYX2d9KV4yJCBlbiBjYWRhIGdydXBvLgogICAgRXN0YXMgc3VtYXRvcmlhcyBzZSBzdW1hbi4KCi0gICBFc2Egc3VtYSB0b3RhbCBzZSBkaXZpZGUgZW50cmUgbG9zIGdyYWRvcyBkZSBsaWJlcnRhZCBOLWcgKHRvdGFsIGRlIG9ic2VydmFjaW9uZXMgLSBuw7ptZXJvIGRlIGdydXBvcykuCgojIyBFc3RhZMOtc3RpY28gZGUgbGEgcHJ1ZWJhIEYKCi0gICBTZSBjYWxjdWxhIGNvbW8gRiA9IGVzdGltYWRvIGRlIGxhIHZhcmlhYmlsaWRhZCBlbnRyZSAvIGVzdGltYWRvIGRlIGxhIHZhcmlhYmlsaWRhZCBpbnRyYQoKRWwgZXN0YWTDrXN0aWNvIEYgc2UgaGFjZSBncmFuZGUgY3VhbmRvOiBoYXkgbWF5b3IgdmFyaWFiaWxpZGFkIGVudHJlIHkvbyBtZW5vcyB2YXJpYWJpbGlkYWQgaW50cmEuCgpFbCBlc3RhZMOtc3RpY28gRiBzZSBoYWNlIHBlcXVlw7FvIGN1YW5kbzogaGF5IG1lbm9yIHZhcmlhYmlsaWRhZCBlbnRyZSB5L28gbWF5b3IgdmFyaWFiaWxpZGFkIGludHJhLgoKQSBtZWRpZGEgcXVlIGVsIGVzdGFkw61zdGljbyBGIGVzIG3DoXMgZ3JhbmRlLCBzZSB1YmljYSBtw6FzIGVuIGxhIGNvbGEgZGUgbGEgZGlzdHJpYnVjacOzbiwgcG9yIGxvIHF1ZSBlbCBwLXZhbHVlIHNlcsOhIG1lbm9yLCBjb24gbG9zIHF1ZSBzZSB0ZW5kcsOtYSB1bmEgbWF5b3IgZXZpZGVuY2lhIGVuIGNvbnRyYSBkZSBsYSBIMCBzb2JyZSBsYSBpZ3VhbGRhZCBkZSBtZWRpYXMgcG9ibGFjaW9uYWxlcy4KCiFbXShhbm92YTIucG5nKXt3aWR0aD0iNTM0In0KClBvciBsbyB0YW50byBzZSBjb25jbHVpcsOtYSBxdWUgYWwgbWVub3MgdW5hIGRlIGxhcyBtZWRpYXMgZ3J1cGFsZXMgc2Vyw61hIHNpZ25pZmljYXRpdmFtZW50ZSBkaWZlcmVudGUgZGUgbGFzIG90cmFzIG1lZGlhcyBncnVwYWxlcy4KRWwgdGVtYSBlcyBxdWUgbGEgcHJ1ZWJhIGRlIEFOT1ZBIG5vIGxsZWdhIGhhc3RhIGFow60sIG5vIG5vcyBpbmRpY2EgcXXDqSBtZWRpYXMgc29uIGRpZmVyZW50ZXMuClBhcmEgc2FiZXIgcXXDqSBtZWRpYShzKSBlcyhzb24pIGRpZmVyZW50ZShzKSBzZSB0aWVuZSBxdWUgaGFjZXIgdW4gdGVzdCBwb3N0ZXJpb3IuCgojIyBQb3N0IGhvYzogVGVzdCBkZSBUdWtleQoKRXN0ZSB0ZXN0IHNpcnZlIHBhcmEgYW5hbGl6YXIgcXXDqSBkaWZlcmVuY2lhcyBlbnRyZSBncnVwb3Mgc29uIHNpZ25pZmljYXRpdmFzLgpFcyBkZWNpciwgcmVwb3J0YSB0b2RvcyBsb3MgZW1wYXJlamFtaWVudG9zIHBvc2libGVzIGVudHJlIGdydXBvcyB5IGVuIGNhZGEgcGFyZWphIGNvcnJlIHVuYSBwcnVlYmEgdCBkZSBkaWZlcmVuY2lhIGRlIG1lZGlhcyB5IGxhIHJlcG9ydGEuCgojIEVqZW1wbG8KCkVuIGVzdGEgc2VjY2nDs24gc2VndWlyZW1vcyB1c2FuZG8gZWwgcGFwZXIgc29icmUgZGlzY3JpbWluYWNpw7NuIGVuIENWcyBbQGJlcnRyYW5kQXJlRW1pbHlHcmVnMjAwNF0gcXVlIGJ1c2NhbiBldmFsdWFyIHNpIGhheSB1bmEgZGlzY3JpbWluYWNpw7NuIGVuIGVsIG1lcmNhZG8gbGFib3JhbCBlbnRyZSBhZnJvYW1lcmljYW5vcyB5IGFuZ2xvYW1lcmljYW5vcyB5IGVudHJlIGhvbWJyZXMgeSBtdWplcmVzLgpFc3RvcyBpbnZlc3RpZ2Fkb3JlcyBlbnZpYXJvbiBDVnMgbWFuaXB1bGFuZG8gbGEgcmF6YSB5IGVsIGfDqW5lcm8gcGVyY2liaWRvcyBtZWRpYW50ZSBub21icmVzIGNsYXJhbWVudGUgYXNvY2lhZG9zIGEgbG9zIGFmcm9hbWVyaWNhbm9zIHkgbm9tYnJlcyBjbGFyYW1lbnRlIGFzb2NpYWRvcyBhIGFuZ2xvYW1lcmljYW5vcywgdGFudG8gbm9tYnJlcyBtYXNjdWxpbm9zIGNvbW8gZmVtZW5pbm9zLgoKRW4gbGEgc2VjY2nDs24gYW50ZXJpb3Igc2UgZW5jb250csOzIHF1ZSBzw60gaGFiw61hIHVuIHNlc2dvIGVuIGNvbnRyYSBkZSBsb3MgYWZyb2FtZXJpY2Fub3MsIHBlcm8gcXVlIG5vIHNlIHBvZMOtYSBkZWNpciBxdWUgaHViaWVyYSB1biBzZXNnbyBlbiBjb250cmEgZGUgbGFzIG11amVyZXMgZW4gZWwgbWVyY2FkbyBsYWJvcmFsLgpFbiBsb3MgcmVzdWx0YWRvcyBjb21wYXJhbmRvIGfDqW5lcm8sIGN1YW5kbyBzZSBjb21wYXJhIGhvbWJyZSB5IG11amVyZXMsIGVuIGFtYm9zIGdydXBvcyBoYXkgYWZyb2FtZXJpY2Fub3MgeSBhbmdsb2FtZXJpY2Fub3MuCgpVbmEgcG9zaWJpbGlkYWQgZXMgcXVlIGhheWEgdW5hIGRpc2NyaW1pbmFjacOzbiBlbiBlbCBtZXJjYWRvIGxhYm9yYWwgYcO6biBtYXlvciBlbiBjb250cmEgZGUgbGFzIG11amVyZXMgYWZyb2FtZXJpY2Fub3MgY29uIHJlc3BlY3RvIGEgbG9zIGhvbWJyZXMgYWZyb2FtZXJpY2Fub3MsIHkgZGUgZXN0b3MgY29uIHJlc3BlY3RvIGEgbG9zIGFuZ2xvYW1lcmljYW5vcywgc2VhbiBob21icmUgbyBtdWplcmVzLgpFcyBkZWNpciwgcXVlIGxhIHRhc2EgZGUgcmVzcHVlc3RhIGEgQ1ZzIHNlcsOtYSBtZW5vciBwYXJhIGxhcyBtdWplcmVzIGFmcm8gcXVlIHBhcmEgbG9zIGhvbWJyZXMgYWZybyB5IGVzdG9zIG1lbm9yZXMgcXVlIGxhIHRhc2EgZGUgcmVzcHVlc3RhIGEgbG9zIENWcyBkZSBob21icmUgbyBtdWplcmVzIGFuZ2xvYW1lcmljYW5vcy4KClBhcmEgZXZhbHVhciBlc3RhIGhpcMOzdGVzaXMsIHByaW1lcm8gY2FyZ2Ftb3MgbnVldmFtZW50ZSBsYSBiYXNlIGRlIGRhdG9zLgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pCmN2IDwtIGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9hcnR1cm9tYWxkb25hZG8vRXN0YWRpc3RpY2FfMS4wL21haW4vY3YuY3N2IikKYGBgCgpFbiBlc3RhIGJhc2UgZGUgZGF0b3Mgc2UgdGllbmUgbGEgcmF6YSB5IGVsIGfDqW5lcm8gY29tbyB2YXJpYWJsZXMgc2VwYXJhZGFzLgpQYXJhIGhhY2VyIGxhIGV2YWx1YWNpw7NuIHF1ZSBzZSBidXNjYSBzZSByZXF1aWVyZSBjcmVhciB1bmEgbnVldmEgdmFyaWFibGUgZGUgZmFjdG9yIHF1ZSBjb21iaW5lIGxvcyA0IGdydXBvcyBkZSByYXphIHkgZ8OpbmVyby4KCmBgYHtyIGZhY3Rvcn0KY3YkcnhnIDwtIE5BCmN2JHJ4Z1tjdiRyYWNlPT0iYmxhY2siICYgY3Ykc2V4PT0iZmVtYWxlIl0gPC0gMQpjdiRyeGdbY3YkcmFjZT09ImJsYWNrIiAmIGN2JHNleD09Im1hbGUiXSA8LSAyCmN2JHJ4Z1tjdiRyYWNlPT0id2hpdGUiICYgY3Ykc2V4PT0iZmVtYWxlIl0gPC0gMwpjdiRyeGdbY3YkcmFjZT09IndoaXRlIiAmIGN2JHNleD09Im1hbGUiXSA8LSA0CmN2JHJ4ZyA9IGFzLmZhY3RvcihjdiRyeGcpCmxldmVscyhjdiRyeGcpIDwtIGMoIkJsYWNrIHdvbWFuIiwgIkJsYWNrIG1hbiIsICJXaGl0ZSB3b21hbiIsICJXaGl0ZSBtYW4iKQp0YWJsZShjdiRyeGcpCmBgYAoKTG8gcHJpbWVybyBlcyByZWNvcmRhciBxdWUgbGEgdGFzYSBkZSByZXNwdWVzdGEgZ2VuZXJhbCBlcyBkZSA4JSBwYXJhIHRvZGEgbGEgbXVlc3RyYS4KCmBgYHtyIHRhc2F9Cm1lYW4oY3YkY2FsbCkqMTAwCmBgYAoKQWhvcmEgcG9kZW1vcyBjYWxjdWxhciBsYSB0YXNhIGRlIHJlc3B1ZXN0YSBhIGxvcyBDVnMgcG9yIGNhZGEgZ3J1cG8uCkVzdGEgY29tcGFyYWNpw7NuIHNlIHB1ZWRlIGd1YXJkYXIgZW4gdW4gb2JqZXRvICJ0YWJsYTEiLgoKYGBge3IgdGFzYSBwb3IgZ3J1cG9zfQpsaWJyYXJ5KHBzeWNoKQp0YWJsYTEgPC0gZGVzY3JpYmVCeShjdiRjYWxsKjEwMCwgZ3JvdXA9Y3YkcnhnKQp0YWJsYTEKYGBgCgpUYW1iacOpbiBzZSBwdWVkZSB2ZXIgZXN0YSBjb21wYXJhY2nDs24gZGVzY3JpcHRpdmEgZW4gZm9ybWEgZGUgZ3LDoWZpY28uCgpgYGB7ciBwbG90fQpsaWJyYXJ5KGdwbG90cykKcGxvdG1lYW5zKGN2JGNhbGwqMTAwfmN2JHJ4ZywgY29ubmVjdD1GLCBiYXJ3aWR0aD0zLCB4bGFiPSJHcnVwb3MiLCB5bGFiPSJUYXNhIGRlIHJlc3B1ZXN0YSIsCiAgICAgICAgICB5bGltPWMoMCwgMTUpLCBtYWluPSJUYXNhIGRlIHJlc3B1ZXN0YSBwb3IgZ3J1cG9zIikKYGBgCgpQYXJhIGNvbXByb2JhciBlc3RhIGNvbXBhcmFjacOzbiAiaW5mb3JtYWwiIHNlIHRpZW5lIHF1ZSBjb3JyZXIgZWwgdGVzdCBkZSBBTk9WQS4KCmBgYHtyIGFub3ZhfQphbm92YSA8LSBhb3YoY3YkY2FsbCoxMDB+Y3YkcnhnKQpzdW1tYXJ5KGFub3ZhKQpgYGAKClNlIG9idGllbmUgdW4gZXN0YWTDrXN0aWNvIEYgZGUgNS45NywgY29uIGxvIHF1ZSBzZSBjYWxjdWxhIHVuIHAtdmFsdWUgXDwgMC4wNS4KRXN0byBub3MgbGxldmEgYXBvZGVyIHJlY2hhemFyIGxhIEgwIGRlIGlndWFsZGFkIGRlIG1lZGlhcyBncnVwYWxlcyBwb2JsYWNpb25hbGVzLgpQb3IgbG8gdGFudG8gY29uY2x1aW1vcyBxdWUgYWxndW5hIGRlIGVzdGFzIG1lZGlhcyBncnVwYWxlcyBlcyBkaWZlcmVudGUuCgpQYXJhIHNhYmVyIGN1w6FsIGVzIGRpZmVyZW50ZSBzZSB0aWVuZSBxdWUgY29ycmVyIGVsIFRlc3QgZGUgVHVrZXkuCgpgYGB7ciB0dWtleX0KVHVrZXlIU0QoYW5vdmEpCgpgYGAKCkVzdGUgdGVzdCBub3MgYnJpbmRhIHJlc3VsdGFkb3MgcG9yIGNhZGEgZW1wYXJlamFtaWVudG8uClNlIGNvbmNsdXllIHF1ZSBoYXkgMiBlbXBhcmVqYW1pZW50b3MgcmVsZXZhbnRlcywgcXVlIGxsZXZhbiBhIGxhIGNvbmNsdXNpw7NuIHF1ZSBsYXMgbXVqZXJlcyBibGFuY2FzIHRpZW5lbiB1bmEgdGFzYSBkZSByZXNwdWVzdGEgbWF5b3IgcXVlIGxvcyBob21icmUgeSBtdWplcmVzIGFmcm8uCgpFc3RhcyBkaWZlcmVuY2lhcyBzZSBwdWVkZW4gdmVyIGRlIG1hbmVyYSBncsOhZmljYS4KCmBgYHtyIHBsb3QgVHVrZXl9CnBsb3QoVHVrZXlIU0QoYW5vdmEpKQpgYGAKCkFxdWVsbG9zIGVtcGFyZWphbWllbnRvcyBjdXlhcyBsw61uZWFzIG5vIGNydWNlbiBsYSBsw61uZWEgdmVydGljYWwgZGVsIGNlcm8sIHNlIHB1ZWRlIGRlY2lyIHF1ZSBoYXkgZGlmZXJlbmNpYXMgZXN0YWTDrXN0aWNhbWVudGUgc2lnbmlmaWNhdGl2YXMuCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase6.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

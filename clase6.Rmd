@@ -1,0 +1,189 @@
+---
+title: "Clase6"
+author: "Arturo Maldonado"
+date: "5/3/2021"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: cosmo
+    highlight: textmate
+editor_options:
+  markdown:
+    wrap: sentence
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+Hasta el momento se ha visto una prueba, la prueba t, para comparar medias de solo 2 grupos.
+En esta sección veremos cómo expandir la comparación para varias medias usando otra prueba de inferencia.
+Es decir, se busca analizar la relación entre una variable dependiente cuantitativa (o numérica) y una variable independiente categórica (o de factor).
+
+La media de la variable dependiente es comparada para cada grupo de la variable independiente categórica, típicamente una variable nominal.
+Por ejemplo:
+
+-   Ingresos entre grupos étnicos.
+
+-   CRAEST entre alumnos de especialidades de Ciencias Sociales.
+
+-   Posición ideológica entre simpatizantes de diferentes partidos.
+
+Para poder hacer estas comparaciones entre varios grupos vamos a usar el test del ANOVA
+
+# Test de ANOVA
+
+El test de ANOVA sirve para comparar la media (o la proporción de una variable dummy) de una variable dependiente numérica entre grupos de una variable de tipo factor (con más de 2 grupos.
+
+Este test parte teóricamente de la distribución general de la variable numérica, la que tiene una media poblacional $\mu$, y compara esta media poblacional general, con las medias poblacionales de la variable numérica por cada grupo de la variable de factor con n grupos, $\mu_1...\mu_2...\mu_3...\mu_n$.
+
+![](anova1.png){width="534"}
+
+Esta prueba se basa en la distribución F y propone la siguiente hipótesis nula para la comparación de una variable numérica X entre n grupos de la variable de factor.
+
+$$
+H0: \mu_{x1} = \mu_{x2} = \mu_{x1} =...= \mu_{xn}
+$$
+
+La hipótesis alternativa que propone es que al menos una media poblacional de un grupo es diferente.
+Es decir, si se rechaza la H0, quizá todas las medias poblacionales entre grupos sean distintas, quizá algunas o quizá solo una difiere de las otras.
+
+Esta prueba se basa en una comparación entre la variabilidad entre (between) y la variabilidad intra (within).
+
+## Variabilidad entre 
+
+-   La variabilidad entre se refiere a la comparación de la media muestral grupal $\overline{X}_1$ y la media general $\overline{X}$.
+
+-   Se entiende como un promedio ponderado de las distancias $\overline{X_g}-\overline{X}$.
+
+-   Para evitar que sea una distancia negativa se eleva al cuadrado $(\overline{X_g}-\overline{X})^2$.
+
+-   Se pondera por el número de observaciones de cada grupo $n_g*(\overline{X_g}-\overline{X})^2$.
+
+-   Se suma estas cantidades de cada grupo: $\sum n_g*(\overline{X_g}-\overline{X})^2$.
+
+-   Esa suma se divide entre los grados de libertad g-1 (número de grupos -1).
+
+## Variabilidad intra
+
+-   Es la variabilidad entre las observaciones de cada grupo con su media grupal.
+
+-   Se entiende como el cálculo de la desviación estándar en cada grupo.
+
+-   Se calcula $\sum (X_i-\overline{X_g})^2$ en cada grupo.
+    Estas sumatorias se suman.
+
+-   Esa suma total se divide entre los grados de libertad N-g (total de observaciones - número de grupos).
+
+## Estadístico de la prueba F
+
+-   Se calcula como F = estimado de la variabilidad entre / estimado de la variabilidad intra
+
+El estadístico F se hace grande cuando: hay mayor variabilidad entre y/o menos variabilidad intra.
+
+El estadístico F se hace pequeño cuando: hay menor variabilidad entre y/o mayor variabilidad intra.
+
+A medida que el estadístico F es más grande, se ubica más en la cola de la distribución, por lo que el p-value será menor, con los que se tendría una mayor evidencia en contra de la H0 sobre la igualdad de medias poblacionales.
+
+![](anova2.png){width="534"}
+
+Por lo tanto se concluiría que al menos una de las medias grupales sería significativamente diferente de las otras medias grupales.
+El tema es que la prueba de ANOVA no llega hasta ahí, no nos indica qué medias son diferentes.
+Para saber qué media(s) es(son) diferente(s) se tiene que hacer un test posterior.
+
+## Post hoc: Test de Tukey
+
+Este test sirve para analizar qué diferencias entre grupos son significativas.
+Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pareja corre una prueba t de diferencia de medias y la reporta.
+
+# Ejemplo
+
+En esta sección seguiremos usando el paper sobre discriminación en CVs [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres.
+Estos investigadores enviaron CVs manipulando la raza y el género percibidos mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.
+
+En la sección anterior se encontró que sí había un sesgo en contra de los afroamericanos, pero que no se podía decir que hubiera un sesgo en contra de las mujeres en el mercado laboral.
+En los resultados comparando género, cuando se compara hombre y mujeres, en ambos grupos hay afroamericanos y angloamericanos.
+
+Una posibilidad es que haya una discriminación en el mercado laboral aún mayor en contra de las mujeres afroamericanos con respecto a los hombres afroamericanos, y de estos con respecto a los angloamericanos, sean hombre o mujeres.
+Es decir, que la tasa de respuesta a CVs sería menor para las mujeres afro que para los hombres afro y estos menores que la tasa de respuesta a los CVs de hombre o mujeres angloamericanos.
+
+Para evaluar esta hipótesis, primero cargamos nuevamente la base de datos.
+
+```{r base}
+library(rio)
+cv <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv")
+```
+
+En esta base de datos se tiene la raza y el género como variables separadas.
+Para hacer la evaluación que se busca se requiere crear una nueva variable de factor que combine los 4 grupos de raza y género.
+
+```{r factor}
+cv$rxg <- NA
+cv$rxg[cv$race=="black" & cv$sex=="female"] <- 1
+cv$rxg[cv$race=="black" & cv$sex=="male"] <- 2
+cv$rxg[cv$race=="white" & cv$sex=="female"] <- 3
+cv$rxg[cv$race=="white" & cv$sex=="male"] <- 4
+cv$rxg = as.factor(cv$rxg)
+levels(cv$rxg) <- c("Black woman", "Black man", "White woman", "White man")
+table(cv$rxg)
+```
+
+Lo primero es recordar que la tasa de respuesta general es de 8% para toda la muestra.
+
+```{r tasa}
+mean(cv$call)*100
+```
+
+Ahora podemos calcular la tasa de respuesta a los CVs por cada grupo.
+Esta comparación se puede guardar en un objeto "tabla1".
+
+```{r tasa por grupos}
+library(psych)
+tabla1 <- describeBy(cv$call*100, group=cv$rxg)
+tabla1
+```
+
+También se puede ver esta comparación descriptiva en forma de gráfico.
+
+```{r plot}
+library(gplots)
+plotmeans(cv$call*100~cv$rxg, connect=F, barwidth=3, xlab="Grupos", ylab="Tasa de respuesta",
+          ylim=c(0, 15), main="Tasa de respuesta por grupos")
+```
+
+Para comprobar esta comparación "informal" se tiene que correr el test de ANOVA.
+
+```{r anova}
+anova <- aov(cv$call*100~cv$rxg)
+summary(anova)
+```
+
+Se obtiene un estadístico F de 5.97, con lo que se calcula un p-value \< 0.05.
+Esto nos lleva apoder rechazar la H0 de igualdad de medias grupales poblacionales.
+Por lo tanto concluimos que alguna de estas medias grupales es diferente.
+
+Para saber cuál es diferente se tiene que correr el Test de Tukey.
+
+```{r tukey}
+TukeyHSD(anova)
+
+```
+
+Este test nos brinda resultados por cada emparejamiento.
+Se concluye que hay 2 emparejamientos relevantes, que llevan a la conclusión que las mujeres blancas tienen una tasa de respuesta mayor que los hombre y mujeres afro.
+
+Estas diferencias se pueden ver de manera gráfica.
+
+```{r plot Tukey}
+plot(TukeyHSD(anova))
+```
+
+Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.

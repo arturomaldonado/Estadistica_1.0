@@ -58,7 +58,7 @@ Es decir, si se rechaza la H0, quizá todas las medias poblacionales entre grupo
 
 Esta prueba se basa en una comparación entre la variabilidad entre (between) y la variabilidad intra (within).
 
-## Variabilidad entre 
+## Variabilidad entre
 
 -   La variabilidad entre se refiere a la comparación de la media muestral grupal $\overline{X}_1$ y la media general $\overline{X}$.
 
@@ -106,7 +106,91 @@ Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pare
 
 # Ejemplo
 
-En esta sección seguiremos usando el paper sobre discriminación en CVs [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres.
+En esta sección seguiremos usando el paper de [@lalondeEvaluatingEconometricEvaluations1986] para evaluar los ingresos.
+En la sección anterior se encontró que había una diferencia estadísticamente significativa entre los afros y no afros en sus ingresos en 1978.
+
+```{r base LL}
+library(rio)
+LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+```
+
+Adicionalmente, se puede evaluar si existen diferencias extrapolables entre aquellos con un grado académico y aquellos que no.
+Para esto se vuelve a usar la prueba t entre estos dos grupos.
+En primer lugar, se evalúa si las varianzas son iguales o no.
+
+```{r Levene 1}
+library(DescTools)
+LeveneTest(LL$re78, LL$nodegree)
+```
+
+El resultado indica que se puede rechazar la hipótesis de igualdad de varianzas y asumir que son diferentes.
+Con esto se corre la prueba t.
+
+```{r t 1}
+t.test(re78 ~ nodegree, data = LL, var.equal=F)
+```
+
+Se encuentra que sí hay diferencias entre aquellos con un grado académico y aquellos que no.
+Ahora lo que queremos evaluar es si existen diferencias entre los afroamericanos con grado académico y sin grado académico y los no afroamericanos con grado y sin grado.
+Para hacer esta evaluación entre 4 grupos, lo primero es construir la variable que es la combinación de las variables "black" y "nodegree".
+
+```{r afro x grado}
+LL$axd <-NA
+LL$axd[LL$black==0 & LL$nodegree==0] <- 1 #no afro sin grado
+LL$axd[LL$black==0 & LL$nodegree==1] <- 2 #no afro con grado
+LL$axd[LL$black==1 & LL$nodegree==0] <- 3 #afro sin grado
+LL$axd[LL$black==1 & LL$nodegree==1] <- 4 #afro con grado
+```
+
+La variable creada es una variable numérica, la que se convierte a factor y se etiqueta.
+
+```{r factor afro x grado}
+LL$axd <- as.factor(LL$axd)
+levels(LL$axd) <- c("No afro sin grado", "No afro con grado", "Afro sin grado", "Afro con grado")
+table(LL$axd)
+```
+
+Antes de correr la prueba, es una buena práctica hacer una inspección descriptiva de los ingresos entre estos 4 grupos.
+
+```{r message=FALSE, warning=FALSE}
+library(psych)
+tabla1 <- describeBy(LL$re78, group=LL$raxd)
+tabla1
+```
+
+O también se puede hacer una inspección visual.
+A primera vista, no parece haber diferencias entre ningún grupo, en cuanto a ingresos.
+
+```{r medias afro x grado}
+library(gplots)
+plotmeans(LL$re78~LL$axd, connect=F, barwidth=3, xlab="Grupos", ylab="Ingresos 1978",
+          main="Ingresos por grupos")
+```
+
+Esta observación visual se tiene que confirmar con la prueba de ANOVA.
+
+```{r anova afro x grado}
+anova <- aov(LL$re78~LL$axd)
+summary(anova)
+```
+
+Con la prueba de ANOVA y el p-value correspondiente no se puede rechazar la H0, aunque muy marginalmente.
+Este p-value sí sería significativo a 0.10, pero tendríamos una probabilidad mayor de error de tipo I.
+Para confirmar esto, se corre la prueba de Tukey para analizar cada emparejamiento.
+
+```{r Tukey afro x grado}
+TukeyHSD(anova)
+```
+
+En este caso se observa que la diferencia entre afroamericanos con grado y no afroamericanos con grado es la que explica que ANOVA sea marginalmente significativo.
+
+NOTA: Hay ocasiones como esta en que la prueba de ANOVA indica que existe un emparejamiento con una diferencia significativa, y luego, cuando se evalúan los emparejamientos, no se observa esa diferencia.
+Eso es debido a que cada emparejamiento de evalúa mediante la prueba t de manera autónoma.
+
+# Para una variable categórica
+
+De la misma manera que en la sección anterior, ANOVA también se puede utilizar de manera **referencial** para evaluar las diferencias de proporciones entre más de 2 grupos.
+Por ejemplo, siguiendo con el ejemplo sobre discriminación en CVs [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres.
 Estos investigadores enviaron CVs manipulando la raza y el género percibidos mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.
 
 En la sección anterior se encontró que sí había un sesgo en contra de los afroamericanos, pero que no se podía decir que hubiera un sesgo en contra de las mujeres en el mercado laboral.
@@ -117,7 +201,7 @@ Es decir, que la tasa de respuesta a CVs sería menor para las mujeres afro que 
 
 Para evaluar esta hipótesis, primero cargamos nuevamente la base de datos.
 
-```{r base}
+```{r base, message=FALSE, warning=FALSE}
 library(rio)
 cv <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv")
 ```
@@ -147,8 +231,8 @@ Esta comparación se puede guardar en un objeto "tabla1".
 
 ```{r tasa por grupos}
 library(psych)
-tabla1 <- describeBy(cv$call*100, group=cv$rxg)
-tabla1
+tabla2 <- describeBy(cv$call*100, group=cv$rxg)
+tabla2
 ```
 
 También se puede ver esta comparación descriptiva en forma de gráfico.
@@ -162,19 +246,18 @@ plotmeans(cv$call*100~cv$rxg, connect=F, barwidth=3, xlab="Grupos", ylab="Tasa d
 Para comprobar esta comparación "informal" se tiene que correr el test de ANOVA.
 
 ```{r anova}
-anova <- aov(cv$call*100~cv$rxg)
-summary(anova)
+anova2 <- aov(cv$call*100~cv$rxg)
+summary(anova2)
 ```
 
 Se obtiene un estadístico F de 5.97, con lo que se calcula un p-value \< 0.05.
-Esto nos lleva apoder rechazar la H0 de igualdad de medias grupales poblacionales.
+Esto nos lleva a poder rechazar la H0 de igualdad de medias grupales poblacionales.
 Por lo tanto concluimos que alguna de estas medias grupales es diferente.
 
 Para saber cuál es diferente se tiene que correr el Test de Tukey.
 
 ```{r tukey}
-TukeyHSD(anova)
-
+TukeyHSD(anova2)
 ```
 
 Este test nos brinda resultados por cada emparejamiento.
@@ -183,7 +266,7 @@ Se concluye que hay 2 emparejamientos relevantes, que llevan a la conclusión qu
 Estas diferencias se pueden ver de manera gráfica.
 
 ```{r plot Tukey}
-plot(TukeyHSD(anova))
+plot(TukeyHSD(anova2))
 ```
 
 Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.

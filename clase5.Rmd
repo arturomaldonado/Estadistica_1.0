@@ -115,11 +115,67 @@ Se puede usar una calculadora de p-value de la distribución t disponible [aquí
 
 # Ejemplo
 
-En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012].
-Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
+En la sección anterior se evaluó de manera "informal" la hipótesis de Lalonde acerca de la diferencia en ingresos entre aquellos que son parte del programa de capacitación y entre aquellos que son afro y los que no.
+Ahora vamos a evaluar esta hipótesis formalmente mediante la prueba t.
+
+Lo primero es cargar la base de datos.
+
+```{r base LL, message=FALSE, warning=FALSE}
+library(rio)
+LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+```
+
+Lo primero es recordar las diferencias puntuales entre ambos grupos.
+
+```{r medias LL}
+mean(LL$re78[LL$treated==0])
+mean(LL$re78[LL$treated==1])
+```
+
+¿Con esos 880 dólares de diferencia extrapolables a la población?
+Para esto, lo primero es evaluar la hipótesis de la igualdad de varianzas mediante el test de Levene.
+
+```{r Levene 1}
+library(DescTools)
+LeveneTest(LL$re78, LL$treated)
+```
+
+Como el p-value es \> 0.05, se falla en rechazar la igualdad de varianzas, por lo que se tiene que asumir `var.equal=T`.
+
+```{r prueba t 1}
+t.test(re78 ~ treated, data = LL, var.equal=T)
+```
+
+Como el p-value = 0.06 \> 0.05, entonces no se puede rechazar la H0 y no se puede afirmar que esa diferencia exista en la población a tal nivel de significancia.
+Sin embargo, si se trabajara con un límite más permisible de 0.10, entonces sí se podría rechazar la H0 y afirmar que las diferencias son estadísticamente significativas, y, por lo tanto, extrapolables a la población, aunque con una mayor probabilidad de un error de tipo 1.
+
+Si se quisiera evaluar las diferencias de ingresos entre afros y no afros, lo primero es recordar las diferencias.
+
+```{r afro}
+mean(LL$re78[LL$black==0])
+mean(LL$re78[LL$black==1])
+```
+
+De la misma manera, primero se evalúa el test de Levene.
+
+```{r Levene afro}
+LeveneTest(LL$re78, LL$black)
+```
+
+Nuevamente, no se puede rechazar la H0 de igualdad de varianzas.
+
+```{r prueba t afro}
+t.test(re78 ~ black, data = LL, var.equal=T)
+```
+
+En este caso, el p-value \< 0.05, por lo que se rechaza la H0 y se concluye que la diferencia de 1,600 dólares entre afroamericanos y no afroamericanos sí existe en la población.
+
+# Evaluación de diferencia de proporciones
+
+En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012]. Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
 Estos investigadores enviaron CVs manipulando la raza percibida mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.
 
-```{r base}
+```{r base 2, message=FALSE, warning=FALSE}
 library(rio)
 cv <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv")
 ```
@@ -141,8 +197,12 @@ En el total de la muestra, solo el 8% de postulante recibió una llamada para pa
 mean(cv$call)*100
 ```
 
+Esta variable, sin embargo, es nominal (recibió una llamada: Si/No).
+Como esta variable es dummy (codificada como Si=1 y No=0), entonces la proporción de aquellos que recibieron una llamadas se puede calcular mediante la media.
+
 La pregunta de los autores de si existe discriminación racial en el mercado laboral indica que el porcentaje de llamadas que reciben los afros será menor al que reciben los blancos, a igual calificaciones y credenciales.
 Para esto, se tiene que calcular la proporción que recibió una llamada por raza.
+Este porcentaje de llamada según nombre se puede calcular con el comando `mean`.
 
 ```{r raza}
 mean(cv$call[cv$race=="white"])*100
@@ -156,15 +216,30 @@ Esto es lo mismo que decir, si la diferencia en la proporción de llamadas entre
 Si esa probabilidad fuera alta, entonces es muy probable que la diferencia poblacional sea 0.
 Si esa probabilidad fuera muy baja, entonces es probable que la diferencia poblacional no sea 0.
 
+## Mediante la prueba t
+
 Para poner a prueba esto, requerimos ir paso por paso en la inferencia estadística.
+Una primera opción es usar la prueba t, dado que si la proporción se puede calcular mediante la media, la diferencia de proporciones se podría evaluar mediante la diferencia de medias.
 
-Lo primero es plantear la hipótesis 0 del estudio y la hipótesis alternativa.
+El uso de la prueba t para evaluar la diferencia entre 2 proporciones es **referencial**.
+Los resultados entre `t.test` y `prop.test` no usan la misma distribución.
+La prueba t de diferencia de medias, usa la distribución t, mientras que la prueba de diferencia de medias usa la distribución de chi-cuadrado (que se verá más adelante).
+Por este motivo, los resultados numéricos no son iguales.
+Sin embargo, con los p-values de ambas pruebas se suelen llegar a las mismas conclusiones debido a que se asemejan en gran medida.
 
--   Luego, plantear la distribución muestral. Como el error estándar depende de si las varianzas parecen ser iguales o no, tenemos que correr una prueba para definir esto. Esta prueba se llama tests de Levene. Este test está disponible en la librería `Desctools`, con el comando `LeveneTest`.
+La recomendación es que si se trata de una prueba de proporciones que no es el punto central del argumento, se puede usar la prueba t, como un heurístico.
+Si se trata de una prueba que es central en el argumento, se debe usar la prueba adecuada a este tipo de variables de factor, que es la diferencia de proporciones, mediante el comando `prop.test`.
 
+Si se trabaja mediante la prueba t, lo primero es plantear la hipótesis 0 del estudio y la hipótesis alternativa.
 La hipótesis 0 de esta prueba es que las varianzas con iguales.
+Aquí usaremos el ejemplo de los CVs y se busca evaluar si hay diferencias en la proporción de respuesta (una variable de factor) entre CVs con nombres anglo y CVs con nombres afro.
 
-```{r Levene}
+Luego, plantear la distribución muestral.
+Como el error estándar depende de si las varianzas parecen ser iguales o no, tenemos que correr una prueba para definir esto.
+Esta prueba se llama tests de Levene.
+Este test está disponible en la librería `Desctools`, con el comando `LeveneTest`.
+
+```{r Levene 2}
 library(DescTools)
 LeveneTest(cv$call, cv$race)
 ```
@@ -176,13 +251,13 @@ LeveneTest(cv$call, cv$race)
     Eso significa que `var.equal=T`.
 
 De acuerdo a estos resultados, podemos rechazar la H0 y afirmar que las varianzas parecen diferentes.
-Por lo tanto, usamos esa fórmula en la aproximación de la distrinución muestral.
+Por lo tanto, usamos esa fórmula en la aproximación de la distribución muestral.
 
 El siguiente paso es establecer el nivel de significancia que de manera convencional se define al 0.05.
 Con esto, procedemos al cálculo del estadístico de la prueba y el p-value.
 Estos cálculos se hacen automáticamente con el comando `t.test.`
 
-```{r prueba t}
+```{r prueba t 2}
 t.test(call ~ race, data = cv, var.equal=F)
 ```
 
@@ -210,20 +285,60 @@ mean(cv$call[cv$sex=="female"])*100 - mean(cv$call[cv$sex=="male"])*100
 Se observa que en este caso la diferencia en la tasa de respuesta entre hombre y mujeres es 0.86%, cifra inferior a la diferencia encontrada con respecto a la etnicidad.
 Para analizar si esta diferencia se puede extrapolar a la población se tiene que correr la prueba t, con el requisito anterior de la prueba de Levene.
 
-```{r Levene 2}
+```{r Levene 3}
 library(DescTools)
 LeveneTest(cv$call, cv$sex)
 ```
 
-En este caso, el p-value es mayor a 0.05, por lo que se falla en rechazar la hipótesis de igualdad de varianzas, con lo que se debe asumir que parecen ser iguales (por lo que `var.equal=T`).
+En este caso, el p-value es mayor a 0.05, por lo que se falla en rechazar la hipótesis de igualdad de varianzas, con lo que se debe asumir que parecen ser iguales (por lo que `var.equal=T`.
 
-```{r prueba t 2}
+```{r prueba t 3}
 t.test(call ~ sex, data = cv, var.equal=T)
 ```
 
 El resultado de la prueba t nos indica que para el estadístico de la prueba t=0.93 se tiene un p-value = 0.35.
 Como 0.35\>0.05, entonces no se puede rechazar la H0.
 Esto nos lleva a concluir que con los datos *no se puede decir* que haya diferencias en la tasa de llamadas a CVs entre hombre y mujeres.
+
+## Mediante una prueba de proporciones
+
+La prueba adecuada para evaluar una prueba de diferencia de proporciones es mediante el comando `prop.test`.
+Este comando, como se puede ver en el "help", pide como argumentos los datos de "éxitos" (la proporción que se quiere evaluar) y los datos de "intentos" (el n total).
+Es decir, a diferencia del comando `t.test` que pido como argumentos las variables, aquí se tiene primero que encontrar los "éxitos" e "intentos".
+Esto se puede hacer mediante el comando `table`.
+
+```{r tabla cv x raza}
+table(cv$call, cv$race)
+```
+
+Con esta tabla se encuentra que entre los afros se tiene 157 éxitos y para los anglos un total de 235 éxitos.
+Lo que no se encuentra directamente es el total, que se tiene que calcular sobre cada grupo, sobre cada columna.
+Con el comando `addmargins` se puede agregar los totales por filas y columnas.
+
+```{r cv x raza total}
+addmargins(table(cv$call, cv$race))
+```
+
+De esta manera se encuentra que entre los afros se tiene 157 éxitos de un total de 2435 intentos (6.4%).
+Entre los anglos se tiene 235 intentos de un total de 2435 intentos (9.7%).
+
+Estos datos son los que requiere el comando `prop.table` para evaluar la diferencia de proporciones (9.7-6.4= 3.3%).
+Otra forma de hacer la evaluación es incluir la tabla dentro del comando.
+
+```{r prop test 1}
+prop.test(table(cv$call, cv$race))
+```
+
+Como se observa de los resultados, el estadístico de la prueba "X-squared" se llama chi-cuadrado y no es la el mismo que el estadístico t.
+El p-value asociado es 5x10-5, muy similar a 3.9x10-5 y que, en todo caso, lleva a la misma conclusión de rechazar la H0 de igualdad de proporciones y afirmar que entre ambos grupos existe una diferencia en la tasa de respuesta en la población.
+
+Se puede hacer lo mismo para evaluar la diferencia en la proporción de llamadas entre hombres y mujeres.
+
+```{r cv x sexo}
+prop.test(table(cv$call, cv$sex))
+```
+
+En este caso, el p-value es 0.38, otra vez, similar al p-value resultante de la prueba t (de 0.35) y que lleva sustantivamente a la misma conclusión de no poder rechazar la H0, por lo que no se puede decir que existan diferencias en la proporción de llamadas entre hombre y mujeres.
 
 En este texto es importante notar las itálicas de *no se puede decir* o *no se puede afirmar*.
 Cuando se obtiene un p-value \<= 0.05, se rechaza la H0 y se afirma la HA, que la diferencia existe en la población con un 95% de confianza.
@@ -262,9 +377,8 @@ La lógica que sigue este tipo de procedimiento es similar a la que sigue una pr
 -   La policía es la que recoge la evidencia para que la fiscalía pueda acusar.
     Es decir, la policía armaría la "base de datos" de evidencia.
 
-```{=html}
 <!-- -->
-```
+
 -   La labor de la fiscalía (la parte que acusa) es armar el caso.
     Es decir, presentar la evidencia recogida por la policía de tal manera que el jurado se convenza del caso.
     La fiscalía sería como la prueba de inferencia estadística.
@@ -299,9 +413,7 @@ La lógica que sigue este tipo de procedimiento es similar a la que sigue una pr
 
 ![](error%20tipo%201%20y%202.jpg){width="466"}
 
--   Para evitar falsos positivos se propone pedir evidencia cada vez más sólida para condenar a alguien.
-    Pero, si se exige evidencia cada vez más solida, aumenta la probabilidad de falsos negativos.
-    Ambos tipos de errores se contrabalancean mutuamente.
+-   Para evitar falsos positivos se propone pedir evidencia cada vez más sólida para condenar a alguien. Pero, si se exige evidencia cada vez más solida, aumenta la probabilidad de falsos negativos. Ambos tipos de errores se contrabalancean mutuamente.
 
 ![](chef.png){width="439"}
 
@@ -320,5 +432,5 @@ Este método es contraintuitivo.
 El ser humano, por el contrario, generalmente busca evidencia para afirmar una hipótesis de que existe un efecto o relación.
 En cierto sentido, se busca reafirmar las prenociones.
 
-Por ejemplo, no es lo mismo partir de la hipótesis que la "revolución capitalista" en el Perú trajo bienestar y desarrollo y buscar evidencia que apoyo esta hipótesis, que partir de la hipótesis que la "revolución capitalista" NO trajo bienestar y desarrollo y buscar evidencia suficiente para negar esa hipótesis y afirmar que sí lo hizo.
+Por ejemplo, no es lo mismo partir de la hipótesis que la "revolución capitalista" en el Perú trajo bienestar y desarrollo y buscar evidencia que apoya esta hipótesis, que partir de la hipótesis que la "revolución capitalista" NO trajo bienestar y desarrollo y buscar evidencia suficiente para negar esa hipótesis y afirmar que sí lo hizo.
 Para una muestra de esta diferencia ver el [comentario de Cotler al libro de Althaus](https://www.youtube.com/watch?v=935LKOuri54&t=43s).

@@ -18,6 +18,8 @@ navbar:
       href: clase5.html
     - text: "Clase6"
       href: clase6.html
+    - text: "Clase7"
+      href: clase7.html
     - text: "About"
       href: about.html
     - icon: fab fa-github

@@ -1,5 +1,5 @@
 ---
-title: "Clase6"
+title: "Clase 6"
 author: "Arturo Maldonado"
 date: "5/3/2021"
 output:

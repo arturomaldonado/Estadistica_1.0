@@ -16,6 +16,7 @@ editor_options:
   markdown:
     wrap: sentence
 bibliography: references.bib
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
@@ -80,8 +81,7 @@ En este documento vamos a trabajar con el reporte comparado *El Pulso de la Demo
 Este reporte presenta los principales hallazgos del proyecto del Barómetro de las Américas, organizado por el Proyecto de Opinión Pública en América Latina ([LAPOP](https://www.vanderbilt.edu/lapop/), por sus siglas en inglés).
 En este documento se reportan los resultados de la última ronda disponible de 2018/19.
 
-Pueden descargar los datos de manera libre [aquí]([http://datasets.americasbarometer.org/database/login.php).](http://datasets.americasbarometer.org/database/login.php).)
-En este enlace, se pueden registrar o entrar como "Free User".
+Pueden descargar los datos de manera libre [aquí](%5Bhttp://datasets.americasbarometer.org/database/login.php).](<http://datasets.americasbarometer.org/database/login.php>).) En este enlace, se pueden registrar o entrar como "Free User".
 En el buscador, se puede ingresar el texto "2018".
 Ahí se tendrá acceso a la base de datos completa "2018 LAPOP AmericasBarometer Merge_v1.0.dta" en versión para STATA.
 Se descarga la base de datos en formato zip, la que se descomprime en formato .dta.
@@ -312,3 +312,82 @@ Para poner unos límites arbitrarios, podemos indicar que:
 -   Medidas de asociación entre 0.6 y 1 son relaciones fuertes.
 
 NOTA: queda pendiente las medidas de asociación para variables ordinales.
+
+# Extra
+
+```{r base2, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+lapop6 <- lapop18 %>% select(dem30, idio2, prot3, genero, ur, tamano)
+```
+
+```{r shiny, echo=FALSE, message=FALSE, warning=FALSE}
+library(shiny)
+library(shinyAce)
+ui <- fluidPage(
+  
+  #título
+  titlePanel("Chi cuadrado"),
+  
+  #Barra lateral
+  sidebarLayout(
+    
+    #Inputs de la barra lateral
+    sidebarPanel(
+      
+      #Input VD
+      selectInput("var1", "Escoja una variable dependiente", choices=colnames(lapop6)),
+      
+      #Input VI
+      selectInput("var2", "Escoja una variable independiente", choices=colnames(lapop6)),
+      
+      #Input de botón de refresco
+      actionButton("update", "Update selección")
+    ),
+  
+  #Panel central para resultados
+  mainPanel(
+    
+    #Output de tabla de contingencia
+    h4("Tabla"),
+    verbatimTextOutput("tabla"),
+    br(),
+    
+    #Output de resumen de prueba
+    h4("summary"),
+    verbatimTextOutput("summary"),
+    br()
+  )
+)
+)
+
+server <- shinyServer(function(input, output) {
+    data1 <- reactive({
+      library(tidyverse)
+      dat <- lapop6 %>% select(input$var1, input$var2)
+        x <- table(dat)
+        x <- addmargins(x)
+        
+        print(x)
+      })
+    
+    output$tabla <- renderPrint({
+      data1()
+      })
+    
+    test1 <- reactive({
+      library(tidyverse)
+      dat <- lapop6 %>% select(input$var1, input$var2)
+        x <- table(dat)
+        
+        a <- chisq.test(x)
+
+        print(a)
+    })
+    
+    output$summary <- renderPrint({
+      test1()
+    })
+  })
+  
+shinyApp(ui, server)
+```

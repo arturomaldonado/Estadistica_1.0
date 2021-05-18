@@ -16,7 +16,6 @@ editor_options:
   markdown:
     wrap: sentence
 bibliography: references.bib
-runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
@@ -127,7 +126,13 @@ levels(lapop18$satis) <- c("Muy satisfecho", "Satisfecho", "Insatisfecho", "Muy 
 table(lapop18$satis)
 ```
 
-Lo primero es calcular la tabla de contingencia.
+Para calcular la tabla de satisfacción con la democracia, independiente del género de la persona, se puede calcular los porcentajes de esta variable.
+
+```{r satisporc}
+prop.table(table(lapop18$satis))*100
+```
+
+Lo primero es calcular la tabla de contingencia entre satisfacción y género.
 El comando `table` nos brinda las frecuencias absolutas del cruce entre ambas variables.
 La variable dependiente "satisfacción con la democracia" se ubica en las filas y la variable independiente "género" en las columnas.
 Se verifica que las 1,727 observaciones que están muy satisfechas con la democracia, se dividen en 919 hombres, 803 mujeres y 5 NAs.
@@ -150,7 +155,7 @@ En la segunda tabla se muestra las distribuciones condicionales de satisfacción
 Por ejemplo, el 6.8% de los hombres se encuentras muy satisfechos con la democracia, un porcentaje muy similar el 6% de las mujeres.
 El 35.4% de los hombres se encuentran satisfechos con la democracia, 5 puntos porcentuales por encima que las mujeres.
 
-De esta manera, se pueden comparar los porcentajes por cada categoría de la variable dependiente entre grupos de la variable independiente.
+De esta manera, se pueden comparar los porcentajes por cada categoría de la variable dependiente entre grupos de la variable independiente y, además, se puede comparar con los porcentajes no condicionales de la variable satisfacción con la democracia.
 
 # Independencia y dependencia
 
@@ -167,6 +172,7 @@ Ser hombre o mujer no cambia nada las opiniones con respecto a la satisfacción 
 | Muy insatisfecho               |  19%   |  19%  |
 
 A medida que estos porcentajes difieren más entre sí, hay más probabilidades que ambas variables estén relacionadas.
+En realidad, a medida que estos porcentajes difieren más de la distribución no condicional de la variable satisfacción con la democracia también habría una mayor probabilidad de que estén relacionadas.
 
 # Prueba de independencia de chi-cuadrado
 
@@ -311,83 +317,93 @@ Para poner unos límites arbitrarios, podemos indicar que:
 
 -   Medidas de asociación entre 0.6 y 1 son relaciones fuertes.
 
-NOTA: queda pendiente las medidas de asociación para variables ordinales.
+# Tabla cruzada de satisfacción con la democracia según nivel educativo
 
-# Extra
+El Gráfico 1.14 del reporte muestra los datos de satisfacción con la democracia (según la variable recodificada dummy) por niveles educativo.
+Como segundo ejemplo, aquí vamos a replicar esa relación usando la variable original de tipo factor.
 
-```{r base2, message=FALSE, warning=FALSE, include=FALSE}
-library(tidyverse)
-lapop6 <- lapop18 %>% select(dem30, idio2, prot3, genero, ur, tamano)
+Lo primero es recodificar la variable educación.
+La variable original "ed" está recogida como una variable numérica (años de estudio).
+Esta variable tiene valores que van desde 0 a 18.
+
+```{r reco ed}
+library(car)
+lapop18$educ <- recode(lapop18$ed, "0=0; 1:6=1; 7:11=2; 12:18=3")
+lapop18$educ <- as.factor(lapop18$educ)
+levels(lapop18$educ) <- c("Ninguna", "Primaria", "Secundaria", "Superior")
+table(lapop18$educ)
 ```
 
-```{r shiny, echo=FALSE, message=FALSE, warning=FALSE}
-library(shiny)
-library(shinyAce)
-ui <- fluidPage(
-  
-  #título
-  titlePanel("Chi cuadrado"),
-  
-  #Barra lateral
-  sidebarLayout(
-    
-    #Inputs de la barra lateral
-    sidebarPanel(
-      
-      #Input VD
-      selectInput("var1", "Escoja una variable dependiente", choices=colnames(lapop6)),
-      
-      #Input VI
-      selectInput("var2", "Escoja una variable independiente", choices=colnames(lapop6)),
-      
-      #Input de botón de refresco
-      actionButton("update", "Update selección")
-    ),
-  
-  #Panel central para resultados
-  mainPanel(
-    
-    #Output de tabla de contingencia
-    h4("Tabla"),
-    verbatimTextOutput("tabla"),
-    br(),
-    
-    #Output de resumen de prueba
-    h4("summary"),
-    verbatimTextOutput("summary"),
-    br()
-  )
-)
-)
+Con la variable recodificada se puede calcular la tabla cruzada de satisfacción con la democracia según niveles educativos.
 
-server <- shinyServer(function(input, output) {
-    data1 <- reactive({
-      library(tidyverse)
-      dat <- lapop6 %>% select(input$var1, input$var2)
-        x <- table(dat)
-        x <- addmargins(x)
-        
-        print(x)
-      })
-    
-    output$tabla <- renderPrint({
-      data1()
-      })
-    
-    test1 <- reactive({
-      library(tidyverse)
-      dat <- lapop6 %>% select(input$var1, input$var2)
-        x <- table(dat)
-        
-        a <- chisq.test(x)
+```{r tabla ed}
+addmargins(prop.table(table(lapop18$satis, lapop18$educ), 2)*100, 1)
+```
 
-        print(a)
-    })
-    
-    output$summary <- renderPrint({
-      test1()
-    })
-  })
-  
-shinyApp(ui, server)
+Para comprobar la relación entre estas variables, también se puede usar la prueba de independencia de $\chi^2$.
+Esta evaluación se guarda en un objeto "prueba2".
+
+```{r chi ed}
+prueba2 <- chisq.test(lapop18$satis, lapop18$educ)
+prueba2
+```
+
+Con el valor de estadístico se obtiene un p-value menor de 0.05, con lo que se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que existiría una relación de dependencia entre las variables.
+
+Para evaluar la fuerza de la relación, se tiene que trabajar con otras medidas de asociación, debido a que se tiene una tabla con dos variables ordinales.
+Para esto usaremos la librería `DescTools` y los comandos `GoodmanKrustalGamma`, `KendallTauB` y `StuartTauC`.
+
+```{r asoc ordinal, message=FALSE, warning=FALSE}
+library(DescTools)
+tabla2 <- table(lapop18$satis, lapop18$educ)
+GoodmanKruskalGamma(tabla2)
+KendallTauB(tabla2)
+StuartTauC(tabla2)
+```
+
+Otra forma es usando la librería `oii` y el comando `association.measures`.
+
+```{r ordinal}
+library(oii)
+association.measures(lapop18$satis, lapop18$educ)
+```
+
+En este caso se observan las medidas de asociación para variables ordinales.
+Este comando reporta 4 se estas medidas, todas ellas varían entre -1 a +1.
+En nuestro ejemplo, todas tiene signo positivo, lo que indica una relación directa entre ambas variables.
+Esto parecería ir contra lo que se reporta en el Gráfico 1.14 del reporte donde se observa claramente que la satisfacción con la democracia disminuye a niveles educativos más altos, lo que se expresaría en un signo negativo.
+Finalmente, el valor de las medidas de asociación son menores a 0.3, con lo que se indica que la relación entre las variables es débil.
+
+En el Gráfico 1.14 se observa que se tiene un mayor porcentaje de satisfacción con la democracia entre los menos educados.
+Esta relación también puede observarse en este gráfico.
+Los sectores "muy satisfechos" (en rosado) y "satisfechos" (en verde) disminuyen a medida que se pasa de ninguna a primaria, secundaria y superior.
+Esta aparente contradicción es debido a la forma como se ha codificado la satisfacción con la democracia (variable "satis" que se crea desde "pn4").
+La variable original tiene valores entre 1 a 4, donde 1 significa "muy satisfecho" y 4 "muy insatisfecho".
+Es decir, esta variable tiene una codificación donde valores altos indican "menos" de la variable.
+Es por ese motivo que la prueba de asociación resulta con un signo positivo, que en este caso indicaría que un valor mayor de la variable de educación significa "más" de la variable satisfacción con la democracia (que en realidad es menos).
+Para evitar esta confusión se debió cambiar la monotonía de la variable satisfacción con la democracia para que valores más altos indiquen una mayor satisfacción y, con esto, se obtenga un signo negativo en las medidas de asociación.
+En esta sección se ha procedido de esa manera para llamar la atención a que la codificación tiene consecuencias en los resultados y puede llevar a confusión si no se presta atención.
+
+# Gráficos bivariados categóricos
+
+Para crear un gráfico se tiene que guardar la tabla como un dataframe.
+Se usa el comando `as.data.frame` para salvar los porcentajes y poder usarlos con el comando `ggplot`.
+
+```{r tabla5}
+tabla3 <- as.data.frame(prop.table(table(lapop18$satis, lapop18$educ), 2)*100)
+tabla3
+```
+
+En este caso, como tenemos 4 categorías para satisfacción con la democracia y otras 4 para nivel educativo, un gráfico de barras separadas crearía 16 barras, lo que complicaría la comparación.
+Por eso, en este caso, se prefiere el tipo de barras apiladas.
+
+```{r barapiladased}
+library(ggplot2)
+ggplot(data=tabla3, aes(x=Var2, y=Freq, fill=Var1, ymax=100))+
+  geom_bar(position="stack", stat="identity")+
+  geom_text(aes(label=paste(round(Freq, 1), "%", sep="")),
+            position=position_stack(), vjust=2)+
+  labs(fill="Satisfacción con la democracia")+
+  ylab("Porcentaje")+
+  xlab("Nivel educativo")
 ```

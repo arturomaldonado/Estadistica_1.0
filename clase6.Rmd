@@ -117,6 +117,7 @@ LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv
 Adicionalmente, se puede evaluar si existen diferencias extrapolables entre aquellos con un grado académico y aquellos que no.
 Para esto se vuelve a usar la prueba t entre estos dos grupos.
 En primer lugar, se evalúa si las varianzas son iguales o no.
+Ojo, el código lanza un mensaje que indica que la variable "degree" no es un factor, y, efectivamente, es importanda como una variable de tipo "int", pero es coercionada como factor, pues R identifica que solo tiene 2 valores.
 
 ```{r Levene 1}
 library(DescTools)
@@ -208,6 +209,7 @@ cv <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv
 
 En esta base de datos se tiene la raza y el género como variables separadas.
 Para hacer la evaluación que se busca se requiere crear una nueva variable de factor que combine los 4 grupos de raza y género.
+Se tiene que prestar atención a la forma de calcular una variable como condición de las variables "race" y "sex", ambas de tipo "chr".
 
 ```{r factor}
 cv$rxg <- NA

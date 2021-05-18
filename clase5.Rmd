@@ -172,7 +172,8 @@ En este caso, el p-value \< 0.05, por lo que se rechaza la H0 y se concluye que 
 
 # Evaluación de diferencia de proporciones
 
-En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012]. Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
+En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012].
+Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
 Estos investigadores enviaron CVs manipulando la raza percibida mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.
 
 ```{r base 2, message=FALSE, warning=FALSE}
@@ -182,13 +183,17 @@ cv <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv
 
 Esta base de datos tiene 4 variables relevantes:
 
--   firstname: nombre de postulante ficticio
+-   firstname: nombre de postulante ficticio.
+    Esta variable es de tipo "chr", es decir de caracteres.
 
--   sex: sexo del postulante (mujer o hombre)
+-   sex: sexo del postulante (mujer o hombre).
+    Esta variable es de tipo "chr", es decir de caracteres.
 
--   race: raza del postulante (afro o blanco)
+-   race: raza del postulante (afro o blanco).
+    Esta variable es de tipo "chr", es decir de caracteres
 
--   call: si el postulante recibió una llamada (1=sí, 0=no)
+-   call: si el postulante recibió una llamada (1=sí, 0=no).
+    Esta variable es de tipo "int", es decir numérica de números enteros.
 
 La variable de respuesta es "call".
 En el total de la muestra, solo el 8% de postulante recibió una llamada para pasar a una entrevista de trabajo.
@@ -207,6 +212,30 @@ Este porcentaje de llamada según nombre se puede calcular con el comando `mean`
 ```{r raza}
 mean(cv$call[cv$race=="white"])*100
 mean(cv$call[cv$race=="black"])*100
+```
+
+Se tiene que tomar en cuenta que la variable "race" es importada como una variable "chr" que indica que no es numérica, sino una cadena de caracteres, por lo que la selección se tiene que hacer usando las comillas, mediante `[cv$race=="white"]`.
+Si se calculara una variable nueva "raza" como tipo numérico, entonces la selección se haría con la especificación `[cv$raza==1]`.
+SI se transformara esta variable "raza" en una de tipo factor, entonces la selección se haría con la especificación `[cv$raza=="Blanco"]`.
+
+Lo mismo se puede hacer con la variable "call" que es importada como una variable "int" , que es numérica con enteros.
+Sin embargo, esta variable es también un factor, por lo que se puede crear una nueva variable "llamada" de tipo factor.
+
+```{r}
+cv$raza <- NA
+cv$raza[cv$race=="white"] <- 1
+cv$raza[cv$race=="black"] <- 2
+table(cv$raza)
+#cv$raza <- as.factor(cv$raza)
+#levels(cv$raza) <- c("Blanco", "Afro")
+#table(cv$raza)
+
+cv$llamada <- NA
+cv$llamada[cv$call==0] <- 0
+cv$llamada[cv$call==1] <- 1
+cv$llamada <- as.factor(cv$llamada)
+levels(cv$llamada) <- c("No llamada", "Llamada")
+table(cv$llamada)
 ```
 
 Para los CVs con nombres que resuenan a blancos, la proporción de CVs que recibieron una llamada fue de 9.7%, mientras que para los CVs con nombres afros, la proporción fue de 6.4%, es decir una diferencia de 3.2%
@@ -257,7 +286,7 @@ El siguiente paso es establecer el nivel de significancia que de manera convenci
 Con esto, procedemos al cálculo del estadístico de la prueba y el p-value.
 Estos cálculos se hacen automáticamente con el comando `t.test.`
 
-```{r prueba t 2}
+```{r prueba t 2, message=TRUE, warning=TRUE}
 t.test(call ~ race, data = cv, var.equal=F)
 ```
 
@@ -274,6 +303,13 @@ Como esa probabilidad es muy baja (\<0.05), entonces se concluye que la diferenc
 
 En este caso, el p-value = 0.0000394 \< 0.05, entonces se rechaza la hipótesis que las medias poblacionales de las llamadas a CVs son iguales entre anglos y afros, por lo que se afirma que las tasas de llamadas son diferentes (a favor de los anglos) en la población, confirmándose con este que existiría una discriminación por raza en el mercado laboral americano.
 A iguales CVs, aquellos con nombres afros tienen una menor tasa de llamada a entrevistas de trabajo que aquellos con nombre anglos.
+
+OJO: si se quisiera hacer esta evaluación de diferencia de proporciones mediante la prueba t usando las variables transformadas de factor, la prueba no correría pues exige una variable numérica como variable dependiente.
+Con una variable factor como dependiente se obtiene un error.
+
+```{r prueba t 3, eval=FALSE, include=FALSE}
+t.test(llamada ~ raza, data = cv, var.equal=F)
+```
 
 Como la base de datos incluye también la variable "sex", se puede evaluar si existen diferencias en la tasa de respuesta a los CVs con nombres de hombre y con nombre de mujer.
 Para empezar veremos cuál es la diferencia en la tasa de respuesta.
@@ -292,7 +328,7 @@ LeveneTest(cv$call, cv$sex)
 
 En este caso, el p-value es mayor a 0.05, por lo que se falla en rechazar la hipótesis de igualdad de varianzas, con lo que se debe asumir que parecen ser iguales (por lo que `var.equal=T`.
 
-```{r prueba t 3}
+```{r prueba t 4}
 t.test(call ~ sex, data = cv, var.equal=T)
 ```
 

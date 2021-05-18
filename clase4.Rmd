@@ -137,7 +137,7 @@ Esta comparación entre grupos también se puede ver de manera visual, en un gr�
 
 La forma más estándar para graficar los IC por grupo es usando el comando `plotmeans`.
 
-```{r gráfico IC}
+```{r grafico IC}
 library(gplots)
 plotmeans(LL$re78~LL$treated, 
           xlab="Grupo", ylab="Ingreso 1978",
@@ -151,7 +151,7 @@ Se esta manera se puede comparar visualmente que ambos IC se cruzan, por lo que 
 
 Lo mismo se puede hacer para los IC de ingresos entre afroamericanos y otros.
 
-```{r gráfico IC afro}
+```{r grafico IC afro}
 plotmeans(LL$re78~LL$black, 
           xlab="Afroamericano", ylab="Ingreso 1978",
           ylim = c(0,8000),
@@ -177,7 +177,7 @@ ing.latino
 
 Se puede usar ese nuevo objeto "ing.latino" para crear el gráfico con la librería `ggplot`, guardándolo en un objeto "graf1".
 
-```{r gráfico ggplot}
+```{r grafico ggplot}
 library(ggplot2)
 graf1 <- ggplot(ing.latino, aes(x=hispanic, y=re78.mean))+
   geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+

@@ -413,8 +413,6 @@ La lógica que sigue este tipo de procedimiento es similar a la que sigue una pr
 -   La policía es la que recoge la evidencia para que la fiscalía pueda acusar.
     Es decir, la policía armaría la "base de datos" de evidencia.
 
-<!-- -->
-
 -   La labor de la fiscalía (la parte que acusa) es armar el caso.
     Es decir, presentar la evidencia recogida por la policía de tal manera que el jurado se convenza del caso.
     La fiscalía sería como la prueba de inferencia estadística.

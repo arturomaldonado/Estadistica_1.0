@@ -687,6 +687,17 @@ assocstats(tabla)</code></pre>
 <p>Lo primero es recodificar la variable educación. La variable original “ed” está recogida como una variable numérica (años de estudio). Esta variable tiene valores que van desde 0 a 18.</p>
 <pre class="r"><code>library(car)</code></pre>
 <pre><code>## Loading required package: carData</code></pre>
+<pre><code>## 
+## Attaching package: &#39;car&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     logit</code></pre>
+<pre><code>## The following object is masked from &#39;package:DescTools&#39;:
+## 
+##     Recode</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     recode</code></pre>
 <pre class="r"><code>lapop18$educ &lt;- recode(lapop18$ed, &quot;0=0; 1:6=1; 7:11=2; 12:18=3&quot;)
 lapop18$educ &lt;- as.factor(lapop18$educ)
 levels(lapop18$educ) &lt;- c(&quot;Ninguna&quot;, &quot;Primaria&quot;, &quot;Secundaria&quot;, &quot;Superior&quot;)

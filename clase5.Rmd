@@ -226,13 +226,11 @@ cv$raza <- NA
 cv$raza[cv$race=="white"] <- 1
 cv$raza[cv$race=="black"] <- 2
 table(cv$raza)
-#cv$raza <- as.factor(cv$raza)
-#levels(cv$raza) <- c("Blanco", "Afro")
-#table(cv$raza)
+cv$raza <- as.factor(cv$raza)
+levels(cv$raza) <- c("Blanco", "Afro")
+table(cv$raza)
 
-cv$llamada <- NA
-cv$llamada[cv$call==0] <- 0
-cv$llamada[cv$call==1] <- 1
+cv$llamada <- cv$call
 cv$llamada <- as.factor(cv$llamada)
 levels(cv$llamada) <- c("No llamada", "Llamada")
 table(cv$llamada)
@@ -270,7 +268,7 @@ Este test está disponible en la librería `Desctools`, con el comando `LeveneTe
 
 ```{r Levene 2}
 library(DescTools)
-LeveneTest(cv$call, cv$race)
+LeveneTest(cv$call, cv$raza)
 ```
 
 -   Si p-value de Levene \<= 0.05, entonces rechazo Ho y afirmo que las varianzas son diferentes.

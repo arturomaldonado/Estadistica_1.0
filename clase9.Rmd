@@ -1,0 +1,280 @@
+---
+title: "Clase 9"
+author: "Arturo Maldonado"
+date: "5/31/2021"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: cosmo
+    highlight: textmate
+editor_options:
+  markdown:
+    wrap: sentence
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+El tema de la semana es la correlación y a la regresión lineal simple.
+Este es un método para analizar la relación entre dos variables cuantitativas: una dependiente y una independiente.
+
+Recordemos que el método del chi-cuadrado se trataba de analizar la relación entre dos variables cualitativas.
+La prueba t y ANOVA tienen una variable dependiente cuantitativa y una variable independiente cualitativa.
+La correlación es una extensión de esta serie de relaciones.
+El método de regresión lineal es un método generalizado, que, luego veremos, incluye a la prueba t y a ANOVA.
+
+La correlación se trata de la evaluación del cambio sistemático en las puntuaciones de dos variables numéricas (discretas o continuas, de intervalo o de razón).
+
+Con el método de la regresión lineal se puede responder las siguientes preguntas:
+
+-   Analizar si hay una **asociación** entre las variables mediante un test de independencia
+    estadística.
+
+-   Analizar la **dirección** de la asociación (directa o inversa).
+
+-   Evaluar la **fuerza** de la asociación usando una medida de asociación llamada **correlación de Pearson.**
+
+-   Estimar una ecuación de regresión que "**predice**" los valores de la variable dependiente para valores de la variable independiente.
+
+# Espacio cartesiano
+
+Se trata de un espacio formado por dos ejes perpendiculares, el eje X (horizontal) y el eje Y (vertical).
+Cada uno de estos ejes se puede tratar como una regla donde se pueden mapear variables.
+
+Por ejemplo:
+
+-   En el eje X se puede mapear la variable edad (variable numérica discreta).
+    La regla podría partir desde cero si se recoge información que incluye a niños o podría partir desde 18 si se recoge información de mayores de edad.
+
+-   En el eje Y se puede mapear la variable estatura (variable numérica continua).
+
+-   Si se combinan ambos ejes se forma el espacio, donde cada individuo estará mapeado, con sus datos de peso y de estatura como coordenadas de ubicación en este espacio.
+
+-   El conjunto de individuos (o puntos) formará una "nube" de puntos en este espacio.
+    Este tipo de gráfico se llama Gráfico o Diagrama de Dispersión.
+
+![](9.1.png){width="488"}
+
+Ahora presentaremos un ejemplo más político.
+Esta base incluye información a nivel departamental, sociodemográfica y electoral de 2016, todas variables numéricas.
+
+```{r base, message=FALSE, warning=FALSE}
+library(rio)
+data <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/voto2016.csv")
+```
+
+Para empezar usaremos dos variables para general el gráfico de dispersión:
+
+-   En el eje X se mapeará el porcentaje de hogares con acceso a internet (variable: Porc_Uso_internet).
+
+-   En el eje Y se mapeará el porcentaje de voto a PPK en primera vuelta de 2016 (variable: Voto_PPK_2016_1).
+
+Para construir el gráfico de dispersión usaremos el comando `plot` que permite incluir ambas variables.
+
+```{r dispersion}
+plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+     xlab="Porcentaje de familias con conexión a internet por departamento",
+     ylab="Voto a PPK (1era vuelta)",
+     pch=19, xlim=c(0,60), ylim=c(0, 30))
+#text(data$Porc_Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
+```
+
+Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
+En estos casos vemos que las variables forman un patrón ascendente positivo: a medida que los departamentos reportan un mayor porcentaje de familias con conexión a internet, también se observa un mayor porcentaje de voto a PPK en 2016.
+
+# Relación lineal
+
+Esta probable relación entre estas dos variables se resumen/simplifica mediante una aproximación lineal.
+Es decir, mediante una recta de aproximación.
+
+## Ecuación de la recta
+
+Se tiene que recordar que una recta tiene la forma $Y = a + bX$, donde "a" es la constante y "b" es la pendiente.
+Cualquier recta puede ser graficada con diferentes valores de a y b.
+
+La relación entre las variables depende de la pendiente:
+
+-   Si b es positivo, Y aumenta cuando X aumenta.
+    Es una relación directa / positiva.
+
+-   Si b es negativo, Y aumenta cuando X disminuye.
+    Es una relación inversa / negativa.
+
+-   Si b es cero.
+    Y no cambia cuando X varía.
+    No existe relación entre las variables.
+
+Como dijimos, la "nube" de puntos se modela mediante una recta.
+Esta recta de aproximación tiene la forma $\hat{Y} = \hat{\alpha} + \hat{\beta}*X$
+
+Los valores que tiene el "sombrero" son datos que se calculan con los datos observados.
+Una vez estimados estos valores (se verá la lógica en un momento), se puede estimar cualquier Y (por eso tiene también "sombrero") para cualquier valor de X.
+
+En nuestro ejemplo, se le puede pedir a R que incluya la recta de aproximación en el gráfico de dispersión mediante el comando `abline` donde se anida el comando `lm`, que se usa para calcular un modelo lineal (que veremos en un momento)
+
+```{r recta}
+plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+     xlab="Porcentaje de familias con conexión a internet por departamento",
+     ylab="Voto a PPK (1era vuelta)",
+     pch=19, xlim=c(0,60), ylim=c(0, 30))
+abline(lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet))
+```
+
+¿Cómo se calcula que ESA es la recta de aproximación, y no otra?
+La recta calculada se define como aquella que minimiza los residuos.
+
+# Residuos o errores
+
+Se trata de la diferencia entre el valor observado y el valor calculado por la recta: $Y - \hat{Y}$
+
+Es decir, cada observación tiene un residuo, que sería visualmente, la distancia vertical del punto a la recta de aproximación.
+
+```{r residuos}
+plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+     xlab="Porcentaje de familias con conexión a internet por departamento",
+     ylab="Voto a PPK (1era vuelta)",
+     pch=19, xlim=c(0,60), ylim=c(0, 30))
+abline(lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet))
+fitted <- predict(lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet))
+for (i in 1:25) {
+  lines( c(data$Porc_Uso_internet[i], data$Porc_Uso_internet[i]), c(data$Voto_PPK_2016_1[i], fitted[i]), col="blue")
+}
+```
+
+Cada punto se aproxima o se aleja más de la recta de aproximación.
+Estas distancias se pueden sumar para darnos una idea de qué tan bien esta recta "resume" la distribución de los datos.
+
+Se define la recta de aproximación como la recta que minimiza esta suma de residuos.
+Es decir, cualquier otra recta tendría una mayor suma de esas líneas azules.
+Esta recta tiene una ecuación de la recta, con una constante y una pendiente específica.
+De manera formal la suma se hace de los residuos al cuadrado para evitar los valores negativos
+
+```{r suma}
+sum(data$Residuo^2)
+```
+
+Se puede comparar esta suma de residuos al cuadrado con los residuos que generan otra recta.
+Una forma de "predecir" el voto a PPK si no se tuviera información sería solo mediante el promedio del voto a PPK.
+El voto promedio a PPK es 15.7%.
+Sin otra información esta sería la mejor aproximación.
+
+```{r media}
+mean(data$Voto_PPK_2016_1, na.rm=T)
+```
+
+Esta aproximación se puede graficar con una recta horizontal Y=15.7.
+Esta recta genera otros residuos que se calculan como la resta entre el valor observado y la media.
+
+```{r}
+plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+     xlab="Porcentaje de familias con conexión a internet por departamento",
+     ylab="Voto a PPK (1era vuelta)",
+     pch=19, xlim=c(0,60), ylim=c(0, 30))
+abline(h=15.7412)
+
+```
+
+Se calcula el residuo con respecto a esta recta horizontal y luego se suman estos residuos al cuadrado.
+
+```{r}
+data$res2 <- data$Voto_PPK_2016_1-15.7412
+sum(data$res2^2, na.rm=T)
+```
+
+Se observa que la suma de residuos de la recta calculada por R tiene una suma de residuos al cuadrado (730.7) menor que la suma de residuos al cuadrado con respecto a la recta horizontal (1251.6).
+En realidad, se podría hacer este ejercicio con cualquier recta y se obtendría una suma de residuos al cuadrado mayor de 730.7.
+
+# Recta de aproximación
+
+Esta recta es un modelo de la distribución de los datos.
+Este modelo se calcula con el comando `lm` (de linear model) y se reporta con `summary`.
+
+```{r modelo}
+modelo1 <- lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet)
+summary(modelo1)
+```
+
+Los primeros datos a analizar están en la columna "Estimate".
+Estos datos definen la ecuación de la recta.
+Según estos datos se tendría$$\hat{Y} = 3.52 + 0.37*X$$
+
+Con esta ecuación se puede **estimar** el valor de Y (es decir, el voto a PPK) para cualquier valor de X (de acceso a internet).
+
+Por ejemplo, en Amazonas se tiene 16.6% de acceso a internet, según la base de datos.
+De acuerdo a la ecuación, el voto estimado a PPK sería 3.52 + 0.37\*16.6 = 9.66%.
+
+El voto observado a PPK en Amazonas fue 11.89%.
+Por lo tanto, el residuo de esta observación es 11.89-9.66 = 2.23.
+Las últimas columnas de la base de datos muestra el voto predicho a PPK para cada departamento y el residuo de cada observación.
+
+El voto predicho a PPK no solo se puede calcular para los valores observados de acceso a internet, sino también para cualquier valor de X.
+
+¿Cuánto sería el voto predicho a PPK en un departamento con acceso total a internet?
+¿cuánto sería el voto predicho a PPK en un departamento aislado del acceso a internet?
+
+Estas dos preguntas implican el cálculo de $\hat{Y}$ para cuando X=100 (en la primera pregunta) y para cuando X=0 (en la segunda pregunta).
+En la realidad no tenemos dos departamentos con estos valores de X, pero estos se pueden **predecir** a partir del modelo generado.
+
+# Correlación no es causalidad
+
+Que se pueda graficar los datos de dos variables en un espacio cartesiano y que se pueda calcular la mejor recta de aproximación NO significa que ambas variables necesariamente están relacionadas o que haya una relación de causalidad.
+
+Para establecer una relación de causalidad hace falta:
+
+-   Que haya consistencia entre varios estudios: un estudio (casi) nunca es suficiente para definir un hallazgo.
+    La convergencia entre diferentes estudios (en diferentes lugares y tiempos) le da mayor robustez a la relación entre dos variables.
+
+-   Que haya una (fuerza de) asociación: que existe una correlación es un primer paso para poder luego evaluar una probable causalidad.
+    La relación es una estadística y no una relación determinista.
+
+-   Un mecanismo: una explicación basada en la teoría que defienda porqué es plausible hablar de una probable relación entre esas dos variables.
+
+-   Temporalidad: que la causa preceda al efecto.
+    Es decir que la medición del X sea anterior a la del Y.
+    En nuestro ejemplo, no se podría hablar de causalidad si el X hubiera sido medido en 2017.
+
+Un ejemplo que cumple estas condiciones es la relación entre consumo de tabaco y desarrollo de cáncer de pulmón.
+
+![](tobacco_and_cancer.gif)
+
+Para establecer una relación de causalidad entre ambas variables se han realizado múltiples estudios, se tiene una relación estadística robusta, se tiene un mecanismo en la nicotina y se tiene una secuencia temporal, se fuma y luego se desarrolla el cáncer de pulmón.
+
+Por ejemplo, puede existir una correlación entre el consumo de chocolate en un país y el número de premios Nobel que cuente ese país.La pregunta es cuál es el mecanismo explicativo entre una variable y la otra.
+Pueden ver más [correlaciones locas](http://www.tylervigen.com/spurious-correlations) es este link.
+
+![](nobel_choco.jpeg){width="558"}
+
+En algunos casos, la relación entre dos variables en realidad es explicada por una tercera variable.
+En este tipo de casos se habla de correlaciones espúreas.
+Por ejemplo:
+
+![](Screenshot_20181203-080108.jpg){width="204"}
+
+De manera más gráfica:
+
+![](notcausation.png){width="400"}
+
+# Lo que viene
+
+-   Responder las preguntas:
+
+    -   ¿Existe asociación?
+
+    -   ¿En qué dirección?
+
+    -   ¿Con qué fuerza?
+
+    -   Predecir para valores significativos
+
+-   Una variable dependiente NO se puede explicar de manera monocausal.
+    Hay una necesidad de introducir en el análisis más variables, en un modelo multicausal, explicativo.
+    Esto lo veremos con la técnica de la regresión lineal múltiple.

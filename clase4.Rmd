@@ -95,6 +95,7 @@ La hipótesis nula sería:
 H0: Promedio de ingresos de participantes del programa = Promedio de ingresos de no participantes del programa
 
 ```{r estimación puntual}
+mean(LL$re78)
 mean(LL$re78[LL$treated==0])
 mean(LL$re78[LL$treated==1])
 ```

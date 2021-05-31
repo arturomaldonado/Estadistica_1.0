@@ -147,8 +147,8 @@ Se agrega la especificación `(…,2)` para indicar que se quiere las proporcion
 Se anida todo dentro del comando `addmargins` para verificar la suma de proporciones sobre las columnas y no se incluye los valores perdidos.
 
 ```{r tabla1}
-prop.table(table(lapop18$satis, lapop18$genero))
-addmargins(prop.table(table(lapop18$satis, lapop18$genero), 2)*100, 1)
+prop.table(table(lapop18$satis, lapop18$genero))*100
+prop.table(table(lapop18$satis, lapop18$genero), 2)*100
 ```
 
 En la segunda tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
@@ -170,6 +170,15 @@ Ser hombre o mujer no cambia nada las opiniones con respecto a la satisfacción 
 | Satisfecho                     |  30%   |  30%  |
 | Insatisfecho                   |  45%   |  45%  |
 | Muy insatisfecho               |  19%   |  19%  |
+
+VI: fuma ---------\> VD: cáncer de pulmón
+
+|                      | Fuma    |            |
+|----------------------|---------|------------|
+| Cáncer al pulmón     | Fumador | No fumador |
+| Si desarrolla cáncer | 10      | 10         |
+| No desarrolla cáncer | 90      | 90         |
+| Total                | 100%    | 100%       |
 
 A medida que estos porcentajes difieren más entre sí, hay más probabilidades que ambas variables estén relacionadas.
 En realidad, a medida que estos porcentajes difieren más de la distribución no condicional de la variable satisfacción con la democracia también habría una mayor probabilidad de que estén relacionadas.
@@ -194,6 +203,26 @@ prop.table(table(lapop18$satis))*100
 ```
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
+
++------+----------------------------------------------------------------+-----------------------------------------------------+
+| Col1 | Hombres                                                        | Mujeres                                             |
++======+================================================================+=====================================================+
+| MS   | 6.4% de hombres-\> \#observaciones si no hay relación          | 6.4% de mujeres                                     |
+|      |                                                                |                                                     |
+|      | cuánto es el 6.4% de 13608= 871.9 \#obs si NO hubiera relación | 6.4% de 13,330 = 852.1 \#obs si NO hubiera relación |
+|      |                                                                |                                                     |
+|      | 919 lo realmente observado                                     | (803-852,1)\^2                                      |
+|      |                                                                |                                                     |
+|      | (919-871.9)\^2                                                 |                                                     |
++------+----------------------------------------------------------------+-----------------------------------------------------+
+| S    | 33.1%                                                          | 33.1%                                               |
++------+----------------------------------------------------------------+-----------------------------------------------------+
+| I    | 46.2%                                                          | 46.2%                                               |
++------+----------------------------------------------------------------+-----------------------------------------------------+
+| MI   | 14.3%                                                          | 14.3%                                               |
++------+----------------------------------------------------------------+-----------------------------------------------------+
+|      | 13608                                                          |                                                     |
++------+----------------------------------------------------------------+-----------------------------------------------------+
 
 En las primeras celda, la lógica sería:
 
@@ -330,7 +359,7 @@ Esta variable tiene valores que van desde 0 a 18.
 library(car)
 lapop18$educ <- recode(lapop18$ed, "0=0; 1:6=1; 7:11=2; 12:18=3")
 lapop18$educ <- as.factor(lapop18$educ)
-levels(lapop18$educ) <- c("Ninguna", "Primaria", "Secundaria", "Superior")
+levels(lapop18$educ) <- c("Analfabeto", "Primaria", "Secundaria", "Superior")
 table(lapop18$educ)
 ```
 

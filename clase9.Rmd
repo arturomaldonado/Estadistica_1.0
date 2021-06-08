@@ -1,5 +1,5 @@
 ---
-title: "Clase 9"
+title: "Clase 9 y 10"
 author: "Arturo Maldonado"
 date: "5/31/2021"
 output:
@@ -36,8 +36,7 @@ La correlación se trata de la evaluación del cambio sistemático en las puntua
 
 Con el método de la regresión lineal se puede responder las siguientes preguntas:
 
--   Analizar si hay una **asociación** entre las variables mediante un test de independencia
-    estadística.
+-   Analizar si hay una **asociación** entre las variables mediante un test de independencia estadística.
 
 -   Analizar la **dirección** de la asociación (directa o inversa).
 
@@ -84,8 +83,8 @@ Para construir el gráfico de dispersión usaremos el comando `plot` que permite
 plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
      xlab="Porcentaje de familias con conexión a internet por departamento",
      ylab="Voto a PPK (1era vuelta)",
-     pch=19, xlim=c(0,60), ylim=c(0, 30))
-#text(data$Porc_Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
+     pch=15, xlim=c(0,60), ylim=c(0, 30))
+text(data$Porc_Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
 ```
 
 Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
@@ -263,18 +262,179 @@ De manera más gráfica:
 
 ![](notcausation.png){width="400"}
 
-# Lo que viene
+# Modelo lineal
 
--   Responder las preguntas:
+Como indicamos, la relación entre dos variables cuantitativas se modela mediante una recta de aproximación.
+Para evaluar una relación entre dos variables numéricas, tenemos que responder las siguientes preguntas
 
-    -   ¿Existe asociación?
+-   ¿Existe asociación?
 
-    -   ¿En qué dirección?
+-   ¿En qué dirección?
 
-    -   ¿Con qué fuerza?
+-   ¿Con qué fuerza?
 
-    -   Predecir para valores significativos
+-   Predecir para valores significativos
 
--   Una variable dependiente NO se puede explicar de manera monocausal.
-    Hay una necesidad de introducir en el análisis más variables, en un modelo multicausal, explicativo.
-    Esto lo veremos con la técnica de la regresión lineal múltiple.
+En esta sección vamos a trabajar con la información de las elecciones 2021.
+Los resultados que usaremos corresponden al conteo rápido elaborado por [IPSOS](https://www.ipsos.com/es-pe/resultados-del-conteo-rapido-al-100-6-de-junio-2021) y a datos sociodemográficos, disponibles en la web del [INEI](https://www.inei.gob.pe/).
+
+```{r base2, message=FALSE, warning=FALSE}
+library(rio)
+data21 <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/voto2021.xlsx")
+```
+
+En esta oportunidad, usaremos el voto a Pedro Castillo según conteo rápido por departamento como variable dependiente y el ingreso mensual medido en 2020 como variable independiente.
+Se parte de la hipótesis que existiría una relación inversa entre estas variables.
+Para hacer una primera verificación de esta relación, se puede crear el diagrama de dispersión.
+
+```{r dispersion21}
+plot(data21$VotoPL, data21$IngresoMensual2020,
+     xlab="Ingreso mensual promedio 2020",
+     ylab="Voto a Pedro Castillo (conteo rápido 2da vuelta)",
+     pch=15, xlim=c(400,1400), ylim=c(20, 100))
+text(data21$IngresoMensual2020, data21$VotoPL, labels=data21$Departamento, cex=0.6, pos=4)
+```
+
+El gráfico no nos muestra una relación muy clara entre las variables.
+Para analizar en más detalle, más allá de la relación visual, analizaremos el modelo de regresión lineal.
+Como indicamos antes, el modelo se calcula con el comando `lm` donde se indica la variable Y y luego la X.
+Este modelo de guarda en un objeto "modelo2" el que se puede describir con el comando `summary`.
+
+```{r modelo2}
+modelo2 <- lm(data21$VotoPL ~ data21$IngresoMensual2020)
+summary(modelo2)
+```
+
+# ¿Existe una asociación o relación entre las variables?
+
+Según estos resultados la ecuación de la recta es:\
+$$\hat{Y} = 87.4 - 0.03*X$$
+
+En esta ecuación, el dato que marca la relación entre ambas variables es la pendiente.
+El $\hat{\beta} = -0.03$.
+Este dato es una aproximación desde los datos del "verdadero" valor de $\beta$.
+Como toda aproximación a partir de datos, este valor de $\hat{\beta}$ tiene un error estándar y por lo tanto un intervalo de confianza de posibles valores del parámetro poblacional.
+Con el estimado y el error estándar se puede usar la distribución t para inferir a la población.
+
+La H0: $\beta = 0$
+
+La HA: $\beta \not= 0$
+
+Es decir, se pone a prueba cuál es la probabilidad de observar una pendiente de -0.03 si la "verdadera" pendiente es cero.
+Esta probabilidad se mide, como siempre, con el p-value (o Pr(\>\|t\|), en la tabla de resultados).
+
+En la fila correspondiente a la variable independiente se observa que el p-value = 0.123 (o 12.3%).
+Es decir, que tenemos 12.3% de probabilidades de observar una pendiente de -0.03 si la verdadera pendiente es cero.
+Como este valor es mayor a 0.05, NO se puede rechazar la H0.
+
+Con esto se concluye que no se puede decir que haya relación entre ambas variables.
+
+En un segundo ejemplo, analizaremos la relación entre el analfabetismo en un departamento y el voto a Pedro Castillo.
+Guardaremos el modelo lineal en un nuevo objeto "modelo3" que describiremos.
+
+```{r}
+modelo3 <- lm(data21$VotoPL ~ data21$Analfabetismo)
+summary(modelo3)
+```
+
+La ecuación de la recta, según estos resultados es:
+
+$$\hat{Y} = 40.59 + 2.93*X$$
+
+El valor de $\hat{\beta} = 2.93$, con un p-value = 0.00168 (o 0.168%).
+Como el p-value es menor a 0.05 (o 5%), entonces podemos decir que la probabilidad de observar una pendiente de 2.93, siendo la verdadera cero es muy baja, por lo que lo más probable es que la pendiente no sea cero.
+
+Se rechaza la H0 y se afirma la HA, concluyendo que sí existe relación entre las variables.
+
+# Dirección
+
+La dirección de la relación entre las variables está marcada por el signo de la pendiente.
+Si el signo es positivo, la recta de aproximación tiene pendiente positiva y eso indica una relación positiva entre las variables (a mayor X, mayor Y).
+Si el signo es negativo, la recta de aproximación tiene una pendiente negativa y eso indica una relación negativa entre las variables (a mayor X, menor Y).
+
+En nuestro ejemplo, la pendiente (es decir, el valor de $\hat{\beta}$) es positiva.
+Eso quiere decir que departamentos que presentan mayores tasas de analfabetismo, reportan, en **promedio**, un mayor voto hacia Pedro Castillo.
+
+# Coeficiente de correlación de Pearson
+
+El valor de $\hat{\beta}$ indica la tasa de cambio, es decir, por cada unidad de cambio en X, Y cambia $\hat{\beta}$ unidades.
+En nuestro ejemplo, por cada 1% de aumento en la tasa de analfabetismo, el voto a Pedro Castillo cambia 2.9%.
+
+Pero la pendiente no es un buen indicador de la fuerza de la relación entre las variables, pues depende de las unidades de medida de las variables.
+Para poder evaluar la relación entre las variables, requerimos una versión estandarizada de la pendiente, que mida el cambio en unidades de desviación estándar.
+
+Esta medida es el coeficiente de correlación de Pearson.
+Este coeficiente no solo mide el cambio entre las variables en unidades de desviación estándar, sino también el grado de ajuste de los puntos a la recta.
+Este coeficiente tiene las siguientes características:
+
+-   El coeficiente r de Pearson varía entre -1 y +1.
+    El coeficiente r tiene el mismo signo que la pendiente.
+
+-   r=0 si la pendiente también es cero.
+
+-   r=+1 o r=-1 si todos los puntos caen en la línea de predicción.
+    Es decir, que la predicción es "perfecta".
+    Esta situación es hipótetica, nunca se da con datos en ciencias sociales.
+
+En nuestro ejemplo r=0.596.
+Es decir, por cada unidad de desviación estándar de cambio en X, Y cambia 0.596 desviaciones estándar.
+
+```{r correlacion}
+cor.test(x=data21$Analfabetismo, y=data21$VotoPL, method="pearson")
+```
+
+Para tener una idea acerca de cómo interpretar este valor, la siguiente imagen muestra ejemplos de distribuciones de puntos a diferentes valores de r.
+
+![](person.png){width="547"}
+
+Como se observa, a medida que el valor de r se acerca a 1, los puntos se encuentran más alineados a la recta de predicción, por lo que habría menos residuos, llegando a cero, con puntos completamente ajustados a la recta.
+
+A medida que el valor de r se acerca a cero, los puntos se vuelven más dispersos, formando una nube de puntos.
+Esos puntos se ajustan menos a una recta de predicción.
+
+Para tener una idea más lúdica de la distribución de puntos a diferentes valores del coeficiente de Pearson, pueden entrar a este link de [Guess the Correlation](http://guessthecorrelation.com/), que "gamifica" acertar con el valor de r para diferentes dispersiones de puntos.
+
+# Coeficiente de determinación $R^2$
+
+En el contexto del análisis de regresión lineal, la fuerza de la relación entre dos variables se interpreta como qué tan bien X predice Y.
+Esta capacidad de X de predecir la variable Y se mida mediante el coeficiente de determinación $R^2$.
+Este valor no es otro que el cuadrado del coeficiente de Pearson.
+
+Pero, se interpreta como la reducción proporcional en el error al usar la recta de predicción, en lugar de sólo usar $\bar{Y}$ (el promedio de Y) para predecir Y.
+
+Se tiene que recordar que los errores (o residuos) son las distancias de cada punto a la recta.
+Cada punto tiene una distancia a la recta de $\bar{Y}$ y también una distancia a la recta de predicción.
+
+En la imagen de la izquierda, se muestran las distancias de los puntos a la recta de $\bar{Y}$.
+Todas estas distancias al cuadrado se pueden sumar.
+Esta suma es E1.
+
+En la imagen de la derecha, se muestran las distancias de los puntos a la recta de predicción $\hat{Y}$.
+Todas estas distancias al cuadrado se pueden sumar.
+Esa suma es E2.
+
+![](determinacion.png)
+
+Entonces, $R^2 = \frac{E1-E2}{E2}$.
+Este cálculo es igual al cuadrado del valor de la correlación.
+Por lo tanto:
+
+-   $R^2$ varía entre 0 y 1.
+
+-   $R^2=1$ implica que E2 = 0, es decir que todos los puntos caen en la recta.
+
+-   $R^2=0$ si la pendiente es cero.
+
+En nuestro ejemplo, $R^2=0.35$.
+Este valor se encuentra en la penúltima fila del `summary` del modelo, con el nombre "Multiple R-squared".
+Es decir, el modelo reduce un 35% el error de usar solamente el promedio para estimar Y.
+Es decir, en el rango entre 0 y 1, el valor de 0.35 corresponde a una fuerza moderada entre las variables.
+
+# Validez del modelo
+
+La última fila del `summary` muestra los resultados de una prueba F, con un estadístico de la prueba y un p-value.
+Esta prueba es la que nos indica la validez del modelo en su conjunto.
+
+Cuando analizamos relaciones bivariadas, este p-value es igual al p-value de la pendiente, por lo que la validez se determina con cualquiera de ellas.
+
+Vamos a ver en la siguiente sección de análisis multivariado que el análisis de la prueba F es el primer paso, que indica la validez del modelo multivariado, y que se tiene que realizar antes de analizar los siguientes pasos, de relaciones, direcciones y fuerza.

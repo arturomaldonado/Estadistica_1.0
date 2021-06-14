@@ -415,7 +415,7 @@ Esa suma es E2.
 
 ![](determinacion.png)
 
-Entonces, $R^2 = \frac{E1-E2}{E2}$.
+Entonces, $R^2 = \frac{E1-E2}{E1}$.
 Este cálculo es igual al cuadrado del valor de la correlación.
 Por lo tanto:
 

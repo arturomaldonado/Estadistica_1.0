@@ -68,7 +68,7 @@ Esta base incluye información a nivel departamental, sociodemográfica y electo
 
 ```{r base, message=FALSE, warning=FALSE}
 library(rio)
-data <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/voto2016.csv")
+data <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/datos2016_v3.sav")
 ```
 
 Para empezar usaremos dos variables para general el gráfico de dispersión:
@@ -80,11 +80,11 @@ Para empezar usaremos dos variables para general el gráfico de dispersión:
 Para construir el gráfico de dispersión usaremos el comando `plot` que permite incluir ambas variables.
 
 ```{r dispersion}
-plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab="Porcentaje de familias con conexión a internet por departamento",
      ylab="Voto a PPK (1era vuelta)",
      pch=15, xlim=c(0,60), ylim=c(0, 30))
-text(data$Porc_Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
+text(data$Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
 ```
 
 Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
@@ -121,11 +121,11 @@ Una vez estimados estos valores (se verá la lógica en un momento), se puede es
 En nuestro ejemplo, se le puede pedir a R que incluya la recta de aproximación en el gráfico de dispersión mediante el comando `abline` donde se anida el comando `lm`, que se usa para calcular un modelo lineal (que veremos en un momento)
 
 ```{r recta}
-plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab="Porcentaje de familias con conexión a internet por departamento",
      ylab="Voto a PPK (1era vuelta)",
      pch=19, xlim=c(0,60), ylim=c(0, 30))
-abline(lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet))
+abline(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
 ```
 
 ¿Cómo se calcula que ESA es la recta de aproximación, y no otra?
@@ -138,14 +138,14 @@ Se trata de la diferencia entre el valor observado y el valor calculado por la r
 Es decir, cada observación tiene un residuo, que sería visualmente, la distancia vertical del punto a la recta de aproximación.
 
 ```{r residuos}
-plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab="Porcentaje de familias con conexión a internet por departamento",
      ylab="Voto a PPK (1era vuelta)",
      pch=19, xlim=c(0,60), ylim=c(0, 30))
-abline(lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet))
-fitted <- predict(lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet))
+abline(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
+fitted <- predict(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
 for (i in 1:25) {
-  lines( c(data$Porc_Uso_internet[i], data$Porc_Uso_internet[i]), c(data$Voto_PPK_2016_1[i], fitted[i]), col="blue")
+  lines( c(data$Uso_internet[i], data$Uso_internet[i]), c(data$Voto_PPK_2016_1[i], fitted[i]), col="blue")
 }
 ```
 
@@ -174,7 +174,7 @@ Esta aproximación se puede graficar con una recta horizontal Y=15.7.
 Esta recta genera otros residuos que se calculan como la resta entre el valor observado y la media.
 
 ```{r}
-plot(data$Porc_Uso_internet, data$Voto_PPK_2016_1,
+plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab="Porcentaje de familias con conexión a internet por departamento",
      ylab="Voto a PPK (1era vuelta)",
      pch=19, xlim=c(0,60), ylim=c(0, 30))
@@ -198,7 +198,7 @@ Esta recta es un modelo de la distribución de los datos.
 Este modelo se calcula con el comando `lm` (de linear model) y se reporta con `summary`.
 
 ```{r modelo}
-modelo1 <- lm(data$Voto_PPK_2016_1 ~ data$Porc_Uso_internet)
+modelo1 <- lm(data$Voto_PPK_2016_1 ~ data$Uso_internet)
 summary(modelo1)
 ```
 
@@ -288,8 +288,8 @@ Se parte de la hipótesis que existiría una relación inversa entre estas varia
 Para hacer una primera verificación de esta relación, se puede crear el diagrama de dispersión.
 
 ```{r dispersion21}
-plot(data21$VotoPL, data21$IngresoMensual2020,
-     xlab="Ingreso mensual promedio 2020",
+plot(data21$VotoPL, data21$SeguroSalud,
+     xlab="% que cuenta con seguro de salud",
      ylab="Voto a Pedro Castillo (conteo rápido 2da vuelta)",
      pch=15, xlim=c(400,1400), ylim=c(20, 100))
 text(data21$IngresoMensual2020, data21$VotoPL, labels=data21$Departamento, cex=0.6, pos=4)
@@ -301,8 +301,8 @@ Como indicamos antes, el modelo se calcula con el comando `lm` donde se indica l
 Este modelo de guarda en un objeto "modelo2" el que se puede describir con el comando `summary`.
 
 ```{r modelo2}
-modelo2 <- lm(data21$VotoPL ~ data21$IngresoMensual2020)
-summary(modelo2)
+modelo4 <- lm(data21$VotoFP ~ data21$DesnutricionInfantil)
+summary(modelo4)
 ```
 
 # ¿Existe una asociación o relación entre las variables?

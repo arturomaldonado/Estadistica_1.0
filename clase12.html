@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase 12</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 7</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 9 y 10</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase 12</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">6/21/2021</h4>
+
+</div>
+
+
+<div id="introducción-a-la-regresión-lineal-múltiple" class="section level1">
+<h1>Introducción a la regresión lineal múltiple</h1>
+<ul>
+<li><p>El análisis bivariado es un primer paso en el análisis estadístico. Se encuentran (co)rrelaciones: X - Y</p></li>
+<li><p>¿Por qué agregar más variables? Se busca aproximarse a la causalidad: X -&gt; Y</p></li>
+<li><p>Para aproximarse a establecer causalidad es necesario el análisis multivariado.</p></li>
+<li><p>Para hablar de causalidad, se requieren ciertos criterios:</p>
+<ul>
+<li><p>Asociación entre las variables, pero asociación no implica causalidad.</p></li>
+<li><p>Orden temporal: que la causa ocurra antes que el efecto.</p></li>
+<li><p>Eliminación de hipótesis alternativas. Estas hipótesis alternativas regularmente parten de la literatura.</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="control-estadístico" class="section level1">
+<h1>Control estadístico</h1>
+<p>Para evaluar (o eliminar) las hipótesis alternativas, se realiza un “control estadístico.” La idea es:</p>
+<ul>
+<li><p>Evaluar si la asociación entre X - Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable.</p></li>
+<li><p>En un experimento se puede controlar por un gran número de variables desde el diseño. Por ejemplo, se puede asegurar que el sujeto experimental esté expuesto a las mismas condiciones. Control experimental.</p></li>
+<li><p>En los métodos observacionales se puede aproximar un control experimental agrupando las observaciones en grupos de valores iguales o similares de las variables de control. Control estadístico.</p></li>
+<li><p>En la práctica, se analiza la relación entre X - Y para valores similares o iguales de una variable Z. De esta manera se elimina la influencia de Z en la relación entre X - Y. Es un paso en el establecimiento de X -&gt; Y.</p></li>
+<li><p>Si la relación entre X - Y desaparece cuando se controla por Z, se dice que la relación era espúrea.</p></li>
+</ul>
+<p>Para dar un ejemplo, usaremos los datos de la elección 2016. Esta base de datos incluye una variable de PBI per cápita en cada departamento. Con esta variable se ha creado otra variable agrupando el PBI en 3 grupos: alto, medio, bajo.</p>
+<pre class="r"><code>library(rio)
+data &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/main/datos2016_v3.sav&quot;)</code></pre>
+<p>En primer lugar, haremos una inspección visual de la relación entre el acceso a internet y el voto a PPK, mediante un gráfico de dispersión. Esta gráfico incluirá una tercera variable, PBI per cápita, que se visualizará como un color de cada observación.</p>
+<pre class="r"><code>plot(data$Uso_internet, data$Voto_PPK_2016_1, 
+     xlab=&quot;Porcentaje de familias con conexión a internet&quot;,
+     ylab= &quot;Voto a PPK (1era vuelta)&quot;, pch=19, xlim=c(0, 60), ylim=c(0,40),
+     col=data$pbipc_grupos)</code></pre>
+<p><img src="clase12_files/figure-html/dispersion-1.png" width="672" /></p>
+<p>El color de cada punto representa un nivel de PBI per cápita: negro significa PBI per cápita departamental bajo, rojo significa PBI per cápita departamental medio y verde significa PBI per cápita departamental alto.</p>
+<p>Para analizar visualmente la relación entre acceso a internet y voto a PPK, controlando por el PBI per cápita, se puede analizar evaluar la relación entre X - Y para grupos de Z. Es decir, se puede evaluar visualmente la relación entre acceso a internet - voto a PPK, en cada grupo de color.</p>
+<p>¿Cuál es la relación entre X - Y para el grupo de observaciones en negro (PBI per cápita departamental bajo)?</p>
+<p>¿Cuál es la relación entre X - Y para el grupo de observaciones en rojo (PBI per cápita departamental medio)?</p>
+<p>¿Cuál es la relación entre X - Y para el grupo de observaciones en verde (PBI per cápita departamental alto)?</p>
+<p>Pregunta final: ¿se mantiene la relación entre acceso a internet y voto a PPK en cada grupo de PBI per cápita?</p>
+<p>En un extremo, la relación entre X - Y se mantiene (en la misma dirección) para cada grupo de Z. Si esto es así, se dice que la relación entre X - Y se mantiene controlando por Z.</p>
+<p>En el otro extremos, la relación entre X - Y no se mantiene para ningún grupo de Z. Si esto es así, se dice que la relación entre X - Y es una relación espúrea, que cuando se controla por Z, esta relación bivariada desaparece.</p>
+<p>En la práctica, el análisis multivariado analiza si la relación entre X - Y se mantiene “en promedio” para cada grupo de Z. Para hacer esta evaluación no es suficiente (y a veces, no es necesario) el análisis visual en el diagrama de dispersión, sino que hace falta un modelo estadístico.</p>
+</div>
+<div id="modelo-de-regresión-lineal-múltiple" class="section level1">
+<h1>Modelo de regresión lineal múltiple</h1>
+<p>Se usa un modelo de regresión lineal múltiple para el cálculo de los efectos de varios predictores en una variable dependiente numérica en un mismo modelo. Por ejemplo, si quisiéramos evaluar la relación entre la variable acceso a internet y la variable PBI per cápita en el voto a PPK, se puede incluir ambas variables independientes en un mismo modelo.</p>
+<p>En ese caso, el modelo sería: <span class="math inline">\(\hat{Y} = \hat{\alpha} + \hat{\beta_1}*X_1+\hat{\beta_2}*X_2\)</span></p>
+<p>Si la relación bivariada se evalúa en un plano cartesiano, cuando se incluye una tercera variable, el análisis pasa de un plano cartesiano a un espacio cartesiano. Para fines explicativos, esto se puede graficar en un diagrama de dispersión en tres dimensiones.</p>
+<pre class="r"><code>library(scatterplot3d)
+scatterplot3d(x=data$Uso_internet, y=data$Voto_PPK_2016_1, z=data$pbipc_2014)</code></pre>
+<p><img src="clase12_files/figure-html/3d-1.png" width="672" /></p>
+<pre class="r"><code>pairs(data$Uso_internet ~ data$Uso_internet+data$pbipc_2014)</code></pre>
+<p><img src="clase12_files/figure-html/3d-2.png" width="672" /></p>
+<p>En este caso, cada punto estaría ubicado de acuerdo a los valores en las 3 variables. No es fácil visualizar la relaciones parciales entre X - Y y entre Z - Y. Una mejor visualización es mirando los lados del cubo.</p>
+<p>Uno podría pensar que es suficiente con realizar dos regresiones lineales simples entre cada variable independiente con la dependiente. Si lo hacemos, tendríamos dos modelos simples. Para la relación original entre acceso a internet y voto a PPK, se tiene.</p>
+<pre class="r"><code>modelo1 &lt;- lm(data$Voto_PPK_2016_1 ~ data$Uso_internet)
+summary(modelo1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$Voto_PPK_2016_1 ~ data$Uso_internet)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.6001 -4.9871 -0.2939  3.2344 13.7498 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)        3.51789    3.23825   1.086 0.288576    
+## data$Uso_internet  0.37312    0.09264   4.028 0.000525 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.649 on 23 degrees of freedom
+## Multiple R-squared:  0.4136, Adjusted R-squared:  0.3881 
+## F-statistic: 16.22 on 1 and 23 DF,  p-value: 0.0005251</code></pre>
+<p>Y para la segunda variable, se tiene.</p>
+<pre class="r"><code>modelo2 &lt;- lm(data$Voto_PPK_2016_1 ~ data$pbipc_2014)
+summary(modelo2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$Voto_PPK_2016_1 ~ data$pbipc_2014)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -7.739 -3.634 -1.237  2.506 11.596 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)     8.0704028  2.2830875   3.535  0.00186 **
+## data$pbipc_2014 0.0004790  0.0001324   3.619  0.00152 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.584 on 22 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.3732, Adjusted R-squared:  0.3447 
+## F-statistic:  13.1 on 1 and 22 DF,  p-value: 0.00152</code></pre>
+<p>Mirando los resultados de ambos modelos lineales simples, se tiene que ambas variables, tanto acceso a internet como PBI, son significativas. Ambas tienen un efecto directo, es decir, a mayor acceso, mayor voto a PPK en promedio, y a mayor PBI per cápita, mayor voto a PPK en promedio.</p>
+<p>Estos modelos, sin embargo, analizan el impacto individual de cada variable, sin ningún tipo de control estadístico. Los modelos lineales simple, en ese sentido, están más cerca de un análisis de correlación, que de uno de causalidad.</p>
+<p>Para tratar de acercarnos a la idea de causalidad, se tiene que controlar por posibles explicaciones alternativas. La discusión con respecto a la elección 2016 planteaba que el voto a PPK también tenía un componente económico. Se especulaba que los sectores más beneficiados del boom económico podían votar en mayor medida a favor de PPK. Si esto es así, la variable de PBI per cápita puede recoger este fenómeno.</p>
+<p>La idea es evaluar si la relación entre acceso a internet y voto a PPK se mantiene controlando por una variable económica. Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como variable dependiente y el acceso a internet y el PBI per cápita como variables independientes, en un mismo modelo. El comando <code>lm</code> permite incluir varios predictores independientes en un mismo modelo con el símbolo +.</p>
+<pre class="r"><code>modelo3 &lt;- lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014, data=data)
+summary(modelo3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014, data = data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.8735 -4.4093 -0.3084  2.0388 13.0349 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)  4.7073379  3.3263131   1.415   0.1717  
+## Uso_internet 0.1849797  0.1352907   1.367   0.1860  
+## pbipc_2014   0.0003111  0.0001787   1.741   0.0964 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.477 on 21 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.4244, Adjusted R-squared:  0.3696 
+## F-statistic: 7.743 on 2 and 21 DF,  p-value: 0.003027</code></pre>
+</div>
+<div id="leyendo-el-modelo" class="section level1">
+<h1>Leyendo el modelo</h1>
+<div id="es-válido-el-modelo" class="section level2">
+<h2>¿Es válido el modelo?</h2>
+<p>Como ahora tenemos dos variables independientes, la validez del modelo ya no depende solo de la relación de una variable independiente con la dependiente. Para evaluar la validez del modelo se tiene que hacer una evaluación general. Esta evaluación plantea una hipótesis cero que todas las pendientes (o coeficientes) son iguales a cero.</p>
+<p><span class="math inline">\(H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0\)</span></p>
+<p>La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.</p>
+<p>Para evaluar esta hipótesis se analiza los resultados de la prueba F (en la última línea de resultados del modelo). El estadístico F = 7.74 tiene un p-value asociado de 0.003. Este p-value es menor de 0.05, por lo que podemos rechazar la H0 y afirmar que al menos un coeficiente debe ser diferente de cero.</p>
+</div>
+<div id="test-de-inferencia-hay-relación-entre-las-vis-y-la-vd" class="section level2">
+<h2>Test de inferencia: ¿hay relación entre las VIs y la VD?</h2>
+<p>Esta pregunta se responde para cada variable independiente, evaluación que se hace dentro de un modelo lineal multivariado, donde se controla por el resto de variables.</p>
+<p>Cada variable independiente tiene una fila de resultados con su propia prueba de independencia. Esta pruebas tiene las siguientes hipótesis:</p>
+<p><span class="math inline">\(H0: \beta_1 = 0\)</span> y <span class="math inline">\(H0: \beta_2 = 0\)</span></p>
+<p>Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de 0.18. Para esta variable el estadístico de la prueba t tiene un valor de 1.37, con un p-value de 0.186. Este p-value es mayor de 0.05, por lo que fallamos en rechazar la H0. Es decir, se tiene 18.6% de probabilidades de tener un coeficiente de 1.37, si el verdadero valor del parámetro es 0. En resumen, con estos valores, no encontramos una relación entre acceso a internet y voto a PPK.</p>
+<p>Para la variable, PBI per cápita, tenemos un coeficiente de 0.0003, con un estadístico de la prueba t de 1.74 y un p-value de 0.096. Con este p-value no podemos rechazar la H0 a un valor crítico de 0.05). Este p-value sería significativo a un valor crítico de 0.10. Si flexibilizamos el valor crítico al 0.10, podemos concluir que sí existe una relación entre PBI y voto a PPK.</p>
+<p>En conclusión, la relación entre acceso a internet y voto a PPK, que se había encontrado en el análisis bivariado, no se mantiene en un análisis multivariado, cuando se controla por la variable PBI. Muy probablemente estemos hablando de una relación espúrea, pues PBI podría tener un efecto tanto en el acceso a internet (departamentos más ricos, tienen familias que pueden pagar por el servicio de internet), como en el voto a PPK (departamentos más ricos, votan en mayor medida a PPK).</p>
+</div>
+<div id="dirección-de-la-relación" class="section level2">
+<h2>Dirección de la relación</h2>
+<p>De la misma manera que en análisis bivariado, la dirección de la relación entre las variables independientes y la dependiente está marcado por el signo del coeficiente.</p>
+<p>En este caso, solo se analiza el signo del coeficiente de la variable PBI, pues es la única significativa al 0.10. El signo del coeficiente es positivo (+), lo que indica que departamentos con un mayor PBI per cápita tendrían un mayor porcentaje de voto a PPK en promedio.</p>
+</div>
+<div id="fuerza-del-modelo" class="section level2">
+<h2>Fuerza del modelo</h2>
+<p>De la misma manera que en el análisis bivariado, la fuerza del modelo se entiende como el porcentaje de la variación total de la variable dependiente explicada por las variables independientes. Este dato se obtiene con el <span class="math inline">\(R^2\)</span>.</p>
+<p>En nuestro ejemplo se tiene un <span class="math inline">\(R^2=0.424\)</span>. Esta dato indicaría que el modelo que incluye las variables acceso a interney y PBI per cápita explican el 42.4% de la variación total del voto a PPK. Esto según nuestra escala equivale a una relación de fuerza moderada.</p>
+<p>Los resultados también muestran un <span class="math inline">\(R^2\)</span> ajustado. Este estadístico se usa cuando se quiere comparar entre diferentes modelos, ya sea porque se usan diferentes variables o diferente número de variables. Esto es importante cuando se comparar modelos con diferente número de variables independientes, porque el <span class="math inline">\(R^2\)</span> tiene la característica de aumentar cuando se incluyen más variables independientes. El <span class="math inline">\(R^2\)</span> ajustado controla por esta inflación artificial.</p>
+</div>
+<div id="predicción" class="section level2">
+<h2>Predicción</h2>
+<p>Para la predicción se tiene que construir la ecuación del modelo. Esta ecuación se construye con los valores de los coeficientes de ambas variables, así alguna de ellas no haya salido significativa. A esto de se agrega el valor de la constante.</p>
+<p>En nuestro ejemplo se tiene la siguiente ecuación, siendo Y el voto a PPK, X1 el acceso a internet y X2 en PBi per cápita:</p>
+<p><span class="math display">\[\hat{Y} = 4.71 + 0.18*X_1+0.0003*X_2\]</span></p>
+<p>Para hallar el voto estimado a PPK, se tiene que agregar valores de las dos variables independientes. Para poder aproximar valores estándar de estas variables, estas se pueden describir.</p>
+<pre class="r"><code>summary(data$Uso_internet)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   14.00   23.00   32.00   32.76   42.00   58.00</code></pre>
+<pre class="r"><code>summary(data$pbipc_2014)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    7001    9556   11882   14946   18807   47564       1</code></pre>
+<p>Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8 y X2=14946.</p>
+<p><span class="math display">\[\hat{Y} = 4.71 + 0.18*32.8+0.0003*14946 = 15.1 \]</span></p>
+<p>En conclusión, para valores promedio de las variables independientes, el voto estimado a PPK, según el modelo, sería de 15.1%. Este mismo ejercicio se puede hacer para los valores mínimos, máximos, para algunos percentiles particulares, etc.</p>
+</div>
+<div id="comparando-entre-variables" class="section level2">
+<h2>Comparando entre variables</h2>
+<p>En ocasiones se quiere analizar qué variable independiente tiene un mayor efecto sobre la variable dependiente. Este análisis no se puede hacer simplemente comparando los coeficientes del modelo anterior, debido a que estos coeficientes están en diferentes unidades: acceso a internet en porcentaje y PBI per cápita en soles.</p>
+<p>Para poder comparar el efecto de cada variable sobre la variable dependiente, se tiene que calcular los coeficientes estandarizados. Estos coeficientes son independientes de las unidades de medida.</p>
+<p>Para poder calculas los coeficientes estandarizados, se puede usar la librería <code>jtools</code>, que cuenta con el comando <code>summ</code>, donde se puede especificar <code>scale=TRUE</code> para que se presenten los coeficientes estandarizados.</p>
+<pre class="r"><code>library(jtools)
+summ(modelo3, scale=T)</code></pre>
+<pre><code>## MODEL INFO:
+## Observations: 24 (1 missing obs. deleted)
+## Dependent Variable: Voto_PPK_2016_1
+## Type: OLS linear regression 
+## 
+## MODEL FIT:
+## F(2,21) = 7.74, p = 0.00
+## R² = 0.42
+## Adj. R² = 0.37 
+## 
+## Standard errors: OLS
+## -------------------------------------------------
+##                       Est.   S.E.   t val.      p
+## ------------------ ------- ------ -------- ------
+## (Intercept)          15.23   1.12    13.62   0.00
+## Uso_internet          2.15   1.57     1.37   0.19
+## pbipc_2014            2.74   1.57     1.74   0.10
+## -------------------------------------------------
+## 
+## Continuous predictors are mean-centered and scaled by 1 s.d.</code></pre>
+<p>De acuerdo a estos resultados, la variable independiente que tiene un efecto mayor sobre la variable dependiente es el PBI per cápita. Este análisis es mucho más útil cuando tenemos una mayor cantidad de variables independientes en diferentes unidades de medición.</p>
+</div>
+</div>
+<div id="leyendo-resultados-académicos" class="section level1">
+<h1>Leyendo resultados académicos</h1>
+<p>El análisis de regresión lineal multivariado es una de las herramientas académicas más usadas. Es muy común encontrar tablas, como la que se muestra abajo, con resultados de este tipo.</p>
+<p>Un punto importante, además de producir resultados, es saber interpretarlos. La tabla siguiente muestra los resultados de un análisis donde la unidad de análisis son individuos. La variable dependiente es una medida de apoyo intrínseco a la democracia. Cada variable independiente tiene un signo que indica la dirección teórica que debería tener la variable. Los datos sirven para verificar empíricamente estas hipótesis.</p>
+<p><img src="images/paste-D0061731.png" width="521" /></p>
+<p>De acuerdo a estos resultados, se puede concluir:</p>
+<ul>
+<li></li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgMTIiCmF1dGhvcjogIkFydHVybyBNYWxkb25hZG8iCmRhdGU6ICI2LzIxLzIwMjEiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGNvc21vCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlCmVkaXRvcl9vcHRpb25zOgogIG1hcmtkb3duOgogICAgd3JhcDogc2VudGVuY2UKYmlibGlvZ3JhcGh5OiByZWZlcmVuY2VzLmJpYgotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCmBgYAoKIyBJbnRyb2R1Y2Npw7NuIGEgbGEgcmVncmVzacOzbiBsaW5lYWwgbcO6bHRpcGxlCgotICAgRWwgYW7DoWxpc2lzIGJpdmFyaWFkbyBlcyB1biBwcmltZXIgcGFzbyBlbiBlbCBhbsOhbGlzaXMgZXN0YWTDrXN0aWNvLgogICAgU2UgZW5jdWVudHJhbiAoY28pcnJlbGFjaW9uZXM6IFggLSBZCgotICAgwr9Qb3IgcXXDqSBhZ3JlZ2FyIG3DoXMgdmFyaWFibGVzPwogICAgU2UgYnVzY2EgYXByb3hpbWFyc2UgYSBsYSBjYXVzYWxpZGFkOiBYIC1cPiBZCgotICAgUGFyYSBhcHJveGltYXJzZSBhIGVzdGFibGVjZXIgY2F1c2FsaWRhZCBlcyBuZWNlc2FyaW8gZWwgYW7DoWxpc2lzIG11bHRpdmFyaWFkby4KCi0gICBQYXJhIGhhYmxhciBkZSBjYXVzYWxpZGFkLCBzZSByZXF1aWVyZW4gY2llcnRvcyBjcml0ZXJpb3M6CgogICAgLSAgIEFzb2NpYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMsIHBlcm8gYXNvY2lhY2nDs24gbm8gaW1wbGljYSBjYXVzYWxpZGFkLgoKICAgIC0gICBPcmRlbiB0ZW1wb3JhbDogcXVlIGxhIGNhdXNhIG9jdXJyYSBhbnRlcyBxdWUgZWwgZWZlY3RvLgoKICAgIC0gICBFbGltaW5hY2nDs24gZGUgaGlww7N0ZXNpcyBhbHRlcm5hdGl2YXMuCiAgICAgICAgRXN0YXMgaGlww7N0ZXNpcyBhbHRlcm5hdGl2YXMgcmVndWxhcm1lbnRlIHBhcnRlbiBkZSBsYSBsaXRlcmF0dXJhLgoKIyBDb250cm9sIGVzdGFkw61zdGljbwoKUGFyYSBldmFsdWFyIChvIGVsaW1pbmFyKSBsYXMgaGlww7N0ZXNpcyBhbHRlcm5hdGl2YXMsIHNlIHJlYWxpemEgdW4gImNvbnRyb2wgZXN0YWTDrXN0aWNvIi4KTGEgaWRlYSBlczoKCi0gICBFdmFsdWFyIHNpIGxhIGFzb2NpYWNpw7NuIGVudHJlIFggLSBZIHBlcm1hbmVjZSBzaSBzZSByZW11ZXZlIGVsIGVmZWN0byBkZSBvdHJhIHZhcmlhYmxlLCBlcyBkZWNpciwgc2kgc2UgY29udHJvbGEgcG9yIHVuYSB0ZXJjZXJhIHZhcmlhYmxlLgoKLSAgIEVuIHVuIGV4cGVyaW1lbnRvIHNlIHB1ZWRlIGNvbnRyb2xhciBwb3IgdW4gZ3JhbiBuw7ptZXJvIGRlIHZhcmlhYmxlcyBkZXNkZSBlbCBkaXNlw7FvLgogICAgUG9yIGVqZW1wbG8sIHNlIHB1ZWRlIGFzZWd1cmFyIHF1ZSBlbCBzdWpldG8gZXhwZXJpbWVudGFsIGVzdMOpIGV4cHVlc3RvIGEgbGFzIG1pc21hcyBjb25kaWNpb25lcy4KICAgIENvbnRyb2wgZXhwZXJpbWVudGFsLgoKLSAgIEVuIGxvcyBtw6l0b2RvcyBvYnNlcnZhY2lvbmFsZXMgc2UgcHVlZGUgYXByb3hpbWFyIHVuIGNvbnRyb2wgZXhwZXJpbWVudGFsIGFncnVwYW5kbyBsYXMgb2JzZXJ2YWNpb25lcyBlbiBncnVwb3MgZGUgdmFsb3JlcyBpZ3VhbGVzIG8gc2ltaWxhcmVzIGRlIGxhcyB2YXJpYWJsZXMgZGUgY29udHJvbC4KICAgIENvbnRyb2wgZXN0YWTDrXN0aWNvLgoKLSAgIEVuIGxhIHByw6FjdGljYSwgc2UgYW5hbGl6YSBsYSByZWxhY2nDs24gZW50cmUgWCAtIFkgcGFyYSB2YWxvcmVzIHNpbWlsYXJlcyBvIGlndWFsZXMgZGUgdW5hIHZhcmlhYmxlIFouCiAgICBEZSBlc3RhIG1hbmVyYSBzZSBlbGltaW5hIGxhIGluZmx1ZW5jaWEgZGUgWiBlbiBsYSByZWxhY2nDs24gZW50cmUgWCAtIFkuCiAgICBFcyB1biBwYXNvIGVuIGVsIGVzdGFibGVjaW1pZW50byBkZSBYIC1cPiBZLgoKLSAgIFNpIGxhIHJlbGFjacOzbiBlbnRyZSBYIC0gWSBkZXNhcGFyZWNlIGN1YW5kbyBzZSBjb250cm9sYSBwb3IgWiwgc2UgZGljZSBxdWUgbGEgcmVsYWNpw7NuIGVyYSBlc3DDunJlYS4KClBhcmEgZGFyIHVuIGVqZW1wbG8sIHVzYXJlbW9zIGxvcyBkYXRvcyBkZSBsYSBlbGVjY2nDs24gMjAxNi4KRXN0YSBiYXNlIGRlIGRhdG9zIGluY2x1eWUgdW5hIHZhcmlhYmxlIGRlIFBCSSBwZXIgY8OhcGl0YSBlbiBjYWRhIGRlcGFydGFtZW50by4KQ29uIGVzdGEgdmFyaWFibGUgc2UgaGEgY3JlYWRvIG90cmEgdmFyaWFibGUgYWdydXBhbmRvIGVsIFBCSSBlbiAzIGdydXBvczogYWx0bywgbWVkaW8sIGJham8uCgpgYGB7ciBiYXNlfQpsaWJyYXJ5KHJpbykKZGF0YSA8LSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vYXJ0dXJvbWFsZG9uYWRvL0VzdGFkaXN0aWNhXzEuMC9tYWluL2RhdG9zMjAxNl92My5zYXYiKQpgYGAKCkVuIHByaW1lciBsdWdhciwgaGFyZW1vcyB1bmEgaW5zcGVjY2nDs24gdmlzdWFsIGRlIGxhIHJlbGFjacOzbiBlbnRyZSBlbCBhY2Nlc28gYSBpbnRlcm5ldCB5IGVsIHZvdG8gYSBQUEssIG1lZGlhbnRlIHVuIGdyw6FmaWNvIGRlIGRpc3BlcnNpw7NuLgpFc3RhIGdyw6FmaWNvIGluY2x1aXLDoSB1bmEgdGVyY2VyYSB2YXJpYWJsZSwgUEJJIHBlciBjw6FwaXRhLCBxdWUgc2UgdmlzdWFsaXphcsOhIGNvbW8gdW4gY29sb3IgZGUgY2FkYSBvYnNlcnZhY2nDs24uCgpgYGB7ciBkaXNwZXJzaW9ufQpwbG90KGRhdGEkVXNvX2ludGVybmV0LCBkYXRhJFZvdG9fUFBLXzIwMTZfMSwgCiAgICAgeGxhYj0iUG9yY2VudGFqZSBkZSBmYW1pbGlhcyBjb24gY29uZXhpw7NuIGEgaW50ZXJuZXQiLAogICAgIHlsYWI9ICJWb3RvIGEgUFBLICgxZXJhIHZ1ZWx0YSkiLCBwY2g9MTksIHhsaW09YygwLCA2MCksIHlsaW09YygwLDQwKSwKICAgICBjb2w9ZGF0YSRwYmlwY19ncnVwb3MpCmBgYAoKRWwgY29sb3IgZGUgY2FkYSBwdW50byByZXByZXNlbnRhIHVuIG5pdmVsIGRlIFBCSSBwZXIgY8OhcGl0YTogbmVncm8gc2lnbmlmaWNhIFBCSSBwZXIgY8OhcGl0YSBkZXBhcnRhbWVudGFsIGJham8sIHJvam8gc2lnbmlmaWNhIFBCSSBwZXIgY8OhcGl0YSBkZXBhcnRhbWVudGFsIG1lZGlvIHkgdmVyZGUgc2lnbmlmaWNhIFBCSSBwZXIgY8OhcGl0YSBkZXBhcnRhbWVudGFsIGFsdG8uCgpQYXJhIGFuYWxpemFyIHZpc3VhbG1lbnRlIGxhIHJlbGFjacOzbiBlbnRyZSBhY2Nlc28gYSBpbnRlcm5ldCB5IHZvdG8gYSBQUEssIGNvbnRyb2xhbmRvIHBvciBlbCBQQkkgcGVyIGPDoXBpdGEsIHNlIHB1ZWRlIGFuYWxpemFyIGV2YWx1YXIgbGEgcmVsYWNpw7NuIGVudHJlIFggLSBZIHBhcmEgZ3J1cG9zIGRlIFouCkVzIGRlY2lyLCBzZSBwdWVkZSBldmFsdWFyIHZpc3VhbG1lbnRlIGxhIHJlbGFjacOzbiBlbnRyZSBhY2Nlc28gYSBpbnRlcm5ldCAtIHZvdG8gYSBQUEssIGVuIGNhZGEgZ3J1cG8gZGUgY29sb3IuCgrCv0N1w6FsIGVzIGxhIHJlbGFjacOzbiBlbnRyZSBYIC0gWSBwYXJhIGVsIGdydXBvIGRlIG9ic2VydmFjaW9uZXMgZW4gbmVncm8gKFBCSSBwZXIgY8OhcGl0YSBkZXBhcnRhbWVudGFsIGJham8pPwoKwr9DdcOhbCBlcyBsYSByZWxhY2nDs24gZW50cmUgWCAtIFkgcGFyYSBlbCBncnVwbyBkZSBvYnNlcnZhY2lvbmVzIGVuIHJvam8gKFBCSSBwZXIgY8OhcGl0YSBkZXBhcnRhbWVudGFsIG1lZGlvKT8KCsK/Q3XDoWwgZXMgbGEgcmVsYWNpw7NuIGVudHJlIFggLSBZIHBhcmEgZWwgZ3J1cG8gZGUgb2JzZXJ2YWNpb25lcyBlbiB2ZXJkZSAoUEJJIHBlciBjw6FwaXRhIGRlcGFydGFtZW50YWwgYWx0byk/CgpQcmVndW50YSBmaW5hbDogwr9zZSBtYW50aWVuZSBsYSByZWxhY2nDs24gZW50cmUgYWNjZXNvIGEgaW50ZXJuZXQgeSB2b3RvIGEgUFBLIGVuIGNhZGEgZ3J1cG8gZGUgUEJJIHBlciBjw6FwaXRhPwoKRW4gdW4gZXh0cmVtbywgbGEgcmVsYWNpw7NuIGVudHJlIFggLSBZIHNlIG1hbnRpZW5lIChlbiBsYSBtaXNtYSBkaXJlY2Npw7NuKSBwYXJhIGNhZGEgZ3J1cG8gZGUgWi4KU2kgZXN0byBlcyBhc8OtLCBzZSBkaWNlIHF1ZSBsYSByZWxhY2nDs24gZW50cmUgWCAtIFkgc2UgbWFudGllbmUgY29udHJvbGFuZG8gcG9yIFouCgpFbiBlbCBvdHJvIGV4dHJlbW9zLCBsYSByZWxhY2nDs24gZW50cmUgWCAtIFkgbm8gc2UgbWFudGllbmUgcGFyYSBuaW5nw7puIGdydXBvIGRlIFouClNpIGVzdG8gZXMgYXPDrSwgc2UgZGljZSBxdWUgbGEgcmVsYWNpw7NuIGVudHJlIFggLSBZIGVzIHVuYSByZWxhY2nDs24gZXNww7pyZWEsIHF1ZSBjdWFuZG8gc2UgY29udHJvbGEgcG9yIFosIGVzdGEgcmVsYWNpw7NuIGJpdmFyaWFkYSBkZXNhcGFyZWNlLgoKRW4gbGEgcHLDoWN0aWNhLCBlbCBhbsOhbGlzaXMgbXVsdGl2YXJpYWRvIGFuYWxpemEgc2kgbGEgcmVsYWNpw7NuIGVudHJlIFggLSBZIHNlIG1hbnRpZW5lICJlbiBwcm9tZWRpbyIgcGFyYSBjYWRhIGdydXBvIGRlIFouClBhcmEgaGFjZXIgZXN0YSBldmFsdWFjacOzbiBubyBlcyBzdWZpY2llbnRlICh5IGEgdmVjZXMsIG5vIGVzIG5lY2VzYXJpbykgZWwgYW7DoWxpc2lzIHZpc3VhbCBlbiBlbCBkaWFncmFtYSBkZSBkaXNwZXJzacOzbiwgc2lubyBxdWUgaGFjZSBmYWx0YSB1biBtb2RlbG8gZXN0YWTDrXN0aWNvLgoKIyBNb2RlbG8gZGUgcmVncmVzacOzbiBsaW5lYWwgbcO6bHRpcGxlCgpTZSB1c2EgdW4gbW9kZWxvIGRlIHJlZ3Jlc2nDs24gbGluZWFsIG3Dumx0aXBsZSBwYXJhIGVsIGPDoWxjdWxvIGRlIGxvcyBlZmVjdG9zIGRlIHZhcmlvcyBwcmVkaWN0b3JlcyBlbiB1bmEgdmFyaWFibGUgZGVwZW5kaWVudGUgbnVtw6lyaWNhIGVuIHVuIG1pc21vIG1vZGVsby4KUG9yIGVqZW1wbG8sIHNpIHF1aXNpw6lyYW1vcyBldmFsdWFyIGxhIHJlbGFjacOzbiBlbnRyZSBsYSB2YXJpYWJsZSBhY2Nlc28gYSBpbnRlcm5ldCB5IGxhIHZhcmlhYmxlIFBCSSBwZXIgY8OhcGl0YSBlbiBlbCB2b3RvIGEgUFBLLCBzZSBwdWVkZSBpbmNsdWlyIGFtYmFzIHZhcmlhYmxlcyBpbmRlcGVuZGllbnRlcyBlbiB1biBtaXNtbyBtb2RlbG8uCgpFbiBlc2UgY2FzbywgZWwgbW9kZWxvIHNlcsOtYTogJFxoYXR7WX0gPSBcaGF0e1xhbHBoYX0gKyBcaGF0e1xiZXRhXzF9KlhfMStcaGF0e1xiZXRhXzJ9KlhfMiQKClNpIGxhIHJlbGFjacOzbiBiaXZhcmlhZGEgc2UgZXZhbMO6YSBlbiB1biBwbGFubyBjYXJ0ZXNpYW5vLCBjdWFuZG8gc2UgaW5jbHV5ZSB1bmEgdGVyY2VyYSB2YXJpYWJsZSwgZWwgYW7DoWxpc2lzIHBhc2EgZGUgdW4gcGxhbm8gY2FydGVzaWFubyBhIHVuIGVzcGFjaW8gY2FydGVzaWFuby4KUGFyYSBmaW5lcyBleHBsaWNhdGl2b3MsIGVzdG8gc2UgcHVlZGUgZ3JhZmljYXIgZW4gdW4gZGlhZ3JhbWEgZGUgZGlzcGVyc2nDs24gZW4gdHJlcyBkaW1lbnNpb25lcy4KCmBgYHtyIDNkfQpsaWJyYXJ5KHNjYXR0ZXJwbG90M2QpCnNjYXR0ZXJwbG90M2QoeD1kYXRhJFVzb19pbnRlcm5ldCwgeT1kYXRhJFZvdG9fUFBLXzIwMTZfMSwgej1kYXRhJHBiaXBjXzIwMTQpCnBhaXJzKGRhdGEkVXNvX2ludGVybmV0IH4gZGF0YSRVc29faW50ZXJuZXQrZGF0YSRwYmlwY18yMDE0KQpgYGAKCkVuIGVzdGUgY2FzbywgY2FkYSBwdW50byBlc3RhcsOtYSB1YmljYWRvIGRlIGFjdWVyZG8gYSBsb3MgdmFsb3JlcyBlbiBsYXMgMyB2YXJpYWJsZXMuCk5vIGVzIGbDoWNpbCB2aXN1YWxpemFyIGxhIHJlbGFjaW9uZXMgcGFyY2lhbGVzIGVudHJlIFggLSBZIHkgZW50cmUgWiAtIFkuClVuYSBtZWpvciB2aXN1YWxpemFjacOzbiBlcyBtaXJhbmRvIGxvcyBsYWRvcyBkZWwgY3Viby4KClVubyBwb2Ryw61hIHBlbnNhciBxdWUgZXMgc3VmaWNpZW50ZSBjb24gcmVhbGl6YXIgZG9zIHJlZ3Jlc2lvbmVzIGxpbmVhbGVzIHNpbXBsZXMgZW50cmUgY2FkYSB2YXJpYWJsZSBpbmRlcGVuZGllbnRlIGNvbiBsYSBkZXBlbmRpZW50ZS4KU2kgbG8gaGFjZW1vcywgdGVuZHLDrWFtb3MgZG9zIG1vZGVsb3Mgc2ltcGxlcy4KUGFyYSBsYSByZWxhY2nDs24gb3JpZ2luYWwgZW50cmUgYWNjZXNvIGEgaW50ZXJuZXQgeSB2b3RvIGEgUFBLLCBzZSB0aWVuZS4KCmBgYHtyIG9scyBzaW1wbGV9Cm1vZGVsbzEgPC0gbG0oZGF0YSRWb3RvX1BQS18yMDE2XzEgfiBkYXRhJFVzb19pbnRlcm5ldCkKc3VtbWFyeShtb2RlbG8xKQpgYGAKClkgcGFyYSBsYSBzZWd1bmRhIHZhcmlhYmxlLCBzZSB0aWVuZS4KCmBgYHtyIG9scyBzaW1wbGUgMn0KbW9kZWxvMiA8LSBsbShkYXRhJFZvdG9fUFBLXzIwMTZfMSB+IGRhdGEkcGJpcGNfMjAxNCkKc3VtbWFyeShtb2RlbG8yKQpgYGAKCk1pcmFuZG8gbG9zIHJlc3VsdGFkb3MgZGUgYW1ib3MgbW9kZWxvcyBsaW5lYWxlcyBzaW1wbGVzLCBzZSB0aWVuZSBxdWUgYW1iYXMgdmFyaWFibGVzLCB0YW50byBhY2Nlc28gYSBpbnRlcm5ldCBjb21vIFBCSSwgc29uIHNpZ25pZmljYXRpdmFzLgpBbWJhcyB0aWVuZW4gdW4gZWZlY3RvIGRpcmVjdG8sIGVzIGRlY2lyLCBhIG1heW9yIGFjY2VzbywgbWF5b3Igdm90byBhIFBQSyBlbiBwcm9tZWRpbywgeSBhIG1heW9yIFBCSSBwZXIgY8OhcGl0YSwgbWF5b3Igdm90byBhIFBQSyBlbiBwcm9tZWRpby4KCkVzdG9zIG1vZGVsb3MsIHNpbiBlbWJhcmdvLCBhbmFsaXphbiBlbCBpbXBhY3RvIGluZGl2aWR1YWwgZGUgY2FkYSB2YXJpYWJsZSwgc2luIG5pbmfDum4gdGlwbyBkZSBjb250cm9sIGVzdGFkw61zdGljby4KTG9zIG1vZGVsb3MgbGluZWFsZXMgc2ltcGxlLCBlbiBlc2Ugc2VudGlkbywgZXN0w6FuIG3DoXMgY2VyY2EgZGUgdW4gYW7DoWxpc2lzIGRlIGNvcnJlbGFjacOzbiwgcXVlIGRlIHVubyBkZSBjYXVzYWxpZGFkLgoKUGFyYSB0cmF0YXIgZGUgYWNlcmNhcm5vcyBhIGxhIGlkZWEgZGUgY2F1c2FsaWRhZCwgc2UgdGllbmUgcXVlIGNvbnRyb2xhciBwb3IgcG9zaWJsZXMgZXhwbGljYWNpb25lcyBhbHRlcm5hdGl2YXMuCkxhIGRpc2N1c2nDs24gY29uIHJlc3BlY3RvIGEgbGEgZWxlY2Npw7NuIDIwMTYgcGxhbnRlYWJhIHF1ZSBlbCB2b3RvIGEgUFBLIHRhbWJpw6luIHRlbsOtYSB1biBjb21wb25lbnRlIGVjb27Ds21pY28uClNlIGVzcGVjdWxhYmEgcXVlIGxvcyBzZWN0b3JlcyBtw6FzIGJlbmVmaWNpYWRvcyBkZWwgYm9vbSBlY29uw7NtaWNvIHBvZMOtYW4gdm90YXIgZW4gbWF5b3IgbWVkaWRhIGEgZmF2b3IgZGUgUFBLLgpTaSBlc3RvIGVzIGFzw60sIGxhIHZhcmlhYmxlIGRlIFBCSSBwZXIgY8OhcGl0YSBwdWVkZSByZWNvZ2VyIGVzdGUgZmVuw7NtZW5vLgoKTGEgaWRlYSBlcyBldmFsdWFyIHNpIGxhIHJlbGFjacOzbiBlbnRyZSBhY2Nlc28gYSBpbnRlcm5ldCB5IHZvdG8gYSBQUEsgc2UgbWFudGllbmUgY29udHJvbGFuZG8gcG9yIHVuYSB2YXJpYWJsZSBlY29uw7NtaWNhLgpQYXJhIGVzdG8sIHNlIHJlYWxpemEgdW4gbW9kZWxvIGxpbmVhbCBtw7psdGlwbGUgdXNhbmRvIGVsIHZvdG8gYSBQUEsgY29tbyB2YXJpYWJsZSBkZXBlbmRpZW50ZSB5IGVsIGFjY2VzbyBhIGludGVybmV0IHkgZWwgUEJJIHBlciBjw6FwaXRhIGNvbW8gdmFyaWFibGVzIGluZGVwZW5kaWVudGVzLCBlbiB1biBtaXNtbyBtb2RlbG8uCkVsIGNvbWFuZG8gYGxtYCBwZXJtaXRlIGluY2x1aXIgdmFyaW9zIHByZWRpY3RvcmVzIGluZGVwZW5kaWVudGVzIGVuIHVuIG1pc21vIG1vZGVsbyBjb24gZWwgc8OtbWJvbG8gKy4KCmBgYHtyIG9scyBtdWx0aXBsZX0KbW9kZWxvMyA8LSBsbShWb3RvX1BQS18yMDE2XzEgfiBVc29faW50ZXJuZXQgKyBwYmlwY18yMDE0LCBkYXRhPWRhdGEpCnN1bW1hcnkobW9kZWxvMykKYGBgCgojIExleWVuZG8gZWwgbW9kZWxvCgojIyDCv0VzIHbDoWxpZG8gZWwgbW9kZWxvPwoKQ29tbyBhaG9yYSB0ZW5lbW9zIGRvcyB2YXJpYWJsZXMgaW5kZXBlbmRpZW50ZXMsIGxhIHZhbGlkZXogZGVsIG1vZGVsbyB5YSBubyBkZXBlbmRlIHNvbG8gZGUgbGEgcmVsYWNpw7NuIGRlIHVuYSB2YXJpYWJsZSBpbmRlcGVuZGllbnRlIGNvbiBsYSBkZXBlbmRpZW50ZS4KUGFyYSBldmFsdWFyIGxhIHZhbGlkZXogZGVsIG1vZGVsbyBzZSB0aWVuZSBxdWUgaGFjZXIgdW5hIGV2YWx1YWNpw7NuIGdlbmVyYWwuCkVzdGEgZXZhbHVhY2nDs24gcGxhbnRlYSB1bmEgaGlww7N0ZXNpcyBjZXJvIHF1ZSB0b2RhcyBsYXMgcGVuZGllbnRlcyAobyBjb2VmaWNpZW50ZXMpIHNvbiBpZ3VhbGVzIGEgY2Vyby4KCiRIMDogXGJldGFfMSA9IFxiZXRhXzIgPSBcYmV0YV8zID0uLi5cYmV0YV9uID0gMCQKCkxhIGhpcMOzdGVzaXMgYWx0ZXJuYXRpdmEgaW5kaWNhIHF1ZSBhbCBtZW5vcyB1bmEgcGVuZGllbnRlIGVzIGRpZmVyZW50ZSBkZSBjZXJvLCBsbyBxdWUgaW5kaWNhcsOtYSBxdWUgYWwgbWVub3MgdW5hIHZhcmlhYmxlIGluZGVwZW5kaWVudGUgdGllbmUgcmVsYWNpw7NuIGNvbiBsYSB2YXJpYWJsZSBkZXBlbmRpZW50ZS4KClBhcmEgZXZhbHVhciBlc3RhIGhpcMOzdGVzaXMgc2UgYW5hbGl6YSBsb3MgcmVzdWx0YWRvcyBkZSBsYSBwcnVlYmEgRiAoZW4gbGEgw7psdGltYSBsw61uZWEgZGUgcmVzdWx0YWRvcyBkZWwgbW9kZWxvKS4KRWwgZXN0YWTDrXN0aWNvIEYgPSA3Ljc0IHRpZW5lIHVuIHAtdmFsdWUgYXNvY2lhZG8gZGUgMC4wMDMuCkVzdGUgcC12YWx1ZSBlcyBtZW5vciBkZSAwLjA1LCBwb3IgbG8gcXVlIHBvZGVtb3MgcmVjaGF6YXIgbGEgSDAgeSBhZmlybWFyIHF1ZSBhbCBtZW5vcyB1biBjb2VmaWNpZW50ZSBkZWJlIHNlciBkaWZlcmVudGUgZGUgY2Vyby4KCiMjIFRlc3QgZGUgaW5mZXJlbmNpYTogwr9oYXkgcmVsYWNpw7NuIGVudHJlIGxhcyBWSXMgeSBsYSBWRD8KCkVzdGEgcHJlZ3VudGEgc2UgcmVzcG9uZGUgcGFyYSBjYWRhIHZhcmlhYmxlIGluZGVwZW5kaWVudGUsIGV2YWx1YWNpw7NuIHF1ZSBzZSBoYWNlIGRlbnRybyBkZSB1biBtb2RlbG8gbGluZWFsIG11bHRpdmFyaWFkbywgZG9uZGUgc2UgY29udHJvbGEgcG9yIGVsIHJlc3RvIGRlIHZhcmlhYmxlcy4KCkNhZGEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSB0aWVuZSB1bmEgZmlsYSBkZSByZXN1bHRhZG9zIGNvbiBzdSBwcm9waWEgcHJ1ZWJhIGRlIGluZGVwZW5kZW5jaWEuCkVzdGEgcHJ1ZWJhcyB0aWVuZSBsYXMgc2lndWllbnRlcyBoaXDDs3Rlc2lzOgoKJEgwOiBcYmV0YV8xID0gMCQgeSAkSDA6IFxiZXRhXzIgPSAwJAoKUGFyYSBsYSB2YXJpYWJsZSB1c28gZGUgaW50ZXJuZXQsIGxhIGZpbGEgY29ycmVzcG9uZGllbnRlIG5vcyBpbmRpY2EgcXVlIHRlbmVtb3MgdW4gY29lZmljaWVudGUgZGUgMC4xOC4KUGFyYSBlc3RhIHZhcmlhYmxlIGVsIGVzdGFkw61zdGljbyBkZSBsYSBwcnVlYmEgdCB0aWVuZSB1biB2YWxvciBkZSAxLjM3LCBjb24gdW4gcC12YWx1ZSBkZSAwLjE4Ni4KRXN0ZSBwLXZhbHVlIGVzIG1heW9yIGRlIDAuMDUsIHBvciBsbyBxdWUgZmFsbGFtb3MgZW4gcmVjaGF6YXIgbGEgSDAuCkVzIGRlY2lyLCBzZSB0aWVuZSAxOC42JSBkZSBwcm9iYWJpbGlkYWRlcyBkZSB0ZW5lciB1biBjb2VmaWNpZW50ZSBkZSAxLjM3LCBzaSBlbCB2ZXJkYWRlcm8gdmFsb3IgZGVsIHBhcsOhbWV0cm8gZXMgMC4KRW4gcmVzdW1lbiwgY29uIGVzdG9zIHZhbG9yZXMsIG5vIGVuY29udHJhbW9zIHVuYSByZWxhY2nDs24gZW50cmUgYWNjZXNvIGEgaW50ZXJuZXQgeSB2b3RvIGEgUFBLLgoKUGFyYSBsYSB2YXJpYWJsZSwgUEJJIHBlciBjw6FwaXRhLCB0ZW5lbW9zIHVuIGNvZWZpY2llbnRlIGRlIDAuMDAwMywgY29uIHVuIGVzdGFkw61zdGljbyBkZSBsYSBwcnVlYmEgdCBkZSAxLjc0IHkgdW4gcC12YWx1ZSBkZSAwLjA5Ni4KQ29uIGVzdGUgcC12YWx1ZSBubyBwb2RlbW9zIHJlY2hhemFyIGxhIEgwIGEgdW4gdmFsb3IgY3LDrXRpY28gZGUgMC4wNSkuCkVzdGUgcC12YWx1ZSBzZXLDrWEgc2lnbmlmaWNhdGl2byBhIHVuIHZhbG9yIGNyw610aWNvIGRlIDAuMTAuClNpIGZsZXhpYmlsaXphbW9zIGVsIHZhbG9yIGNyw610aWNvIGFsIDAuMTAsIHBvZGVtb3MgY29uY2x1aXIgcXVlIHPDrSBleGlzdGUgdW5hIHJlbGFjacOzbiBlbnRyZSBQQkkgeSB2b3RvIGEgUFBLLgoKRW4gY29uY2x1c2nDs24sIGxhIHJlbGFjacOzbiBlbnRyZSBhY2Nlc28gYSBpbnRlcm5ldCB5IHZvdG8gYSBQUEssIHF1ZSBzZSBoYWLDrWEgZW5jb250cmFkbyBlbiBlbCBhbsOhbGlzaXMgYml2YXJpYWRvLCBubyBzZSBtYW50aWVuZSBlbiB1biBhbsOhbGlzaXMgbXVsdGl2YXJpYWRvLCBjdWFuZG8gc2UgY29udHJvbGEgcG9yIGxhIHZhcmlhYmxlIFBCSS4KTXV5IHByb2JhYmxlbWVudGUgZXN0ZW1vcyBoYWJsYW5kbyBkZSB1bmEgcmVsYWNpw7NuIGVzcMO6cmVhLCBwdWVzIFBCSSBwb2Ryw61hIHRlbmVyIHVuIGVmZWN0byB0YW50byBlbiBlbCBhY2Nlc28gYSBpbnRlcm5ldCAoZGVwYXJ0YW1lbnRvcyBtw6FzIHJpY29zLCB0aWVuZW4gZmFtaWxpYXMgcXVlIHB1ZWRlbiBwYWdhciBwb3IgZWwgc2VydmljaW8gZGUgaW50ZXJuZXQpLCBjb21vIGVuIGVsIHZvdG8gYSBQUEsgKGRlcGFydGFtZW50b3MgbcOhcyByaWNvcywgdm90YW4gZW4gbWF5b3IgbWVkaWRhIGEgUFBLKS4KCiMjIERpcmVjY2nDs24gZGUgbGEgcmVsYWNpw7NuCgpEZSBsYSBtaXNtYSBtYW5lcmEgcXVlIGVuIGFuw6FsaXNpcyBiaXZhcmlhZG8sIGxhIGRpcmVjY2nDs24gZGUgbGEgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMgaW5kZXBlbmRpZW50ZXMgeSBsYSBkZXBlbmRpZW50ZSBlc3TDoSBtYXJjYWRvIHBvciBlbCBzaWdubyBkZWwgY29lZmljaWVudGUuCgpFbiBlc3RlIGNhc28sIHNvbG8gc2UgYW5hbGl6YSBlbCBzaWdubyBkZWwgY29lZmljaWVudGUgZGUgbGEgdmFyaWFibGUgUEJJLCBwdWVzIGVzIGxhIMO6bmljYSBzaWduaWZpY2F0aXZhIGFsIDAuMTAuCkVsIHNpZ25vIGRlbCBjb2VmaWNpZW50ZSBlcyBwb3NpdGl2byAoKyksIGxvIHF1ZSBpbmRpY2EgcXVlIGRlcGFydGFtZW50b3MgY29uIHVuIG1heW9yIFBCSSBwZXIgY8OhcGl0YSB0ZW5kcsOtYW4gdW4gbWF5b3IgcG9yY2VudGFqZSBkZSB2b3RvIGEgUFBLIGVuIHByb21lZGlvLgoKIyMgRnVlcnphIGRlbCBtb2RlbG8KCkRlIGxhIG1pc21hIG1hbmVyYSBxdWUgZW4gZWwgYW7DoWxpc2lzIGJpdmFyaWFkbywgbGEgZnVlcnphIGRlbCBtb2RlbG8gc2UgZW50aWVuZGUgY29tbyBlbCBwb3JjZW50YWplIGRlIGxhIHZhcmlhY2nDs24gdG90YWwgZGUgbGEgdmFyaWFibGUgZGVwZW5kaWVudGUgZXhwbGljYWRhIHBvciBsYXMgdmFyaWFibGVzIGluZGVwZW5kaWVudGVzLgpFc3RlIGRhdG8gc2Ugb2J0aWVuZSBjb24gZWwgJFJeMiQuCgpFbiBudWVzdHJvIGVqZW1wbG8gc2UgdGllbmUgdW4gJFJeMj0wLjQyNCQuCkVzdGEgZGF0byBpbmRpY2Fyw61hIHF1ZSBlbCBtb2RlbG8gcXVlIGluY2x1eWUgbGFzIHZhcmlhYmxlcyBhY2Nlc28gYSBpbnRlcm5leSB5IFBCSSBwZXIgY8OhcGl0YSBleHBsaWNhbiBlbCA0Mi40JSBkZSBsYSB2YXJpYWNpw7NuIHRvdGFsIGRlbCB2b3RvIGEgUFBLLgpFc3RvIHNlZ8O6biBudWVzdHJhIGVzY2FsYSBlcXVpdmFsZSBhIHVuYSByZWxhY2nDs24gZGUgZnVlcnphIG1vZGVyYWRhLgoKTG9zIHJlc3VsdGFkb3MgdGFtYmnDqW4gbXVlc3RyYW4gdW4gJFJeMiQgYWp1c3RhZG8uCkVzdGUgZXN0YWTDrXN0aWNvIHNlIHVzYSBjdWFuZG8gc2UgcXVpZXJlIGNvbXBhcmFyIGVudHJlIGRpZmVyZW50ZXMgbW9kZWxvcywgeWEgc2VhIHBvcnF1ZSBzZSB1c2FuIGRpZmVyZW50ZXMgdmFyaWFibGVzIG8gZGlmZXJlbnRlIG7Dum1lcm8gZGUgdmFyaWFibGVzLgpFc3RvIGVzIGltcG9ydGFudGUgY3VhbmRvIHNlIGNvbXBhcmFyIG1vZGVsb3MgY29uIGRpZmVyZW50ZSBuw7ptZXJvIGRlIHZhcmlhYmxlcyBpbmRlcGVuZGllbnRlcywgcG9ycXVlIGVsICRSXjIkIHRpZW5lIGxhIGNhcmFjdGVyw61zdGljYSBkZSBhdW1lbnRhciBjdWFuZG8gc2UgaW5jbHV5ZW4gbcOhcyB2YXJpYWJsZXMgaW5kZXBlbmRpZW50ZXMuCkVsICRSXjIkIGFqdXN0YWRvIGNvbnRyb2xhIHBvciBlc3RhIGluZmxhY2nDs24gYXJ0aWZpY2lhbC4KCiMjIFByZWRpY2Npw7NuCgpQYXJhIGxhIHByZWRpY2Npw7NuIHNlIHRpZW5lIHF1ZSBjb25zdHJ1aXIgbGEgZWN1YWNpw7NuIGRlbCBtb2RlbG8uCkVzdGEgZWN1YWNpw7NuIHNlIGNvbnN0cnV5ZSBjb24gbG9zIHZhbG9yZXMgZGUgbG9zIGNvZWZpY2llbnRlcyBkZSBhbWJhcyB2YXJpYWJsZXMsIGFzw60gYWxndW5hIGRlIGVsbGFzIG5vIGhheWEgc2FsaWRvIHNpZ25pZmljYXRpdmEuCkEgZXN0byBkZSBzZSBhZ3JlZ2EgZWwgdmFsb3IgZGUgbGEgY29uc3RhbnRlLgoKRW4gbnVlc3RybyBlamVtcGxvIHNlIHRpZW5lIGxhIHNpZ3VpZW50ZSBlY3VhY2nDs24sIHNpZW5kbyBZIGVsIHZvdG8gYSBQUEssIFgxIGVsIGFjY2VzbyBhIGludGVybmV0IHkgWDIgZW4gUEJpIHBlciBjw6FwaXRhOgoKJCRcaGF0e1l9ID0gNC43MSArIDAuMTgqWF8xKzAuMDAwMypYXzIkJAoKUGFyYSBoYWxsYXIgZWwgdm90byBlc3RpbWFkbyBhIFBQSywgc2UgdGllbmUgcXVlIGFncmVnYXIgdmFsb3JlcyBkZSBsYXMgZG9zIHZhcmlhYmxlcyBpbmRlcGVuZGllbnRlcy4KUGFyYSBwb2RlciBhcHJveGltYXIgdmFsb3JlcyBlc3TDoW5kYXIgZGUgZXN0YXMgdmFyaWFibGVzLCBlc3RhcyBzZSBwdWVkZW4gZGVzY3JpYmlyLgoKYGBge3IgZGVzY3JpYmlyfQpzdW1tYXJ5KGRhdGEkVXNvX2ludGVybmV0KQpzdW1tYXJ5KGRhdGEkcGJpcGNfMjAxNCkKYGBgCgpQb3IgbG8gdGFudG8sIHNpIHF1ZXJlbW9zIGNhbGN1bGFyIHVuIHZvdG8gcHJvbWVkaW8gZXN0aW1hZG8gYSBQUEssIHNlIHBvZHLDrWEgcmVlbXBsYXphciBYMT0zMi44IHkgWDI9MTQ5NDYuCgokJFxoYXR7WX0gPSA0LjcxICsgMC4xOCozMi44KzAuMDAwMyoxNDk0NiA9IDE1LjEgJCQKCkVuIGNvbmNsdXNpw7NuLCBwYXJhIHZhbG9yZXMgcHJvbWVkaW8gZGUgbGFzIHZhcmlhYmxlcyBpbmRlcGVuZGllbnRlcywgZWwgdm90byBlc3RpbWFkbyBhIFBQSywgc2Vnw7puIGVsIG1vZGVsbywgc2Vyw61hIGRlIDE1LjElLgpFc3RlIG1pc21vIGVqZXJjaWNpbyBzZSBwdWVkZSBoYWNlciBwYXJhIGxvcyB2YWxvcmVzIG3DrW5pbW9zLCBtw6F4aW1vcywgcGFyYSBhbGd1bm9zIHBlcmNlbnRpbGVzIHBhcnRpY3VsYXJlcywgZXRjLgoKIyMgQ29tcGFyYW5kbyBlbnRyZSB2YXJpYWJsZXMKCkVuIG9jYXNpb25lcyBzZSBxdWllcmUgYW5hbGl6YXIgcXXDqSB2YXJpYWJsZSBpbmRlcGVuZGllbnRlIHRpZW5lIHVuIG1heW9yIGVmZWN0byBzb2JyZSBsYSB2YXJpYWJsZSBkZXBlbmRpZW50ZS4KRXN0ZSBhbsOhbGlzaXMgbm8gc2UgcHVlZGUgaGFjZXIgc2ltcGxlbWVudGUgY29tcGFyYW5kbyBsb3MgY29lZmljaWVudGVzIGRlbCBtb2RlbG8gYW50ZXJpb3IsIGRlYmlkbyBhIHF1ZSBlc3RvcyBjb2VmaWNpZW50ZXMgZXN0w6FuIGVuIGRpZmVyZW50ZXMgdW5pZGFkZXM6IGFjY2VzbyBhIGludGVybmV0IGVuIHBvcmNlbnRhamUgeSBQQkkgcGVyIGPDoXBpdGEgZW4gc29sZXMuCgpQYXJhIHBvZGVyIGNvbXBhcmFyIGVsIGVmZWN0byBkZSBjYWRhIHZhcmlhYmxlIHNvYnJlIGxhIHZhcmlhYmxlIGRlcGVuZGllbnRlLCBzZSB0aWVuZSBxdWUgY2FsY3VsYXIgbG9zIGNvZWZpY2llbnRlcyBlc3RhbmRhcml6YWRvcy4KRXN0b3MgY29lZmljaWVudGVzIHNvbiBpbmRlcGVuZGllbnRlcyBkZSBsYXMgdW5pZGFkZXMgZGUgbWVkaWRhLgoKUGFyYSBwb2RlciBjYWxjdWxhcyBsb3MgY29lZmljaWVudGVzIGVzdGFuZGFyaXphZG9zLCBzZSBwdWVkZSB1c2FyIGxhIGxpYnJlcsOtYSBganRvb2xzYCwgcXVlIGN1ZW50YSBjb24gZWwgY29tYW5kbyBgc3VtbWAsIGRvbmRlIHNlIHB1ZWRlIGVzcGVjaWZpY2FyIGBzY2FsZT1UUlVFYCBwYXJhIHF1ZSBzZSBwcmVzZW50ZW4gbG9zIGNvZWZpY2llbnRlcyBlc3RhbmRhcml6YWRvcy4KCmBgYHtyIGVzdGFuZGFyfQpsaWJyYXJ5KGp0b29scykKc3VtbShtb2RlbG8zLCBzY2FsZT1UKQpgYGAKCkRlIGFjdWVyZG8gYSBlc3RvcyByZXN1bHRhZG9zLCBsYSB2YXJpYWJsZSBpbmRlcGVuZGllbnRlIHF1ZSB0aWVuZSB1biBlZmVjdG8gbWF5b3Igc29icmUgbGEgdmFyaWFibGUgZGVwZW5kaWVudGUgZXMgZWwgUEJJIHBlciBjw6FwaXRhLgpFc3RlIGFuw6FsaXNpcyBlcyBtdWNobyBtw6FzIMO6dGlsIGN1YW5kbyB0ZW5lbW9zIHVuYSBtYXlvciBjYW50aWRhZCBkZSB2YXJpYWJsZXMgaW5kZXBlbmRpZW50ZXMgZW4gZGlmZXJlbnRlcyB1bmlkYWRlcyBkZSBtZWRpY2nDs24uCgojIExleWVuZG8gcmVzdWx0YWRvcyBhY2Fkw6ltaWNvcwoKRWwgYW7DoWxpc2lzIGRlIHJlZ3Jlc2nDs24gbGluZWFsIG11bHRpdmFyaWFkbyBlcyB1bmEgZGUgbGFzIGhlcnJhbWllbnRhcyBhY2Fkw6ltaWNhcyBtw6FzIHVzYWRhcy4KRXMgbXV5IGNvbcO6biBlbmNvbnRyYXIgdGFibGFzLCBjb21vIGxhIHF1ZSBzZSBtdWVzdHJhIGFiYWpvLCBjb24gcmVzdWx0YWRvcyBkZSBlc3RlIHRpcG8uCgpVbiBwdW50byBpbXBvcnRhbnRlLCBhZGVtw6FzIGRlIHByb2R1Y2lyIHJlc3VsdGFkb3MsIGVzIHNhYmVyIGludGVycHJldGFybG9zLgpMYSB0YWJsYSBzaWd1aWVudGUgbXVlc3RyYSBsb3MgcmVzdWx0YWRvcyBkZSB1biBhbsOhbGlzaXMgZG9uZGUgbGEgdW5pZGFkIGRlIGFuw6FsaXNpcyBzb24gaW5kaXZpZHVvcy4KTGEgdmFyaWFibGUgZGVwZW5kaWVudGUgZXMgdW5hIG1lZGlkYSBkZSBhcG95byBpbnRyw61uc2VjbyBhIGxhIGRlbW9jcmFjaWEuCkNhZGEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSB0aWVuZSB1biBzaWdubyBxdWUgaW5kaWNhIGxhIGRpcmVjY2nDs24gdGXDs3JpY2EgcXVlIGRlYmVyw61hIHRlbmVyIGxhIHZhcmlhYmxlLgpMb3MgZGF0b3Mgc2lydmVuIHBhcmEgdmVyaWZpY2FyIGVtcMOtcmljYW1lbnRlIGVzdGFzIGhpcMOzdGVzaXMuCgohW10oaW1hZ2VzL3Bhc3RlLUQwMDYxNzMxLnBuZyl7d2lkdGg9IjUyMSJ9CgpEZSBhY3VlcmRvIGEgZXN0b3MgcmVzdWx0YWRvcywgc2UgcHVlZGUgY29uY2x1aXI6CgotICAgCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase12.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

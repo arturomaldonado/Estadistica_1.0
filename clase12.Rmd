@@ -86,10 +86,13 @@ Para analizar visualmente la relación entre acceso a internet y voto a PPK, con
 Es decir, se puede evaluar visualmente la relación entre acceso a internet - voto a PPK, en cada grupo de color.
 
 ¿Cuál es la relación entre X - Y para el grupo de observaciones en negro (PBI per cápita departamental bajo)?
+Se observa una relación positiva, aunque tenue.
 
 ¿Cuál es la relación entre X - Y para el grupo de observaciones en rojo (PBI per cápita departamental medio)?
+Se observa una relación negativa, contrario a la hipótesis planteada.
 
 ¿Cuál es la relación entre X - Y para el grupo de observaciones en verde (PBI per cápita departamental alto)?
+Se observa una relación positiva.
 
 Pregunta final: ¿se mantiene la relación entre acceso a internet y voto a PPK en cada grupo de PBI per cápita?
 

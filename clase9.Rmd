@@ -204,7 +204,7 @@ summary(modelo1)
 
 Los primeros datos a analizar están en la columna "Estimate".
 Estos datos definen la ecuación de la recta.
-Según estos datos se tendría$$\hat{Y} = 3.52 + 0.37*X$$
+Según estos datos se tendría $$\hat{Y} = 3.52 + 0.37*X$$
 
 Con esta ecuación se puede **estimar** el valor de Y (es decir, el voto a PPK) para cualquier valor de X (de acceso a internet).
 

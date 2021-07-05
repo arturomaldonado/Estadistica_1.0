@@ -364,6 +364,9 @@ div.tocify {
   <a href="clase12.html">Clase 12</a>
 </li>
 <li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
 <li>
@@ -775,12 +778,12 @@ assocstats(tabla)</code></pre>
 <pre><code>## The following object is masked from &#39;package:psych&#39;:
 ## 
 ##     logit</code></pre>
-<pre><code>## The following object is masked from &#39;package:DescTools&#39;:
-## 
-##     Recode</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     recode</code></pre>
+<pre><code>## The following object is masked from &#39;package:DescTools&#39;:
+## 
+##     Recode</code></pre>
 <pre class="r"><code>lapop18$educ &lt;- recode(lapop18$ed, &quot;0=0; 1:6=1; 7:11=2; 12:18=3&quot;)
 lapop18$educ &lt;- as.factor(lapop18$educ)
 levels(lapop18$educ) &lt;- c(&quot;Analfabeto&quot;, &quot;Primaria&quot;, &quot;Secundaria&quot;, &quot;Superior&quot;)

@@ -386,6 +386,9 @@ div.tocify {
   <a href="clase12.html">Clase 12</a>
 </li>
 <li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
 <li>
@@ -499,19 +502,8 @@ LL &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/mai
 <pre class="r"><code>mean(LL$re78[LL$treated==1])</code></pre>
 <pre><code>## [1] 5976.352</code></pre>
 <p>¿Con esos 880 dólares de diferencia extrapolables a la población? Para esto, lo primero es evaluar la hipótesis de la igualdad de varianzas mediante el test de Levene.</p>
-<pre class="r"><code>library(DescTools)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;DescTools&#39;:
-##   method         from  
-##   reorder.factor gplots</code></pre>
-<pre><code>## 
-## Attaching package: &#39;DescTools&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:gplots&#39;:
-## 
-##     reorder.factor</code></pre>
-<pre><code>## The following object is masked from &#39;package:jtools&#39;:
-## 
-##     %nin%</code></pre>
-<pre class="r"><code>LeveneTest(LL$re78, LL$treated)</code></pre>
+<pre class="r"><code>library(DescTools)
+LeveneTest(LL$re78, LL$treated)</code></pre>
 <pre><code>## Warning in LeveneTest.default(LL$re78, LL$treated): LL$treated coerced to
 ## factor.</code></pre>
 <pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)

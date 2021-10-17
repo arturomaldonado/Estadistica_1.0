@@ -134,7 +134,7 @@ Para replicar estos resultados mediante el análisis de regresión, se tiene que
 Es decir, 3 variables: "costa", "sierra" y "selva", En el modelo de regresión, sin embargo, solo se debe incluir 2 de esas variables dummy (por qué?).
 
 ```{r modelo aov}
-modelo2 <- lm(data$Voto_KF_2016_1 ~ data$costa + data$sierra)
+modelo2 <- lm(data$Voto_KF_2016_1 ~  data$costa + data$sierra)
 summary(modelo2)
 ```
 

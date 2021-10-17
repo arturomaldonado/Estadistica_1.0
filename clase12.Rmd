@@ -157,7 +157,7 @@ Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como varia
 El comando `lm` permite incluir varios predictores independientes en un mismo modelo con el símbolo +.
 
 ```{r ols multiple}
-modelo3 <- lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014, data=data)
+modelo3 <- lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014 + Log_Transf + Tasa_Delitos + costa + sierra, data=data)
 summary(modelo3)
 ```
 

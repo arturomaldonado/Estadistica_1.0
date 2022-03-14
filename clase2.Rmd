@@ -382,7 +382,7 @@ La idea es analizar cómo cambiaron estos ingresos entre 1974 y 1978 para cada g
 Para empezar, ¿cómo eran los ingresos de los participantes que fueron tratados y que fueron al grupo control al inicio del estudio?
 Para esto se tiene que calcular la media para cada uno de estos grupos.
 Hay varias maneras de hacer esto.
-Una es usando los []
+Una es usando los \[\]
 
 ```{r}
 mean(LL$re74[LL$treated==0])

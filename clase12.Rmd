@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
     Se encuentran (co)rrelaciones: X - Y
 
 -   ¿Por qué agregar más variables?
-    Se busca aproximarse a la causalidad: X -\> Y
+    Se busca aproximarse a la causalidad: X -> Y
 
 -   Para aproximarse a establecer causalidad es necesario el análisis multivariado.
 
@@ -57,7 +57,7 @@ La idea es:
 
 -   En la práctica, se analiza la relación entre X - Y para valores similares o iguales de una variable Z.
     De esta manera se elimina la influencia de Z en la relación entre X - Y.
-    Es un paso en el establecimiento de X -\> Y.
+    Es un paso en el establecimiento de X -> Y.
 
 -   Si la relación entre X - Y desaparece cuando se controla por Z, se dice que la relación era espúrea.
 

@@ -24,15 +24,51 @@ output:
 
 -   Variables nominales
 
-    -   Individuos: Sexo (Hombre=1, Mujer=2). Religión (Católico=1, Evangélico=2, Otro=3). Algún miembro de su familia se ha contagiado de COVID (Sí=1, No=0).
+    -   Individuos:
 
-    -   Distritos: Región (Costa=1, Sierra=2, Selva=3). Partido del alcalde (AP=1, APP=2,...., Otro=XX). Alcalde reelegido (Si=1, No=0).
+        -   Sexo: Hombre=1, Mujer=2.
+
+            ![](sexo.png)
+
+        -   Religión: Católico=1, Evangélico=2, Otro=3.
+
+        ![](religion.png){width="504"}
+
+        ![](religion2.png){width="469"}
+
+        -   Algún miembro de su familia se ha contagiado de COVID: Sí=1, No=0.
+
+    ![](covid.png)
+
+    -   Distritos:
+
+        -   Departamento: Arequipa=1, Ayacucho=2,..., Ucayali = 24
+
+        -   Región: Costa=1, Sierra=2, Selva=3.
+
+        ![](ubi.png){width="359"}
+
+        -   Partido del alcalde: AP=1, APP=2,...., Otro=XX.
+
+        -   Alcalde reelegido: Si=1, No=0.
 
 -   Variables ordinales
 
-    -   Individuos: Educación (Analf=0, Prim=1, Sec=2, Tec=3, Univ=4, Post=5). Importancia de religión en su vida (Nada importante=1, Poco importante=2, Algo importante=3, Muy importante=4). Gravedad de contagio de COVID (Nada grave=1, Poco grave=2, Algo grave=3, Muy grave=4).
+    -   Individuos:
 
-    -   Distritos: Calidad del servicio de agua (Muy mala=1, Mala=2, Regular=3, Buena=4, Muy buena=5).
+        -   Educación: Analf=0, Prim=1, Sec=2, Tec=3, Univ=4, Post=5.
+
+        ![](educ.png){width="615"}
+
+        -   Importancia de religión en su vida: Nada importante=1, Poco importante=2, Algo importante=3, Muy importante=4.
+
+        ![](importancia.png){width="624"}
+
+        -   Gravedad de contagio de COVID: Nada grave=1, Poco grave=2, Algo grave=3, Muy grave=4 (PERO, quién evalúa? percepción?)
+
+    -   Distritos:
+
+        -   Calidad del servicio de agua: Muy mala=1, Mala=2, Regular=3, Buena=4, Muy buena=5. (PERO, si es percepción, percepción de quién?)
 
 Ambas son llamadas "factor" en R.
 
@@ -42,15 +78,39 @@ Ambas son llamadas "factor" en R.
 
 -   Continua
 
-    -   Individuos: estatura, peso, ingreso mensual.
+    -   Individuos:
 
-    -   Distritos: extensión, PBI per cápita, ingreso mensual promedio.
+        -   Estatura: en cm o en mt, pero estandarizado.
+
+        -   Peso: en kg o en gm, pero estandarizado.
+
+        -   Ingreso mensual: en soles. Definir si del individuo o de la familia, si es ingreso mensual o quincenal o anual.
+
+    -   Distritos:
+
+        -   Extensión: en km2
+
+        -   PBI per cápita: en soles.
+
+        -   Ingreso mensual promedio: en soles.
+
+        ![](ingresos.png){width="535"}
 
 -   Discreta
 
-    -   Individuos: número de hijos, edad.
+    -   Individuos:
 
-    -   Distritos: número de revocatorias, número de postas médicas, población.
+        -   Número de hijos: definir si en total o que viven en el hogar.
+
+        -   Edad: en años cumplidos. Para más precisión se pide la fecha de nacimiento.
+
+    -   Distritos:
+
+        -   Número de revocatorias.
+
+        -   Número de postas médicas.
+
+        -   Población.
 
 Ambas son llamadas "num" en R.
 
@@ -58,7 +118,7 @@ Ambas son llamadas "num" en R.
 
 # Bases de datos
 
-De manera convencional (y así es en R), las bases de datos (o "dataframes" en R) se organizan en filas y columnas. Cada una de las filas corresponde a una observación (ya sea un individuo, un distrito o la unidad de análisis que se use). Cada columna corresponde a una variable (una característica de la unidad de análisis).
+De manera convencional (y así es en R), las bases de datos (o "dataframes" en R) son rectangulares y se organizan en filas y columnas. Cada una de las filas corresponde a una observación (ya sea un individuo, un distrito o la unidad de análisis que se use). Cada columna corresponde a una variable (una característica de la unidad de análisis).
 
 ------------------------------------------------------------------------
 
@@ -114,3 +174,11 @@ En formato de base de datos o de "dataframe":
 |  3   |   1    |  2   |   0   |
 | ...  |        |      |       |
 | 1821 |   3    |  1   |   0   |
+
+## Ejemplo 3
+
+![](dptos.png)
+
+## Ejemplo 4
+
+![](comis.png){width="715"}

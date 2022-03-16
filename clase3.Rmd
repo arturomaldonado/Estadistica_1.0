@@ -1,7 +1,7 @@
 ---
 title: 'Clase 3 y Trabajo práctico LaLonde (1996)'
 author: "Arturo Maldonado"
-date: "13/4/2021"
+date: "5/4/2021"
 output:
   html_document:
     toc: true
@@ -107,11 +107,15 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
-| Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
-|          0%           |                       1                        | X          |
-|          50%          |                       5                        | XXXXX      |
-|         100%          |                       4                        | XXXX       |
++-----------------------+------------------------------------------------+--------------+
+| Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia   |
++:=====================:+:==============================================:+:=============+
+| 0%                    | 1                                              | X            |
++-----------------------+------------------------------------------------+--------------+
+| 50%                   | 5                                              | XXXXX        |
++-----------------------+------------------------------------------------+--------------+
+| 100%                  | 4                                              | XXXX         |
++-----------------------+------------------------------------------------+--------------+
 
 Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+...+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.
 
@@ -285,7 +289,7 @@ $$
 
 -   Límite Superior es: 3630.7 + 453.8 = 4084.5
 
-Por lo tanto el IC es [3176.9, 4084.5] y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido.
+Por lo tanto el IC es \[3176.9, 4084.5\] y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido.
 
 El parámetro poblacional podría ser entendido como el promedio de ingresos en 1974 de TODOS los individuos sin habilidades laborales, si es que esa información fuera recogida de manera perfecta, es decir, en un mismo momento, en las mismas condiciones.
 
@@ -325,7 +329,7 @@ $$
 
 -   Límite superior: 0.8 + 0.029 = 0.829 o 82.9%
 
-Por lo tanto el IC es [77.1%, 82.9%] y asumimos que en ese rango se encuentra la proporción poblacional de afroamericanos al 95% de confianza.
+Por lo tanto el IC es \[77.1%, 82.9%\] y asumimos que en ese rango se encuentra la proporción poblacional de afroamericanos al 95% de confianza.
 
 En R no se cuenta con un comando particular para el cálculo directo de ICs de proporciones.
 Pero, cuando las variables categóricas son variables "dummy", es decir codificadas como 0/1, entonces la media de la variable es igual a la proporción y se puede usar el comando `CI` para el cálculo del IC.

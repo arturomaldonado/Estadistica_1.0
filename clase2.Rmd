@@ -1,7 +1,7 @@
 ---
-title: 'Clase 2 y Trabajo práctico LaLonde (1996)'
+title: 'Clase 2: Comisarías y Trabajo práctico LaLonde (1996)'
 author: "Arturo Maldonado"
-date: "6/4/2021"
+date: "29/3/2022"
 output:
   html_document:
     toc: true
@@ -53,7 +53,18 @@ La base de datos o "dataframe" se vería así
 
 ------------------------------------------------------------------------
 
-La tabla de distribución de frecuencias de esa variable se puede obtener con el comando `table`
+Para est clase se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](http://iinei.inei.gob.pe/microdatos/)).
+Esta base tiene información para 1495 comisarias y de 281 variables.
+Esta base se puede cargar también desde el repositorio Github de este curso.
+
+```{r base}
+library(rio) 
+comi17 <- import("bases/comi2017.sav")
+#comi17 = import("https://github.com/arturomaldonado/Estadistica_1.0/main/comi2017.sav")
+#LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+```
+
+La tabla de distribución de frecuencias de esa variable se puede obtener con el comando `table.`
 
 ```{r tabla}
 table(comi17$INF109)
@@ -103,25 +114,43 @@ En una base de datos, se puede calcular la media sumando los valores de una vari
 
 ## Ejemplo
 
-Para este ejemplo se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](http://iinei.inei.gob.pe/microdatos/)).
-Esta base tiene información para 1495 comisarias y de 281 variables.
+¿Cuál es la media (o el promedio) de policías por comisaria de acuerdo a estos datos?
 
-Esta base se puede cargar también desde el repositorio Github de este curso.
-
-```{r base}
-library(rio) 
-#comi17 <- import("bases/Cap_100_Infraestructura 2017.sav")
-comi17 = import("https://raw.github.com/arturo.maldonado/Estadistica_1.0/bases/Cap_100_Infraestructura 2017.sav")
+```{r media}
+mean(comi17$INF110_TOT)
 ```
+
+¿Es una representación adecuada de la realidad?
+Podemos fijarnos en el gráfico de distribución de esta variable para ver si se tiene comisarias que nos "atípicas" de la distribución general.
+
+Esto se puede hacer presentando el histograma de esta variable, que es como un gráfico de barras de una variable numérica.
+
+```{r hist}
+hist(comi17$INF110_TOT, breaks=20)
+```
+
+¿Qué se puede concluir del gráfico?
+
+```{r mediana}
+median(comi17$INF110_TOT)
+```
+
+¿Qué significa esta diferencia entre la media de 31.6 y la mediana de 19?
+
+```{r resumen}
+summary(comi17$INF110_TOT)
+```
+
+¿Qué se puede comentar de estos datos?
 
 # Medidas de dispersión
 
 -   Describir la centralidad no es suficiente.
     Dos distribuciones pueden tener la misma medida de tendencia central, pero diferentes realidades.
 
--   Ejemplo: distribución de puntaje en área matemática de prueba PISA aplicada en 2 países pueden tener la misma media, pero diferente forma.
+-   Ejemplo: distribución de puntaje en área matemática de prueba PISA aplicada en 2 países pueden tener la misma media, pero diferente variación.
 
--   ¿Cómo describiría las diferencias entre el País A y el País B?
+-   ¿Cómo describiría las diferencias entre en los puntajes de la prueba el País A y el País B?
 
 ![](distr.png){width="631"}
 
@@ -130,7 +159,8 @@ comi17 = import("https://raw.github.com/arturo.maldonado/Estadistica_1.0/bases/C
 ## Rango
 
 -   Diferencia entre el valor máximo y el mínimo.
-    En ejemplo de edades: 68-19 = 49 años.
+    En ejemplo de policías: 259-3 = 256.
+    Es la diferencia entre la comisaría con más efectivos y la comisaría con menor número de efectivos.
 
 -   No un una medida muy útil.
 
@@ -163,7 +193,73 @@ $$
 \sum \frac{(x_i-\bar{x})^2} {n-1} 
 $$
 
-![](desviacion.png){width="634"}
+Para ver un cálculo básico de la desviación estándar en Excel, puede entrar [aquí](https://docs.google.com/spreadsheets/d/1CCzOtfXf7Igz_KcbcpItzU71fWeMtTli?rtpof=true&authuser=arturo.maldonado%40pucp.pe&usp=drive_fs).
+
+-   Como se observa en el gráfico anterior, la desviación estándar es más útil cuando se comparar dos distribuciones.
+    Se compara la centralidad y la dispersión de una variable entre dos grupos (o dos distribuciones).
+
+## Ejemplo
+
+Siguiendo con la base de datos de comisarías del Perú, queremos evaluar si el número de policías (INF110_TOT) aumenta a medida que la comisaría atienda a una población mayor (INF109).
+
+Como se vio antes, la variable de población a la que atiende está codificada en 6 grupos, desde 1 que significa "Menos de 5000 hab" a 6 que significa "De 80000 a más hab".
+
+```{r tablapob}
+table(comi17$INF109)
+```
+
+Lo que se quiere calcular es el promedio y la desviación estándar de policías por cada grupo de población a la que atiende.
+Esta operación se puede hacer de múltiples maneras en R.
+Aquí usaremos primero los `[…]` para indicar un subgrupo del que se quiere calcular alguna operación.
+
+```{r mediagrupos}
+mean(comi17$INF110_TOT[comi17$INF109==1])
+mean(comi17$INF110_TOT[comi17$INF109==2])
+mean(comi17$INF110_TOT[comi17$INF109==3])
+mean(comi17$INF110_TOT[comi17$INF109==4])
+mean(comi17$INF110_TOT[comi17$INF109==5])
+mean(comi17$INF110_TOT[comi17$INF109==6])
+```
+
+Efectivamente, como se esperaba, el número promedio de policías aumenta a medida que la comisaría atiende a una población mayor.
+
+También se puede comparar la desviación estándar en cada grupo.
+El comando para el cálculo de la desviación estándar es `sd`.
+
+```{r desvgrupos}
+sd(comi17$INF110_TOT[comi17$INF109==1])
+sd(comi17$INF110_TOT[comi17$INF109==2])
+sd(comi17$INF110_TOT[comi17$INF109==3])
+sd(comi17$INF110_TOT[comi17$INF109==4])
+sd(comi17$INF110_TOT[comi17$INF109==5])
+sd(comi17$INF110_TOT[comi17$INF109==6])
+```
+
+La desviación estándar también aumenta a medida que las comisarías atienden a una población mayor.
+Es decir, las comisarías que atienden a una población pequeña son más homogéneas que las que atienden a una población mayor, donde hay mayores diferencias en el número de efectivos entre comisarías.
+
+¿A qué puede deberse este resultado?
+¿Mayor complejidad de centros urbanos grandes?
+¿Presencia de comisarías especializadas?\
+
+En R hay diferentes maneras de hacer lo mismo.
+Para los gráficos existe una librería especializada llamada `ggplot2`.
+Con esa librería se tiene más opciones gráficas que con los comandos de base.
+También existe una forma de codificación llamado `tidyverse` que usa el operador `%>%`.
+Aquí se presenta un ejemplo que produce el histograma del número de policías por cada grupo de tamaño de población.
+
+```{r histgrupos}
+library(ggplot2)
+library(dplyr)
+comi17 %>%
+  ggplot(aes(x=INF110_TOT))+
+  geom_histogram()+
+  facet_wrap(~INF109)+
+  xlab("Número de policías")+
+  ylab("Frecuencia")
+```
+
+¿Qué otras preguntas se pueden responder con los datos de comisarías?
 
 ------------------------------------------------------------------------
 
@@ -189,10 +285,9 @@ Variable de éxito: cambio en los ingresos.
 
 # Leyendo la base de datos en R
 
-```{r base}
+```{r base2}
 library(rio)
-LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
-
+LL <- import("bases/LL.csv")
 ```
 
 ------------------------------------------------------------------------
@@ -221,7 +316,7 @@ LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv
 ¿Cual es la media de ingresos de los participantes antes de entrar al estudio?
 Ojo que algunos de ellos pueden haber entrado al programa y otros ser parte del grupo de comparación.
 
-```{r ingresos 74}
+```{r ingresos74}
 mean(LL$re74)
 ```
 
@@ -230,7 +325,7 @@ Pero, es necesario hacer ver si ese dato refleja la "realidad" de los ingresos d
 Una manera de analizar eso, es ver la distribución de respuestas de forma gráfica, por ejemplo, usando un histograma.
 En este gráfico, además, se puede incluir una línea que marque el punto de la media.
 
-```{r}
+```{r hist74}
 hist(LL$re74)
 abline(v=mean(LL$re74), col="red")
 ```
@@ -253,7 +348,7 @@ La fila sería de observación 1.....411 / 412......822 La mediana sería el pro
 
 Para calcular la mediana del grupo del estudio, se usa.
 
-```{r mediana ingresos 74}
+```{r mediana74}
 median(LL$re74)
 ```
 
@@ -267,7 +362,7 @@ Como se observa la mediana es mucho menor que la media y, en este caso, es un me
 
 Si se quisiera ver la media y la mediana con un solo comando, se puede usar `summary`.
 
-```{r}
+```{r resumen74}
 summary(LL$re74)
 ```
 
@@ -281,7 +376,7 @@ Se observa claramente que la media es mucho mayor que la mediana.
 
 Para observar la posición relativa de media y mediana, se puede graficar el histograma marcando ambas medidas.
 
-```{r}
+```{r hist74_2}
 hist(LL$re74, breaks = 15)
 abline(v=mean(LL$re74), col="red")
 abline(v=median(LL$re74), col="blue")
@@ -302,7 +397,7 @@ Por ejemplo, en la universidad, a los alumnos se los clasifica en tercio superio
 
 Una distribución ordenada también puede ser dividida en cinco grupos, los "quintiles" o en diez grupos iguales, los "deciles".
 
-```{r}
+```{r cuartiles}
 quantile(LL$re74)
 quantile(LL$re74, c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))
 ```
@@ -313,7 +408,7 @@ Una forma de graficar los cuartiles es mediante el gráfico de cajas o boxplot (
 Este gráfico muestra una caja central y dos bigotes.
 El gráfico para la variable ingresos de la línea de base es:
 
-```{r}
+```{r caja}
 boxplot(LL$re74)
 ```
 
@@ -328,57 +423,57 @@ El ingreso descrito anteriormente es para toda la muestra.
 El estudio, sin embargo, dividió a los participantes en 2 grupos: tratados y control.
 ¿Cuántos hay en cada grupo?
 
-```{r}
+```{r tablatrat}
 table(LL$treated)
 ```
 
 La línea de base también recogió información sociodemográfica de los participantes.
 En particular, nos interesa saber cuántos afroamericanos hay en el grupo.
 
-```{r}
+```{r tablaafro}
 table(LL$black)
 ```
 
 Y sobre todo saber qué nivel educativo tienen.
 
-```{r}
+```{r tablaeduc}
 table(LL$education)
 ```
 
 Las frecuencias absolutas no nos ayudan mucho, es mejor tener las frecuencias relativas.
 
-```{r}
+```{r propeduc}
 100*table(LL$education)/sum(table(LL$education))
 ```
 
 O, se puede usar el comando `prop.table` que nos da la proporción (en escala 0-1).
 Para reportar el porcentaje se multiplica por 100.
 
-```{r}
+```{r propeduc_2}
 prop.table(table(LL$education))*100
 ```
 
 Esta variable se podría considerar como numérica, por lo que se podría describir.
 
-```{r}
+```{r resumeneduc}
 summary(LL$education)
 ```
 
 Y se podría graficar
 
-```{r}
+```{r cajaeduc}
 boxplot(LL$education)
 ```
 
 O con un histograma (un gráfico de barras de una variable numérica).
 
-```{r}
+```{r histeduc}
 hist(LL$education)
 ```
 
 O mediante
 
-```{r}
+```{r histeduc_2}
 barplot(table(LL$education),xlab="Años de educación",ylab="Frecuencia",cex.axis=.9,cex.names=.9,ylim=c(0,200))
 abline(h=0,col='gray60')
 box()
@@ -392,13 +487,13 @@ box()
 
 Distancia entre Q3 y Q1, que acumula el 50% de los datos centrales.
 
-```{r}
+```{r iqr74}
 IQR(LL$re74)
 ```
 
 Para una variable numérica, la medida más usada es la desviación estándar.
 
-```{r}
+```{r desv74}
 sd(LL$re74)
 ```
 
@@ -415,14 +510,14 @@ Para esto se tiene que calcular la media para cada uno de estos grupos.
 Hay varias maneras de hacer esto.
 Una es usando los \[\]
 
-```{r}
+```{r ll}
 mean(LL$re74[LL$treated==0])
 mean(LL$re74[LL$treated==1])
 ```
 
 Otra opción es creando otros "dataframes" para cada grupo con el comando `subset`.
 
-```{r}
+```{r llsubset}
 trata <- subset(LL, LL$treated==1)
 control <- subset(LL, LL$treated==0)
 ```
@@ -430,7 +525,7 @@ control <- subset(LL, LL$treated==0)
 Y en cada subgrupo calcular la media.
 En este caso calcularemos la media en 1978 para ver si se generaron diferencias.
 
-```{r}
+```{r mediall}
 mean(control$re78)
 mean(trata$re78)
 ```
@@ -444,7 +539,7 @@ Para comparar visualmente, los ingresos en 1978 entre los participantes en el gr
 
 Este gráfico se puede hacer con el comando `boxplot`, incluyendo ambas variables en la definición.
 
-```{r}
+```{r cajacomp}
 boxplot(LL$re78 ~ LL$treated)
 
 ```

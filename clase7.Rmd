@@ -32,30 +32,30 @@ En ambos casos se trata de evaluar una relación bivariada: analizar el impacto 
 
 -   Prueba t:
 
-    -   Variable independiente (sexo) -\> Variable dependiente (ingresos)
+    -   Variable independiente (sexo) -> Variable dependiente (ingresos)
 
-    -   Variable independiente (afroamericanos) -\> Variable dependiente (ingresos)
+    -   Variable independiente (afroamericanos) -> Variable dependiente (ingresos)
 
-    -   Variable independiente (urbano) -\> Variable dependiente (escala de simpatía por candidato X)
+    -   Variable independiente (urbano) -> Variable dependiente (escala de simpatía por candidato X)
 
 -   ANOVA:
 
-    -   Variable independiente (etnicidad) -\> Variable dependiente (ingresos)
+    -   Variable independiente (etnicidad) -> Variable dependiente (ingresos)
 
-    -   Variable independiente (región) -\> Variable dependiente (voto en primera vuelta)
+    -   Variable independiente (región) -> Variable dependiente (voto en primera vuelta)
 
-    -   Variable independiente (NSE) -\> Variable dependiente (escala de conservadurismo)
+    -   Variable independiente (NSE) -> Variable dependiente (escala de conservadurismo)
 
 El paso que vamos a dar en esta sección es analizar la **relación bivariada entre dos variables de factor (o categóricas)**.
 Esta evaluación se realiza mediante la prueba de chi-cuadrado.
 
 -   Chi-cuadrado:
 
-    -   Variable independiente (país) -\> Variable dependiente (apoyo a la democracia).
+    -   Variable independiente (país) -> Variable dependiente (apoyo a la democracia).
 
-    -   Variable independiente (situación económica) -\> Variable dependiente (satisfacción con la vida)
+    -   Variable independiente (situación económica) -> Variable dependiente (satisfacción con la vida)
 
-    -   Variable independiente(nivel educativo) -\> Variable dependiente (satisfacción con la democracia)
+    -   Variable independiente(nivel educativo) -> Variable dependiente (satisfacción con la democracia)
 
 Como dijimos en la clase 5 y 6, la comparación de proporciones son casos especiales de lo que veremos ahora.
 
@@ -80,7 +80,7 @@ En este documento vamos a trabajar con el reporte comparado *El Pulso de la Demo
 Este reporte presenta los principales hallazgos del proyecto del Barómetro de las Américas, organizado por el Proyecto de Opinión Pública en América Latina ([LAPOP](https://www.vanderbilt.edu/lapop/), por sus siglas en inglés).
 En este documento se reportan los resultados de la última ronda disponible de 2018/19.
 
-Pueden descargar los datos de manera libre [aquí](%5Bhttp://datasets.americasbarometer.org/database/login.php).](<http://datasets.americasbarometer.org/database/login.php>).) En este enlace, se pueden registrar o entrar como "Free User".
+Pueden descargar los datos de manera libre [aquí](%5Bhttp://datasets.americasbarometer.org/database/login.php).\](<http://datasets.americasbarometer.org/database/login.php>).) En este enlace, se pueden registrar o entrar como "Free User".
 En el buscador, se puede ingresar el texto "2018".
 Ahí se tendrá acceso a la base de datos completa "2018 LAPOP AmericasBarometer Merge_v1.0.dta" en versión para STATA.
 Se descarga la base de datos en formato zip, la que se descomprime en formato .dta.
@@ -100,7 +100,7 @@ lapop18 <- subset(lapop18, pais<=35)
 Desde la pag.
 20 del reporte se hace una evaluación de la democracia en la práctica.
 En particular, se trabaja con la variable PN4.
-En general, ¿usted diría que está muy satisfecho(a), satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que la democracia funciona en [país]?
+En general, ¿usted diría que está muy satisfecho(a), satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que la democracia funciona en \[país\]?
 
 En el reporte se indica que los datos se recodifican en una variable dicotómica.
 En este documento vamos a trabajar con la variable original.
@@ -171,7 +171,7 @@ Ser hombre o mujer no cambia nada las opiniones con respecto a la satisfacción 
 | Insatisfecho                   |  45%   |  45%  |
 | Muy insatisfecho               |  19%   |  19%  |
 
-VI: fuma ---------\> VD: cáncer de pulmón
+VI: fuma ---------> VD: cáncer de pulmón
 
 |                      | Fuma    |            |
 |----------------------|---------|------------|
@@ -204,25 +204,25 @@ prop.table(table(lapop18$satis))*100
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------+----------------------------------------------------------------+-----------------------------------------------------+
-| Col1 | Hombres                                                        | Mujeres                                             |
-+======+================================================================+=====================================================+
-| MS   | 6.4% de hombres-\> \#observaciones si no hay relación          | 6.4% de mujeres                                     |
-|      |                                                                |                                                     |
-|      | cuánto es el 6.4% de 13608= 871.9 \#obs si NO hubiera relación | 6.4% de 13,330 = 852.1 \#obs si NO hubiera relación |
-|      |                                                                |                                                     |
-|      | 919 lo realmente observado                                     | (803-852,1)\^2                                      |
-|      |                                                                |                                                     |
-|      | (919-871.9)\^2                                                 |                                                     |
-+------+----------------------------------------------------------------+-----------------------------------------------------+
-| S    | 33.1%                                                          | 33.1%                                               |
-+------+----------------------------------------------------------------+-----------------------------------------------------+
-| I    | 46.2%                                                          | 46.2%                                               |
-+------+----------------------------------------------------------------+-----------------------------------------------------+
-| MI   | 14.3%                                                          | 14.3%                                               |
-+------+----------------------------------------------------------------+-----------------------------------------------------+
-|      | 13608                                                          |                                                     |
-+------+----------------------------------------------------------------+-----------------------------------------------------+
++------+---------------------------------------------------------------+----------------------------------------------------+
+| Col1 | Hombres                                                       | Mujeres                                            |
++======+===============================================================+====================================================+
+| MS   | 6.4% de hombres-> #observaciones si no hay relación           | 6.4% de mujeres                                    |
+|      |                                                               |                                                    |
+|      | cuánto es el 6.4% de 13608= 871.9 #obs si NO hubiera relación | 6.4% de 13,330 = 852.1 #obs si NO hubiera relación |
+|      |                                                               |                                                    |
+|      | 919 lo realmente observado                                    | (803-852,1)\^2                                     |
+|      |                                                               |                                                    |
+|      | (919-871.9)\^2                                                |                                                    |
++------+---------------------------------------------------------------+----------------------------------------------------+
+| S    | 33.1%                                                         | 33.1%                                              |
++------+---------------------------------------------------------------+----------------------------------------------------+
+| I    | 46.2%                                                         | 46.2%                                              |
++------+---------------------------------------------------------------+----------------------------------------------------+
+| MI   | 14.3%                                                         | 14.3%                                              |
++------+---------------------------------------------------------------+----------------------------------------------------+
+|      | 13608                                                         |                                                    |
++------+---------------------------------------------------------------+----------------------------------------------------+
 
 En las primeras celda, la lógica sería:
 

@@ -122,7 +122,7 @@ Lo primero es cargar la base de datos.
 
 ```{r base LL, message=FALSE, warning=FALSE}
 library(rio)
-LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+LL <- import("bases/LL.csv")
 ```
 
 Lo primero es recordar las diferencias puntuales entre ambos grupos.

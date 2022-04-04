@@ -67,7 +67,7 @@ Con esta variable se ha creado otra variable agrupando el PBI en 3 grupos: alto,
 
 ```{r base}
 library(rio)
-data <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/datos2016_v3.sav")
+data <- import("bases/datos2016_v3.sav")
 ```
 
 En primer lugar, haremos una inspección visual de la relación entre el acceso a internet y el voto a PPK, mediante un gráfico de dispersión.

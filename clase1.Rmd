@@ -1,7 +1,7 @@
 ---
 title: "Clase 1"
 author: "Arturo Maldonado"
-date: "30/3/2022"
+date: "22/3/2022"
 output: 
   html_document:
     toc: true
@@ -86,6 +86,8 @@ Ambas son llamadas "factor" en R.
 
         -   Ingreso mensual: en soles. Definir si del individuo o de la familia, si es ingreso mensual o quincenal o anual.
 
+        ![](ingresos.png){width="535"}
+
     -   Distritos:
 
         -   Extensión: en km2
@@ -93,8 +95,6 @@ Ambas son llamadas "factor" en R.
         -   PBI per cápita: en soles.
 
         -   Ingreso mensual promedio: en soles.
-
-        ![](ingresos.png){width="535"}
 
 -   Discreta
 

@@ -1,7 +1,7 @@
 ---
 title: 'Clase 3 y Trabajo práctico LaLonde (1996)'
 author: "Arturo Maldonado"
-date: "5/4/2021"
+date: "5/4/2022"
 output:
   html_document:
     toc: true
@@ -33,7 +33,7 @@ Primero leemos la base de datos.
 
 ```{r base}
 library(rio)
-LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+LL <- import("bases/LL.csv")
 ```
 
 Y calculamos las medias en ambos años.
@@ -75,7 +75,7 @@ La estadística inferencial introduce la incertidumbre en los estimados, debido 
 
 Partimos del hecho que en el común de las investigaciones uno tiene que seleccionar un conjunto de observaciones que son parte del total, que es muy costoso e ineficiente hacer un estudio de la población completa.
 A esto le sumamos el otro hecho que nuestras herramientas de recojo de información son imperfectas.
-Un estudio transversal, por ejemplo, debería recoger información de los individuos en un corte en el tiempo, sin embargo, muchos estudios no son una "foto del momento" pues las observaciones toman tiempo y abarcan horas, días o semanas, sino meses.
+Un estudio transversal, por ejemplo, debería recoger información de los individuos en un corte en el tiempo, sin embargo, muchos estudios no son una "foto del momento", pues las observaciones toman tiempo y abarcan horas, días o semanas, sino meses.
 
 Es por este motivo que para un estudio se selecciona "una" muestra, un conjunto de observaciones que son una fracción del total.
 Esta única muestra es solo una de las múltiples muestras teóricas que se podrían seleccionar de un universo determinado.
@@ -83,7 +83,7 @@ Esta única muestra es solo una de las múltiples muestras teóricas que se podr
 Partamos de un ejemplo muy simple.
 Para un universo de 5 personas, se pueden extraer 10 muestras de tamaño 2 diferentes.
 
-![](c3.1.png)
+![](muestra1.jpeg)
 
 La fórmula para calcular el número de muestras probables es la de combinatorias, que incluye el operador factorial.
 Si aplicamos esta fórmula a un ejemplo de un universo más grande, por ejemplo, un salón de clase de 47 alumnos, donde se quiere saber cuántas muestras diferentes de tamaño 4 se pueden extraer.
@@ -100,7 +100,7 @@ Volviendo al ejemplo muy simple de 5 personas donde se quiere extraer una muestr
 Se tiene un universo de 5 individuos, cada uno con su sexo y edad.
 En la población la proporción de hombres es de 60% y la media de edad es de 34 años.
 
-![](c3.2.png)
+![](muestra2.jpeg)
 
 Si queremos extraer una muestra de tamaño de 2 de ese universo, se tienen 10 posibles muestras, cada una tendrá una aproximación de la proporción de hombres y de la media de edad.
 Dependiendo de qué muestra de todas las posibles sea la que se observa, los estadísticos serán una aproximación de los parámetros poblacionales.
@@ -119,8 +119,8 @@ En el caso de la proporción de hombres, se puede tabular los resultados de cada
 
 Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+...+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.
 
-Este mismo procedimiento se podría hacer para todas las 178,365 muestras probables de tamaño 4 de un universo de 47 alumnos.
-Cada uno de los 47 alumnos será hombre o mujer y la proporción poblacional de hombres se puede calcular en ese total.
+Este mismo procedimiento se podría hacer para todas las 178,365 muestras probables de tamaño 4 de un universo de 50 alumnos.
+Cada uno de los 50 alumnos será hombre o mujer y la proporción poblacional de hombres se puede calcular en ese total.
 A su vez, cada muestra de 4, tendrá una proporción muestral que tendrá valores (0 si no hay ningún hombre, 25% si hay 1 hombre, 50% si hay 2 hombres, 75% si hay 3 hombres y 100% si todos son hombres).
 Finalmente, se puede contar cuántas de las 178,365 muestras probables tuvieron 0%, 25%, 50%, 75% y 100% de hombres.
 Esta distribución se llama "distribución de muestreo".

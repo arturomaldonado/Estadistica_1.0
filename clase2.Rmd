@@ -53,17 +53,19 @@ La base de datos o "dataframe" se vería así
 
 ------------------------------------------------------------------------
 
-Para est clase se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](http://iinei.inei.gob.pe/microdatos/)).
+Para esta clase se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](http://iinei.inei.gob.pe/microdatos/)).
 Esta base tiene información para 1495 comisarias y de 281 variables.
 Esta base se puede cargar también desde el repositorio Github de este curso.
+La base de datos puede ser guardada en el directorio de trabajo.
+
+En primer lugar, se llama a la librería "rio" y se usa el comando `import` que permite leer bases de datos en muchos formatos.
 
 ```{r base}
 library(rio) 
-comi17 <- import("bases/comi2017.sav")
-#comi17 = import("https://github.com/arturomaldonado/Estadistica_1.0/main/comi2017.sav")
-#LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+comi17 = import("bases/comi2017.sav")
 ```
 
+Esta base de datos incluye a la variable "INF109" (ojo: R es "case sensitive", es decir, diferencia mayúsculas de minúsculas).
 La tabla de distribución de frecuencias de esa variable se puede obtener con el comando `table.`
 
 ```{r tabla}
@@ -79,6 +81,15 @@ En este caso, la moda es el valor más frecuente, que sería el código "2", que
 ![](mediana1.png){width="497"}
 
 ![](mediana2.png){width="498"}
+
+Para calcular la mediana de la variable "INF109" se puede usar el comando `median`.
+Este comando internamente ordena los valores de la variable "INF109" de menor a mayor y encuentra el código numérico de la observación que se encuentra en medio de la distribución ordenada.
+
+```{r}
+median(comi17$INF109)
+```
+
+La mediana es el código numérico 3, que significa "De 10,001 a 20,000 hab.".
 
 ------------------------------------------------------------------------
 
@@ -121,7 +132,7 @@ mean(comi17$INF110_TOT)
 ```
 
 ¿Es una representación adecuada de la realidad?
-Podemos fijarnos en el gráfico de distribución de esta variable para ver si se tiene comisarias que nos "atípicas" de la distribución general.
+Podemos fijarnos en el gráfico de distribución de esta variable para ver si se tiene comisarias que son "atípicas" de la distribución general.
 
 Esto se puede hacer presentando el histograma de esta variable, que es como un gráfico de barras de una variable numérica.
 
@@ -195,8 +206,7 @@ $$
 
 Para ver un cálculo básico de la desviación estándar en Excel, puede entrar [aquí](https://docs.google.com/spreadsheets/d/1CCzOtfXf7Igz_KcbcpItzU71fWeMtTli?rtpof=true&authuser=arturo.maldonado%40pucp.pe&usp=drive_fs).
 
--   Como se observa en el gráfico anterior, la desviación estándar es más útil cuando se comparar dos distribuciones.
-    Se compara la centralidad y la dispersión de una variable entre dos grupos (o dos distribuciones).
+-   Como se observa en el gráfico anterior, la desviación estándar es más útil cuando se comparar dos distribuciones. Se compara la centralidad y la dispersión de una variable entre dos grupos (o dos distribuciones).
 
 ## Ejemplo
 
@@ -239,8 +249,8 @@ La desviación estándar también aumenta a medida que las comisarías atienden 
 Es decir, las comisarías que atienden a una población pequeña son más homogéneas que las que atienden a una población mayor, donde hay mayores diferencias en el número de efectivos entre comisarías.
 
 ¿A qué puede deberse este resultado?
-¿Mayor complejidad de centros urbanos grandes?
-¿Presencia de comisarías especializadas?\
+Una posible explicación es la complejidad de ciudades más grandes, por lo que podría requerir comisarias especializadas, además de las comisarias estándar.
+Por el contrario, centros urbanos más pequeños solo requerirían comisarías pequeñas.
 
 En R hay diferentes maneras de hacer lo mismo.
 Para los gráficos existe una librería especializada llamada `ggplot2`.
@@ -540,11 +550,17 @@ Para comparar visualmente, los ingresos en 1978 entre los participantes en el gr
 Este gráfico se puede hacer con el comando `boxplot`, incluyendo ambas variables en la definición.
 
 ```{r cajacomp}
-boxplot(LL$re78 ~ LL$treated)
+boxplot(LL$re78 ~ LL$treated, ylim=c(0, 22000))
 
 ```
 
 Este gráfico no muestra, sin embargo, los valores de la mediana.
+
+```{r mediana comparacion}
+median(control$re78)
+median(trata$re78)
+```
+
 Para una opción más interactiva se puede usar el paquete `plotly` para graficar ambas cajas y que se muestren los valores.
 
 ```{r message=FALSE, warning=FALSE}

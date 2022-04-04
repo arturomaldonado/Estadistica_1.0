@@ -40,7 +40,7 @@ Siguiendo con los datos de la elección presidencial de 2016, cargamos la base d
 
 ```{r base}
 library(rio)
-data <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/datos2016_v3.sav")
+data <- import("bases/datos2016_v3.sav")
 ```
 
 Entonces, si queremos saber si existen diferencias estadísticas de la votación a Keiko Fujimori entre los departamentos de la costa y los departamentos que no están en la costa, se puede usar la prueba t de diferencia de medias.

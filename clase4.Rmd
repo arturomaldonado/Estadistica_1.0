@@ -86,7 +86,7 @@ Siguiendo con el ejemplo de [@lalondeEvaluatingEconometricEvaluations1986], la h
 
 ```{r base}
 library(rio)
-LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+LL <- import("bases/LL.csv")
 ```
 
 Para esto, lo primero que debemos comparar son las estimaciones puntuales de ambos grupos.
@@ -111,9 +111,9 @@ ciMean(LL$re78[LL$treated==0])
 ciMean(LL$re78[LL$treated==1])
 ```
 
--   El IC al 95% de confianza para aquellos que no participaron del programa es [4544.9 - 5635.2]
+-   El IC al 95% de confianza para aquellos que no participaron del programa es \[4544.9 - 5635.2\]
 
--   El IC al 95% de confianza para aquellos que sí participaron del programa es [5185.7 - 6767.0]
+-   El IC al 95% de confianza para aquellos que sí participaron del programa es \[5185.7 - 6767.0\]
 
 Como ambos intervalos se cruzan (el mayor valor del primer IC, 5635.2, está dentro del rango de valores del segundo IC), entonces no se puede decir que esas diferencias se mantengan en la población (sería como un "empate técnico").
 
@@ -125,9 +125,9 @@ ciMean(LL$re78[LL$black==0])
 ciMean(LL$re78[LL$black==1])
 ```
 
--   El IC al 95% de confianza del ingreso en 1978 para los no afroamericanos es [5823.7 - 7672.3]
+-   El IC al 95% de confianza del ingreso en 1978 para los no afroamericanos es \[5823.7 - 7672.3\]
 
--   El IC al 95% de confianza del ingreso en 1978 para los afroamericanos es [4612.3 - 5652.5]
+-   El IC al 95% de confianza del ingreso en 1978 para los afroamericanos es \[4612.3 - 5652.5\]
 
 En este caso, el mayor valor del IC al 95% de los ingresos para los afroamericanos es 5652.5, que es menor al menor valor del IC al 95% de los no afroamericanos.
 Es decir, ambos IC no se cruzan, por lo que se puede afirmar "informalmente" que estas diferencias son estadísticamente significativas (o extrapolables a la población) al 95% de confianza.

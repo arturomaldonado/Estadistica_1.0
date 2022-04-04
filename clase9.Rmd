@@ -68,7 +68,7 @@ Esta base incluye información a nivel departamental, sociodemográfica y electo
 
 ```{r base, message=FALSE, warning=FALSE}
 library(rio)
-data <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/datos2016_v3.sav")
+data <- import("bases/datos2016_v3.sav")
 ```
 
 Para empezar usaremos dos variables para general el gráfico de dispersión:
@@ -280,7 +280,7 @@ Los resultados que usaremos corresponden al conteo rápido elaborado por [IPSOS]
 
 ```{r base2, message=FALSE, warning=FALSE}
 library(rio)
-data21 <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/voto2021.xlsx")
+data21 <- import("bases/voto2021.xlsx")
 ```
 
 En esta oportunidad, usaremos el voto a Pedro Castillo según conteo rápido por departamento como variable dependiente y el ingreso mensual medido en 2020 como variable independiente.
@@ -321,7 +321,7 @@ La H0: $\beta = 0$
 La HA: $\beta \not= 0$
 
 Es decir, se pone a prueba cuál es la probabilidad de observar una pendiente de -0.03 si la "verdadera" pendiente es cero.
-Esta probabilidad se mide, como siempre, con el p-value (o Pr(\>\|t\|), en la tabla de resultados).
+Esta probabilidad se mide, como siempre, con el p-value (o Pr(>\|t\|), en la tabla de resultados).
 
 En la fila correspondiente a la variable independiente se observa que el p-value = 0.123 (o 12.3%).
 Es decir, que tenemos 12.3% de probabilidades de observar una pendiente de -0.03 si la verdadera pendiente es cero.

@@ -111,7 +111,7 @@ En la sección anterior se encontró que había una diferencia estadísticamente
 
 ```{r base LL}
 library(rio)
-LL <- import("https://raw.github.com/arturomaldonado/Estadistica_1.0/main/LL.csv")
+LL <- import("bases/LL.csv")
 ```
 
 Adicionalmente, se puede evaluar si existen diferencias extrapolables entre aquellos con un grado académico y aquellos que no.

@@ -1,5 +1,5 @@
 ---
-title: 'Clase 3 y Trabajo práctico LaLonde (1996)'
+title: 'Clase 3 y Ejemplo de LaLonde (1996) y ENDO 2020'
 author: "Arturo Maldonado"
 date: "5/4/2022"
 output:
@@ -36,7 +36,7 @@ library(rio)
 LL <- import("bases/LL.csv")
 ```
 
-Y calculamos las medias en ambos años.
+Y calculamos las medias general de ingresos en ambos años.
 
 ```{r media}
 mean(LL$re74)
@@ -52,33 +52,40 @@ table(LL$hispanic)
 ```
 
 El comando `table` nos ofrece las frecuencias absolutas.
-Para obtener los porcentajes (las frecuencias relativas) se puede anidar este comando dentro de `prop.table`.
+Para obtener las proporciones se puede usar el comando `prop.table`.
+Los porcentajes (las frecuencias relativas) se pueden obtener multiplicando las proporciones por 100.
 
 ```{r tabla de frecuencias}
 prop.table(table(LL$black))*100
 prop.table(table(LL$hispanic))*100
 ```
 
-Se encuentra que los participantes del estudio son mayoritariamente afroamericanos y minoritariamente latinos.
-
-En el caso de las tablas de frecuencias, se puede hallar la proporción (una forma de llamar a los porcentajes) de cada categoría de la variable.
-Esta muestra de individuos tendrá un 80.1% de afroamericanos y un 10.5% de latinos.
+En el caso de las tablas de frecuencias, se puede hallar la proporción (una forma de llamar a los porcentajes) por cada categoría de la variable.
+Esta muestra de individuos tiene un 80.1% de afroamericanos y un 10.5% de latinos.
 
 Tanto la media, como la proporción, son estimaciones puntuales, basados en los resultados de la muestra.
 Es decir, estas son estimaciones correspondientes a las 722 observaciones que son parte de este estudio.
 Sin embargo, esta muestra forma parte de un universo o población (el conjunto de individuos que carecen de habilidades laborales para insertarse en el mercado de trabajo), del que seguramente se quiere decir algo.
 
+El mismo razonamiento aplica a una encuesta de opinión convencional.
+La ficha técnica de una encuesta menciona, generalmente, el tamaño de muestra y la población a la que se busca representar.
+También se puede encontrar el margen de error (+/- 2.8%) y el nivel de confianza (generalmente de 95%).(Ver, por ejemplo, la [encuesta de opinión de abril 2022 de Ipsos](https://www.ipsos.com/sites/default/files/ct/news/documents/2022-04/Ipsos%208%20de%20abril%20América%20-%20Primera%20Parte_0.pdf).
+
 El proceso mediante el cual se parte de una muestra para decir algo de un universo o población es un proceso de inferencia y es parte de la estadística inferencial.
-La estadística inferencial introduce la incertidumbre en los estimados, debido al hecho de estar trabajando con una muestra y no con el total de observaciones del universo.
+La estadística inferencial introduce la **incertidumbre** en los estimados, debido al hecho de estar trabajando con una muestra y no con el total de observaciones del universo.
 
 ## Un breve paseo por las probabilidades
 
 Partimos del hecho que en el común de las investigaciones uno tiene que seleccionar un conjunto de observaciones que son parte del total, que es muy costoso e ineficiente hacer un estudio de la población completa.
-A esto le sumamos el otro hecho que nuestras herramientas de recojo de información son imperfectas.
+La analogía es, por ejemplo, que para un análisis de sangre se extrae una "muestra" de sangre y no el total de sangre del cuerpo.
+
+A esto le sumamos el hecho que nuestras herramientas de recojo de información son imperfectas.
 Un estudio transversal, por ejemplo, debería recoger información de los individuos en un corte en el tiempo, sin embargo, muchos estudios no son una "foto del momento", pues las observaciones toman tiempo y abarcan horas, días o semanas, sino meses.
 
 Es por este motivo que para un estudio se selecciona "una" muestra, un conjunto de observaciones que son una fracción del total.
-Esta única muestra es solo una de las múltiples muestras teóricas que se podrían seleccionar de un universo determinado.
+Esta selección se hace siguiendo procedimientos aleatorios, de tal manera que cualquier unidad del universo tenga la misma probabilidad de ser seleccionada.
+
+El punto es que esta única muestra es solo una de las múltiples muestras teóricas que se podrían seleccionar de un universo determinado.
 
 Partamos de un ejemplo muy simple.
 Para un universo de 5 personas, se pueden extraer 10 muestras de tamaño 2 diferentes.
@@ -86,14 +93,14 @@ Para un universo de 5 personas, se pueden extraer 10 muestras de tamaño 2 difer
 ![](muestra1.jpeg)
 
 La fórmula para calcular el número de muestras probables es la de combinatorias, que incluye el operador factorial.
-Si aplicamos esta fórmula a un ejemplo de un universo más grande, por ejemplo, un salón de clase de 47 alumnos, donde se quiere saber cuántas muestras diferentes de tamaño 4 se pueden extraer.
+Si aplicamos esta fórmula a un ejemplo de un universo más grande, por ejemplo, un salón de clase de 50 alumnos, donde se quiere saber cuántas muestras diferentes de tamaño 4 se pueden extraer.
 Según la fórmula:
 
 $$
-\frac{47!} {(47-4)! 4!} = \frac{47!} {43! 4!} = \frac{47*46*45*44} {4*3*2} = 178365
+\frac{50!} {(50-4)! 4!} = \frac{50!} {46! 4!} = \frac{50*49*48*47} {4*3*2} = 230,300
 $$
 
-Para un sondeo de opinión, donde el universo son 20 millones de individuos y se quiere saber cuántas muestras diferentes de tamaño 1,500 se pueden extraer, este número de muestras es muuuuy grande.
+Para un sondeo de opinión, donde el universo son 24 millones de individuos y se quiere saber cuántas muestras diferentes de tamaño 1,500 se pueden extraer, este número de muestras probables es muuuuy grande.
 
 Volviendo al ejemplo muy simple de 5 personas donde se quiere extraer una muestra de 2 y se quiere inferir los datos de la muestra de dos variables: sexo y edad.
 
@@ -107,23 +114,23 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
-+-----------------------+------------------------------------------------+--------------+
-| Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia   |
-+:=====================:+:==============================================:+:=============+
-| 0%                    | 1                                              | X            |
-+-----------------------+------------------------------------------------+--------------+
-| 50%                   | 5                                              | XXXXX        |
-+-----------------------+------------------------------------------------+--------------+
-| 100%                  | 4                                              | XXXX         |
-+-----------------------+------------------------------------------------+--------------+
++-----------------------+------------------------------------------------+---------------+
+| Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia    |
++:=====================:+:==============================================:+:==============+
+| 0%                    | 1                                              | X             |
++-----------------------+------------------------------------------------+---------------+
+| 50%                   | 5                                              | XXXXX         |
++-----------------------+------------------------------------------------+---------------+
+| 100%                  | 4                                              | XXXX          |
++-----------------------+------------------------------------------------+---------------+
 
 Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+...+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.
 
-Este mismo procedimiento se podría hacer para todas las 178,365 muestras probables de tamaño 4 de un universo de 50 alumnos.
+Este mismo procedimiento se podría hacer para todas las 230,300 muestras probables de tamaño 4 de un universo de 50 alumnos.
 Cada uno de los 50 alumnos será hombre o mujer y la proporción poblacional de hombres se puede calcular en ese total.
 A su vez, cada muestra de 4, tendrá una proporción muestral que tendrá valores (0 si no hay ningún hombre, 25% si hay 1 hombre, 50% si hay 2 hombres, 75% si hay 3 hombres y 100% si todos son hombres).
-Finalmente, se puede contar cuántas de las 178,365 muestras probables tuvieron 0%, 25%, 50%, 75% y 100% de hombres.
-Esta distribución se llama "distribución de muestreo".
+Finalmente, se puede contar cuántas de las 230,300 muestras probables tuvieron 0%, 25%, 50%, 75% y 100% de hombres.
+Esta distribución se llama "**distribución de muestreo**".
 
 Si quisiéramos ampliar el tamaño de muestra a 10, entonces los resultados posibles serían, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90 y 100%.
 También podríamos contar cuántas muestras tienen estos resultados.
@@ -135,7 +142,7 @@ Los estadísticos de todas estas casi infinitas muestras se pueden tabular y gra
 
 ## Teorema del límite central
 
-Este teorema muestra que la distribución de muestreo se aproxima a una distribución normal, con centro en el parámetro, en la medida que el tamaño de muestra aumenta.
+Este teorema muestra que la **distribución de muestreo se aproxima a una distribución normal**, con centro en el parámetro, en la medida que el tamaño de muestra aumenta.
 
 Por lo tanto, la distribución de muestreo de N grandes seguirá las características de cualquier curva normal.
 Toda curva normal es simétrica y sabemos que si desde el centro se desplaza 1 desviación estándar en ambas direcciones, entre esos límites estarán el 68.3% de todas las observaciones.
@@ -147,11 +154,13 @@ Con 3 desviaciones estándar hacia ambos lados, se acumularía el 99.7% de todas
 Traduciendo a la distribución de muestreo, la idea es que si se tabulan y se hace un gráfico de barras de los resultados de todas las muestras probables, se tendría una curva normal con centro en el parámetro.
 Sabríamos que si desde ese centro nos desplazamos 2 desviaciones estándar en ambas direcciones, entre esos límites estarían el 95% de todas las muestra probables.
 
+Es altamente probable (95% probable) que si en una investigación se extrae una sola muestra, esta sea parte del 95% de muestras posibles a +/- 2 desviaciones estándar del parámetro.
+
 # Estimación de intervalo
 
 La distribución de muestreo es teórica, muy difícilmente se puede calcular en la realidad.
 Regularmente tampoco sabemos los datos del universo.
-Lo que tenemos a mano es 1 muestra observada.
+Lo que tenemos a mano es **1 muestra observada**.
 Es decir, en un estudio de las muuuuuchas muestras probables, se selecciona 1 muestra.
 
 En el caso de @lalondeEvaluatingEconometricEvaluations1986, por ejemplo, del universo de desempleados sin habilidades laborales, se seleccionó 1 muestra de 722 observaciones, de las muuuuchas muestras de 722 individuos de la población total.
@@ -165,7 +174,7 @@ De hecho, se puede decir que se tiene 95% de probabilidades de que sea parte de 
 Por lo tanto, si a partir del estadístico muestral, se aplica esta distancia de +/- 2 errores estándar, se tiene 95% de probabilidades que entre esos límites se incluya al valor del parámetro.
 Para verlo de manera más visual, en la siguiente figura se tiene la distribución de muestreo teórica (y desconocida), donde se marca la región que acumula el 95% de todas las muestras probables.
 
-Más abajo se marca los resultados de 2 muestras probables.
+Más abajo se marca los resultados de 2 muestras observadas.
 La primera proporción muestral subestima la proporción poblacional.
 La segunda, por el contrario, sobreestima la proporción poblacional.
 En el primer caso, si a partir del estadístico muestral se aplica +/- 1.96 errores estándar (línea horizontal en negrita), se observa que el parámetro poblacional está incluido en esos límites.
@@ -175,26 +184,27 @@ Se observa que la línea en negrita no incluye la linea vertical entrecortada qu
 
 ![](c3.4.png){width="581"}
 
-Sin embargo, sabemos que es mucho más probable (95% de probabilidades) que si mi muestra es parte del 95% de muestras alrededor del parámetro, este intervalo incluya al parámetro poblacional.
+Sin embargo, sabemos que es mucho más probable (95% de probabilidades) que si una muestra observada es parte del 95% de muestras alrededor del parámetro, este intervalo incluya al parámetro poblacional.
 A estos límites le llamamos "intervalos de confianza".
 
-## Teoría en la práctica
+## Ejemplo de distribución de muestreo
 
-Usaremos el ejemplo de @lalondeEvaluatingEconometricEvaluations1986 para graficar estas divagaciones teóricas.
+Usaremos el ejemplo de @lalondeEvaluatingEconometricEvaluations1986 para graficar estas *divagaciones* teóricas.
 Asumamos que la base de datos de este artículo es el universo de personas.
 Las 722 personas en esa base de datos serían todos los miembros que se podrían escoger.
 De ese universo, queremos extraer muestras de tamaño 100.
 Según una calculadora de combinaciones, existen 5.7x10\^124 combinaciones de tamaño 100 de un universo de 722.
 Hay menos átomos en el universo que muestras probables.
 
-Sabemos cuál es el valor poblacional si calculamos la media de los 722 casos.
+Sabemos cuál es el valor poblacional si calculamos la media de la edad de las 722 observaciones.
 
 ```{r edad}
 mean(LL$age, na.rm=T)
 ```
 
 El parámetro es igual a 24.5 años.
-Como ejemplo, calcularemos 3000 muestras para calcular el estadístico (la aproximación muestral) del parámetro de la variable edad y guardaremos todos esos resultados en un objeto de tipo vector.
+Como ejemplo, calcularemos 3000 muestras de tamaño 100 para calcular el estadístico (la aproximación muestral) del parámetro de la variable edad y guardaremos todos esos resultados en un objeto de tipo vector.
+Este código para hacer este cálculo se presenta con fines pedagógicos, pero no se usará en las evaluaciones.
 
 ```{r loop, message=FALSE, warning=FALSE}
 library(dplyr)
@@ -208,8 +218,14 @@ x
 ```
 
 Cada uno de estos números corresponde a la media muestral de la variable edad de cada una de las 3000 muestras aleatorias que hemos calculado.
-Vemos que algunas medias muestrasles subestiman y otras sobreestiman el valor del parámetro poblacional.
+La primera muestra de 100 observaciones de un total de 722 tiene una media de edad de 24.4 años.
+Esta media esta subestimando el valor del parámetro poblacional.
+La tercera muestra de tamaño 100 de un total de 722 observaciones tiene una media de edad de 24.53.
+Esta muestra sobreestima (por muy poco) el valor del parámetro.
+
+Vemos que algunas medias muestrales subestiman y otras sobreestiman el valor del parámetro poblacional.
 Si graficamos el histograma de todos estos valores, vemos que se dibuja una curva aproximadamente normal.
+Además, si calculamos la media de todas las medias de edad de las 3000 muestras observadas, se tiene que la media es 24.51, una aproximación bastante buena al valor del parámetro 24.52.
 
 ```{r distribución de muestreo}
 hist(x, breaks=100)
@@ -218,10 +234,10 @@ mean(x)
 
 ## Intervalos de confianza
 
-En cualquier investigación solo se cuenta con 1 muestra única, cuyo estadístico muestral, sea una media o un proporción, es una aproximación del parámetro poblacional.
+En cualquier investigación solo se cuenta con una muestra observada, cuyo estadístico muestral, sea una media o un proporción, es una aproximación del parámetro poblacional.
 
 Para poder extrapolar desde la muestra hasta la población, se tiene que construir un intervalo de confianza alrededor del estadístico muestral.
-Este intervalo se construye aplicando la "distancia" de +/- 2 errores estándar, para tener una confianza de 95% de incluir al parámetro poblacional.
+Este intervalo se construye aplicando la "distancia" de +/- 1.96 errores estándar, para tener una confianza de 95% de incluir al parámetro poblacional.
 
 Si se está extrapolando para una variable numérica, mediante la media, el error estándar (o se) es:
 
@@ -290,6 +306,7 @@ $$
 -   Límite Superior es: 3630.7 + 453.8 = 4084.5
 
 Por lo tanto el IC es \[3176.9, 4084.5\] y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido.
+Es decir, estamos infiriendo de la muestra a la población.
 
 El parámetro poblacional podría ser entendido como el promedio de ingresos en 1974 de TODOS los individuos sin habilidades laborales, si es que esa información fuera recogida de manera perfecta, es decir, en un mismo momento, en las mismas condiciones.
 
@@ -342,5 +359,55 @@ cihisp
 ```
 
 Para los hispanos, se puede decir que la proporción poblacional está entre 8.3% y 12.8% al 95% de confianza.
+
+# Ejemplo Encuesta Nacional Docente 2020
+
+Cada dos años, el Ministerio de Educación realiza una encuesta a una muestra de docentes de educación básica en el Perú.
+La última disponible fue hecha en 2020, en medio de la pandemia del COVID-19.
+Las bases de datos y cuestionarios de esta encuesta se encuentran disponibles [aquí](http://www.minedu.gob.pe/politicas/docencia/encuesta-nacional-a-docentes-endo.php).
+
+En esta ubicación se encuentra la base de datos, que puede ser descargada y leída en R con el siguiente código.
+
+```{r endo}
+endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+```
+
+¿A cuántos alumnos en promedio acompaña el docente peruano en aula?
+Esta encuesta tiene una pregunta que nos permite calcular esta media y la desviación estándar.
+
+```{r promedio alumnos}
+mean(endo2020$P1_6, na.rm = T)
+sd(endo2020$P1_6, na.rm = T)
+```
+
+Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula.
+¿Existen diferencias en el número promedio de alumnos que acompañan docentes hombres y docentes mujeres?
+
+Calculamos primero los datos para el grupo de docentes hombres.
+
+```{r docentes hombres}
+mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+sd(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+```
+
+Y luego para las mujeres.
+
+```{r docentes mujeres}
+mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos.
+
+Se puede añadir el cálculo de los intervalos de confianza en ambos casos.
+
+```{r IC hombre mujeres}
+ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50.7 y 53.8 alumnos, mientras que en el caso de las docentes mujeres está entre 33.3 y 34.8 alumnos en aula.
+
+¿Qué más se puede decir de esta comparación entre intervalos de confianza?
 
 # Bibliografía

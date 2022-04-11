@@ -442,6 +442,7 @@ En particular, nos interesa saber cuántos afroamericanos hay en el grupo.
 
 ```{r tablaafro}
 table(LL$black)
+barplot(table(LL$black))
 ```
 
 Y sobre todo saber qué nivel educativo tienen.
@@ -453,7 +454,7 @@ table(LL$education)
 Las frecuencias absolutas no nos ayudan mucho, es mejor tener las frecuencias relativas.
 
 ```{r propeduc}
-100*table(LL$education)/sum(table(LL$education))
+table(LL$education)/sum(table(LL$education))*100
 ```
 
 O, se puede usar el comando `prop.table` que nos da la proporción (en escala 0-1).
@@ -484,7 +485,7 @@ hist(LL$education)
 O mediante
 
 ```{r histeduc_2}
-barplot(table(LL$education),xlab="Años de educación",ylab="Frecuencia",cex.axis=.9,cex.names=.9,ylim=c(0,200))
+barplot(table(LL$education),xlab="Años de educación",ylab="Frecuencia",cex.axis=1,cex.names=0.8,ylim=c(0,200))
 abline(h=0,col='gray60')
 box()
 ```
@@ -522,7 +523,10 @@ Una es usando los \[\]
 
 ```{r ll}
 mean(LL$re74[LL$treated==0])
+sd(LL$re74[LL$treated==0])
+
 mean(LL$re74[LL$treated==1])
+sd(LL$re74[LL$treated==1])
 ```
 
 Otra opción es creando otros "dataframes" para cada grupo con el comando `subset`.
@@ -537,10 +541,14 @@ En este caso calcularemos la media en 1978 para ver si se generaron diferencias.
 
 ```{r mediall}
 mean(control$re78)
+sd(control$re78)
+
 mean(trata$re78)
+sd(trata$re78)
 ```
 
 A simple vista, ¿se cumple la hipótesis de LaLonde?
+¿Con esta información es suficiente para concluir que se cumple la hipótesis de LaLonde?
 
 Es posible que la media sea mayor en el grupo de tratamiento debido a los valores extremos o "outliers".
 Para verificar que el grupo de tratamiento reporta un ingreso mayor que el grupo control, se puede verificar mediante la mediana.
@@ -550,16 +558,23 @@ Para comparar visualmente, los ingresos en 1978 entre los participantes en el gr
 Este gráfico se puede hacer con el comando `boxplot`, incluyendo ambas variables en la definición.
 
 ```{r cajacomp}
-boxplot(LL$re78 ~ LL$treated, ylim=c(0, 22000))
+boxplot(LL$re78 ~ LL$treated, ylim=c(0, 24000))
 
 ```
 
-Este gráfico no muestra, sin embargo, los valores de la mediana.
+Este gráfico no se muestra claramente las diferencias entre los valores de la mediana.
+Cuando se calculan, se observa que el grupo de tratamiento tiene una mediana de ingresos más alta que el grupo control.
 
 ```{r mediana comparacion}
 median(control$re78)
 median(trata$re78)
 ```
+
+Esta diferencia a a favor de aquellos que pasaron el programa de capacitación en sus ingresos posteriores puede deberse a múltiples factores.
+Sin embargo, es apresurado sacar una conclusión de las diferencias puntuales en las medias o las medianas.
+Al final, no se tiene información de toda la población, sino simplemente de una muestra de 722 personas.
+
+La pregunta es: ¿se puede extraer conclusiones acerca de la población de trabajadores que no tienen las habilidades básicas sobre la base de estas 722 observaciones?
 
 Para una opción más interactiva se puede usar el paquete `plotly` para graficar ambas cajas y que se muestren los valores.
 

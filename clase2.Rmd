@@ -548,6 +548,8 @@ sd(trata$re78)
 ```
 
 A simple vista, ¿se cumple la hipótesis de LaLonde?
+¿Cuánto aumentaron los ingresos de los que no formaron parte del programa y cuánto aumentaron los ingresos de los que sí formaron parte del programa?
+
 ¿Con esta información es suficiente para concluir que se cumple la hipótesis de LaLonde?
 
 Es posible que la media sea mayor en el grupo de tratamiento debido a los valores extremos o "outliers".

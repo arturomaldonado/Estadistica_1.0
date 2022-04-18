@@ -132,6 +132,26 @@ ciMean(LL$re78[LL$black==1])
 En este caso, el mayor valor del IC al 95% de los ingresos para los afroamericanos es 5652.5, que es menor al menor valor del IC al 95% de los no afroamericanos.
 Es decir, ambos IC no se cruzan, por lo que se puede afirmar "informalmente" que estas diferencias son estadísticamente significativas (o extrapolables a la población) al 95% de confianza.
 
+También podemos usar la base de datos de la Encuesta Nacional Docente 2020.
+Lo primero es cargar la base de datos.
+
+```{r base endo}
+endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+```
+
+Con esta base se pueden calcular los intervalos de confianza del número de alumnos que acompañan los docentes hombres y mujeres.
+
+```{r IC docente}
+ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+-   El IC al 95% de confianza del número de alumnos para los docentes hombres es \[50.7 - 53.8\]
+
+-   El IC al 95% de confianza del número de alumnos para las docentes mujeres es \[33.3 - 34.8\]
+
+Como ambos intervalos no se cruzan, podemos afirmar preliminarmente que los docentes hombres atienden a más alumnos en aula en promedio que las docentes mujeres en el Perú.
+
 Esta comparación entre grupos también se puede ver de manera visual, en un gráfico de los IC.
 
 # Gráfico de IC para comparar medias
@@ -162,6 +182,16 @@ plotmeans(LL$re78~LL$black,
 
 Como se observa en el gráfico, los IC de los ingresos entre afroamericanos y los no afroamericanos no se traslapan, por lo que se puede concluir gráficamente que estas diferencias son estadísticamente significativos al 95% de confianza en la población.
 
+También podemos graficar los resultados del número de alumnos que atienden en aula los docentes hombres y mujeres.
+
+```{r grafico IC docente}
+plotmeans(endo2020$P1_6~endo2020$P1_1, 
+          xlab="Género del docente", ylab="Alumnos",
+          ylim = c(0,60),
+          mean.labels = T, digits = 1,
+          connect = F)
+```
+
 ## Otra forma de graficar
 
 Además del comando `plotmeans`, también se puede usar la librería `ggplot` para configurar gráficos con más opciones gráficas.
@@ -190,6 +220,27 @@ graf1
 ```
 
 En el gráfico se observa que puntualmente los latinos tienen ingresos promedio más altos que los no latinos; sin embargo, los IC se traslapan por lo que no se puede afirmar que las medias entre grupos sean diferentes.
+
+De la misma manera, para graficas el número de alumnos que atienden los docentes hombre y mujeres, lo primero es crear una tabla con los resultados y guardarla en un objeto.
+
+```{r}
+alum <- group.CI(P1_6~P1_1, endo2020)
+alum
+```
+
+Luego, usamos este objeto para crear el gráfico con la librería `ggplot`.
+
+```{r grafico ggplot docentes}
+graf2 <- ggplot(alum, aes(x=P1_1, y=P1_6.mean))+
+  geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+
+  geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
+  geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-2.5, size=4)+
+  xlab("Género") + ylab("Alumnos")+
+  ylim(0, 60)
+graf2
+```
+
+¿Por qué la variable género presenta los valores 1.0 y 2.0, con 1.5 en medio?
 
 # Nota final
 

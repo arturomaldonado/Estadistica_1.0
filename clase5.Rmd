@@ -1,7 +1,7 @@
 ---
 title: "Clase 5"
 author: "Arturo Maldonado"
-date: "4/26/2021"
+date: "19/04/2022"
 output:
   html_document:
     toc: true
@@ -59,7 +59,10 @@ H0: $\mu_{x1} - \mu_{x2} = 0$
 HA: $\mu_{x1} - \mu_{x2} \ne 0$
 
 La H0 es generalmente la hipótesis de no efecto, de no diferencias.
-La idea central es que si la H0 es cierta en la población, los resultados muestrales ocurrirán muy cerca a 0 en muchas muestras y pocas muestras tendrán valores muy diferentes de cero.
+Se parte siempre de una hipótesis de no diferencias.
+Esta es la hipótesis que se busca negar mediante los resultados obtenidos en la muestra.
+
+La idea central es que si la H0 fuera cierta en la población, los resultados muestrales ocurrirían muy cerca a 0 en muchas muestras y pocas muestras tendrán valores muy diferentes de cero.
 
 ## Paso 2: distribución muestral
 
@@ -80,22 +83,27 @@ $$
 
 ## Paso 3: nivel de significancia
 
-Se trata de la probabilidad que define qué tan inusual debe ser la diferencia de medias muestrales para rechazar la H0 (que la diferencia de medias poblacionales sea 0).
+Se trata de la probabilidad que define qué tan inusual debe ser la diferencia de medias muestral para rechazar la H0 (que la diferencia de medias poblacionales sea 0).
 El valor más común es de $\alpha=0.05$.
+
+Es decir, qué tan diferente debe ser la diferencia de medias muestrales de cero para poder afirmar que este valor es muy "raro" o "diferente" si es que la H0 fuera cierta.
 
 ## Paso 4: observación
 
-Se calcula el estadístico de la prueba:
+Se calcula el estadístico de la prueba.
+Este estadístico lo que hace es "medir" qué tan "raro" o "diferente" es el valor encontrado.
 
 $$
 t_{\overline{x1}-\overline{x2}}=\frac{\overline{X}_1-\overline{X}_2}{s_{\overline{X}_1-\overline{X}_2}}
 $$
 
 Este valor del estadístico de la prueba está en unidades del error estándar, es decir, qué tan cerca o lejos se encuentra del centro de la distribución (centrada en 0).
+
 Con este valor, en la distribución t se calcula la probabilidad de que este valor ocurra, el valor de p-value.
 Es decir, el p-value mide la probabilidad de observar en una muestra una diferencia de medias como la observada, si la diferencia de medias poblacional fuera cero.
 
-Se puede usar una calculadora de p-value de la distribución t disponible [aquí](https://www.socscistatistics.com/tests/)
+Se puede usar una calculadora de p-value de la distribución t disponible [aquí](https://www.socscistatistics.com/tests/).
+En la práctica, cualquier software estadístico nos brinda el resultado del p-value.
 
 ## Paso 5: decisión
 
@@ -103,19 +111,23 @@ Se puede usar una calculadora de p-value de la distribución t disponible [aquí
 
 ![](5.2.png){width="112"}
 
--   Si el p-value \<= 0.05 entonces se rechaza H0 y se afirma HA. Esto indicaría que la probabilidad de observar una diferencia de medias como la observada en la muestra es baja (menor a 5%). Como sí se ha observado esa diferencia de medias en la muestra, entonces se concluye que lo más probable es que la hipótesis que indica que la diferencia de medias poblacional es 0 sea falsa.
+Nota: si es p-value es \> 0.05, la conclusión es que no se puede rechazar la Ho.
+La conclusión NO es que se afirma la H0.
+
+-   Si el p-value \<= 0.05 entonces se rechaza H0 y se afirma HA (siempre con un grado de incertidumbre). Esto indicaría que la probabilidad de observar una diferencia de medias como la observada en la muestra es baja (menor a 5%). Como sí se ha observado esa diferencia de medias en la muestra, entonces se concluye que lo más probable es que la hipótesis que indica que la diferencia de medias poblacional es 0 sea falsa.
 
 ![](5.3.png){width="150"}
 
 ## Paso 6: interpretación
 
 -   Con los datos obtenidos, no se puede decir que existe una diferencia de medias entre ambos grupos.
+    Nunca se afirma que las medias sean iguales!!!
 
 -   Se afirma que sí existe una diferencia de medias entre ambos grupos con un 95% de confianza.
 
 # Ejemplo
 
-En la sección anterior se evaluó de manera "informal" la hipótesis de Lalonde acerca de la diferencia en ingresos entre aquellos que son parte del programa de capacitación y entre aquellos que son afro y los que no.
+En la sección anterior se evaluó de manera "informal" o "visual" la hipótesis de Lalonde acerca de la diferencia en ingresos entre aquellos que son parte del programa de capacitación y aquellos que no son parte del programa, y entre aquellos que son afro y los que no.
 Ahora vamos a evaluar esta hipótesis formalmente mediante la prueba t.
 
 Lo primero es cargar la base de datos.
@@ -132,22 +144,27 @@ mean(LL$re78[LL$treated==0])
 mean(LL$re78[LL$treated==1])
 ```
 
-¿Con esos 880 dólares de diferencia extrapolables a la población?
+¿Son esos 880 dólares de diferencia extrapolables a la población?
+Es decir, a partir de esta diferencia muestral, ¿se puede decir que existe una diferencia de ingresos entre la población que formó parte del programa y aquellos que no formaron parte?
+
 Para esto, lo primero es evaluar la hipótesis de la igualdad de varianzas mediante el test de Levene.
+Para esto usamos el comando `LeveneTest,` que es parte de la librería `DescTools`.
 
 ```{r Levene 1}
 library(DescTools)
 LeveneTest(LL$re78, LL$treated)
 ```
 
-Como el p-value es \> 0.05, se falla en rechazar la igualdad de varianzas, por lo que se tiene que asumir `var.equal=T`.
+Como el p-value es \> 0.05, se falla en rechazar la igualdad de varianzas, por lo que se tiene que asumir que son iguales.
+Para evaluar si existen o no diferencias poblacionales, usamos el comando `t.test`.
+Este comando requiere de la especificación `var.equal=T`, de acuerdo a los resultados de la prueba de Levene.
 
 ```{r prueba t 1}
 t.test(re78 ~ treated, data = LL, var.equal=T)
 ```
 
 Como el p-value = 0.06 \> 0.05, entonces no se puede rechazar la H0 y no se puede afirmar que esa diferencia exista en la población a tal nivel de significancia.
-Sin embargo, si se trabajara con un límite más permisible de 0.10, entonces sí se podría rechazar la H0 y afirmar que las diferencias son estadísticamente significativas, y, por lo tanto, extrapolables a la población, aunque con una mayor probabilidad de un error de tipo 1.
+Sin embargo, si se trabajara con un límite más permisible de 0.10, entonces sí se podría rechazar la H0 y afirmar que las diferencias son estadísticamente significativas, y, por lo tanto, extrapolables a la población, aunque con una mayor probabilidad de un error de tipo 1, que se verá más adelante.
 
 Si se quisiera evaluar las diferencias de ingresos entre afros y no afros, lo primero es recordar las diferencias.
 
@@ -163,6 +180,7 @@ LeveneTest(LL$re78, LL$black)
 ```
 
 Nuevamente, no se puede rechazar la H0 de igualdad de varianzas.
+Luego, se corre la prueba t.
 
 ```{r prueba t afro}
 t.test(re78 ~ black, data = LL, var.equal=T)
@@ -363,7 +381,7 @@ Otra forma de hacer la evaluación es incluir la tabla dentro del comando.
 prop.test(table(cv$call, cv$race))
 ```
 
-Como se observa de los resultados, el estadístico de la prueba "X-squared" se llama chi-cuadrado y no es la el mismo que el estadístico t.
+Como se observa de los resultados, el estadístico de la prueba "X-squared" se llama chi-cuadrado y no es el mismo que el estadístico t.
 El p-value asociado es 5x10-5, muy similar a 3.9x10-5 y que, en todo caso, lleva a la misma conclusión de rechazar la H0 de igualdad de proporciones y afirmar que entre ambos grupos existe una diferencia en la tasa de respuesta en la población.
 
 Se puede hacer lo mismo para evaluar la diferencia en la proporción de llamadas entre hombres y mujeres.

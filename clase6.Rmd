@@ -1,7 +1,7 @@
 ---
 title: "Clase 6"
 author: "Arturo Maldonado"
-date: "5/3/2021"
+date: "3/5/2022"
 output:
   html_document:
     toc: true
@@ -102,9 +102,9 @@ Para saber qué media(s) es(son) diferente(s) se tiene que hacer un test posteri
 ## Post hoc: Test de Tukey
 
 Este test sirve para analizar qué diferencias entre grupos son significativas.
-Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pareja corre una prueba t de diferencia de medias y la reporta.
+Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pareja calcula una prueba t de diferencia de medias y la reporta.
 
-# Ejemplo
+# Para una variable numérica
 
 En esta sección seguiremos usando el paper de [@lalondeEvaluatingEconometricEvaluations1986] para evaluar los ingresos.
 En la sección anterior se encontró que había una diferencia estadísticamente significativa entre los afros y no afros en sus ingresos en 1978.
@@ -147,7 +147,7 @@ La variable creada es una variable numérica, la que se convierte a factor y se 
 
 ```{r factor afro x grado}
 LL$axd <- as.factor(LL$axd)
-levels(LL$axd) <- c("No afro sin grado", "No afro con grado", "Afro sin grado", "Afro con grado")
+levels(LL$axd) <- c("No afro s/grado", "No afro c/grado", "Afro s/grado", "Afro c/grado")
 table(LL$axd)
 ```
 
@@ -155,7 +155,7 @@ Antes de correr la prueba, es una buena práctica hacer una inspección descript
 
 ```{r message=FALSE, warning=FALSE}
 library(psych)
-tabla1 <- describeBy(LL$re78, group=LL$raxd)
+tabla1 <- describeBy(LL$re78, group=LL$axd)
 tabla1
 ```
 
@@ -171,16 +171,16 @@ plotmeans(LL$re78~LL$axd, connect=F, barwidth=3, xlab="Grupos", ylab="Ingresos 1
 Esta observación visual se tiene que confirmar con la prueba de ANOVA.
 
 ```{r anova afro x grado}
-anova <- aov(LL$re78~LL$axd)
-summary(anova)
+anova1 <- aov(LL$re78~LL$axd)
+summary(anova1)
 ```
 
-Con la prueba de ANOVA y el p-value correspondiente no se puede rechazar la H0, aunque muy marginalmente.
+Con la prueba de ANOVA y el p-value correspondiente no se puede rechazar la H0.
 Este p-value sí sería significativo a 0.10, pero tendríamos una probabilidad mayor de error de tipo I.
 Para confirmar esto, se corre la prueba de Tukey para analizar cada emparejamiento.
 
 ```{r Tukey afro x grado}
-TukeyHSD(anova)
+TukeyHSD(anova1)
 ```
 
 En este caso se observa que la diferencia entre afroamericanos con grado y no afroamericanos con grado es la que explica que ANOVA sea marginalmente significativo.
@@ -191,7 +191,88 @@ Eso es debido a que cada emparejamiento de evalúa mediante la prueba t de maner
 # Para una variable categórica
 
 De la misma manera que en la sección anterior, ANOVA también se puede utilizar de manera **referencial** para evaluar las diferencias de proporciones entre más de 2 grupos.
-Por ejemplo, siguiendo con el ejemplo sobre discriminación en CVs [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres.
+Por ejemplo, el último informe del Barómetro de las Américas del Proyecto de Opinión Pública en América Latina, disponible [aquí](https://iep.org.pe/wp-content/uploads/2021/04/Peru.-Cultura-politica-de-la-democracia-2021.pdf), presenta esta gráfico sobre satisfacción con la democracia en Perú a lo largo del tiempo.
+
+![](Grafico6.2.png){width="591"}
+
+Como indica el informe, la satisfacción con la democracia se mide con la pregunta: En general, usted diría que está muy satisfecho(a), satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que la democracia funciona en Perú?
+Este pregunta se recodifica en otra variable que agrupa a aquellos que están satisfechos o muy satisfechos.
+El porcentaje de este grupo es lo que se muestra en el gráfico a lo largo de los años.
+Es decir, se está comparando esta porcentaje por años.
+
+Para evaluar si existen diferencias en la satisfacción con la democracia en Perú y entre qué años se puede decir que haya diferencia, lo primero es cargar la base de datos del Barómetro para Perú.
+
+```{r lapop}
+lapop <- import("bases/PER_2006-2021.dta")
+```
+
+La variable que mide la satisfacción con la democracia es "pn4".
+En primer lugar, vamos a describir la variable.
+
+```{r pn4}
+table(lapop$pn4)
+```
+
+Los códigos numéricos referidos a "satisfecho" y "muy satisfecho" son el 1 y 2.
+Se tiene que crear una nueva variable donde estos códigos numéricos sean recodificados como 100.
+
+```{r recodificar pn4}
+lapop$pn4rec = car::recode(lapop$pn4, "1:2=100; 3:4=0")
+table(lapop$pn4rec)
+```
+
+Con esta variable podemos calcular la media de la satisfacción con la democracia en Perú, que es el porcentaje, para todas las rondas del Barómetro.
+
+```{r media pn4}
+mean(lapop$pn4rec, na.rm = T)
+```
+
+También se podría calcular el porcentaje de satisfacción con la democracia por año.
+La variable que indica el año es "year".
+Antes de calcular, la variable "year" es cargada como una variable numérica, de tipo "num".
+Para poder operar en anova, esta variable se tiene que convertir en una variable de tipo factor.
+
+```{r year}
+lapop$year = as.factor(lapop$year)
+table(lapop$year)
+```
+
+Ahora, calculamos los porcentajes de satisfacción con la democracia por años.
+
+```{r tabla pn4}
+tabla2 = describeBy(lapop$pn4rec, group=lapop$year)
+tabla2
+```
+
+También se puede crear un gráfico de comparación de media.
+En la especificación `connect=T` indica que queremos que los porcentajes de satisfacción con la democracia se conecten, de la misma manera que en el gráfico 6.2.
+
+```{r grafico pn4}
+library(gplots)
+plotmeans(lapop$pn4rec~lapop$year, connect=T, barwidth=3, xlab="Año", 
+          ylab="Satisfacción con la democracia",
+          ylim=c(0, 100))
+```
+
+Para formalizar la comparación de satisfacción con la democracia por años, calculamos la prueba de anova.
+El p-value \< 0.05.
+Esto nos lleva a poder rechazar la H0 de igualdad de medias grupales poblacionales.
+Por lo tanto concluimos que alguna de estas medias grupales es diferente.
+Es decir, podemos concluir que al menos un porcentaje de satisfacción con la democracia es diferente entre los años en Perú.
+
+```{r anova pn4}
+anova2 <- aov(lapop$pn4rec~lapop$year)
+summary(anova2)
+```
+
+Para comprobar que diferencias entre años particulares son estadísticamente significativas, calculamos la prueba post-hoc de Tukey.
+Esta tabla nos muestra que hay varios emparejamientos entre años que tienen unb p-value \< 0.05, por ejemplo, la diferencia en satisfacción con la democracia entre 2006 y 2012 o esta diferencia entre 2008 y 2012.
+
+```{r}
+TukeyHSD(anova2)
+```
+
+Siguiendo con el ejemplo sobre discriminación en CVs [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres.
 Estos investigadores enviaron CVs manipulando la raza y el género percibidos mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.
 
 En la sección anterior se encontró que sí había un sesgo en contra de los afroamericanos, pero que no se podía decir que hubiera un sesgo en contra de las mujeres en el mercado laboral.
@@ -248,8 +329,8 @@ plotmeans(cv$call*100~cv$rxg, connect=F, barwidth=3, xlab="Grupos", ylab="Tasa d
 Para comprobar esta comparación "informal" se tiene que correr el test de ANOVA.
 
 ```{r anova}
-anova2 <- aov(cv$call*100~cv$rxg)
-summary(anova2)
+anova3 <- aov(cv$call*100~cv$rxg)
+summary(anova3)
 ```
 
 Se obtiene un estadístico F de 5.97, con lo que se calcula un p-value \< 0.05.
@@ -259,7 +340,7 @@ Por lo tanto concluimos que alguna de estas medias grupales es diferente.
 Para saber cuál es diferente se tiene que correr el Test de Tukey.
 
 ```{r tukey}
-TukeyHSD(anova2)
+TukeyHSD(anova3)
 ```
 
 Este test nos brinda resultados por cada emparejamiento.
@@ -268,7 +349,7 @@ Se concluye que hay 2 emparejamientos relevantes, que llevan a la conclusión qu
 Estas diferencias se pueden ver de manera gráfica.
 
 ```{r plot Tukey}
-plot(TukeyHSD(anova2))
+plot(TukeyHSD(anova3))
 ```
 
 Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.

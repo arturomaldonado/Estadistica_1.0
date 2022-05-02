@@ -1,7 +1,7 @@
 ---
 title: "Clase 5"
 author: "Arturo Maldonado"
-date: "19/04/2022"
+date: "19-26/04/2022"
 output:
   html_document:
     toc: true
@@ -125,7 +125,7 @@ La conclusión NO es que se afirma la H0.
 
 -   Se afirma que sí existe una diferencia de medias entre ambos grupos con un 95% de confianza.
 
-# Ejemplo
+# Ejemplo 1
 
 En la sección anterior se evaluó de manera "informal" o "visual" la hipótesis de Lalonde acerca de la diferencia en ingresos entre aquellos que son parte del programa de capacitación y aquellos que no son parte del programa, y entre aquellos que son afro y los que no.
 Ahora vamos a evaluar esta hipótesis formalmente mediante la prueba t.
@@ -140,8 +140,7 @@ LL <- import("bases/LL.csv")
 Lo primero es recordar las diferencias puntuales entre ambos grupos.
 
 ```{r medias LL}
-mean(LL$re78[LL$treated==0])
-mean(LL$re78[LL$treated==1])
+mean(LL$re78[LL$treated==1]) - mean(LL$re78[LL$treated==0])
 ```
 
 ¿Son esos 880 dólares de diferencia extrapolables a la población?
@@ -155,7 +154,7 @@ library(DescTools)
 LeveneTest(LL$re78, LL$treated)
 ```
 
-Como el p-value es \> 0.05, se falla en rechazar la igualdad de varianzas, por lo que se tiene que asumir que son iguales.
+Como el p-value = 0.14 es \> 0.05, se falla en rechazar la igualdad de varianzas, por lo que se tiene que asumir que son iguales.
 Para evaluar si existen o no diferencias poblacionales, usamos el comando `t.test`.
 Este comando requiere de la especificación `var.equal=T`, de acuerdo a los resultados de la prueba de Levene.
 
@@ -169,8 +168,7 @@ Sin embargo, si se trabajara con un límite más permisible de 0.10, entonces s�
 Si se quisiera evaluar las diferencias de ingresos entre afros y no afros, lo primero es recordar las diferencias.
 
 ```{r afro}
-mean(LL$re78[LL$black==0])
-mean(LL$re78[LL$black==1])
+mean(LL$re78[LL$black==0]) - mean(LL$re78[LL$black==1])
 ```
 
 De la misma manera, primero se evalúa el test de Levene.
@@ -179,14 +177,14 @@ De la misma manera, primero se evalúa el test de Levene.
 LeveneTest(LL$re78, LL$black)
 ```
 
-Nuevamente, no se puede rechazar la H0 de igualdad de varianzas.
+Nuevamente, p-value = 0.57 \> 0.05, entonces no se puede rechazar la H0 de igualdad de varianzas.
 Luego, se corre la prueba t.
 
 ```{r prueba t afro}
 t.test(re78 ~ black, data = LL, var.equal=T)
 ```
 
-En este caso, el p-value \< 0.05, por lo que se rechaza la H0 y se concluye que la diferencia de 1,600 dólares entre afroamericanos y no afroamericanos sí existe en la población.
+En este caso, el p-value = 0.0054 \< 0.05, por lo que se rechaza la H0 y se concluye que la diferencia de 1,600 dólares entre afroamericanos y no afroamericanos sí existe en la población.
 
 # Evaluación de diferencia de proporciones
 
@@ -264,7 +262,7 @@ Si esa probabilidad fuera muy baja, entonces es probable que la diferencia pobla
 ## Mediante la prueba t
 
 Para poner a prueba esto, requerimos ir paso por paso en la inferencia estadística.
-Una primera opción es usar la prueba t, dado que si la proporción se puede calcular mediante la media, la diferencia de proporciones se podría evaluar mediante la diferencia de medias.
+Una primera opción, aunque **referencial**, es usar la prueba t, dado que si la proporción se puede calcular mediante la media, la diferencia de proporciones se podría evaluar mediante la diferencia de medias.
 
 El uso de la prueba t para evaluar la diferencia entre 2 proporciones es **referencial**.
 Los resultados entre `t.test` y `prop.test` no usan la misma distribución.
@@ -357,7 +355,7 @@ Esto nos lleva a concluir que con los datos *no se puede decir* que haya diferen
 La prueba adecuada para evaluar una prueba de diferencia de proporciones es mediante el comando `prop.test`.
 Este comando, como se puede ver en el "help", pide como argumentos los datos de "éxitos" (la proporción que se quiere evaluar) y los datos de "intentos" (el n total).
 Es decir, a diferencia del comando `t.test` que pido como argumentos las variables, aquí se tiene primero que encontrar los "éxitos" e "intentos".
-Esto se puede hacer mediante el comando `table`.
+Esto se puede hacer mediante el comando `table`, pero en lugqr de describir una variable, se puede hacer la tabla cruzada.
 
 ```{r tabla cv x raza}
 table(cv$call, cv$race)
@@ -375,16 +373,36 @@ De esta manera se encuentra que entre los afros se tiene 157 éxitos de un total
 Entre los anglos se tiene 235 intentos de un total de 2435 intentos (9.7%).
 
 Estos datos son los que requiere el comando `prop.table` para evaluar la diferencia de proporciones (9.7-6.4= 3.3%).
-Otra forma de hacer la evaluación es incluir la tabla dentro del comando.
 
 ```{r prop test 1}
-prop.test(table(cv$call, cv$race))
+prop.test(x=c(157, 235), n=c(2278+157, 2200+235), conf.level=0.95)
+```
+
+Otra forma de hacer la evaluación es incluir la tabla dentro del comando.
+De esta forma se calcula el mismo p-value y el mismo intervalo de confianza de la diferencia de proporciones.
+Sin embargo, de esta manera no se obtiene las proporciones adecuadas.
+
+```{r prop test 2}
+prop.test(table(cv$race, cv$call))
 ```
 
 Como se observa de los resultados, el estadístico de la prueba "X-squared" se llama chi-cuadrado y no es el mismo que el estadístico t.
 El p-value asociado es 5x10-5, muy similar a 3.9x10-5 y que, en todo caso, lleva a la misma conclusión de rechazar la H0 de igualdad de proporciones y afirmar que entre ambos grupos existe una diferencia en la tasa de respuesta en la población.
 
 Se puede hacer lo mismo para evaluar la diferencia en la proporción de llamadas entre hombres y mujeres.
+En primer lugar, se calcula la tabla cruzada.
+
+```{r cv x sex}
+addmargins(table(cv$call, cv$sex))
+```
+
+Luego se calcula la diferencia de proporciones.
+
+```{r prop test 3}
+prop.test(x=c(309, 83), n=c(3437+309, 1041+83), conf.level=0.95)
+```
+
+O, se puede calcular de frente anidando la tabla en el comando.
 
 ```{r cv x sexo}
 prop.test(table(cv$call, cv$sex))

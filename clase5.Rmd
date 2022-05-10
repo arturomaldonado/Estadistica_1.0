@@ -415,7 +415,7 @@ Cuando se obtiene un p-value \<= 0.05, se rechaza la H0 y se afirma la HA, que l
 Pero, cuando se obtiene un p-value \> 0.05, no se afirma la HA, lo que se concluye es que no se puede rechazar la H0.
 Esto quiere decir que no afirmamos que las medias poblacionales sean iguales, sino que, con los datos que tenemos, no podemos decir que son diferentes.
 
-Para aclarar esto, vale la pena hacer una analogía jurírica.
+Para aclarar esto, vale la pena hacer una analogía jurídica.
 
 # Analogía del juicio
 

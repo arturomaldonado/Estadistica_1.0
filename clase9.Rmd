@@ -1,7 +1,7 @@
 ---
-title: "Clase 9 y 10"
+title: "Clase 9"
 author: "Arturo Maldonado"
-date: "5/31/2021"
+date: "24/05/2022"
 output:
   html_document:
     toc: true

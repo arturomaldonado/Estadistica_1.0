@@ -162,7 +162,7 @@ La forma más estándar para graficar los IC por grupo es usando el comando `plo
 library(gplots)
 plotmeans(LL$re78~LL$treated, 
           xlab="Grupo", ylab="Ingreso 1978",
-          ylim = c(0,7000),
+          ylim = c(0,9000),
           mean.labels = T, digits = 1,
           connect = F)
 ```

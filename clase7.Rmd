@@ -28,7 +28,7 @@ La prueba t y la prueba de ANOVA trabajan con una variable dependiente numérica
 Cuando la variable de factor tiene 2 grupos, se trabaja con la prueba t.
 Cuando la variable de factor tiene más de 2 grupos, se trabaja con la prueba de ANOVA.
 
-En ambos casos se trata de evaluar una relación bivariada: analizar el impacto de una variable independiente categñorica en una variable dependiente numérica.
+En ambos casos se trata de evaluar una relación bivariada: analizar el impacto de una variable independiente categórica en una variable dependiente numérica.
 
 -   Prueba t:
 
@@ -138,7 +138,7 @@ La variable dependiente "satisfacción con la democracia" se ubica en las filas 
 Se verifica que las 1,727 observaciones que están muy satisfechas con la democracia, se dividen en 919 hombres, 803 mujeres y 5 NAs.
 
 ```{r tabla}
-table(lapop18$satis, lapop18$genero, useNA="always")
+table(lapop18$satis, lapop18$genero)
 ```
 
 Para calcular las frecuencias relativas, se tiene que anidar `table` dentro del comando `prop.table`.
@@ -204,25 +204,25 @@ prop.table(table(lapop18$satis))*100
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| Col1       | Hombres                                                       | Mujeres                                            |
-+============+===============================================================+====================================================+
-| MS         | 6.4% de hombres-> #observaciones si no hay relación           | 6.4% de mujeres                                    |
-|            |                                                               |                                                    |
-|            | cuánto es el 6.4% de 13608= 871.9 #obs si NO hubiera relación | 6.4% de 13,330 = 852.1 #obs si NO hubiera relación |
-|            |                                                               |                                                    |
-|            | 919 lo realmente observado                                    | (803-852,1)\^2                                     |
-|            |                                                               |                                                    |
-|            | (919-871.9)\^2                                                |                                                    |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| S          | 33.1%                                                         | 33.1%                                              |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| I          | 46.2%                                                         | 46.2%                                              |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| MI         | 14.3%                                                         | 14.3%                                              |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-|            | 13608                                                         |                                                    |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
++------+---------------------------------------------------------------+----------------------------------------------------+
+| Col1 | Hombres                                                       | Mujeres                                            |
++======+===============================================================+====================================================+
+| MS   | 6.4% de hombres-> #observaciones si no hay relación           | 6.4% de mujeres                                    |
+|      |                                                               |                                                    |
+|      | cuánto es el 6.4% de 13608= 871.9 #obs si NO hubiera relación | 6.4% de 13,330 = 852.1 #obs si NO hubiera relación |
+|      |                                                               |                                                    |
+|      | 919 lo realmente observado                                    | (803-852,1)\^2                                     |
+|      |                                                               |                                                    |
+|      | (919-871.9)\^2                                                |                                                    |
++------+---------------------------------------------------------------+----------------------------------------------------+
+| S    | 33.1%                                                         | 33.1%                                              |
++------+---------------------------------------------------------------+----------------------------------------------------+
+| I    | 46.2%                                                         | 46.2%                                              |
++------+---------------------------------------------------------------+----------------------------------------------------+
+| MI   | 14.3%                                                         | 14.3%                                              |
++------+---------------------------------------------------------------+----------------------------------------------------+
+|      | 13608                                                         |                                                    |
++------+---------------------------------------------------------------+----------------------------------------------------+
 
 En las primeras celda, la lógica sería:
 

@@ -413,7 +413,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Clase 3 y Ejemplo de LaLonde (1996) y ENDO 2020</h1>
+<h1 class="title toc-ignore">Clase 3 y Ejemplo de LaLonde (1996) y ENDO
+2020</h1>
 <h4 class="author">Arturo Maldonado</h4>
 <h4 class="date">5/4/2022</h4>
 
@@ -423,7 +424,10 @@ div.tocify {
 <hr />
 <div id="estimación-puntual" class="section level1">
 <h1>Estimación puntual</h1>
-<p>De una variable numérica, la medida de tendencia central más útil es la media. Por ejemplo, siguiendo con el ejemplo de <span class="citation">LaLonde (1986)</span>, podemos calcular la media de ingresos antes y después de la intervención.</p>
+<p>De una variable numérica, la medida de tendencia central más útil es
+la media. Por ejemplo, siguiendo con el ejemplo de <span
+class="citation">LaLonde (1986)</span>, podemos calcular la media de
+ingresos antes y después de la intervención.</p>
 <p>Primero leemos la base de datos.</p>
 <pre class="r"><code>library(rio)
 LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
@@ -432,7 +436,10 @@ LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
 <pre><code>## [1] 3630.738</code></pre>
 <pre class="r"><code>mean(LL$re78)</code></pre>
 <pre><code>## [1] 5454.636</code></pre>
-<p>La manera de describir una variable categórica es a través de una tabla de frecuencias. Siguiendo con el artículo, se puede calcular la tabla de frecuencias de los individuos afroamericanos y de los latinos.</p>
+<p>La manera de describir una variable categórica es a través de una
+tabla de frecuencias. Siguiendo con el artículo, se puede calcular la
+tabla de frecuencias de los individuos afroamericanos y de los
+latinos.</p>
 <pre class="r"><code>table(LL$black)</code></pre>
 <pre><code>## 
 ##   0   1 
@@ -441,7 +448,10 @@ LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
 <pre><code>## 
 ##   0   1 
 ## 646  76</code></pre>
-<p>El comando <code>table</code> nos ofrece las frecuencias absolutas. Para obtener las proporciones se puede usar el comando <code>prop.table</code>. Los porcentajes (las frecuencias relativas) se pueden obtener multiplicando las proporciones por 100.</p>
+<p>El comando <code>table</code> nos ofrece las frecuencias absolutas.
+Para obtener las proporciones se puede usar el comando
+<code>prop.table</code>. Los porcentajes (las frecuencias relativas) se
+pueden obtener multiplicando las proporciones por 100.</p>
 <pre class="r"><code>prop.table(table(LL$black))*100</code></pre>
 <pre><code>## 
 ##       0       1 
@@ -450,28 +460,81 @@ LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
 <pre><code>## 
 ##        0        1 
 ## 89.47368 10.52632</code></pre>
-<p>En el caso de las tablas de frecuencias, se puede hallar la proporción (una forma de llamar a los porcentajes) por cada categoría de la variable. Esta muestra de individuos tiene un 80.1% de afroamericanos y un 10.5% de latinos.</p>
-<p>Tanto la media, como la proporción, son estimaciones puntuales, basados en los resultados de la muestra. Es decir, estas son estimaciones correspondientes a las 722 observaciones que son parte de este estudio. Sin embargo, esta muestra forma parte de un universo o población (el conjunto de individuos que carecen de habilidades laborales para insertarse en el mercado de trabajo), del que seguramente se quiere decir algo.</p>
-<p>El mismo razonamiento aplica a una encuesta de opinión convencional. La ficha técnica de una encuesta menciona, generalmente, el tamaño de muestra y la población a la que se busca representar. También se puede encontrar el margen de error (+/- 2.8%) y el nivel de confianza (generalmente de 95%).(Ver, por ejemplo, la <a href="https://www.ipsos.com/sites/default/files/ct/news/documents/2022-04/Ipsos%208%20de%20abril%20América%20-%20Primera%20Parte_0.pdf">encuesta de opinión de abril 2022 de Ipsos</a>.</p>
-<p>El proceso mediante el cual se parte de una muestra para decir algo de un universo o población es un proceso de inferencia y es parte de la estadística inferencial. La estadística inferencial introduce la <strong>incertidumbre</strong> en los estimados, debido al hecho de estar trabajando con una muestra y no con el total de observaciones del universo.</p>
+<p>En el caso de las tablas de frecuencias, se puede hallar la
+proporción (una forma de llamar a los porcentajes) por cada categoría de
+la variable. Esta muestra de individuos tiene un 80.1% de afroamericanos
+y un 10.5% de latinos.</p>
+<p>Tanto la media, como la proporción, son estimaciones puntuales,
+basados en los resultados de la muestra. Es decir, estas son
+estimaciones correspondientes a las 722 observaciones que son parte de
+este estudio. Sin embargo, esta muestra forma parte de un universo o
+población (el conjunto de individuos que carecen de habilidades
+laborales para insertarse en el mercado de trabajo), del que seguramente
+se quiere decir algo.</p>
+<p>El mismo razonamiento aplica a una encuesta de opinión convencional.
+La ficha técnica de una encuesta menciona, generalmente, el tamaño de
+muestra y la población a la que se busca representar. También se puede
+encontrar el margen de error (+/- 2.8%) y el nivel de confianza
+(generalmente de 95%).(Ver, por ejemplo, la <a
+href="https://www.ipsos.com/sites/default/files/ct/news/documents/2022-04/Ipsos%208%20de%20abril%20América%20-%20Primera%20Parte_0.pdf">encuesta
+de opinión de abril 2022 de Ipsos</a>.</p>
+<p>El proceso mediante el cual se parte de una muestra para decir algo
+de un universo o población es un proceso de inferencia y es parte de la
+estadística inferencial. La estadística inferencial introduce la
+<strong>incertidumbre</strong> en los estimados, debido al hecho de
+estar trabajando con una muestra y no con el total de observaciones del
+universo.</p>
 <div id="un-breve-paseo-por-las-probabilidades" class="section level2">
 <h2>Un breve paseo por las probabilidades</h2>
-<p>Partimos del hecho que en el común de las investigaciones uno tiene que seleccionar un conjunto de observaciones que son parte del total, que es muy costoso e ineficiente hacer un estudio de la población completa. La analogía es, por ejemplo, que para un análisis de sangre se extrae una “muestra” de sangre y no el total de sangre del cuerpo.</p>
-<p>A esto le sumamos el hecho que nuestras herramientas de recojo de información son imperfectas. Un estudio transversal, por ejemplo, debería recoger información de los individuos en un corte en el tiempo, sin embargo, muchos estudios no son una “foto del momento,” pues las observaciones toman tiempo y abarcan horas, días o semanas, sino meses.</p>
-<p>Es por este motivo que para un estudio se selecciona “una” muestra, un conjunto de observaciones que son una fracción del total. Esta selección se hace siguiendo procedimientos aleatorios, de tal manera que cualquier unidad del universo tenga la misma probabilidad de ser seleccionada.</p>
-<p>El punto es que esta única muestra es solo una de las múltiples muestras teóricas que se podrían seleccionar de un universo determinado.</p>
-<p>Partamos de un ejemplo muy simple. Para un universo de 5 personas, se pueden extraer 10 muestras de tamaño 2 diferentes.</p>
+<p>Partimos del hecho que en el común de las investigaciones uno tiene
+que seleccionar un conjunto de observaciones que son parte del total,
+que es muy costoso e ineficiente hacer un estudio de la población
+completa. La analogía es, por ejemplo, que para un análisis de sangre se
+extrae una “muestra” de sangre y no el total de sangre del cuerpo.</p>
+<p>A esto le sumamos el hecho que nuestras herramientas de recojo de
+información son imperfectas. Un estudio transversal, por ejemplo,
+debería recoger información de los individuos en un corte en el tiempo,
+sin embargo, muchos estudios no son una “foto del momento”, pues las
+observaciones toman tiempo y abarcan horas, días o semanas, sino
+meses.</p>
+<p>Es por este motivo que para un estudio se selecciona “una” muestra,
+un conjunto de observaciones que son una fracción del total. Esta
+selección se hace siguiendo procedimientos aleatorios, de tal manera que
+cualquier unidad del universo tenga la misma probabilidad de ser
+seleccionada.</p>
+<p>El punto es que esta única muestra es solo una de las múltiples
+muestras teóricas que se podrían seleccionar de un universo
+determinado.</p>
+<p>Partamos de un ejemplo muy simple. Para un universo de 5 personas, se
+pueden extraer 10 muestras de tamaño 2 diferentes.</p>
 <p><img src="muestra1.jpeg" /></p>
-<p>La fórmula para calcular el número de muestras probables es la de combinatorias, que incluye el operador factorial. Si aplicamos esta fórmula a un ejemplo de un universo más grande, por ejemplo, un salón de clase de 50 alumnos, donde se quiere saber cuántas muestras diferentes de tamaño 4 se pueden extraer. Según la fórmula:</p>
+<p>La fórmula para calcular el número de muestras probables es la de
+combinatorias, que incluye el operador factorial. Si aplicamos esta
+fórmula a un ejemplo de un universo más grande, por ejemplo, un salón de
+clase de 50 alumnos, donde se quiere saber cuántas muestras diferentes
+de tamaño 4 se pueden extraer. Según la fórmula:</p>
 <p><span class="math display">\[
-\frac{50!} {(50-4)! 4!} = \frac{50!} {46! 4!} = \frac{50*49*48*47} {4*3*2} = 230,300
+\frac{50!} {(50-4)! 4!} = \frac{50!} {46! 4!} = \frac{50*49*48*47}
+{4*3*2} = 230,300
 \]</span></p>
-<p>Para un sondeo de opinión, donde el universo son 24 millones de individuos y se quiere saber cuántas muestras diferentes de tamaño 1,500 se pueden extraer, este número de muestras probables es muuuuy grande.</p>
-<p>Volviendo al ejemplo muy simple de 5 personas donde se quiere extraer una muestra de 2 y se quiere inferir los datos de la muestra de dos variables: sexo y edad.</p>
-<p>Se tiene un universo de 5 individuos, cada uno con su sexo y edad. En la población la proporción de hombres es de 60% y la media de edad es de 34 años.</p>
+<p>Para un sondeo de opinión, donde el universo son 24 millones de
+individuos y se quiere saber cuántas muestras diferentes de tamaño 1,500
+se pueden extraer, este número de muestras probables es muuuuy
+grande.</p>
+<p>Volviendo al ejemplo muy simple de 5 personas donde se quiere extraer
+una muestra de 2 y se quiere inferir los datos de la muestra de dos
+variables: sexo y edad.</p>
+<p>Se tiene un universo de 5 individuos, cada uno con su sexo y edad. En
+la población la proporción de hombres es de 60% y la media de edad es de
+34 años.</p>
 <p><img src="muestra2.jpeg" /></p>
-<p>Si queremos extraer una muestra de tamaño de 2 de ese universo, se tienen 10 posibles muestras, cada una tendrá una aproximación de la proporción de hombres y de la media de edad. Dependiendo de qué muestra de todas las posibles sea la que se observa, los estadísticos serán una aproximación de los parámetros poblacionales.</p>
-<p>En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.</p>
+<p>Si queremos extraer una muestra de tamaño de 2 de ese universo, se
+tienen 10 posibles muestras, cada una tendrá una aproximación de la
+proporción de hombres y de la media de edad. Dependiendo de qué muestra
+de todas las posibles sea la que se observa, los estadísticos serán una
+aproximación de los parámetros poblacionales.</p>
+<p>En el caso de la proporción de hombres, se puede tabular los
+resultados de cada muestra probable.</p>
 <table>
 <colgroup>
 <col width="27%" />
@@ -503,37 +566,115 @@ LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Incluso se podría calcular un promedio de todas esas proporciones muestrales (100+50+100+…+50/10), y ese resultado sería 65%, un resultado algo cerca de la proporción poblacional de 60%.</p>
-<p>Este mismo procedimiento se podría hacer para todas las 230,300 muestras probables de tamaño 4 de un universo de 50 alumnos. Cada uno de los 50 alumnos será hombre o mujer y la proporción poblacional de hombres se puede calcular en ese total. A su vez, cada muestra de 4, tendrá una proporción muestral que tendrá valores (0 si no hay ningún hombre, 25% si hay 1 hombre, 50% si hay 2 hombres, 75% si hay 3 hombres y 100% si todos son hombres). Finalmente, se puede contar cuántas de las 230,300 muestras probables tuvieron 0%, 25%, 50%, 75% y 100% de hombres. Esta distribución se llama “<strong>distribución de muestreo</strong>.”</p>
-<p>Si quisiéramos ampliar el tamaño de muestra a 10, entonces los resultados posibles serían, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90 y 100%. También podríamos contar cuántas muestras tienen estos resultados.</p>
-<p>De un universo más grande, se puede plantear extraer muestras de tamaño más grande. Por ejemplo, teóricamente se puede pensar que de un universo de 20 millones, se pueden extraer casi infinitas muestras de tamaño 1,500. Cada una de estas muestras tendrá un estadístico que será una aproximación del parámetro. Los estadísticos de todas estas casi infinitas muestras se pueden tabular y graficar.</p>
+<p>Incluso se podría calcular un promedio de todas esas proporciones
+muestrales (100+50+100+…+50/10), y ese resultado sería 65%, un resultado
+algo cerca de la proporción poblacional de 60%.</p>
+<p>Este mismo procedimiento se podría hacer para todas las 230,300
+muestras probables de tamaño 4 de un universo de 50 alumnos. Cada uno de
+los 50 alumnos será hombre o mujer y la proporción poblacional de
+hombres se puede calcular en ese total. A su vez, cada muestra de 4,
+tendrá una proporción muestral que tendrá valores (0 si no hay ningún
+hombre, 25% si hay 1 hombre, 50% si hay 2 hombres, 75% si hay 3 hombres
+y 100% si todos son hombres). Finalmente, se puede contar cuántas de las
+230,300 muestras probables tuvieron 0%, 25%, 50%, 75% y 100% de hombres.
+Esta distribución se llama “<strong>distribución de
+muestreo</strong>”.</p>
+<p>Si quisiéramos ampliar el tamaño de muestra a 10, entonces los
+resultados posibles serían, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90 y
+100%. También podríamos contar cuántas muestras tienen estos
+resultados.</p>
+<p>De un universo más grande, se puede plantear extraer muestras de
+tamaño más grande. Por ejemplo, teóricamente se puede pensar que de un
+universo de 20 millones, se pueden extraer casi infinitas muestras de
+tamaño 1,500. Cada una de estas muestras tendrá un estadístico que será
+una aproximación del parámetro. Los estadísticos de todas estas casi
+infinitas muestras se pueden tabular y graficar.</p>
 </div>
 <div id="teorema-del-límite-central" class="section level2">
 <h2>Teorema del límite central</h2>
-<p>Este teorema muestra que la <strong>distribución de muestreo se aproxima a una distribución normal</strong>, con centro en el parámetro, en la medida que el tamaño de muestra aumenta.</p>
-<p>Por lo tanto, la distribución de muestreo de N grandes seguirá las características de cualquier curva normal. Toda curva normal es simétrica y sabemos que si desde el centro se desplaza 1 desviación estándar en ambas direcciones, entre esos límites estarán el 68.3% de todas las observaciones. Si se desplaza 2 desviaciones estándar en ambas direcciones, se acumularían el 95.4% de todas las observaciones. Con 3 desviaciones estándar hacia ambos lados, se acumularía el 99.7% de todas las observaciones.</p>
+<p>Este teorema muestra que la <strong>distribución de muestreo se
+aproxima a una distribución normal</strong>, con centro en el parámetro,
+en la medida que el tamaño de muestra aumenta.</p>
+<p>Por lo tanto, la distribución de muestreo de N grandes seguirá las
+características de cualquier curva normal. Toda curva normal es
+simétrica y sabemos que si desde el centro se desplaza 1 desviación
+estándar en ambas direcciones, entre esos límites estarán el 68.3% de
+todas las observaciones. Si se desplaza 2 desviaciones estándar en ambas
+direcciones, se acumularían el 95.4% de todas las observaciones. Con 3
+desviaciones estándar hacia ambos lados, se acumularía el 99.7% de todas
+las observaciones.</p>
 <p><img src="c3.3.png" width="510" /></p>
-<p>Traduciendo a la distribución de muestreo, la idea es que si se tabulan y se hace un gráfico de barras de los resultados de todas las muestras probables, se tendría una curva normal con centro en el parámetro. Sabríamos que si desde ese centro nos desplazamos 2 desviaciones estándar en ambas direcciones, entre esos límites estarían el 95% de todas las muestra probables.</p>
-<p>Es altamente probable (95% probable) que si en una investigación se extrae una sola muestra, esta sea parte del 95% de muestras posibles a +/- 2 desviaciones estándar del parámetro.</p>
+<p>Traduciendo a la distribución de muestreo, la idea es que si se
+tabulan y se hace un gráfico de barras de los resultados de todas las
+muestras probables, se tendría una curva normal con centro en el
+parámetro. Sabríamos que si desde ese centro nos desplazamos 2
+desviaciones estándar en ambas direcciones, entre esos límites estarían
+el 95% de todas las muestra probables.</p>
+<p>Es altamente probable (95% probable) que si en una investigación se
+extrae una sola muestra, esta sea parte del 95% de muestras posibles a
++/- 2 desviaciones estándar del parámetro.</p>
 </div>
 </div>
 <div id="estimación-de-intervalo" class="section level1">
 <h1>Estimación de intervalo</h1>
-<p>La distribución de muestreo es teórica, muy difícilmente se puede calcular en la realidad. Regularmente tampoco sabemos los datos del universo. Lo que tenemos a mano es <strong>1 muestra observada</strong>. Es decir, en un estudio de las muuuuuchas muestras probables, se selecciona 1 muestra.</p>
-<p>En el caso de <span class="citation">LaLonde (1986)</span>, por ejemplo, del universo de desempleados sin habilidades laborales, se seleccionó 1 muestra de 722 observaciones, de las muuuuchas muestras de 722 individuos de la población total.</p>
-<p>Si teóricamente sabemos que en la distribución muestral, el 95% de todas las muestras están a +/- 2 desviaciones estándar<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> del centro, que coincide con el parámetro poblacional, es muy probable que la única muestra que se ha observado sea parte de ese conjunto. De hecho, se puede decir que se tiene 95% de probabilidades de que sea parte de ese grupo.</p>
-<p>Por lo tanto, si a partir del estadístico muestral, se aplica esta distancia de +/- 2 errores estándar, se tiene 95% de probabilidades que entre esos límites se incluya al valor del parámetro. Para verlo de manera más visual, en la siguiente figura se tiene la distribución de muestreo teórica (y desconocida), donde se marca la región que acumula el 95% de todas las muestras probables.</p>
-<p>Más abajo se marca los resultados de 2 muestras observadas. La primera proporción muestral subestima la proporción poblacional. La segunda, por el contrario, sobreestima la proporción poblacional. En el primer caso, si a partir del estadístico muestral se aplica +/- 1.96 errores estándar (línea horizontal en negrita), se observa que el parámetro poblacional está incluido en esos límites.</p>
-<p>Es probable, como en el segundo caso, que otra muestra probable, cuando se le aplique el intervalo de +/- 1.96 errores estándar, no incluya al parámetro. Se observa que la línea en negrita no incluye la linea vertical entrecortada que marca el valor del parámetro poblacional.</p>
+<p>La distribución de muestreo es teórica, muy difícilmente se puede
+calcular en la realidad. Regularmente tampoco sabemos los datos del
+universo. Lo que tenemos a mano es <strong>1 muestra observada</strong>.
+Es decir, en un estudio de las muuuuuchas muestras probables, se
+selecciona 1 muestra.</p>
+<p>En el caso de <span class="citation">LaLonde (1986)</span>, por
+ejemplo, del universo de desempleados sin habilidades laborales, se
+seleccionó 1 muestra de 722 observaciones, de las muuuuchas muestras de
+722 individuos de la población total.</p>
+<p>Si teóricamente sabemos que en la distribución muestral, el 95% de
+todas las muestras están a +/- 2 desviaciones estándar<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a> del centro, que
+coincide con el parámetro poblacional, es muy probable que la única
+muestra que se ha observado sea parte de ese conjunto. De hecho, se
+puede decir que se tiene 95% de probabilidades de que sea parte de ese
+grupo.</p>
+<p>Por lo tanto, si a partir del estadístico muestral, se aplica esta
+distancia de +/- 2 errores estándar, se tiene 95% de probabilidades que
+entre esos límites se incluya al valor del parámetro. Para verlo de
+manera más visual, en la siguiente figura se tiene la distribución de
+muestreo teórica (y desconocida), donde se marca la región que acumula
+el 95% de todas las muestras probables.</p>
+<p>Más abajo se marca los resultados de 2 muestras observadas. La
+primera proporción muestral subestima la proporción poblacional. La
+segunda, por el contrario, sobreestima la proporción poblacional. En el
+primer caso, si a partir del estadístico muestral se aplica +/- 1.96
+errores estándar (línea horizontal en negrita), se observa que el
+parámetro poblacional está incluido en esos límites.</p>
+<p>Es probable, como en el segundo caso, que otra muestra probable,
+cuando se le aplique el intervalo de +/- 1.96 errores estándar, no
+incluya al parámetro. Se observa que la línea en negrita no incluye la
+linea vertical entrecortada que marca el valor del parámetro
+poblacional.</p>
 <p><img src="c3.4.png" width="581" /></p>
-<p>Sin embargo, sabemos que es mucho más probable (95% de probabilidades) que si una muestra observada es parte del 95% de muestras alrededor del parámetro, este intervalo incluya al parámetro poblacional. A estos límites le llamamos “intervalos de confianza.”</p>
+<p>Sin embargo, sabemos que es mucho más probable (95% de
+probabilidades) que si una muestra observada es parte del 95% de
+muestras alrededor del parámetro, este intervalo incluya al parámetro
+poblacional. A estos límites le llamamos “intervalos de confianza”.</p>
 <div id="ejemplo-de-distribución-de-muestreo" class="section level2">
 <h2>Ejemplo de distribución de muestreo</h2>
-<p>Usaremos el ejemplo de <span class="citation">LaLonde (1986)</span> para graficar estas <em>divagaciones</em> teóricas. Asumamos que la base de datos de este artículo es el universo de personas. Las 722 personas en esa base de datos serían todos los miembros que se podrían escoger. De ese universo, queremos extraer muestras de tamaño 100. Según una calculadora de combinaciones, existen 5.7x10^124 combinaciones de tamaño 100 de un universo de 722. Hay menos átomos en el universo que muestras probables.</p>
-<p>Sabemos cuál es el valor poblacional si calculamos la media de la edad de las 722 observaciones.</p>
+<p>Usaremos el ejemplo de <span class="citation">LaLonde (1986)</span>
+para graficar estas <em>divagaciones</em> teóricas. Asumamos que la base
+de datos de este artículo es el universo de personas. Las 722 personas
+en esa base de datos serían todos los miembros que se podrían escoger.
+De ese universo, queremos extraer muestras de tamaño 100. Según una
+calculadora de combinaciones, existen 5.7x10^124 combinaciones de tamaño
+100 de un universo de 722. Hay menos átomos en el universo que muestras
+probables.</p>
+<p>Sabemos cuál es el valor poblacional si calculamos la media de la
+edad de las 722 observaciones.</p>
 <pre class="r"><code>mean(LL$age, na.rm=T)</code></pre>
 <pre><code>## [1] 24.52078</code></pre>
-<p>El parámetro es igual a 24.5 años. Como ejemplo, calcularemos 3000 muestras de tamaño 100 para calcular el estadístico (la aproximación muestral) del parámetro de la variable edad y guardaremos todos esos resultados en un objeto de tipo vector. Este código para hacer este cálculo se presenta con fines pedagógicos, pero no se usará en las evaluaciones.</p>
+<p>El parámetro es igual a 24.5 años. Como ejemplo, calcularemos 3000
+muestras de tamaño 100 para calcular el estadístico (la aproximación
+muestral) del parámetro de la variable edad y guardaremos todos esos
+resultados en un objeto de tipo vector. Este código para hacer este
+cálculo se presenta con fines pedagógicos, pero no se usará en las
+evaluaciones.</p>
 <pre class="r"><code>library(dplyr)
 x&lt;-c(1:3000)
 for (i in 1:3000) {
@@ -542,288 +683,338 @@ for (i in 1:3000) {
   rm(sub)
 }
 x</code></pre>
-<pre><code>##    [1] 25.3 25.8 23.9 23.1 24.2 25.3 27.6 25.2 23.2 29.2 24.9 23.8 23.4 25.2
-##   [15] 25.3 28.3 26.5 27.0 27.8 24.6 26.5 23.9 26.0 22.7 23.1 25.1 23.1 24.2
-##   [29] 26.6 24.3 26.8 23.4 20.7 22.6 25.0 23.4 23.5 23.6 23.0 24.8 24.4 25.3
-##   [43] 22.4 25.5 25.1 22.9 21.6 25.7 26.8 22.9 24.3 25.5 26.2 27.0 22.5 23.7
-##   [57] 26.3 22.3 23.4 26.7 24.2 24.2 22.4 23.5 24.7 23.3 24.7 28.4 26.1 23.8
-##   [71] 28.7 26.2 27.6 24.3 24.2 24.5 26.0 24.8 25.6 25.7 26.3 25.3 23.1 24.0
-##   [85] 23.7 21.2 24.8 24.1 23.8 25.2 23.4 22.3 24.2 26.3 21.7 23.2 27.1 21.9
-##   [99] 27.7 28.9 23.9 21.8 24.1 27.0 23.4 27.6 22.6 26.5 27.0 26.1 23.5 24.4
-##  [113] 28.2 23.5 22.2 23.6 25.2 22.9 21.9 21.2 23.2 23.4 24.6 25.4 21.3 25.7
-##  [127] 25.9 26.8 23.4 24.4 27.4 24.4 20.6 24.2 24.7 24.0 21.7 25.3 26.3 27.7
-##  [141] 25.9 25.9 25.3 24.0 22.9 24.7 21.7 23.5 26.4 25.6 21.9 23.0 22.0 23.1
-##  [155] 23.6 25.7 24.5 27.2 29.2 23.0 22.0 25.4 26.1 24.9 27.1 22.6 23.5 22.2
-##  [169] 23.6 25.1 24.3 25.4 23.0 24.1 26.9 25.5 24.9 25.2 27.5 27.8 25.6 25.8
-##  [183] 23.2 29.5 24.3 25.2 23.9 23.5 23.1 25.5 23.9 27.1 24.5 29.8 22.8 25.8
-##  [197] 21.0 26.6 25.2 24.5 26.4 22.7 22.7 21.2 24.5 24.8 23.3 22.1 27.7 25.3
-##  [211] 22.9 24.0 25.2 25.0 22.7 22.7 24.2 23.1 23.1 23.8 23.1 24.3 22.4 25.0
-##  [225] 24.7 23.9 24.7 25.1 26.5 21.5 29.3 23.0 24.7 25.1 23.0 24.8 24.3 24.5
-##  [239] 23.5 21.2 22.9 23.3 25.3 21.7 28.0 23.5 22.0 27.0 21.9 25.3 23.9 22.7
-##  [253] 26.3 26.1 25.4 25.7 23.9 19.9 28.8 24.2 27.1 23.4 28.0 21.6 25.3 24.0
-##  [267] 22.3 24.4 24.6 23.6 21.8 26.9 22.7 22.6 23.3 24.5 26.1 26.7 23.2 22.2
-##  [281] 25.4 23.6 26.9 23.5 24.2 21.5 21.0 24.4 23.9 24.7 24.6 25.6 22.9 24.1
-##  [295] 22.7 21.9 22.6 24.8 24.4 24.0 25.9 23.3 27.3 25.3 20.7 20.6 23.4 26.8
-##  [309] 29.5 28.0 22.9 23.0 22.7 22.8 24.0 26.0 25.2 26.4 22.8 23.5 23.2 23.3
-##  [323] 24.7 22.7 29.4 29.6 24.2 21.7 24.7 24.0 24.9 22.0 24.9 29.0 23.3 25.4
-##  [337] 28.3 26.8 26.3 22.5 27.9 23.0 25.0 26.0 27.0 24.5 24.9 27.3 24.6 23.4
-##  [351] 28.8 22.3 25.0 25.4 21.8 24.3 26.5 21.8 25.3 28.7 22.1 26.9 21.2 27.2
-##  [365] 27.4 28.1 19.8 24.0 24.5 25.4 25.1 23.0 27.9 24.0 23.5 26.1 24.8 23.5
-##  [379] 27.6 20.7 22.2 24.2 23.3 22.8 25.1 24.6 23.8 22.6 24.6 21.1 21.1 22.1
-##  [393] 22.9 22.9 24.8 21.8 21.2 22.7 24.9 26.3 26.6 21.5 23.6 22.4 21.6 24.2
-##  [407] 25.7 24.3 21.8 23.2 22.4 23.2 24.7 22.2 23.5 25.9 30.6 22.8 21.6 24.8
-##  [421] 24.0 23.8 24.1 22.8 22.0 23.6 22.3 22.9 25.8 25.8 26.5 22.3 22.4 29.0
-##  [435] 22.4 23.3 24.1 28.9 21.6 22.2 22.3 25.3 24.4 23.8 24.5 25.3 23.0 25.9
-##  [449] 26.0 26.0 21.8 22.5 21.6 20.6 24.8 22.2 24.3 24.1 24.5 22.6 23.7 23.1
-##  [463] 28.4 25.0 22.2 27.9 25.1 20.5 26.7 26.2 21.3 25.3 26.7 21.6 24.7 21.6
-##  [477] 21.4 22.8 26.5 23.3 23.1 23.7 25.3 21.6 25.2 24.6 23.6 25.2 24.1 26.5
-##  [491] 29.8 24.2 27.5 26.2 26.7 23.1 24.1 24.5 23.7 25.0 24.1 24.4 26.1 23.7
-##  [505] 24.2 23.4 20.6 23.3 26.8 22.3 24.4 25.4 25.9 24.7 26.1 24.5 25.6 26.5
-##  [519] 24.9 23.4 24.7 27.3 28.0 27.3 21.6 20.8 27.7 23.6 26.0 21.6 25.3 23.6
-##  [533] 22.7 26.4 23.0 26.2 24.9 21.5 24.7 21.7 24.1 22.9 26.5 24.9 23.7 23.0
-##  [547] 23.4 24.0 23.5 24.1 24.7 25.9 21.9 22.8 21.9 27.4 29.4 26.1 23.9 26.1
-##  [561] 21.3 26.1 21.0 25.6 21.1 23.5 24.7 24.3 24.2 21.4 28.9 21.6 24.7 21.9
-##  [575] 24.8 24.6 24.4 24.9 21.4 26.5 25.8 25.7 23.5 23.4 26.3 22.8 28.3 20.5
-##  [589] 21.4 24.7 24.0 23.3 23.4 27.7 22.3 26.1 24.6 25.8 21.4 23.7 28.0 23.2
-##  [603] 26.9 24.3 24.5 25.6 28.7 23.0 29.7 27.4 22.5 29.3 23.5 27.0 24.1 20.8
-##  [617] 23.1 21.7 25.6 23.5 24.9 24.1 26.0 23.1 23.1 21.9 24.3 23.8 23.6 26.2
-##  [631] 22.7 24.6 22.0 23.8 24.9 20.9 25.5 25.7 22.3 24.7 22.2 25.1 27.6 22.8
-##  [645] 25.1 22.7 24.8 24.5 26.5 27.8 27.6 21.3 23.1 29.6 26.3 24.5 21.6 26.5
-##  [659] 27.5 25.0 25.6 25.6 24.1 24.6 27.1 21.6 22.4 22.0 23.0 23.1 23.2 24.5
-##  [673] 25.4 27.8 24.3 23.9 21.7 26.7 24.1 24.0 23.3 26.5 22.9 28.9 27.1 24.4
-##  [687] 24.4 26.4 30.1 23.6 23.0 24.0 26.4 23.7 21.4 25.1 24.1 26.3 21.4 27.0
-##  [701] 23.6 25.0 24.1 26.8 24.6 21.3 26.5 25.4 25.4 21.3 25.3 22.9 23.2 24.1
-##  [715] 27.5 25.0 21.5 24.5 24.4 26.7 24.5 23.4 25.1 24.0 24.9 22.8 26.7 26.9
-##  [729] 27.0 20.7 24.7 24.0 24.5 23.5 24.3 23.5 27.5 22.9 21.6 25.5 29.2 29.7
-##  [743] 24.1 22.7 27.1 23.0 27.2 23.7 24.2 20.4 21.8 27.6 22.8 24.3 29.5 30.5
-##  [757] 28.0 22.2 23.8 22.8 25.7 22.5 23.4 25.4 24.3 24.3 24.6 23.1 23.6 22.5
-##  [771] 25.7 24.0 22.5 26.4 28.0 25.0 26.4 23.5 25.4 20.9 23.5 23.5 22.7 28.0
-##  [785] 23.4 26.0 25.5 23.5 22.8 26.5 23.4 23.4 22.7 22.2 25.0 27.1 24.0 25.2
-##  [799] 26.8 28.6 27.5 23.0 23.4 25.4 20.8 23.3 23.5 23.6 30.4 26.4 27.7 26.3
-##  [813] 22.0 22.3 24.5 22.4 32.8 23.6 23.2 25.8 22.7 23.7 23.7 28.7 22.9 24.1
-##  [827] 22.3 24.3 25.4 24.8 22.8 24.1 22.3 22.7 20.6 23.7 22.1 23.8 24.1 28.5
-##  [841] 26.8 24.5 23.3 22.1 22.8 25.2 23.9 22.4 21.4 25.2 25.6 24.9 25.0 25.1
-##  [855] 24.0 22.4 25.1 22.4 22.7 28.0 22.4 24.9 24.1 24.3 26.6 25.2 23.3 22.4
-##  [869] 22.3 23.5 22.2 24.0 24.9 26.3 24.5 22.4 25.8 22.6 22.5 27.8 24.2 22.6
-##  [883] 25.0 24.6 23.6 24.9 23.3 21.9 27.1 23.8 23.0 24.2 21.1 21.1 25.0 25.3
-##  [897] 27.7 22.5 22.6 24.4 21.3 24.4 22.9 27.3 22.4 26.8 24.4 23.3 24.1 24.9
-##  [911] 23.5 23.3 24.5 27.4 25.9 22.0 26.1 23.4 21.9 24.2 23.6 28.2 23.0 24.3
-##  [925] 23.4 23.9 22.1 27.3 21.5 22.9 22.9 22.9 24.0 23.6 23.0 20.2 29.3 26.2
-##  [939] 24.1 22.1 27.0 27.3 24.9 23.7 25.1 24.3 26.5 24.9 22.8 26.3 26.5 23.8
-##  [953] 20.9 27.0 22.9 26.4 26.4 22.9 21.2 30.0 23.9 27.4 23.1 24.9 23.2 23.2
-##  [967] 26.4 25.0 28.4 27.0 23.7 23.2 22.7 25.2 23.3 27.8 24.2 26.8 23.4 24.6
-##  [981] 23.9 25.0 20.9 25.4 24.2 25.0 24.4 25.6 25.6 29.2 24.1 20.7 22.3 22.6
-##  [995] 23.5 22.4 24.3 22.9 26.4 26.7 26.1 23.0 25.6 25.5 23.5 24.9 20.9 21.6
-## [1009] 25.7 25.2 28.5 25.3 21.9 29.9 23.9 23.4 28.3 24.5 22.7 23.5 22.0 24.8
-## [1023] 27.1 24.1 23.0 24.9 24.6 24.5 20.7 22.6 24.9 29.7 20.9 25.0 26.3 21.6
-## [1037] 25.7 23.4 24.0 26.0 22.4 22.2 27.0 28.4 22.6 24.4 27.1 23.2 23.0 23.1
-## [1051] 26.1 23.1 29.0 23.8 25.8 23.5 24.4 23.3 23.6 20.8 23.0 23.1 23.6 23.3
-## [1065] 20.3 22.1 24.1 24.1 23.2 22.6 24.9 28.5 26.8 23.8 24.7 25.0 23.4 21.1
-## [1079] 22.9 26.3 21.3 27.0 23.1 23.9 25.4 26.7 22.7 22.2 27.2 26.1 27.1 27.3
-## [1093] 21.0 25.2 25.2 28.0 21.1 23.1 24.3 26.2 25.1 24.8 21.7 20.8 27.4 25.2
-## [1107] 25.5 25.0 23.2 28.0 24.6 22.3 24.2 22.6 25.0 24.4 24.8 23.8 27.3 24.4
-## [1121] 21.3 26.7 25.0 23.3 22.2 22.0 25.4 23.4 26.5 26.4 21.1 24.1 23.7 26.3
-## [1135] 24.4 23.4 24.3 27.5 26.0 22.6 25.7 21.7 26.4 25.1 28.2 25.3 23.9 21.4
-## [1149] 24.4 22.6 24.7 22.6 21.9 25.1 26.7 21.5 20.0 28.3 24.0 22.4 28.3 23.0
-## [1163] 21.9 23.5 26.7 24.2 21.6 21.9 23.7 23.3 22.8 27.3 24.6 26.5 24.7 25.7
-## [1177] 26.7 23.9 23.2 25.0 25.3 25.6 23.8 23.1 24.2 22.4 26.1 26.1 26.3 25.0
-## [1191] 22.5 24.4 23.3 26.9 23.5 25.9 26.7 25.2 25.8 23.2 27.0 24.4 23.3 22.4
-## [1205] 26.7 24.7 26.4 24.8 24.6 24.7 24.2 20.7 23.8 23.6 24.2 30.3 24.8 23.2
-## [1219] 24.6 21.0 21.2 22.0 26.3 24.0 26.2 25.4 25.1 23.5 25.3 24.3 21.4 22.2
-## [1233] 26.2 27.7 22.8 23.7 24.3 22.4 22.2 27.5 24.6 21.9 22.9 24.3 25.5 30.4
-## [1247] 21.9 22.3 21.0 22.0 28.1 26.2 25.5 20.8 27.6 25.1 24.9 24.6 25.6 23.5
-## [1261] 24.4 21.9 23.2 27.8 26.8 21.8 22.4 24.4 26.1 26.7 24.9 26.0 22.8 27.3
-## [1275] 22.9 23.1 22.6 24.2 26.7 21.8 24.0 29.6 30.5 27.7 25.6 22.8 24.7 25.0
-## [1289] 25.0 26.5 23.4 24.9 21.6 24.7 25.2 26.6 26.3 22.6 26.6 27.2 23.2 29.3
-## [1303] 22.9 21.0 23.9 23.5 25.1 24.8 24.0 24.8 24.0 20.9 26.1 22.9 24.9 26.4
-## [1317] 26.9 23.8 22.9 25.9 23.8 23.1 21.6 23.0 25.8 26.0 22.8 20.6 25.9 23.3
-## [1331] 24.4 24.1 21.5 25.3 22.8 26.1 26.4 27.4 24.4 25.1 30.3 24.6 25.6 22.5
-## [1345] 22.9 22.1 25.4 21.5 24.4 24.8 24.0 22.1 24.0 23.6 21.3 25.6 22.9 20.6
-## [1359] 24.4 22.4 23.0 24.0 25.1 21.6 23.8 25.1 24.4 23.4 25.2 24.7 23.8 22.2
-## [1373] 21.9 24.2 25.1 27.6 24.8 23.5 23.0 21.6 26.4 25.5 21.6 26.6 22.3 25.2
-## [1387] 24.6 25.5 26.5 25.2 25.7 29.2 24.2 24.3 22.8 22.4 22.9 21.5 22.1 20.3
-## [1401] 20.9 23.8 22.3 27.2 27.9 25.2 24.4 24.6 23.8 25.1 22.4 26.3 20.4 21.7
-## [1415] 27.0 27.1 24.2 21.4 25.8 24.7 21.9 26.3 21.3 23.6 26.7 27.4 26.7 25.8
-## [1429] 22.0 27.7 25.9 23.5 26.9 23.0 22.8 24.0 22.1 26.4 22.7 19.9 22.0 24.3
-## [1443] 22.7 21.8 24.2 28.5 26.8 21.3 25.0 27.2 27.7 25.8 22.5 22.9 23.1 23.7
-## [1457] 27.4 23.9 26.6 24.1 26.0 26.6 24.2 26.0 22.0 26.5 27.4 23.8 22.7 25.7
-## [1471] 23.5 22.9 21.5 27.5 25.4 24.2 23.3 23.9 24.8 24.8 24.0 24.0 24.1 27.9
-## [1485] 19.6 26.1 25.2 27.8 26.7 24.2 22.7 24.8 20.6 23.4 25.7 25.4 23.7 24.1
-## [1499] 24.6 23.4 25.0 25.7 28.4 26.6 26.6 22.7 27.2 21.7 25.0 22.2 23.1 21.3
-## [1513] 22.5 27.2 24.6 28.2 28.9 24.6 25.2 25.7 24.9 25.5 24.0 28.5 24.5 28.6
-## [1527] 23.5 24.4 24.9 25.6 22.0 27.7 24.3 22.3 26.1 25.1 23.5 26.2 27.6 25.6
-## [1541] 21.9 24.3 26.6 23.7 23.7 24.8 23.9 23.7 22.3 25.1 27.2 23.2 23.3 23.2
-## [1555] 23.7 29.3 22.7 23.5 25.2 21.1 20.2 21.2 22.0 26.6 26.0 28.0 26.0 21.4
-## [1569] 24.9 26.1 27.0 29.1 23.3 19.9 21.7 21.3 24.6 23.3 25.6 21.7 26.2 27.0
-## [1583] 27.0 23.1 24.9 25.6 24.0 25.4 22.2 26.3 24.1 28.4 27.9 22.4 25.7 22.4
-## [1597] 26.6 21.2 24.7 23.5 25.4 23.4 21.9 24.4 22.9 23.5 24.5 22.4 21.2 26.1
-## [1611] 21.2 24.7 25.1 27.1 23.3 22.2 22.9 22.3 21.0 24.2 25.0 24.5 23.6 22.3
-## [1625] 21.9 24.1 24.3 25.3 25.9 21.3 25.3 26.8 26.0 24.3 23.6 22.7 29.4 23.6
-## [1639] 22.1 23.9 25.5 23.3 25.5 25.4 21.6 20.9 25.6 23.8 28.5 23.7 24.8 26.3
-## [1653] 25.4 23.4 22.4 20.7 25.6 24.3 26.2 21.6 23.7 23.6 25.9 24.9 23.6 20.1
-## [1667] 24.5 20.2 24.9 25.5 25.0 23.2 28.3 25.6 25.6 24.8 23.5 25.5 25.3 22.2
-## [1681] 23.6 21.9 25.4 23.3 24.6 25.2 27.9 22.9 24.8 22.4 24.6 25.8 24.3 26.0
-## [1695] 23.5 22.3 25.3 25.5 23.3 27.6 25.8 24.2 22.8 26.3 28.5 25.3 29.6 26.7
-## [1709] 25.1 22.5 24.9 19.9 21.3 29.8 20.8 24.6 25.5 26.9 23.2 27.6 23.6 24.6
-## [1723] 25.2 24.7 23.1 26.9 29.0 24.2 22.9 23.8 27.5 24.0 27.4 29.2 26.9 23.1
-## [1737] 23.2 21.7 23.5 26.5 21.6 25.3 21.8 26.0 22.5 25.0 23.7 29.4 28.9 25.4
-## [1751] 26.6 22.5 22.6 21.2 21.4 24.1 25.8 26.3 22.5 23.5 25.8 19.9 22.9 25.2
-## [1765] 25.6 23.7 22.9 23.1 23.2 23.4 25.1 24.8 25.7 27.7 24.0 24.2 21.9 21.2
-## [1779] 23.4 23.5 22.1 22.2 24.1 23.6 22.3 24.7 22.3 26.2 24.7 22.2 26.2 24.2
-## [1793] 25.6 22.5 26.3 21.0 24.2 24.1 26.1 24.3 25.4 21.3 26.1 24.1 24.0 24.2
-## [1807] 23.8 25.2 25.0 22.6 21.2 23.6 27.1 24.7 23.1 23.7 24.5 23.8 22.9 26.0
-## [1821] 25.4 22.4 23.3 27.6 23.2 26.9 25.0 27.6 20.3 29.4 25.6 27.6 25.0 23.7
-## [1835] 25.5 23.8 24.3 24.1 26.3 22.2 25.4 24.7 21.3 27.4 23.7 27.4 25.2 24.5
-## [1849] 23.5 22.8 21.0 24.7 25.2 26.3 24.7 22.6 30.0 20.9 22.3 23.9 28.3 23.4
-## [1863] 25.5 21.0 28.4 23.4 22.2 23.8 22.7 24.0 21.9 24.1 24.0 26.2 24.8 22.3
-## [1877] 23.2 22.7 26.6 23.9 22.9 28.5 29.3 23.8 23.4 25.2 25.7 24.9 26.0 21.0
-## [1891] 23.9 26.5 21.4 25.0 28.1 25.3 22.8 28.3 24.6 24.2 24.4 24.6 24.2 23.2
-## [1905] 21.1 22.3 26.9 26.0 22.4 25.1 22.8 23.9 27.2 23.1 25.3 25.5 25.7 20.7
-## [1919] 22.5 24.2 25.7 23.6 22.3 26.7 25.5 27.6 23.3 26.5 24.9 24.6 25.1 21.6
-## [1933] 26.5 24.5 27.5 24.1 20.3 26.1 23.2 24.1 24.2 24.5 24.4 25.0 26.1 23.0
-## [1947] 23.1 24.6 23.6 21.3 22.9 25.1 22.6 23.8 23.3 25.7 26.4 25.6 25.5 22.6
-## [1961] 20.6 20.8 24.4 26.3 23.7 26.9 24.2 25.1 22.0 21.8 27.5 27.5 23.4 24.7
-## [1975] 24.9 22.8 21.3 21.1 20.8 28.5 26.6 22.3 23.8 24.5 20.7 24.4 23.5 25.2
-## [1989] 24.9 23.6 25.6 22.3 26.8 25.1 24.0 24.0 23.5 24.5 25.0 21.6 21.4 24.4
-## [2003] 23.3 24.9 25.1 25.1 23.9 25.6 23.7 23.0 24.7 22.1 27.4 24.6 24.8 23.4
-## [2017] 21.5 22.4 25.1 23.1 25.7 23.0 24.9 26.1 23.6 26.8 26.0 24.0 23.1 23.1
-## [2031] 25.4 22.3 22.6 23.3 21.4 24.9 25.5 26.4 26.9 23.9 22.7 24.3 26.6 24.5
-## [2045] 25.9 24.5 27.4 25.7 24.2 22.6 22.6 25.4 27.2 23.8 27.7 22.8 24.3 25.6
-## [2059] 24.7 22.1 26.2 21.2 23.2 25.5 24.4 26.7 22.1 23.7 23.9 27.5 25.9 25.5
-## [2073] 23.2 24.9 25.7 22.9 22.4 24.4 19.8 24.7 28.7 22.5 26.4 27.1 24.1 24.7
-## [2087] 23.7 26.7 26.1 24.8 25.8 22.5 25.3 25.7 27.5 25.0 26.0 22.4 30.4 24.3
-## [2101] 25.1 22.7 26.1 25.5 22.2 24.6 27.4 26.5 22.1 24.9 24.7 25.1 30.6 25.7
-## [2115] 24.5 23.3 22.3 22.7 24.1 23.7 26.0 24.1 22.7 26.1 28.4 23.5 24.9 28.7
-## [2129] 21.6 20.8 24.0 25.8 26.5 22.1 22.9 24.8 25.4 20.7 23.3 25.9 21.9 22.8
-## [2143] 24.9 25.6 28.9 24.1 23.7 22.2 28.5 22.5 22.7 20.4 22.9 25.0 24.3 25.0
-## [2157] 25.0 25.6 27.5 28.8 23.0 21.5 22.2 23.0 26.0 23.7 24.6 22.0 22.4 27.2
-## [2171] 25.0 23.8 24.5 21.3 23.2 23.9 21.5 25.8 26.3 22.4 26.0 23.5 22.2 26.6
-## [2185] 22.5 25.4 27.4 23.0 30.9 23.5 22.0 24.0 26.6 21.5 22.6 24.8 27.1 23.8
-## [2199] 25.2 23.1 25.3 24.3 23.0 25.7 23.8 23.7 22.2 24.1 26.2 25.2 25.0 22.5
-## [2213] 24.0 26.3 28.1 21.4 21.2 22.1 26.7 22.1 20.4 24.1 22.3 23.4 23.4 24.8
-## [2227] 27.0 22.4 22.5 27.4 23.7 21.5 26.9 22.9 26.8 24.0 24.6 23.7 22.9 27.6
-## [2241] 22.6 27.0 22.8 26.4 24.3 25.1 28.1 24.3 23.0 25.8 23.2 22.2 21.0 25.2
-## [2255] 24.6 24.9 23.6 25.5 24.3 25.3 25.8 27.0 27.2 24.1 22.0 22.8 22.1 23.7
-## [2269] 25.8 23.9 22.7 21.4 27.3 24.9 26.4 26.0 26.5 25.2 22.0 25.2 27.5 24.7
-## [2283] 26.0 25.2 26.0 21.8 21.4 23.9 21.6 23.0 22.2 20.4 23.2 29.3 21.9 23.0
-## [2297] 26.5 24.0 21.1 23.3 19.8 23.7 27.0 22.9 25.9 23.0 22.8 24.8 22.1 24.0
-## [2311] 24.5 22.0 23.8 24.5 22.5 27.8 22.4 24.3 21.8 25.2 27.0 20.0 22.7 23.9
-## [2325] 25.5 25.2 21.8 24.8 23.4 25.8 23.6 24.2 23.5 23.0 24.1 21.2 27.8 25.6
-## [2339] 22.5 23.5 21.0 24.7 23.7 25.3 25.8 26.5 25.7 25.5 23.9 26.7 25.7 24.1
-## [2353] 23.8 24.0 26.1 24.1 22.2 22.6 25.4 24.8 26.0 22.1 25.9 23.9 23.0 21.9
-## [2367] 27.4 26.6 25.9 26.0 23.9 24.0 22.6 26.4 24.7 20.9 21.3 23.3 23.9 24.4
-## [2381] 21.8 24.9 22.2 28.1 24.3 22.4 22.1 27.4 28.0 23.2 26.1 23.9 22.4 26.4
-## [2395] 19.8 27.3 23.4 22.5 23.5 21.7 28.1 23.1 23.4 21.5 26.1 26.4 25.4 22.1
-## [2409] 22.4 22.5 25.6 29.0 23.4 24.2 26.1 25.3 24.6 20.4 24.4 25.0 26.8 26.7
-## [2423] 24.7 21.0 25.0 23.0 23.3 27.0 24.7 26.0 22.9 26.7 26.3 26.9 25.2 25.8
-## [2437] 23.8 28.8 23.0 24.2 27.2 24.1 24.8 28.3 24.9 24.5 24.9 23.6 24.4 22.6
-## [2451] 24.8 22.3 24.9 24.7 25.2 23.1 23.6 21.9 27.2 22.7 23.1 22.4 25.7 24.5
-## [2465] 24.1 23.6 23.6 23.6 24.3 23.6 25.5 24.7 26.1 24.7 26.6 23.2 21.3 25.2
-## [2479] 24.2 24.6 26.9 24.3 22.2 24.7 23.0 20.5 21.0 28.8 25.9 25.8 26.9 25.7
-## [2493] 22.7 25.2 28.1 22.0 25.7 27.4 21.7 27.3 27.6 24.5 26.1 24.1 22.8 25.4
-## [2507] 27.4 23.8 27.1 23.9 26.8 25.1 24.6 24.2 24.5 23.0 23.7 26.5 26.4 26.7
-## [2521] 24.1 25.6 26.6 23.0 25.7 23.1 29.0 19.2 25.6 23.2 25.5 23.7 26.9 22.3
-## [2535] 21.2 25.3 22.0 25.3 25.4 24.3 26.2 24.0 24.2 28.8 28.4 24.4 23.5 26.6
-## [2549] 25.7 25.1 25.3 22.8 22.8 23.7 25.9 25.2 24.3 25.3 21.9 23.3 24.8 22.2
-## [2563] 22.9 25.2 22.6 28.2 25.8 25.9 24.4 25.6 23.3 30.4 23.9 22.4 25.0 25.6
-## [2577] 21.5 23.1 25.5 22.9 22.5 22.6 23.6 26.6 26.0 25.1 26.5 27.3 24.6 26.0
-## [2591] 29.6 27.1 27.4 21.8 24.2 25.1 22.3 30.6 23.7 25.9 22.2 27.2 25.6 23.2
-## [2605] 22.1 23.9 26.5 24.1 25.0 28.3 25.4 25.7 27.6 27.0 22.0 24.3 27.8 25.0
-## [2619] 23.9 22.1 26.3 24.2 24.9 23.2 24.4 24.4 23.5 23.4 22.0 24.0 25.0 25.1
-## [2633] 24.8 23.3 28.4 24.3 25.0 27.3 22.5 23.5 26.2 24.5 23.7 24.0 23.0 26.1
-## [2647] 21.0 25.2 25.3 22.5 25.4 23.6 25.1 22.7 25.4 21.7 23.6 27.4 21.9 25.3
-## [2661] 24.6 24.1 23.0 27.3 27.2 22.9 20.4 28.0 22.1 21.0 24.0 21.6 22.7 25.2
-## [2675] 26.1 25.3 23.9 21.8 27.2 24.2 23.5 26.5 24.8 24.2 25.1 25.0 26.4 25.9
-## [2689] 26.8 30.4 23.7 26.3 23.3 25.2 21.8 25.5 25.4 24.4 28.8 25.7 22.8 24.6
-## [2703] 26.6 26.2 29.1 22.2 26.4 25.5 24.0 22.0 25.7 23.5 24.8 21.9 23.2 21.6
-## [2717] 24.1 25.1 24.5 23.2 27.0 22.9 23.0 22.8 25.4 25.9 25.0 24.5 26.2 27.6
-## [2731] 21.4 24.4 25.8 24.5 24.4 24.0 26.9 27.9 22.0 23.1 24.8 24.1 25.9 23.2
-## [2745] 25.9 24.7 21.6 20.7 24.5 25.5 24.0 29.1 22.3 23.8 23.7 26.1 23.0 23.3
-## [2759] 23.6 21.8 24.1 25.3 30.9 28.0 25.8 24.7 21.2 21.7 24.2 23.7 22.0 23.2
-## [2773] 23.7 24.8 23.5 23.1 26.9 23.6 24.9 25.9 24.6 23.9 22.4 23.0 21.8 24.6
-## [2787] 23.3 25.4 26.2 22.2 20.3 28.0 24.7 27.1 27.0 22.9 28.1 22.0 23.5 26.3
-## [2801] 29.1 21.6 26.9 25.6 22.1 23.9 25.1 23.3 25.3 25.7 23.5 27.2 21.7 25.2
-## [2815] 25.0 26.0 25.4 27.7 22.0 26.1 27.5 22.4 24.1 21.5 26.5 22.1 28.6 22.0
-## [2829] 23.6 25.2 25.5 22.3 28.1 20.5 28.8 24.7 24.1 27.6 23.0 23.5 23.2 23.8
-## [2843] 24.0 24.6 25.2 24.3 27.5 24.2 27.0 22.9 22.8 23.4 21.6 25.7 25.5 23.0
-## [2857] 24.6 23.3 28.1 26.0 25.1 22.5 27.3 28.7 26.8 23.7 26.2 24.1 25.5 23.8
-## [2871] 24.5 24.9 23.9 25.6 27.1 23.8 22.3 25.2 25.0 20.9 24.6 26.1 22.0 23.6
-## [2885] 23.3 23.5 27.5 24.4 23.2 25.2 21.6 23.3 25.1 23.6 24.9 23.8 23.9 22.6
-## [2899] 23.2 27.3 24.9 22.1 22.7 27.6 22.5 22.2 24.8 23.2 26.5 25.0 23.3 22.4
-## [2913] 24.4 23.7 21.0 22.8 26.0 25.9 25.5 21.8 27.1 25.2 27.0 26.2 22.5 22.7
-## [2927] 25.1 24.2 25.3 20.6 26.0 26.9 26.5 23.2 23.1 22.0 25.3 22.5 23.1 24.4
-## [2941] 24.4 24.3 26.9 24.6 26.9 28.4 27.6 22.3 23.3 23.6 26.9 26.1 22.4 27.1
-## [2955] 22.4 24.4 28.1 24.7 22.9 23.0 25.1 23.9 25.5 25.3 23.6 24.3 24.1 26.0
-## [2969] 24.3 23.5 24.8 23.2 24.2 23.3 24.5 22.0 26.7 25.7 22.6 23.5 23.3 22.9
-## [2983] 23.4 25.5 23.5 19.4 23.6 29.6 27.7 27.1 26.6 25.4 22.4 23.2 22.6 24.9
-## [2997] 24.2 24.9 24.7 25.2</code></pre>
-<p>Cada uno de estos números corresponde a la media muestral de la variable edad de cada una de las 3000 muestras aleatorias que hemos calculado. La primera muestra de 100 observaciones de un total de 722 tiene una media de edad de 24.4 años. Esta media esta subestimando el valor del parámetro poblacional. La tercera muestra de tamaño 100 de un total de 722 observaciones tiene una media de edad de 24.53. Esta muestra sobreestima (por muy poco) el valor del parámetro.</p>
-<p>Vemos que algunas medias muestrales subestiman y otras sobreestiman el valor del parámetro poblacional. Si graficamos el histograma de todos estos valores, vemos que se dibuja una curva aproximadamente normal. Además, si calculamos la media de todas las medias de edad de las 3000 muestras observadas, se tiene que la media es 24.51, una aproximación bastante buena al valor del parámetro 24.52.</p>
+<pre><code>##    [1] 26.5 20.4 25.2 27.4 23.7 24.1 23.5 26.5 26.2 24.0 26.2 26.1 24.8 24.6
+##   [15] 22.7 26.9 24.6 24.3 24.5 25.6 22.3 25.3 21.7 23.6 22.2 22.3 20.8 21.8
+##   [29] 22.1 26.4 24.0 25.6 28.3 24.3 22.8 28.1 24.3 24.7 23.3 28.0 24.6 23.6
+##   [43] 26.3 23.9 25.5 24.2 26.1 28.4 23.6 31.3 25.5 22.8 23.7 25.3 24.4 26.9
+##   [57] 21.4 22.5 24.8 28.2 22.8 23.6 21.5 24.6 21.7 22.4 28.9 23.7 23.0 23.9
+##   [71] 28.6 23.5 23.6 24.8 22.9 23.8 23.4 24.9 28.3 24.6 25.9 26.4 28.3 22.4
+##   [85] 20.8 23.3 26.0 25.0 22.6 25.8 23.7 25.9 25.6 24.7 26.2 26.6 26.3 22.7
+##   [99] 22.8 21.6 26.2 24.9 25.6 27.2 27.7 25.5 25.1 30.9 29.1 20.4 24.1 24.4
+##  [113] 29.1 21.9 21.3 24.1 24.8 24.9 20.9 23.0 24.3 20.9 23.2 27.8 24.6 24.5
+##  [127] 22.6 21.6 22.8 24.8 24.6 25.5 23.7 25.1 23.7 22.7 27.1 27.5 27.3 23.6
+##  [141] 22.6 25.2 25.6 29.7 25.6 25.0 25.3 21.5 22.0 25.8 21.5 25.1 28.2 27.1
+##  [155] 21.9 24.1 29.3 27.6 23.3 24.7 23.9 24.9 26.7 23.2 28.5 24.4 23.9 22.5
+##  [169] 24.0 23.5 21.8 25.4 22.9 22.4 26.3 25.7 21.9 24.9 20.4 22.2 27.6 22.9
+##  [183] 26.5 30.8 26.9 26.2 22.8 25.5 28.9 25.5 20.9 20.6 25.6 28.0 22.9 26.4
+##  [197] 26.2 22.0 25.0 27.5 25.4 24.8 26.3 25.4 27.1 25.2 23.4 24.3 24.5 26.4
+##  [211] 24.6 23.7 28.5 23.1 26.6 24.8 29.6 28.6 26.3 26.3 25.9 25.1 24.7 25.9
+##  [225] 21.7 23.4 23.9 24.7 28.0 23.9 24.2 24.0 26.0 22.7 28.4 23.1 22.7 24.7
+##  [239] 26.2 22.8 26.9 23.5 23.6 23.3 26.7 27.2 22.5 23.0 26.5 22.8 26.6 24.1
+##  [253] 23.7 23.3 22.7 24.0 24.5 23.3 26.5 26.2 29.4 24.0 24.8 23.9 23.5 26.3
+##  [267] 27.0 26.2 21.7 24.0 24.2 23.8 20.9 22.6 26.8 23.4 20.3 25.8 23.3 25.4
+##  [281] 24.1 22.3 24.9 22.1 21.2 26.9 27.7 25.3 25.6 25.5 23.7 22.9 24.9 22.8
+##  [295] 25.7 27.5 20.6 25.5 25.8 24.9 23.1 25.1 23.1 22.4 23.8 24.5 24.0 23.5
+##  [309] 22.8 26.1 21.4 20.8 24.4 26.7 26.4 24.7 25.3 27.2 23.1 26.7 21.3 22.3
+##  [323] 24.1 24.3 24.5 25.6 24.1 27.3 24.5 23.4 21.2 23.1 25.4 23.7 25.0 23.0
+##  [337] 26.6 22.4 23.0 24.6 24.0 21.0 25.9 21.5 21.6 21.8 22.1 24.0 24.1 24.0
+##  [351] 23.9 22.9 25.9 27.9 22.2 26.2 24.3 30.8 23.0 22.9 27.6 21.6 22.5 23.3
+##  [365] 23.8 25.1 23.1 23.4 23.4 25.3 28.1 23.4 20.3 24.4 27.8 24.6 23.7 29.5
+##  [379] 22.5 26.3 23.5 23.0 25.9 23.1 22.1 20.6 21.3 23.0 27.7 22.1 24.4 25.4
+##  [393] 26.9 27.8 23.9 23.4 24.9 23.9 24.9 30.1 26.3 24.1 22.7 24.4 20.5 26.3
+##  [407] 24.9 28.6 24.4 24.8 21.4 27.9 19.7 27.1 27.4 22.7 26.5 23.4 26.4 23.4
+##  [421] 27.9 23.0 24.3 25.3 25.8 23.3 23.8 21.4 24.2 29.5 26.7 28.0 25.5 28.1
+##  [435] 28.6 25.5 23.4 29.6 24.8 24.2 25.8 24.8 27.8 22.5 22.9 21.7 22.7 25.3
+##  [449] 25.4 23.9 24.5 29.6 21.5 26.4 28.2 27.4 24.5 22.5 25.2 26.4 26.9 25.4
+##  [463] 25.7 23.6 24.1 27.0 24.5 21.9 22.6 24.7 23.1 22.8 20.6 22.6 24.4 24.5
+##  [477] 24.6 25.8 25.4 25.6 26.7 24.8 26.4 23.1 24.3 23.9 25.3 27.7 23.8 25.1
+##  [491] 23.9 23.6 25.0 28.0 23.5 30.3 27.8 20.9 23.0 22.6 25.1 28.8 24.9 25.1
+##  [505] 22.9 21.2 25.1 23.7 21.7 22.2 25.7 26.7 28.9 24.9 25.0 23.8 23.4 23.3
+##  [519] 26.7 28.2 22.5 24.1 26.2 25.3 23.0 23.4 23.3 21.4 28.7 24.2 23.0 21.6
+##  [533] 25.4 25.4 23.2 23.1 19.4 25.4 26.8 26.9 24.1 23.2 27.1 21.6 24.4 25.1
+##  [547] 21.4 26.0 26.0 25.0 22.1 29.1 26.2 26.2 25.3 23.8 24.4 27.4 27.1 23.6
+##  [561] 28.9 25.8 24.1 23.6 23.1 25.5 24.0 27.7 21.5 22.8 21.7 24.9 27.0 25.2
+##  [575] 23.1 27.4 25.8 25.5 27.8 21.0 27.0 24.1 25.5 23.4 23.0 23.7 23.5 25.1
+##  [589] 31.0 25.4 27.0 25.6 27.7 25.8 27.8 25.9 23.3 28.0 23.6 24.4 26.8 30.3
+##  [603] 27.1 21.8 27.2 24.1 26.6 24.4 24.0 23.0 25.8 21.5 25.6 25.2 22.5 25.7
+##  [617] 24.3 22.5 22.9 25.4 25.6 29.1 22.7 25.3 24.0 24.9 26.4 26.2 22.4 25.4
+##  [631] 23.7 26.3 28.0 21.9 21.4 25.1 21.9 24.1 26.5 25.7 26.7 28.8 28.3 24.8
+##  [645] 23.0 22.7 22.1 26.4 23.2 24.3 25.4 28.6 22.6 23.0 20.2 23.9 26.7 22.6
+##  [659] 22.1 18.9 30.3 25.1 24.1 24.4 21.3 25.3 26.9 24.2 26.2 23.0 22.9 23.8
+##  [673] 24.9 20.7 21.8 27.1 23.6 24.6 23.6 24.4 25.7 22.9 21.5 22.6 23.1 22.8
+##  [687] 25.7 25.0 20.8 22.5 23.6 23.3 21.9 24.4 22.8 21.8 22.9 24.6 23.0 21.0
+##  [701] 23.6 22.3 21.4 22.3 23.4 25.1 24.9 24.6 25.2 23.0 24.6 24.8 22.2 23.7
+##  [715] 25.0 25.7 25.6 22.3 23.7 22.7 25.6 22.9 21.4 23.4 24.3 24.5 26.0 23.2
+##  [729] 22.0 23.6 21.4 26.3 24.3 25.8 24.4 27.7 22.7 21.9 29.8 22.4 27.3 24.5
+##  [743] 25.2 22.3 26.8 28.1 23.2 24.4 22.3 23.9 21.6 27.9 24.5 26.9 21.2 28.8
+##  [757] 25.2 23.0 21.4 22.4 27.4 23.0 22.7 25.0 28.4 25.6 22.9 22.3 22.2 25.6
+##  [771] 26.4 23.1 25.6 22.5 25.1 23.7 20.0 23.2 25.3 24.2 22.1 29.2 22.0 28.0
+##  [785] 24.2 27.3 22.5 29.0 22.2 22.1 21.8 25.1 21.2 22.9 25.6 28.2 22.4 23.5
+##  [799] 24.9 25.5 28.1 26.5 23.6 26.9 24.1 28.2 24.1 25.9 24.8 22.9 22.6 26.3
+##  [813] 23.5 23.3 23.4 24.3 24.0 28.0 26.2 28.3 22.2 23.2 26.3 24.2 22.0 22.4
+##  [827] 24.8 21.7 29.0 27.6 23.8 31.7 25.1 24.3 25.7 23.5 20.6 22.2 29.3 21.8
+##  [841] 26.2 23.4 24.0 24.0 23.0 22.5 26.8 23.7 27.3 26.0 26.2 24.1 23.7 28.8
+##  [855] 28.3 24.0 23.5 25.9 24.8 24.2 26.0 22.6 23.0 28.0 24.9 22.2 24.9 22.3
+##  [869] 21.1 22.1 25.1 21.8 24.7 23.0 25.7 22.3 24.9 22.2 27.1 22.6 26.7 22.1
+##  [883] 27.2 24.0 24.2 27.6 28.9 21.4 27.7 22.3 25.2 25.2 24.0 27.4 26.5 23.5
+##  [897] 23.8 21.0 21.4 24.0 23.7 23.6 25.2 22.3 21.4 24.6 23.3 24.6 23.2 23.7
+##  [911] 24.4 23.7 26.6 20.9 24.3 24.1 24.7 23.4 23.5 23.6 24.5 24.1 24.9 21.9
+##  [925] 21.5 24.8 27.4 25.8 24.3 25.6 21.2 24.3 26.7 20.5 22.6 21.6 24.4 19.4
+##  [939] 24.2 26.6 22.9 25.1 24.0 25.6 27.2 28.3 21.2 26.0 25.7 23.0 21.9 24.9
+##  [953] 23.2 26.2 26.1 25.5 26.3 25.1 22.6 25.3 27.5 23.5 23.4 27.0 22.0 22.7
+##  [967] 26.6 24.6 24.7 26.5 22.4 24.7 26.9 24.2 27.3 25.0 24.6 27.5 26.5 22.3
+##  [981] 21.9 25.8 24.6 24.2 24.8 23.5 22.7 21.1 22.4 22.8 25.5 25.9 26.1 21.9
+##  [995] 27.8 23.5 23.5 28.4 24.2 22.3 24.0 24.7 25.9 25.7 24.6 22.4 21.6 26.6
+## [1009] 23.9 25.9 22.4 23.7 22.0 25.5 26.7 22.5 24.8 26.1 28.9 25.8 24.6 24.7
+## [1023] 27.2 25.5 23.9 26.3 23.4 23.6 24.1 22.4 21.5 22.3 23.3 24.1 22.9 21.2
+## [1037] 23.2 22.2 23.3 24.2 25.4 24.9 21.0 24.9 24.8 26.5 22.7 23.6 24.4 24.2
+## [1051] 24.6 23.3 25.4 26.1 23.8 24.9 25.6 24.0 24.6 24.7 22.2 25.6 24.8 24.0
+## [1065] 26.0 23.0 21.7 28.5 21.7 24.3 24.5 23.8 25.2 23.8 20.2 24.9 25.9 27.1
+## [1079] 22.6 24.8 24.3 21.4 23.1 24.9 23.5 26.2 29.1 27.4 23.1 20.4 23.3 25.2
+## [1093] 23.2 22.5 25.7 24.1 26.8 22.2 24.7 26.3 22.3 23.5 21.7 22.6 21.5 23.6
+## [1107] 24.5 26.6 22.2 25.1 21.4 26.1 22.5 25.3 24.5 27.9 26.2 24.0 24.0 23.1
+## [1121] 28.4 26.4 22.9 24.2 23.1 28.1 24.6 22.4 24.7 23.7 24.8 21.7 21.1 29.3
+## [1135] 22.3 23.4 23.4 23.7 24.5 24.9 24.5 26.5 23.6 23.2 22.5 22.5 24.2 23.5
+## [1149] 29.0 23.4 23.6 22.3 23.5 23.3 25.1 25.1 22.3 21.3 26.8 22.8 23.8 26.2
+## [1163] 23.5 23.9 23.9 24.5 24.4 24.4 23.0 26.8 22.2 27.4 22.9 20.9 25.2 25.2
+## [1177] 22.1 23.9 23.1 24.0 23.4 25.2 26.2 28.4 24.6 22.1 27.1 25.7 26.5 26.6
+## [1191] 23.8 24.8 29.5 25.3 24.4 24.7 27.9 23.4 25.9 27.0 23.7 27.3 20.8 23.1
+## [1205] 26.1 25.1 25.5 25.9 23.9 23.9 26.2 27.0 26.9 22.7 24.7 25.2 23.9 24.4
+## [1219] 24.9 22.0 22.8 24.5 23.9 20.8 27.7 24.7 29.0 22.7 22.7 21.8 21.9 23.1
+## [1233] 21.2 24.3 24.8 21.4 26.0 25.4 26.8 25.3 21.2 23.6 23.9 21.9 23.9 21.0
+## [1247] 27.6 25.7 25.1 24.3 25.6 24.9 24.4 22.6 25.1 22.4 23.5 24.7 23.6 23.9
+## [1261] 27.1 26.3 29.1 25.9 22.9 27.4 26.1 24.5 25.4 26.1 26.2 25.0 26.7 25.4
+## [1275] 23.6 24.4 23.6 25.3 27.6 27.0 23.9 26.1 26.8 25.3 23.4 24.2 26.0 23.6
+## [1289] 26.5 24.0 28.0 30.2 23.9 25.8 23.8 23.9 22.9 22.2 23.0 22.0 24.6 24.3
+## [1303] 22.8 26.4 22.9 22.0 26.3 25.1 23.4 22.8 24.2 25.4 25.0 27.2 24.0 26.8
+## [1317] 23.5 25.6 22.5 23.2 23.4 24.5 24.9 26.2 25.0 22.0 24.4 22.5 23.6 24.5
+## [1331] 23.0 23.0 24.4 25.3 24.4 24.0 22.5 25.4 23.4 24.0 24.0 29.1 21.5 23.9
+## [1345] 27.4 25.4 24.1 24.4 25.7 26.0 24.3 28.7 23.9 22.7 25.7 22.2 23.2 22.5
+## [1359] 27.9 21.5 23.1 24.2 26.9 27.1 23.2 26.6 23.1 22.9 24.3 25.3 23.6 28.7
+## [1373] 27.2 23.4 24.5 22.0 24.3 24.3 24.5 28.7 25.9 21.0 23.2 23.0 25.9 24.7
+## [1387] 26.4 23.8 23.3 20.4 22.7 22.6 23.4 23.9 26.5 22.8 25.2 26.3 30.8 22.1
+## [1401] 24.8 22.9 27.8 24.0 24.6 25.8 21.9 23.3 24.9 23.6 28.1 27.6 24.2 21.0
+## [1415] 22.0 23.2 22.4 24.3 24.1 22.0 23.1 24.2 23.4 23.9 28.6 22.1 25.9 23.2
+## [1429] 25.6 23.7 22.1 23.0 22.9 25.1 22.7 23.8 21.7 24.0 22.8 21.7 25.1 24.8
+## [1443] 24.8 26.6 22.3 24.6 24.7 21.0 26.7 27.3 21.8 23.0 26.3 22.8 26.9 27.3
+## [1457] 23.7 24.0 22.2 25.4 28.1 26.1 23.9 24.5 23.5 21.4 27.4 26.2 21.1 25.6
+## [1471] 22.7 25.8 27.5 28.1 25.2 27.6 24.6 23.0 22.5 25.8 27.7 24.9 25.4 22.8
+## [1485] 26.9 22.6 24.9 25.9 24.2 28.9 23.8 23.8 24.6 23.1 26.0 28.6 27.7 25.4
+## [1499] 27.8 24.6 20.3 24.3 25.0 24.3 22.8 23.3 24.9 22.3 23.8 29.5 25.1 25.9
+## [1513] 24.7 24.1 25.5 24.5 28.6 21.6 23.5 24.5 26.7 23.0 24.4 26.0 27.6 26.2
+## [1527] 20.6 27.1 24.3 25.2 22.5 27.3 28.6 23.3 21.9 24.9 24.1 25.8 27.5 23.8
+## [1541] 25.6 26.4 26.9 26.4 24.4 25.5 23.8 30.3 25.2 25.8 21.5 24.6 25.2 27.6
+## [1555] 23.5 23.5 22.0 23.9 25.2 25.7 23.7 26.1 24.0 23.4 24.0 25.6 26.5 23.7
+## [1569] 29.0 25.6 25.4 24.8 24.0 25.0 23.9 20.4 28.3 23.8 25.5 28.9 23.0 25.5
+## [1583] 27.9 22.1 27.2 26.4 28.2 24.5 25.1 24.3 25.5 22.7 24.1 24.9 31.8 25.3
+## [1597] 24.5 25.6 23.9 24.9 26.0 22.6 25.2 22.2 25.7 21.5 23.5 24.6 23.5 29.4
+## [1611] 25.4 24.9 22.3 27.5 24.5 28.8 26.4 25.0 26.2 22.8 26.2 24.2 25.7 26.3
+## [1625] 25.7 31.7 22.9 23.0 23.7 25.9 25.3 25.4 22.1 22.8 22.4 23.6 20.5 24.4
+## [1639] 27.6 27.4 27.7 26.1 28.3 19.9 26.6 23.5 29.2 22.7 25.5 23.8 21.4 23.3
+## [1653] 25.9 25.3 25.8 29.0 23.2 24.2 22.6 25.9 26.7 25.5 27.0 22.6 23.5 21.6
+## [1667] 27.2 26.0 22.8 23.5 23.6 25.7 25.8 20.6 24.5 23.5 25.1 21.6 25.2 23.3
+## [1681] 22.0 26.5 24.9 26.9 22.8 23.2 28.0 24.8 25.5 22.2 22.8 24.8 22.2 26.6
+## [1695] 25.6 23.4 24.7 26.2 21.3 20.8 25.2 26.8 22.4 27.8 24.5 26.1 25.8 25.0
+## [1709] 24.4 22.6 25.0 24.0 26.3 25.5 23.1 25.9 23.7 22.9 27.0 27.1 23.4 24.9
+## [1723] 29.7 23.7 24.4 23.4 26.1 25.6 26.6 25.2 25.2 25.3 24.2 23.8 27.7 26.9
+## [1737] 24.8 26.5 21.1 21.2 24.2 25.0 21.0 25.4 23.5 29.2 23.7 24.8 23.6 24.8
+## [1751] 24.9 28.0 27.0 23.4 24.1 24.9 25.9 24.0 25.6 24.3 28.0 26.6 23.9 25.7
+## [1765] 21.9 20.4 22.3 24.3 25.8 26.7 23.7 27.3 29.2 28.7 26.6 27.5 21.2 23.5
+## [1779] 26.0 24.0 23.6 23.5 25.8 23.0 22.8 23.4 25.7 23.2 25.6 23.2 22.8 25.8
+## [1793] 21.0 21.4 22.9 26.5 25.2 22.6 24.6 30.1 23.5 26.1 24.5 22.3 24.0 26.9
+## [1807] 25.6 23.5 31.0 21.5 24.5 22.7 25.0 23.9 27.9 23.9 23.1 21.9 23.2 25.0
+## [1821] 24.5 28.2 23.4 23.8 25.8 24.0 26.9 22.3 23.1 25.2 25.2 22.2 22.7 20.6
+## [1835] 25.7 22.7 25.8 25.2 25.4 23.2 23.3 23.2 28.5 25.2 24.1 28.0 25.6 23.4
+## [1849] 25.1 25.3 23.9 24.9 27.5 25.0 26.4 21.7 21.6 26.4 26.6 25.2 26.3 22.3
+## [1863] 24.8 26.2 28.9 26.7 24.3 25.4 23.4 23.3 24.3 23.7 26.4 24.2 26.0 24.4
+## [1877] 26.1 21.2 25.2 26.2 21.7 23.0 23.6 26.4 24.9 26.8 21.5 23.5 27.3 30.3
+## [1891] 28.8 23.1 23.9 25.1 23.6 25.1 26.1 26.6 22.2 21.7 24.3 23.2 24.5 27.7
+## [1905] 24.3 24.9 27.0 26.7 21.7 25.3 26.2 23.0 29.8 23.4 22.9 25.9 23.3 24.8
+## [1919] 23.2 24.5 25.4 22.2 22.3 22.8 25.5 22.9 23.8 25.6 24.1 24.6 28.0 28.0
+## [1933] 22.8 23.9 24.5 21.1 20.6 22.9 23.9 23.8 26.4 23.6 22.1 21.5 26.3 24.1
+## [1947] 28.1 28.9 24.5 21.2 23.2 27.2 26.2 24.4 24.8 22.0 21.9 26.7 24.4 25.1
+## [1961] 22.4 24.5 22.7 23.4 24.0 23.3 24.0 24.7 22.1 21.6 25.8 27.1 23.8 24.6
+## [1975] 23.2 24.6 24.0 20.3 25.0 24.9 23.9 26.2 27.0 25.3 23.4 25.2 25.4 22.5
+## [1989] 25.8 23.1 23.9 24.5 23.6 25.6 28.5 24.1 26.0 24.8 27.2 24.2 23.7 26.6
+## [2003] 22.3 26.3 27.1 25.2 24.2 27.9 21.7 26.1 22.7 26.8 21.7 25.1 25.9 23.8
+## [2017] 26.2 25.3 24.8 24.0 22.2 25.7 27.5 21.6 25.3 24.5 27.9 23.8 24.4 23.2
+## [2031] 23.7 26.9 24.3 25.5 25.9 28.7 24.2 22.3 22.1 24.5 25.3 25.0 22.2 26.0
+## [2045] 28.1 29.3 20.8 27.3 22.0 25.8 22.9 21.0 23.9 35.9 26.0 23.7 23.8 26.0
+## [2059] 23.5 26.2 25.3 24.3 25.0 25.9 28.1 23.3 22.9 24.2 25.2 23.0 23.0 26.2
+## [2073] 28.6 23.7 26.6 24.7 27.4 29.9 22.6 23.6 22.8 23.0 27.9 23.0 24.2 23.9
+## [2087] 27.0 27.2 26.7 23.8 24.3 20.9 23.9 24.4 24.7 25.7 26.0 25.6 24.8 24.4
+## [2101] 24.0 23.8 23.0 23.6 26.0 21.5 23.9 22.5 21.0 23.1 22.6 24.5 24.9 23.2
+## [2115] 23.0 25.5 26.1 26.4 20.9 30.4 23.6 25.1 23.4 24.9 22.6 26.0 24.2 26.9
+## [2129] 23.2 22.5 23.2 24.3 26.1 23.0 23.8 24.9 24.4 26.9 24.6 26.7 23.1 24.0
+## [2143] 23.2 27.1 21.5 25.5 24.1 26.4 24.5 24.0 25.2 23.9 27.8 27.3 24.6 27.0
+## [2157] 26.2 24.5 27.8 24.6 24.7 24.1 24.7 23.9 22.9 26.6 22.1 26.9 27.3 23.7
+## [2171] 26.0 24.1 21.9 27.5 28.3 28.7 24.7 26.8 25.8 27.9 25.4 25.8 25.0 21.7
+## [2185] 27.3 25.8 22.7 25.6 21.4 25.6 25.2 21.8 24.5 27.4 27.7 25.5 21.1 23.9
+## [2199] 24.4 26.0 27.3 27.2 21.7 20.3 27.2 26.6 23.7 27.3 25.7 23.4 24.9 23.6
+## [2213] 26.0 28.5 28.2 22.7 24.3 21.9 23.1 28.9 25.1 24.7 25.5 25.2 22.9 23.4
+## [2227] 23.3 24.8 29.4 23.0 26.9 25.4 22.7 21.8 25.0 23.3 25.3 25.1 24.1 22.8
+## [2241] 24.2 25.7 25.1 23.2 24.3 22.8 21.7 23.4 21.5 25.0 25.6 27.8 26.4 25.5
+## [2255] 24.6 23.8 25.4 22.6 25.8 24.9 22.3 24.0 27.7 24.2 25.1 21.6 26.8 28.0
+## [2269] 22.2 27.7 24.3 27.0 23.2 25.8 25.9 21.9 23.3 25.4 23.1 24.7 21.6 24.7
+## [2283] 25.6 24.0 23.0 29.4 26.2 25.2 23.8 23.6 24.2 26.7 26.4 27.8 23.2 27.8
+## [2297] 22.6 26.2 21.4 25.1 24.1 24.0 22.1 23.1 24.9 22.5 22.1 24.9 22.6 23.0
+## [2311] 23.8 24.8 20.1 23.5 26.8 28.6 24.9 27.5 24.5 25.2 22.9 26.6 22.1 20.9
+## [2325] 25.6 22.5 27.6 23.7 25.6 25.1 23.7 20.9 26.0 29.3 24.9 27.2 31.2 26.4
+## [2339] 22.8 26.0 25.3 26.1 26.1 22.5 23.4 27.2 23.8 24.2 23.1 22.1 23.6 27.9
+## [2353] 24.8 23.4 21.6 25.2 23.1 21.2 24.6 24.8 25.3 21.0 22.7 25.7 24.2 23.5
+## [2367] 24.5 29.7 24.9 25.1 22.2 26.8 20.6 21.9 24.6 24.5 27.5 25.9 23.8 24.5
+## [2381] 25.8 26.0 26.1 24.2 23.9 24.0 23.9 25.0 24.4 24.0 24.9 27.4 24.4 24.8
+## [2395] 26.9 23.2 23.7 21.8 23.4 21.3 26.5 27.9 25.2 24.0 23.3 27.0 27.1 21.6
+## [2409] 24.3 22.6 23.8 26.0 22.7 28.4 24.9 21.6 22.2 21.2 24.6 24.5 26.6 24.9
+## [2423] 27.5 23.9 23.3 25.5 23.2 24.4 26.7 31.4 25.2 26.2 29.8 22.7 22.8 22.0
+## [2437] 24.2 26.9 25.6 23.3 24.9 24.5 23.3 24.9 23.2 21.4 21.5 21.7 24.9 22.4
+## [2451] 25.7 25.0 20.4 23.8 24.1 25.8 26.4 21.7 22.7 28.6 25.2 22.4 26.4 22.4
+## [2465] 24.6 25.2 26.5 27.5 24.7 22.7 24.8 25.9 25.2 20.9 25.9 22.7 24.8 23.5
+## [2479] 23.8 24.5 24.5 25.3 25.3 24.0 24.9 25.3 22.1 24.5 28.1 25.9 23.2 21.4
+## [2493] 24.4 26.3 26.3 22.6 26.8 25.6 22.1 25.2 28.6 22.9 25.7 24.7 26.9 24.4
+## [2507] 24.3 25.8 25.3 26.5 26.0 24.9 21.2 23.8 24.8 23.2 25.7 21.9 26.5 21.7
+## [2521] 21.2 22.1 24.3 28.0 24.0 26.6 25.1 26.7 23.2 24.2 23.4 22.7 21.3 24.6
+## [2535] 23.5 23.0 23.2 25.0 25.0 24.3 25.1 25.1 25.1 24.9 24.0 27.9 25.6 27.1
+## [2549] 24.2 28.0 25.9 21.9 25.7 26.0 29.8 22.6 24.6 23.8 23.6 21.8 29.0 24.5
+## [2563] 23.6 24.6 24.6 26.3 25.7 23.0 21.8 19.6 22.7 23.5 25.1 21.5 28.2 23.2
+## [2577] 21.6 24.6 22.5 23.6 25.7 23.7 23.9 26.3 22.4 25.4 25.9 23.2 22.9 27.6
+## [2591] 25.8 22.4 26.0 24.1 30.6 21.7 25.8 26.2 23.1 24.1 23.3 24.7 24.7 23.4
+## [2605] 28.0 25.9 23.0 22.1 25.9 22.3 26.5 27.0 24.4 23.4 23.5 23.2 25.8 23.6
+## [2619] 22.9 21.8 24.6 24.1 21.9 29.7 20.8 24.3 26.6 22.6 25.1 24.9 23.4 23.9
+## [2633] 25.9 25.4 25.7 22.1 26.2 26.1 23.2 25.2 23.5 25.9 23.2 27.1 24.6 22.3
+## [2647] 24.6 22.9 23.0 27.0 24.5 26.0 25.0 28.3 24.1 25.0 22.2 22.8 26.8 25.5
+## [2661] 26.5 27.5 25.6 23.7 24.4 23.0 26.6 25.0 20.7 24.6 22.9 22.8 29.0 25.6
+## [2675] 24.7 27.0 23.1 23.5 22.4 26.0 24.3 24.0 22.5 25.1 24.1 27.8 23.7 23.0
+## [2689] 26.2 27.5 25.4 31.0 22.7 22.0 20.1 23.9 24.5 25.6 25.3 26.9 21.2 26.2
+## [2703] 24.3 25.7 22.9 23.9 22.5 26.8 23.1 23.2 22.9 24.0 22.2 22.5 24.2 27.2
+## [2717] 25.3 24.4 24.4 31.1 28.2 23.9 23.0 25.7 25.3 21.1 25.3 28.6 23.2 23.6
+## [2731] 22.9 25.9 24.0 22.7 27.9 24.9 26.1 22.2 21.4 27.1 25.0 23.2 23.9 24.8
+## [2745] 25.5 19.3 23.0 26.7 21.9 22.3 26.3 23.5 26.5 25.1 23.8 24.7 25.9 20.6
+## [2759] 24.9 24.4 25.2 24.9 22.6 29.4 26.8 24.2 31.3 24.0 26.7 28.2 25.3 26.4
+## [2773] 25.5 25.5 27.1 23.5 23.2 24.6 25.8 24.1 25.4 25.4 25.0 24.1 24.3 24.9
+## [2787] 22.6 25.3 28.0 25.5 22.1 25.4 23.3 27.3 26.9 26.1 23.5 24.9 23.6 22.5
+## [2801] 24.0 26.2 26.6 24.7 27.3 23.7 25.7 25.2 23.8 24.6 23.4 27.2 25.2 22.3
+## [2815] 24.5 25.4 24.0 22.0 26.8 24.9 24.0 24.3 23.8 25.2 24.4 25.1 22.4 26.1
+## [2829] 24.4 24.2 22.9 25.5 26.5 24.6 24.5 23.5 26.0 24.8 22.4 26.9 24.6 24.7
+## [2843] 21.5 23.5 23.0 27.9 24.7 24.2 21.4 21.9 24.5 27.0 31.1 27.0 26.0 23.9
+## [2857] 32.0 24.3 23.2 27.6 24.7 23.1 24.0 22.3 21.9 23.4 25.1 23.0 24.9 26.7
+## [2871] 23.3 26.2 20.9 23.9 23.9 25.4 24.8 20.9 23.9 23.6 24.7 22.7 26.1 25.7
+## [2885] 25.8 22.4 26.6 25.3 21.5 23.9 25.1 27.9 25.3 24.4 21.4 23.2 27.5 23.7
+## [2899] 23.8 25.4 25.3 22.0 29.1 21.2 26.7 22.7 24.3 24.2 26.1 22.2 23.9 21.9
+## [2913] 23.7 26.6 27.8 27.4 26.2 25.6 22.4 22.0 28.9 24.2 26.5 26.4 27.3 22.1
+## [2927] 27.4 21.8 27.2 22.7 28.1 24.3 22.9 26.3 23.9 25.8 20.4 24.0 26.3 25.0
+## [2941] 26.8 24.3 28.0 26.8 23.8 22.8 27.0 23.8 25.8 24.0 26.4 26.2 21.9 24.1
+## [2955] 20.5 22.7 25.3 25.7 26.1 25.4 24.0 21.1 26.7 23.8 23.4 24.3 25.7 25.7
+## [2969] 24.7 26.3 22.8 23.2 27.6 25.1 24.7 23.8 21.9 26.0 24.7 28.7 25.7 25.3
+## [2983] 29.1 25.5 23.0 28.4 23.4 23.6 22.5 25.0 27.4 26.9 26.6 24.5 24.1 25.9
+## [2997] 23.8 26.7 23.8 27.0</code></pre>
+<p>Cada uno de estos números corresponde a la media muestral de la
+variable edad de cada una de las 3000 muestras aleatorias que hemos
+calculado. La primera muestra de 100 observaciones de un total de 722
+tiene una media de edad de 24.4 años. Esta media esta subestimando el
+valor del parámetro poblacional. La tercera muestra de tamaño 100 de un
+total de 722 observaciones tiene una media de edad de 24.53. Esta
+muestra sobreestima (por muy poco) el valor del parámetro.</p>
+<p>Vemos que algunas medias muestrales subestiman y otras sobreestiman
+el valor del parámetro poblacional. Si graficamos el histograma de todos
+estos valores, vemos que se dibuja una curva aproximadamente normal.
+Además, si calculamos la media de todas las medias de edad de las 3000
+muestras observadas, se tiene que la media es 24.51, una aproximación
+bastante buena al valor del parámetro 24.52.</p>
 <pre class="r"><code>hist(x, breaks=100)</code></pre>
 <p><img src="clase3_files/figure-html/distribucio%CC%81n%20de%20muestreo-1.png" width="672" /></p>
 <pre class="r"><code>mean(x)</code></pre>
-<pre><code>## [1] 24.43923</code></pre>
+<pre><code>## [1] 24.61623</code></pre>
 </div>
 <div id="intervalos-de-confianza" class="section level2">
 <h2>Intervalos de confianza</h2>
-<p>En cualquier investigación solo se cuenta con una muestra observada, cuyo estadístico muestral, sea una media o un proporción, es una aproximación del parámetro poblacional.</p>
-<p>Para poder extrapolar desde la muestra hasta la población, se tiene que construir un intervalo de confianza alrededor del estadístico muestral. Este intervalo se construye aplicando la “distancia” de +/- 1.96 errores estándar, para tener una confianza de 95% de incluir al parámetro poblacional.</p>
-<p>Si se está extrapolando para una variable numérica, mediante la media, el error estándar (o se) es:</p>
+<p>En cualquier investigación solo se cuenta con una muestra observada,
+cuyo estadístico muestral, sea una media o un proporción, es una
+aproximación del parámetro poblacional.</p>
+<p>Para poder extrapolar desde la muestra hasta la población, se tiene
+que construir un intervalo de confianza alrededor del estadístico
+muestral. Este intervalo se construye aplicando la “distancia” de +/-
+1.96 errores estándar, para tener una confianza de 95% de incluir al
+parámetro poblacional.</p>
+<p>Si se está extrapolando para una variable numérica, mediante la
+media, el error estándar (o se) es:</p>
 <p><span class="math display">\[
 se = 1.96 * \frac{s} {\sqrt{n}}
 \]</span></p>
-<p>Si se está extrapolando para una variable categórica, mediante una proporción, el error estándar (o se) es:</p>
+<p>Si se está extrapolando para una variable categórica, mediante una
+proporción, el error estándar (o se) es:</p>
 <p><span class="math display">\[
 se = 1.96 * \sqrt{\frac{(p * (1-p))} {n}}
 \]</span></p>
-<p>A manera de resumen, la siguiente tabla nos muestra el parámetro, el estadístico puntual y el error estándar para cada tipo de variable y cómo se forma el intervalo de confianza.</p>
+<p>A manera de resumen, la siguiente tabla nos muestra el parámetro, el
+estadístico puntual y el error estándar para cada tipo de variable y
+cómo se forma el intervalo de confianza.</p>
 <p><img src="c3.5.png" /></p>
-<p>En estas fórmulas, se usa el símbolo “t” y “z” para referir a las distribuciones teóricas que se usan. Para fines prácticos, cuando la muestra es grande, ambas distribuciones son iguales. El valor de “t” o “z” depende del nivel de confianza que queremos. Es decir, de la probabilidad que queremos de que el intervalo incluya al parámetro. De esta manera:</p>
+<p>En estas fórmulas, se usa el símbolo “t” y “z” para referir a las
+distribuciones teóricas que se usan. Para fines prácticos, cuando la
+muestra es grande, ambas distribuciones son iguales. El valor de “t” o
+“z” depende del nivel de confianza que queremos. Es decir, de la
+probabilidad que queremos de que el intervalo incluya al parámetro. De
+esta manera:</p>
 <ul>
 <li><p>Z al 90% = 1.645</p></li>
 <li><p>Z al 95% = 1.96</p></li>
 <li><p>Z al 98% = 2.326</p></li>
 <li><p>Z al 99% = 2.576</p></li>
 </ul>
-<p>¿Qué para con el IC cuando se quiere mayor confianza? ¿Se vuelve más o menos preciso?</p>
+<p>¿Qué para con el IC cuando se quiere mayor confianza? ¿Se vuelve más
+o menos preciso?</p>
 <hr />
 </div>
 </div>
 <div id="ejemplo-de-lalonde" class="section level1">
 <h1>Ejemplo de LaLonde</h1>
-<p>En el trabajo de LaLonde se han recogido 722 observaciones de un universo desconocido, pero que se asume grande. La idea es pasar de estimaciones puntuales a estimaciones por intervalos, es decir de datos que corresponden a los 722 participantes del estudio hacia el universo de personas sin habilidades laborales para insertarse en el mercado de trabajo. Por ejemplo, los datos de los ingresos puntuales en el año 1974 y 1978 corresponden a esos 722 individuos.</p>
+<p>En el trabajo de LaLonde se han recogido 722 observaciones de un
+universo desconocido, pero que se asume grande. La idea es pasar de
+estimaciones puntuales a estimaciones por intervalos, es decir de datos
+que corresponden a los 722 participantes del estudio hacia el universo
+de personas sin habilidades laborales para insertarse en el mercado de
+trabajo. Por ejemplo, los datos de los ingresos puntuales en el año 1974
+y 1978 corresponden a esos 722 individuos.</p>
 <pre class="r"><code>mean(LL$re74)</code></pre>
 <pre><code>## [1] 3630.738</code></pre>
 <pre class="r"><code>mean(LL$re78)</code></pre>
 <pre><code>## [1] 5454.636</code></pre>
-<p>Para extrapolar a la población, se tiene que construir el intervalo de confianza de cada media. Para aplicar la fórmula, se requiere la desviación estándar y el N. Sabemos que el N = 722, pues no hay valores perdidos para estas variables. La desviación estándar la obtenemos con el comando <code>sd</code>.</p>
+<p>Para extrapolar a la población, se tiene que construir el intervalo
+de confianza de cada media. Para aplicar la fórmula, se requiere la
+desviación estándar y el N. Sabemos que el N = 722, pues no hay valores
+perdidos para estas variables. La desviación estándar la obtenemos con
+el comando <code>sd</code>.</p>
 <pre class="r"><code>sd(LL$re74)</code></pre>
 <pre><code>## [1] 6220.637</code></pre>
 <pre class="r"><code>sd(LL$re78)</code></pre>
 <pre><code>## [1] 6252.943</code></pre>
 <p>Por lo tanto para los ingresos en 1974 se tendría:</p>
 <p><span class="math display">\[
-I.C. = media +/- t*se = 3630.7 +/- 1.96 * \frac{6220.6} {\sqrt{722}} = 3630.7 +/- 453.8
+I.C. = media +/- t*se = 3630.7 +/- 1.96 * \frac{6220.6} {\sqrt{722}} =
+3630.7 +/- 453.8
 \]</span></p>
 <ul>
 <li><p>Límite Inferior del IC es: 3630.7 - 453.8 = 3176.9</p></li>
 <li><p>Límite Superior es: 3630.7 + 453.8 = 4084.5</p></li>
 </ul>
-<p>Por lo tanto el IC es <span class="math display">\[3176.9, 4084.5\]</span> y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido. Es decir, estamos infiriendo de la muestra a la población.</p>
-<p>El parámetro poblacional podría ser entendido como el promedio de ingresos en 1974 de TODOS los individuos sin habilidades laborales, si es que esa información fuera recogida de manera perfecta, es decir, en un mismo momento, en las mismas condiciones.</p>
-<p>Como eso es imposible de hacer o poco eficiente, confiamos en el IC que se genera a partir de una muestra.</p>
-<p>Para evitar el cálculo manual del IC, se puede usar el comando <code>ciMean</code> de la librería <code>lsr</code>.</p>
+<p>Por lo tanto el IC es <span class="math display">\[3176.9,
+4084.5\]</span> y asumimos que con ese rango tenemos 95% de confianza
+que incluya al parámetro poblacional desconocido. Es decir, estamos
+infiriendo de la muestra a la población.</p>
+<p>El parámetro poblacional podría ser entendido como el promedio de
+ingresos en 1974 de TODOS los individuos sin habilidades laborales, si
+es que esa información fuera recogida de manera perfecta, es decir, en
+un mismo momento, en las mismas condiciones.</p>
+<p>Como eso es imposible de hacer o poco eficiente, confiamos en el IC
+que se genera a partir de una muestra.</p>
+<p>Para evitar el cálculo manual del IC, se puede usar el comando
+<code>ciMean</code> de la librería <code>lsr</code>.</p>
 <pre class="r"><code>library(lsr)
 ci74 &lt;- ciMean(LL$re74)
 ci74</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 3176.227 4085.249</code></pre>
-<p>De la misma manera se puede calcular el IC de los ingresos en 1978.</p>
+<p>De la misma manera se puede calcular el IC de los ingresos en
+1978.</p>
 <pre class="r"><code>ci78 &lt;- ciMean(LL$re78)
 ci78</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 4997.765 5911.507</code></pre>
-<p>Para variables categóricas, lo primero es inspeccionar las tablas de distribución de frecuencias, por ejemplo para la proporción (o porcentaje) de afroamericanos e hispanos en la muestra. Se tiene 0.80 (o 80%) de afroamericanos y 0.105 (o 10.5%) de hispanos en la muestra.</p>
+<p>Para variables categóricas, lo primero es inspeccionar las tablas de
+distribución de frecuencias, por ejemplo para la proporción (o
+porcentaje) de afroamericanos e hispanos en la muestra. Se tiene 0.80 (o
+80%) de afroamericanos y 0.105 (o 10.5%) de hispanos en la muestra.</p>
 <pre class="r"><code>prop.table(table(LL$black))</code></pre>
 <pre><code>## 
 ##        0        1 
@@ -832,16 +1023,24 @@ ci78</code></pre>
 <pre><code>## 
 ##         0         1 
 ## 0.8947368 0.1052632</code></pre>
-<p>Para extrapolar estos resultados a la población, se puede aplicar la fórmula. Por ejemplo, para los afroamericanos:</p>
+<p>Para extrapolar estos resultados a la población, se puede aplicar la
+fórmula. Por ejemplo, para los afroamericanos:</p>
 <p><span class="math display">\[
-I.C. = prop +/- z * se = 0.8 +/- 1.96 * \sqrt{\frac{0.8*0.2}{722}} = 0.8 +/- 0.029
+I.C. = prop +/- z * se = 0.8 +/- 1.96 * \sqrt{\frac{0.8*0.2}{722}} = 0.8
++/- 0.029
 \]</span></p>
 <ul>
 <li><p>Límite inferior: 0.8 - 0.029 = 0.771 o 77.1%</p></li>
 <li><p>Límite superior: 0.8 + 0.029 = 0.829 o 82.9%</p></li>
 </ul>
-<p>Por lo tanto el IC es <span class="math display">\[77.1%, 82.9%\]</span> y asumimos que en ese rango se encuentra la proporción poblacional de afroamericanos al 95% de confianza.</p>
-<p>En R no se cuenta con un comando particular para el cálculo directo de ICs de proporciones. Pero, cuando las variables categóricas son variables “dummy,” es decir codificadas como 0/1, entonces la media de la variable es igual a la proporción y se puede usar el comando <code>CI</code> para el cálculo del IC.</p>
+<p>Por lo tanto el IC es <span class="math display">\[77.1%,
+82.9%\]</span> y asumimos que en ese rango se encuentra la proporción
+poblacional de afroamericanos al 95% de confianza.</p>
+<p>En R no se cuenta con un comando particular para el cálculo directo
+de ICs de proporciones. Pero, cuando las variables categóricas son
+variables “dummy”, es decir codificadas como 0/1, entonces la media de
+la variable es igual a la proporción y se puede usar el comando
+<code>CI</code> para el cálculo del IC.</p>
 <pre class="r"><code>ciafro &lt;- ciMean(LL$black)
 cihisp &lt;- ciMean(LL$hispanic)
 ciafro</code></pre>
@@ -850,19 +1049,29 @@ ciafro</code></pre>
 <pre class="r"><code>cihisp</code></pre>
 <pre><code>##            2.5%     97.5%
 ## [1,] 0.08282455 0.1277018</code></pre>
-<p>Para los hispanos, se puede decir que la proporción poblacional está entre 8.3% y 12.8% al 95% de confianza.</p>
+<p>Para los hispanos, se puede decir que la proporción poblacional está
+entre 8.3% y 12.8% al 95% de confianza.</p>
 </div>
 <div id="ejemplo-encuesta-nacional-docente-2020" class="section level1">
 <h1>Ejemplo Encuesta Nacional Docente 2020</h1>
-<p>Cada dos años, el Ministerio de Educación realiza una encuesta a una muestra de docentes de educación básica en el Perú. La última disponible fue hecha en 2020, en medio de la pandemia del COVID-19. Las bases de datos y cuestionarios de esta encuesta se encuentran disponibles <a href="http://www.minedu.gob.pe/politicas/docencia/encuesta-nacional-a-docentes-endo.php">aquí</a>.</p>
-<p>En esta ubicación se encuentra la base de datos, que puede ser descargada y leída en R con el siguiente código.</p>
+<p>Cada dos años, el Ministerio de Educación realiza una encuesta a una
+muestra de docentes de educación básica en el Perú. La última disponible
+fue hecha en 2020, en medio de la pandemia del COVID-19. Las bases de
+datos y cuestionarios de esta encuesta se encuentran disponibles <a
+href="http://www.minedu.gob.pe/politicas/docencia/encuesta-nacional-a-docentes-endo.php">aquí</a>.</p>
+<p>En esta ubicación se encuentra la base de datos, que puede ser
+descargada y leída en R con el siguiente código.</p>
 <pre class="r"><code>endo2020 = import(&quot;bases/ENDO_REMOTO_2020.dta&quot;)</code></pre>
-<p>¿A cuántos alumnos en promedio acompaña el docente peruano en aula? Esta encuesta tiene una pregunta que nos permite calcular esta media y la desviación estándar.</p>
+<p>¿A cuántos alumnos en promedio acompaña el docente peruano en aula?
+Esta encuesta tiene una pregunta que nos permite calcular esta media y
+la desviación estándar.</p>
 <pre class="r"><code>mean(endo2020$P1_6, na.rm = T)</code></pre>
 <pre><code>## [1] 39.98644</code></pre>
 <pre class="r"><code>sd(endo2020$P1_6, na.rm = T)</code></pre>
 <pre><code>## [1] 50.76707</code></pre>
-<p>Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula. ¿Existen diferencias en el número promedio de alumnos que acompañan docentes hombres y docentes mujeres?</p>
+<p>Es decir, un profesor promedio en Perú acompaña aproximadamente a 40
+alumnos en aula. ¿Existen diferencias en el número promedio de alumnos
+que acompañan docentes hombres y docentes mujeres?</p>
 <p>Calculamos primero los datos para el grupo de docentes hombres.</p>
 <pre class="r"><code>mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)</code></pre>
 <pre><code>## [1] 52.24745</code></pre>
@@ -873,29 +1082,42 @@ ciafro</code></pre>
 <pre><code>## [1] 34.06558</code></pre>
 <pre class="r"><code>sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)</code></pre>
 <pre><code>## [1] 44.19034</code></pre>
-<p>Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos.</p>
-<p>Se puede añadir el cálculo de los intervalos de confianza en ambos casos.</p>
+<p>Se encuentra que los docentes hombres acompañan, en promedio, a 52
+alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una
+diferencia de 18 alumnos.</p>
+<p>Se puede añadir el cálculo de los intervalos de confianza en ambos
+casos.</p>
 <pre class="r"><code>ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 50.74019 53.75471</code></pre>
 <pre class="r"><code>ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 33.29933 34.83182</code></pre>
-<p>Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50.7 y 53.8 alumnos, mientras que en el caso de las docentes mujeres está entre 33.3 y 34.8 alumnos en aula.</p>
-<p>¿Qué más se puede decir de esta comparación entre intervalos de confianza?</p>
+<p>Se encuentra que la media de alumnos que atiende un docente hombre
+esta entre 50.7 y 53.8 alumnos, mientras que en el caso de las docentes
+mujeres está entre 33.3 y 34.8 alumnos en aula.</p>
+<p>¿Qué más se puede decir de esta comparación entre intervalos de
+confianza?</p>
 </div>
 <div id="bibliografía" class="section level1 unnumbered">
 <h1 class="unnumbered">Bibliografía</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-lalondeEvaluatingEconometricEvaluations1986" class="csl-entry">
-LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations of Training Programs with Experimental Data.”</span> <em>The American Economic Review</em> 76 (4): 604–20. <a href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
+<div id="ref-lalondeEvaluatingEconometricEvaluations1986"
+class="csl-entry">
+LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations
+of Training Programs with Experimental Data.”</span> <em>The American
+Economic Review</em> 76 (4): 604–20. <a
+href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
 </div>
 </div>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>En realidad es a +/- 2 errores estándar del centro. El error estándar se entiende como la desviación estándar de la distribución de muestreo.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>En realidad es a +/- 2 errores estándar del centro. El
+error estándar se entiende como la desviación estándar de la
+distribución de muestreo.<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

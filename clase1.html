@@ -416,7 +416,8 @@ div.tocify {
 <p><img src="religion.png" width="504" /></p>
 <p><img src="religion2.png" width="469" /></p>
 <ul>
-<li>Algún miembro de su familia se ha contagiado de COVID: Sí=1, No=0.</li>
+<li>Algún miembro de su familia se ha contagiado de COVID: Sí=1,
+No=0.</li>
 </ul></li>
 </ul>
 <p><img src="covid.png" /></p>
@@ -440,15 +441,19 @@ div.tocify {
 </ul>
 <p><img src="educ.png" width="615" /></p>
 <ul>
-<li>Importancia de religión en su vida: Nada importante=1, Poco importante=2, Algo importante=3, Muy importante=4.</li>
+<li>Importancia de religión en su vida: Nada importante=1, Poco
+importante=2, Algo importante=3, Muy importante=4.</li>
 </ul>
 <p><img src="importancia.png" width="624" /></p>
 <ul>
-<li>Gravedad de contagio de COVID: Nada grave=1, Poco grave=2, Algo grave=3, Muy grave=4 (PERO, quién evalúa? percepción?)</li>
+<li>Gravedad de contagio de COVID: Nada grave=1, Poco grave=2, Algo
+grave=3, Muy grave=4 (PERO, quién evalúa? percepción?)</li>
 </ul></li>
 <li><p>Distritos:</p>
 <ul>
-<li>Calidad del servicio de agua: Muy mala=1, Mala=2, Regular=3, Buena=4, Muy buena=5. (PERO, si es percepción, percepción de quién?)</li>
+<li>Calidad del servicio de agua: Muy mala=1, Mala=2, Regular=3,
+Buena=4, Muy buena=5. (PERO, si es percepción, percepción de
+quién?)</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -464,7 +469,8 @@ div.tocify {
 <ul>
 <li><p>Estatura: en cm o en mt, pero estandarizado.</p></li>
 <li><p>Peso: en kg o en gm, pero estandarizado.</p></li>
-<li><p>Ingreso mensual: en soles. Definir si del individuo o de la familia, si es ingreso mensual o quincenal o anual.</p></li>
+<li><p>Ingreso mensual: en soles. Definir si del individuo o de la
+familia, si es ingreso mensual o quincenal o anual.</p></li>
 </ul>
 <p><img src="ingresos.png" width="535" /></p></li>
 <li><p>Distritos:</p>
@@ -478,8 +484,10 @@ div.tocify {
 <ul>
 <li><p>Individuos:</p>
 <ul>
-<li><p>Número de hijos: definir si en total o que viven en el hogar.</p></li>
-<li><p>Edad: en años cumplidos. Para más precisión se pide la fecha de nacimiento.</p></li>
+<li><p>Número de hijos: definir si en total o que viven en el
+hogar.</p></li>
+<li><p>Edad: en años cumplidos. Para más precisión se pide la fecha de
+nacimiento.</p></li>
 </ul></li>
 <li><p>Distritos:</p>
 <ul>
@@ -495,7 +503,12 @@ div.tocify {
 </div>
 <div id="bases-de-datos" class="section level1">
 <h1>Bases de datos</h1>
-<p>De manera convencional (y así es en R), las bases de datos (o “dataframes” en R) son rectangulares y se organizan en filas y columnas. Cada una de las filas corresponde a una observación (ya sea un individuo, un distrito o la unidad de análisis que se use). Cada columna corresponde a una variable (una característica de la unidad de análisis).</p>
+<p>De manera convencional (y así es en R), las bases de datos (o
+“dataframes” en R) son rectangulares y se organizan en filas y columnas.
+Cada una de las filas corresponde a una observación (ya sea un
+individuo, un distrito o la unidad de análisis que se use). Cada columna
+corresponde a una variable (una característica de la unidad de
+análisis).</p>
 <hr />
 <div id="ejemplo-1" class="section level2">
 <h2>Ejemplo 1</h2>
@@ -505,8 +518,10 @@ div.tocify {
 <li><p>Variables</p>
 <ul>
 <li><p>Sexo. 10 observaciones: H, H, M, H, M, M, M, H, M, H</p></li>
-<li><p>Nivel educativo. 10 observaciones: S, S, U, U, P, S, S, P, U, U</p></li>
-<li><p>Edad. 9 observaciones + 1 valor perdido: 25, 54, 37, 65, NA, 73, 48, 32, 51, 37</p></li>
+<li><p>Nivel educativo. 10 observaciones: S, S, U, U, P, S, S, P, U,
+U</p></li>
+<li><p>Edad. 9 observaciones + 1 valor perdido: 25, 54, 37, 65, NA, 73,
+48, 32, 51, 37</p></li>
 </ul></li>
 </ul>
 <p>En formato de base de datos o de “dataframe”:</p>
@@ -591,9 +606,12 @@ div.tocify {
 <li><p>Muestra: 1821 distritos</p></li>
 <li><p>Variables</p>
 <ul>
-<li><p>Región. 1821 observaciones: C, C, C, S, S, Se, C, C, S…….Se</p></li>
-<li><p>Calidad de agua. 1821 observaciones: M, MM, M, MM, R, B……M</p></li>
-<li><p>Número de postal. 1821 observaciones: 2, 1, 0, 0, 2, 3, 1, 0…..0</p></li>
+<li><p>Región. 1821 observaciones: C, C, C, S, S, Se, C, C,
+S…….Se</p></li>
+<li><p>Calidad de agua. 1821 observaciones: M, MM, M, MM, R,
+B……M</p></li>
+<li><p>Número de postal. 1821 observaciones: 2, 1, 0, 0, 2, 3, 1,
+0…..0</p></li>
 </ul></li>
 </ul>
 <table>

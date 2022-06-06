@@ -107,7 +107,7 @@ En la práctica, cualquier software estadístico nos brinda el resultado del p-v
 
 ## Paso 5: decisión
 
--   Si el p-value > 0.05, entonces se falla en rechazar la Ho. Esto indicaría que existe más de 5% de probabilidades que una muestra aleatoria cualquiera encuentre una diferencia de medias como la observada si es que la diferencia de medias poblacional fuese 0.
+-   Si el p-value \> 0.05, entonces se falla en rechazar la Ho. Esto indicaría que existe más de 5% de probabilidades que una muestra aleatoria cualquiera encuentre una diferencia de medias como la observada si es que la diferencia de medias poblacional fuese 0.
 
 ![](5.2.png){width="112"}
 
@@ -290,7 +290,7 @@ LeveneTest(cv$call, cv$raza)
 -   Si p-value de Levene \<= 0.05, entonces rechazo Ho y afirmo que las varianzas son diferentes.
     Eso significa que `var.equal=F`.
 
--   Si el p-value > 0.05, entonces no puedo rechazar la Ho y trabajo con varianzas iguales.
+-   Si el p-value \> 0.05, entonces no puedo rechazar la Ho y trabajo con varianzas iguales.
     Eso significa que `var.equal=T`.
 
 De acuerdo a estos resultados, podemos rechazar la H0 y afirmar que las varianzas parecen diferentes.
@@ -313,7 +313,7 @@ Como esa probabilidad es muy baja (\<0.05), entonces se concluye que la diferenc
 
 -   Si el p-value de la prueba t es \<= 0.05, se rechaza la H0 y se afirma la HA.
 
--   Si el p-value es > 0.05, se falla en rechazar la H0.
+-   Si el p-value es \> 0.05, se falla en rechazar la H0.
 
 En este caso, el p-value = 0.0000394 \< 0.05, entonces se rechaza la hipótesis que las medias poblacionales de las llamadas a CVs son iguales entre anglos y afros, por lo que se afirma que las tasas de llamadas son diferentes (a favor de los anglos) en la población, confirmándose con este que existiría una discriminación por raza en el mercado laboral americano.
 A iguales CVs, aquellos con nombres afros tienen una menor tasa de llamada a entrevistas de trabajo que aquellos con nombre anglos.
@@ -347,7 +347,7 @@ t.test(call ~ sex, data = cv, var.equal=T)
 ```
 
 El resultado de la prueba t nos indica que para el estadístico de la prueba t=0.93 se tiene un p-value = 0.35.
-Como 0.35>0.05, entonces no se puede rechazar la H0.
+Como 0.35\>0.05, entonces no se puede rechazar la H0.
 Esto nos lleva a concluir que con los datos *no se puede decir* que haya diferencias en la tasa de llamadas a CVs entre hombre y mujeres.
 
 ## Mediante una prueba de proporciones

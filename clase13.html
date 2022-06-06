@@ -398,25 +398,47 @@ div.tocify {
 </div>
 
 
-<div id="análisis-de-regresión-como-método-unificado" class="section level1">
+<div id="análisis-de-regresión-como-método-unificado"
+class="section level1">
 <h1>Análisis de regresión como método unificado</h1>
-<p>Hasta el momento se ha usado el método de regresión lineal para analizar la relación entre dos variables numéricas, tanto la dependiente como las independientes. Este método puede ampliarse y ser usado con una diversidad de tipos de variables independientes, tanto numéricas, como nominales y ordinales.</p>
-<p>De esta manera, el método de regresión lineal puede entenderse como un método general, que incluye tanto el análisis de la prueba t como la prueba de ANOVA, dado que ambas usan una variable numérica como variable dependiente.</p>
-<p>En resumen, la única condición del análisis de regresión es que la variable dependiente sea numérica, pero las variables independientes pueden ser de diverso tipo.</p>
+<p>Hasta el momento se ha usado el método de regresión lineal para
+analizar la relación entre dos variables numéricas, tanto la dependiente
+como las independientes. Este método puede ampliarse y ser usado con una
+diversidad de tipos de variables independientes, tanto numéricas, como
+nominales y ordinales.</p>
+<p>De esta manera, el método de regresión lineal puede entenderse como
+un método general, que incluye tanto el análisis de la prueba t como la
+prueba de ANOVA, dado que ambas usan una variable numérica como variable
+dependiente.</p>
+<p>En resumen, la única condición del análisis de regresión es que la
+variable dependiente sea numérica, pero las variables independientes
+pueden ser de diverso tipo.</p>
 </div>
-<div id="regresión-lineal-como-prueba-t-de-diferencia-de-medias" class="section level1">
+<div id="regresión-lineal-como-prueba-t-de-diferencia-de-medias"
+class="section level1">
 <h1>Regresión lineal como prueba t de diferencia de medias</h1>
-<p>La prueba t de diferencia de medias se usaba cuando queríamos hacer una inferencia acerca de las medias entre dos grupos. Es decir, para comparar la medida de tendencia central (la media) de una variable dependiente entre (dos) grupos de una variable independiente, que podría ser nominal u ordinal.</p>
-<p>Siguiendo con los datos de la elección presidencial de 2016, cargamos la base de datos que hemos estado usando.</p>
+<p>La prueba t de diferencia de medias se usaba cuando queríamos hacer
+una inferencia acerca de las medias entre dos grupos. Es decir, para
+comparar la medida de tendencia central (la media) de una variable
+dependiente entre (dos) grupos de una variable independiente, que podría
+ser nominal u ordinal.</p>
+<p>Siguiendo con los datos de la elección presidencial de 2016, cargamos
+la base de datos que hemos estado usando.</p>
 <pre class="r"><code>library(rio)
 data &lt;- import(&quot;bases/datos2016_v3.sav&quot;)</code></pre>
-<p>Entonces, si queremos saber si existen diferencias estadísticas de la votación a Keiko Fujimori entre los departamentos de la costa y los departamentos que no están en la costa, se puede usar la prueba t de diferencia de medias. Es decir, se quiere comparar la media de votación a Fujimori, una variable cuantitativas, entre grupos de la variable “costa,” variable dicotómica.</p>
+<p>Entonces, si queremos saber si existen diferencias estadísticas de la
+votación a Keiko Fujimori entre los departamentos de la costa y los
+departamentos que no están en la costa, se puede usar la prueba t de
+diferencia de medias. Es decir, se quiere comparar la media de votación
+a Fujimori, una variable cuantitativas, entre grupos de la variable
+“costa”, variable dicotómica.</p>
 <p>Lo primero es ver las medias de cada grupo.</p>
 <pre class="r"><code>mean(data$Voto_PPK_2016_1[data$costa==0], na.rm=T)</code></pre>
 <pre><code>## [1] 13.85437</code></pre>
 <pre class="r"><code>mean(data$Voto_PPK_2016_1[data$costa==1], na.rm=T)</code></pre>
 <pre><code>## [1] 19.09556</code></pre>
-<p>Para analizar si la diferencia entre 19.1 y 13.9 es significativa, se puede correr una prueba t de diferencias de medias.</p>
+<p>Para analizar si la diferencia entre 19.1 y 13.9 es significativa, se
+puede correr una prueba t de diferencias de medias.</p>
 <pre class="r"><code>library(DescTools)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;DescTools&#39;</code></pre>
@@ -430,7 +452,8 @@ data &lt;- import(&quot;bases/datos2016_v3.sav&quot;)</code></pre>
 ##       Df F value Pr(&gt;F)
 ## group  1   9e-04 0.9762
 ##       23</code></pre>
-<p>Luego del test de igualdad de varianzas, se puede correr la prueba t.</p>
+<p>Luego del test de igualdad de varianzas, se puede correr la prueba
+t.</p>
 <pre class="r"><code>t.test(Voto_PPK_2016_1 ~ costa, data=data, var.equal=T)</code></pre>
 <pre><code>## 
 ##  Two Sample t-test
@@ -443,16 +466,32 @@ data &lt;- import(&quot;bases/datos2016_v3.sav&quot;)</code></pre>
 ## sample estimates:
 ## mean in group 0 mean in group 1 
 ##        13.85437        19.09556</code></pre>
-<p>De estos resultados, vemos que se obtiene un p-value de 0.08, que es menor a 0.1. Es decir, la diferencia en el voto a PPK entre departamentos de la costa y los que no son de la costa sería significativa a 0.10.</p>
-<p>Para graficar la relación entre ambas variables antes se ha usado un boxplot, que no muestra datos para la inferencia, solo datos descriptivos. También se ha usado un gráfico de barras de error para mostrar las medias de cada grupo con el respectivo intervalo de confianza.</p>
-<p>En esta sección, se produce un gráfico de dispersión entre la variable “costa” y “voto a PPK.” Debido a que la variable “costa” es dicotómica, solo tiene valores 0 y 1, por lo que los puntos, que representan a cada departamento, se agrupan en dos líneas verticales.</p>
+<p>De estos resultados, vemos que se obtiene un p-value de 0.08, que es
+menor a 0.1. Es decir, la diferencia en el voto a PPK entre
+departamentos de la costa y los que no son de la costa sería
+significativa a 0.10.</p>
+<p>Para graficar la relación entre ambas variables antes se ha usado un
+boxplot, que no muestra datos para la inferencia, solo datos
+descriptivos. También se ha usado un gráfico de barras de error para
+mostrar las medias de cada grupo con el respectivo intervalo de
+confianza.</p>
+<p>En esta sección, se produce un gráfico de dispersión entre la
+variable “costa” y “voto a PPK”. Debido a que la variable “costa” es
+dicotómica, solo tiene valores 0 y 1, por lo que los puntos, que
+representan a cada departamento, se agrupan en dos líneas
+verticales.</p>
 <pre class="r"><code>plot(data$costa, data$Voto_PPK_2016_1,
      xlab=&quot;Departamento de la costa&quot;,
      ylab=&quot;Voto a PPK (1era vuelta)&quot;,
      pch=15, ylim=c(0, 30))</code></pre>
 <p><img src="clase13_files/figure-html/grafico-1.png" width="672" /></p>
-<p>En este gráfico también se puede pensar en una mejor recta de predicción, que reduce la distancia de los puntos a la recta. Esta recta atraviesa por la media de cada grupo.</p>
-<p>Por lo tanto, un modelo de regresión que use el voto a PPK en primera vuelta en 2016 como variable dependiente y la variable dicotómica “costa” como variable independiente nos daría los datos para la construcción de esta recta de aproximación.</p>
+<p>En este gráfico también se puede pensar en una mejor recta de
+predicción, que reduce la distancia de los puntos a la recta. Esta recta
+atraviesa por la media de cada grupo.</p>
+<p>Por lo tanto, un modelo de regresión que use el voto a PPK en primera
+vuelta en 2016 como variable dependiente y la variable dicotómica
+“costa” como variable independiente nos daría los datos para la
+construcción de esta recta de aproximación.</p>
 <pre class="r"><code>modelo1 &lt;- lm(data$Voto_PPK_2016_1 ~ data$costa)
 summary(modelo1)</code></pre>
 <pre><code>## 
@@ -473,14 +512,30 @@ summary(modelo1)</code></pre>
 ## Residual standard error: 6.895 on 23 degrees of freedom
 ## Multiple R-squared:  0.1264, Adjusted R-squared:  0.08843 
 ## F-statistic: 3.328 on 1 and 23 DF,  p-value: 0.08111</code></pre>
-<p>Los resultados indican que la recta es <span class="math inline">\(\hat{Y} = 13.9 + 5.2*X\)</span>. Esta recta tiene el valor de 13.9 cuando X=0. Es decir, para los departamentos que no son de la costa, el promedio de voto a PPK es 13.9, tal cual encontramos de manera descriptiva. Cuando X=1, el promedio de voto a PPK es 13.9+5.2 = 19.1, que es el promedio del voto para los departamentos de la costa, el mismo valor que encontramos de manera descriptiva.</p>
-<p>Es decir la recta de aproximación pasa por el promedio del voto a PPK para los departamentos que no son de la costa y para los que sí son de la costa.</p>
-<p>El modelo de regresión no solo replica los datos, sino también replica la prueba de significancia. La hipótesis nula que se evalúa aquí es: <span class="math inline">\(\mu_{costa} - \mu_{no costa}\)</span>.</p>
-<p>El estadístico de la prueba t es -1.82 y un p-value de 0.08. Estos datos también se encuentran en la línea de la variable independiente.</p>
+<p>Los resultados indican que la recta es <span
+class="math inline">\(\hat{Y} = 13.9 + 5.2*X\)</span>. Esta recta tiene
+el valor de 13.9 cuando X=0. Es decir, para los departamentos que no son
+de la costa, el promedio de voto a PPK es 13.9, tal cual encontramos de
+manera descriptiva. Cuando X=1, el promedio de voto a PPK es 13.9+5.2 =
+19.1, que es el promedio del voto para los departamentos de la costa, el
+mismo valor que encontramos de manera descriptiva.</p>
+<p>Es decir la recta de aproximación pasa por el promedio del voto a PPK
+para los departamentos que no son de la costa y para los que sí son de
+la costa.</p>
+<p>El modelo de regresión no solo replica los datos, sino también
+replica la prueba de significancia. La hipótesis nula que se evalúa aquí
+es: <span class="math inline">\(\mu_{costa} - \mu_{no
+costa}\)</span>.</p>
+<p>El estadístico de la prueba t es -1.82 y un p-value de 0.08. Estos
+datos también se encuentran en la línea de la variable
+independiente.</p>
 </div>
 <div id="regresión-lineal-como-anova" class="section level1">
 <h1>Regresión lineal como ANOVA</h1>
-<p>Si quisiéremos evaluar las diferencias en el voto a Fujimori en 2016 entre las 3 regiones: costa, sierra y selva, podríamos usar el test de ANOVA. Se tiene una variable dependiente numérica y una variable independiente nominal con 3 categorías.</p>
+<p>Si quisiéremos evaluar las diferencias en el voto a Fujimori en 2016
+entre las 3 regiones: costa, sierra y selva, podríamos usar el test de
+ANOVA. Se tiene una variable dependiente numérica y una variable
+independiente nominal con 3 categorías.</p>
 <p>Lo primero es ver las medias del voto a Fujimori para cada grupo.</p>
 <pre class="r"><code>mean(data$Voto_KF_2016_1[data$region==1], na.rm=T)</code></pre>
 <pre><code>## [1] 42.8</code></pre>
@@ -488,7 +543,8 @@ summary(modelo1)</code></pre>
 <pre><code>## [1] 31.32</code></pre>
 <pre class="r"><code>mean(data$Voto_KF_2016_1[data$region==3], na.rm=T)</code></pre>
 <pre><code>## [1] 44.85</code></pre>
-<p>Luego, se puede evaluar si alguna de las diferencias entre estas medias es significativa mediante ANOVA.</p>
+<p>Luego, se puede evaluar si alguna de las diferencias entre estas
+medias es significativa mediante ANOVA.</p>
 <pre class="r"><code>anova &lt;- aov(data$Voto_KF_2016_1 ~ as.factor(data$region))
 summary(anova)</code></pre>
 <pre><code>##                        Df Sum Sq Mean Sq F value Pr(&gt;F)  
@@ -507,8 +563,16 @@ summary(anova)</code></pre>
 ## 2-1 -11.48 -23.1187400  0.15874 0.0536664
 ## 3-1   2.05 -11.3005504 15.40055 0.9215488
 ## 3-2  13.53   0.4491855 26.61081 0.0417507</code></pre>
-<p>Recordemos que ANOVA pone a prueba la siguiente hipótesis nula: <span class="math inline">\(\mu_{costa} = \mu_{sierra} = \mu_{selva}\)</span>. De acuerdo al p-value de ANOVA se concluye que debe haber al menos una diferencia significativa. Luego, mediante la prueba de Tukey vemos que existen dos emparejamientos significativos.</p>
-<p>Para replicar estos resultados mediante el análisis de regresión, se tiene que crear variables dummy por cada grupo de la variable “region.” Es decir, 3 variables: “costa,” “sierra” y “selva,” En el modelo de regresión, sin embargo, solo se debe incluir 2 de esas variables dummy (por qué?).</p>
+<p>Recordemos que ANOVA pone a prueba la siguiente hipótesis nula: <span
+class="math inline">\(\mu_{costa} = \mu_{sierra} = \mu_{selva}\)</span>.
+De acuerdo al p-value de ANOVA se concluye que debe haber al menos una
+diferencia significativa. Luego, mediante la prueba de Tukey vemos que
+existen dos emparejamientos significativos.</p>
+<p>Para replicar estos resultados mediante el análisis de regresión, se
+tiene que crear variables dummy por cada grupo de la variable “region”.
+Es decir, 3 variables: “costa”, “sierra” y “selva”, En el modelo de
+regresión, sin embargo, solo se debe incluir 2 de esas variables dummy
+(por qué?).</p>
 <pre class="r"><code>modelo2 &lt;- lm(data$Voto_KF_2016_1 ~  data$costa + data$sierra)
 summary(modelo2)</code></pre>
 <pre><code>## 
@@ -530,57 +594,127 @@ summary(modelo2)</code></pre>
 ## Residual standard error: 10.08 on 22 degrees of freedom
 ## Multiple R-squared:  0.2921, Adjusted R-squared:  0.2277 
 ## F-statistic: 4.538 on 2 and 22 DF,  p-value: 0.02238</code></pre>
-<p>Se excluye la tercera variable dummy debido a que los resultados para este grupo se encuentran en el intercepto en el análisis de regresión. Es decir, cuando costa=0 y sierra=0, el voto promedio a Fujimori es 44.85, mismo valor que se encontró en el análisis descriptivo. Cuando costa=1 y sierra=0, el voto promedio a Fujimori es 44.85-2.05 = 42.8, mismo valor que se encontró en el análisis descriptivo. Finalmente, cuando costa=0 y sierra=1, el voto promedio a Fujimori es 44.85-13.53=31.32, mismo valor que se encontró en el análisis descriptivo.</p>
-<p>Vemos que los coeficientes de las 2 variables dummy son las diferencias entre los grupos. Los valores de 2.05 y 13.53 son los mismos que se evaluaron en el test de Tukey.</p>
+<p>Se excluye la tercera variable dummy debido a que los resultados para
+este grupo se encuentran en el intercepto en el análisis de regresión.
+Es decir, cuando costa=0 y sierra=0, el voto promedio a Fujimori es
+44.85, mismo valor que se encontró en el análisis descriptivo. Cuando
+costa=1 y sierra=0, el voto promedio a Fujimori es 44.85-2.05 = 42.8,
+mismo valor que se encontró en el análisis descriptivo. Finalmente,
+cuando costa=0 y sierra=1, el voto promedio a Fujimori es
+44.85-13.53=31.32, mismo valor que se encontró en el análisis
+descriptivo.</p>
+<p>Vemos que los coeficientes de las 2 variables dummy son las
+diferencias entre los grupos. Los valores de 2.05 y 13.53 son los mismos
+que se evaluaron en el test de Tukey.</p>
 </div>
 <div id="conclusión" class="section level1">
 <h1>Conclusión</h1>
-<p>Hemos comenzado la explicación del análisis de regresión como una forma para evaluar la relación entre dos variables numéricas. En esta sección hemos expandido esta idea y hemos visto que el método de regresión se puede usar con variables independientes de tipo categórico, ya sea nominal u ordinal. El único requisito es que la variable dependiente sea numérica.</p>
+<p>Hemos comenzado la explicación del análisis de regresión como una
+forma para evaluar la relación entre dos variables numéricas. En esta
+sección hemos expandido esta idea y hemos visto que el método de
+regresión se puede usar con variables independientes de tipo categórico,
+ya sea nominal u ordinal. El único requisito es que la variable
+dependiente sea numérica.</p>
 <p>De esta manera, el modelo de regresión se puede expresar</p>
 <p><span class="math display">\[
-\hat{Y} = \hat{\alpha} + \hat{\beta_1}*X_1+\hat{\beta_2}*X_2+\hat{\beta_3}*X_3+...+\hat{\beta_n}*X_n
+\hat{Y} = \hat{\alpha} +
+\hat{\beta_1}*X_1+\hat{\beta_2}*X_2+\hat{\beta_3}*X_3+...+\hat{\beta_n}*X_n
 \]</span></p>
 <p>Los requisitos son:</p>
 <ul>
 <li><p>Y es una variable numérica</p></li>
 <li><p>Xs pueden ser numéricas o categóricas.</p></li>
-<li><p>El número de variables independientes no puede ser mayor que el número de observaciones menos 1 (N-1).</p></li>
+<li><p>El número de variables independientes no puede ser mayor que el
+número de observaciones menos 1 (N-1).</p></li>
 </ul>
-<p>En este curso se ha presentado el análisis de regresión lineal como técnica para evaluar la relación bivariada y para evaluar la relación multivariada. Con la técnica de regresión multivariada se puede analizar:</p>
+<p>En este curso se ha presentado el análisis de regresión lineal como
+técnica para evaluar la relación bivariada y para evaluar la relación
+multivariada. Con la técnica de regresión multivariada se puede
+analizar:</p>
 <ul>
 <li><p>La validez del modelo.</p></li>
-<li><p>La relación de cada predictor con la variable dependiente.</p></li>
-<li><p>La dirección de la relación entre cada predictor y la variable dependiente.</p></li>
+<li><p>La relación de cada predictor con la variable
+dependiente.</p></li>
+<li><p>La dirección de la relación entre cada predictor y la variable
+dependiente.</p></li>
 <li><p>La fuerza del modelo.</p></li>
-<li><p>La predicción del modelo para diferentes valores de los predictores.</p></li>
+<li><p>La predicción del modelo para diferentes valores de los
+predictores.</p></li>
 </ul>
 </div>
 <div id="hacia-el-próximo-ciclo1" class="section level1">
-<h1>Hacia el próximo ciclo<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h1>
-<p>El método de regresión lineal multivariado debe cumplir unos requisitos que no se verán en este curso. Estos requisitos son:</p>
+<h1>Hacia el próximo ciclo<a href="#fn1" class="footnote-ref"
+id="fnref1"><sup>1</sup></a></h1>
+<p>El método de regresión lineal multivariado debe cumplir unos
+requisitos que no se verán en este curso. Estos requisitos son:</p>
 <ul>
-<li><p>Linealidad: que la relación entre las variables sea lineal.</p></li>
-<li><p>Multicolinealidad: los predictores no deben “medir” el mismo concepto. Es decir, variables independientes no deben tener una alta correlación.</p></li>
-<li><p>Heterocedasticidad: los errores deben ser aleatorios y no ser sistemáticos. Si los errores tiene una relación sistemática con los valores de la variable dependiente, se habla de heterocedasticidad.</p></li>
-<li><p>Autocorrelación: en particular cuando se trabaja con una variable temporal. Se dice que hay autocorrelación cuando el valor en t+1 depende del valor de t.</p></li>
+<li><p>Linealidad: que la relación entre las variables sea
+lineal.</p></li>
+<li><p>Multicolinealidad: los predictores no deben “medir” el mismo
+concepto. Es decir, variables independientes no deben tener una alta
+correlación.</p></li>
+<li><p>Heterocedasticidad: los errores deben ser aleatorios y no ser
+sistemáticos. Si los errores tiene una relación sistemática con los
+valores de la variable dependiente, se habla de
+heterocedasticidad.</p></li>
+<li><p>Autocorrelación: en particular cuando se trabaja con una variable
+temporal. Se dice que hay autocorrelación cuando el valor en t+1 depende
+del valor de t.</p></li>
 </ul>
 <p>Estos requisitos se verán en el curso de Estadística 2.</p>
-<p>Otro tema que se verá en el siguiente curso es el modelo que se usa cuando la variable dependiente no es una numérica, sino una variable dicotómica. Cuando tenemos esta variable dependiente se usa un modelo de regresión logística.</p>
+<p>Otro tema que se verá en el siguiente curso es el modelo que se usa
+cuando la variable dependiente no es una numérica, sino una variable
+dicotómica. Cuando tenemos esta variable dependiente se usa un modelo de
+regresión logística.</p>
 </div>
 <div id="resumen" class="section level1">
 <h1>Resumen</h1>
-<p>En esta sección presentamos un mapa de temas que hemos visto a lo largo de todo el semestre. Como se ve en el esquema, las herramientas que hemos visto en el curso dependen de un punto de partida inicial, que es la distinción entre tipos de variables: cualitativas o categóricas y cuantitativas o numéricas. Dependiendo de esta categorización, se desprende el tipo de análisis descriptivo, tanto de la tendencia central, como de la dispersión, así como las formas de graficar estas variables.</p>
-<p>Como paso previo a la inferencia, se construyeron intervalos de confianza de la media (variables cuantitavitas) o de proporciones (variables cualitativas). Se analizó que se podían construir intervalos de confianza de medias o proporciones para grupos. Este es el primer paso de la inferencia. Se evaluó si los intervalos de confianza se traslapaban o no. Esto daba paso al análisis bivariado en la segunda parte del curso.</p>
+<p>En esta sección presentamos un mapa de temas que hemos visto a lo
+largo de todo el semestre. Como se ve en el esquema, las herramientas
+que hemos visto en el curso dependen de un punto de partida inicial, que
+es la distinción entre tipos de variables: cualitativas o categóricas y
+cuantitativas o numéricas. Dependiendo de esta categorización, se
+desprende el tipo de análisis descriptivo, tanto de la tendencia
+central, como de la dispersión, así como las formas de graficar estas
+variables.</p>
+<p>Como paso previo a la inferencia, se construyeron intervalos de
+confianza de la media (variables cuantitavitas) o de proporciones
+(variables cualitativas). Se analizó que se podían construir intervalos
+de confianza de medias o proporciones para grupos. Este es el primer
+paso de la inferencia. Se evaluó si los intervalos de confianza se
+traslapaban o no. Esto daba paso al análisis bivariado en la segunda
+parte del curso.</p>
 <p><img src="Resumen.png" /></p>
-<p>En el libro de Ritchey se muestra este árbol de decisión. La rama derecha de “Dos muestras o dos variables” muestra el resumen de la segunda parte de este curso. Esta segunda parte ha estado dedicada a la inferencia en el análisis bivariado. Como hemos avanzado en este curso, se ha presentado la prueba de inferencia t, la prueba F de ANOVA, la prueba de chi-cuadrado y la regresión bivariada. Luego, se dio el paso al análisis multivariado.</p>
+<p>En el libro de Ritchey se muestra este árbol de decisión. La rama
+derecha de “Dos muestras o dos variables” muestra el resumen de la
+segunda parte de este curso. Esta segunda parte ha estado dedicada a la
+inferencia en el análisis bivariado. Como hemos avanzado en este curso,
+se ha presentado la prueba de inferencia t, la prueba F de ANOVA, la
+prueba de chi-cuadrado y la regresión bivariada. Luego, se dio el paso
+al análisis multivariado.</p>
 <p><img src="arbol.png" /></p>
-<p>Finalmente, el objetivo de este curso es presentar herramientas iniciales para el análisis de datos sociales. Se espera que luego de este curso los alumnos sean consumidores o productores capaces de estadística. Como consumidores, los alumnos van a estar expuestos a literatura especializada que use métodos estadísticos. Las herramientas vistas en este curso permitirían que los alumnos puedan evaluar estos artículos y los hallazgos de manera crítica.</p>
-<p>Como productores, se espera que los alumnos utilicen evidencia numérica y análisis estadístico en sus trabajos de cursos y en sus tesis de pregrado. Ya sea para presentar análisis descriptivo o para realizar análisis inferencial, los alumnos deberían estar en la capacidad de recoger datos numéricos y trabajar con estos usando técnicas vistas en este curso. Es completamente válido que los alumnos usen otros métodos, por ejemplo cualitativos, pero si este curso y el siguiente logran que algunos de ustedes se “atrevan” a usar métodos cuantitativos, ese será el mayor logro de este curso. Gracias!!!</p>
+<p>Finalmente, el objetivo de este curso es presentar herramientas
+iniciales para el análisis de datos sociales. Se espera que luego de
+este curso los alumnos sean consumidores o productores capaces de
+estadística. Como consumidores, los alumnos van a estar expuestos a
+literatura especializada que use métodos estadísticos. Las herramientas
+vistas en este curso permitirían que los alumnos puedan evaluar estos
+artículos y los hallazgos de manera crítica.</p>
+<p>Como productores, se espera que los alumnos utilicen evidencia
+numérica y análisis estadístico en sus trabajos de cursos y en sus tesis
+de pregrado. Ya sea para presentar análisis descriptivo o para realizar
+análisis inferencial, los alumnos deberían estar en la capacidad de
+recoger datos numéricos y trabajar con estos usando técnicas vistas en
+este curso. Es completamente válido que los alumnos usen otros métodos,
+por ejemplo cualitativos, pero si este curso y el siguiente logran que
+algunos de ustedes se “atrevan” a usar métodos cuantitativos, ese será
+el mayor logro de este curso. Gracias!!!</p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>Si aprueban<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Si aprueban<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

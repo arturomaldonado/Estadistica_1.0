@@ -423,50 +423,102 @@ div.tocify {
 
 <div id="pruebas-de-significancia" class="section level1">
 <h1>Pruebas de significancia</h1>
-<p>Es una de las técnicas más usadas para el análisis en ciencias sociales. Sirve, por ejemplo, para comparar entre grupos:</p>
+<p>Es una de las técnicas más usadas para el análisis en ciencias
+sociales. Sirve, por ejemplo, para comparar entre grupos:</p>
 <ul>
 <li><p>Comparar la media de ingresos de hombres y mujeres</p></li>
-<li><p>Comparar la proporción de personas que votarán a candidato X por Lima y en Regiones</p></li>
-<li><p>Comparar los ingresos de profesores en la gestión pública y en la gestión privada</p></li>
+<li><p>Comparar la proporción de personas que votarán a candidato X por
+Lima y en Regiones</p></li>
+<li><p>Comparar los ingresos de profesores en la gestión pública y en la
+gestión privada</p></li>
 </ul>
-<p>La idea es comparar las estimaciones puntuales entre ambos grupos y también poder extrapolar estas diferencias a la población.</p>
-<p>Vamos a comenzar por comparaciones entre solo 2 grupos (por el momento), que corresponde a una variable binaria o dicotómica, como sexo (hombres/mujeres), ámbito (urbano/rural), gestión educativa (pública/privada).</p>
-<p>Para mostrar un ejemplo, vamos a usar el trabajo de <span class="citation">(Galarza, Kogan, and Yamada 2012)</span> que evalúa la discriminación en el mercado laborar entre hombres y mujeres. Estos autores enviaron CVs con exactas cualificaciones a ofertas reales de trabajo, variando solo el nombre del aplicante, con nombres de hombres y mujeres. La variable de respuesta es la tasa de respuesta a estos CVs, es decir, de cuántos CVs enviados se recibió una llamada para una entrevista.</p>
-<p>En cualquier prueba de significancia se tiene que presentar una hipótesis nula, que generalmente es la hipótesis de no diferencias o de no efectos. Este trabajo parte de una idea que existe una discriminación de género en el mercado laboral, por lo que la hipótesis nula indicaría lo contrario. En el caso de este trabajo se tendría:</p>
-<p>H0: Tasa de respuesta a CVs de hombres = Tasa de respuesta a CVs de mujeres</p>
+<p>La idea es comparar las estimaciones puntuales entre ambos grupos y
+también poder extrapolar estas diferencias a la población.</p>
+<p>Vamos a comenzar por comparaciones entre solo 2 grupos (por el
+momento), que corresponde a una variable binaria o dicotómica, como sexo
+(hombres/mujeres), ámbito (urbano/rural), gestión educativa
+(pública/privada).</p>
+<p>Para mostrar un ejemplo, vamos a usar el trabajo de <span
+class="citation">(Galarza, Kogan, and Yamada 2012)</span> que evalúa la
+discriminación en el mercado laborar entre hombres y mujeres. Estos
+autores enviaron CVs con exactas cualificaciones a ofertas reales de
+trabajo, variando solo el nombre del aplicante, con nombres de hombres y
+mujeres. La variable de respuesta es la tasa de respuesta a estos CVs,
+es decir, de cuántos CVs enviados se recibió una llamada para una
+entrevista.</p>
+<p>En cualquier prueba de significancia se tiene que presentar una
+hipótesis nula, que generalmente es la hipótesis de no diferencias o de
+no efectos. Este trabajo parte de una idea que existe una discriminación
+de género en el mercado laboral, por lo que la hipótesis nula indicaría
+lo contrario. En el caso de este trabajo se tendría:</p>
+<p>H0: Tasa de respuesta a CVs de hombres = Tasa de respuesta a CVs de
+mujeres</p>
 <p>o lo que es lo mismo</p>
-<p>H0: Tasa de respuesta a CVs de hombres - Tasa de respuesta a CVs de mujeres = 0</p>
+<p>H0: Tasa de respuesta a CVs de hombres - Tasa de respuesta a CVs de
+mujeres = 0</p>
 <p>En ese trabajo se presenta el siguiente cuadro de resultados:</p>
 <p><img src="Galarza.png" width="435" /></p>
-<p>En la muestra total de 2,228 CVs enviados, mitad de CVs con nombres de hombres y la otra mitad con nombres de mujeres, todos con las mismas cualificacions, se tiene que la tasa de respuesta para los CVs de hombres es 13.4% y para los CVs de mujeres es 11.1%.</p>
-<p>De acuerdo a las estimaciones puntuales, efectivamente, los hombres tienen una mayor tasa de respuesta a sus CVs que las mujeres, a iguales cualificaciones. Esta conclusión, sin embargo, es solo para las 2,228 observaciones de la muestra. ¿Cómo extrapolar esta conclusión a la población? ¿Toda diferencia puntual se validaría en la población?</p>
+<p>En la muestra total de 2,228 CVs enviados, mitad de CVs con nombres
+de hombres y la otra mitad con nombres de mujeres, todos con las mismas
+cualificacions, se tiene que la tasa de respuesta para los CVs de
+hombres es 13.4% y para los CVs de mujeres es 11.1%.</p>
+<p>De acuerdo a las estimaciones puntuales, efectivamente, los hombres
+tienen una mayor tasa de respuesta a sus CVs que las mujeres, a iguales
+cualificaciones. Esta conclusión, sin embargo, es solo para las 2,228
+observaciones de la muestra. ¿Cómo extrapolar esta conclusión a la
+población? ¿Toda diferencia puntual se validaría en la población?</p>
 </div>
-<div id="comparación-de-intervalos-de-confianza-por-grupos" class="section level1">
+<div id="comparación-de-intervalos-de-confianza-por-grupos"
+class="section level1">
 <h1>Comparación de intervalos de confianza por grupos</h1>
-<p>Una primera forma “informal” para extrapolar las diferencias en las estimaciones puntuales de la muestra a la población es construyendo los intervalos de confianza para la media o para la proporción por cada uno de los subgrupos.</p>
-<p>En este caso, por ejemplo, significaría construir el IC de la tasa de respuesta para hombre y mujeres.</p>
-<p>Pregunta: ¿Se pueden construir los IC de cada grupo con los datos de la tabla?</p>
-<p>Cada IC sería una extrapolación del parámetro, es decir, el rango de valores de la tasa de respuesta a los CVs de hombres para todo el mercado laboral al 95% de confianza. Lo mismo para la tasa de respuesta de las mujeres.</p>
-<p>Una vez construidos los IC, se analiza si estos intervalos se cruzan o no se cruzan. La regla de decisión “informal” es:</p>
+<p>Una primera forma “informal” para extrapolar las diferencias en las
+estimaciones puntuales de la muestra a la población es construyendo los
+intervalos de confianza para la media o para la proporción por cada uno
+de los subgrupos.</p>
+<p>En este caso, por ejemplo, significaría construir el IC de la tasa de
+respuesta para hombre y mujeres.</p>
+<p>Pregunta: ¿Se pueden construir los IC de cada grupo con los datos de
+la tabla?</p>
+<p>Cada IC sería una extrapolación del parámetro, es decir, el rango de
+valores de la tasa de respuesta a los CVs de hombres para todo el
+mercado laboral al 95% de confianza. Lo mismo para la tasa de respuesta
+de las mujeres.</p>
+<p>Una vez construidos los IC, se analiza si estos intervalos se cruzan
+o no se cruzan. La regla de decisión “informal” es:</p>
 <ul>
-<li><p>Si los IC de ambos grupos se cruzan, entonces no se puede afirmar que el parámetro de un grupo sea mayor o menos que el parámetro del otro grupo.</p></li>
-<li><p>Si los IC de ambos grupos NO se cruzan, entonces se puede afirmar, al 95% de confianza, que el parámetro de un grupo es mayor/menor al parámetro del otro grupo.</p></li>
+<li><p>Si los IC de ambos grupos se cruzan, entonces no se puede afirmar
+que el parámetro de un grupo sea mayor o menos que el parámetro del otro
+grupo.</p></li>
+<li><p>Si los IC de ambos grupos NO se cruzan, entonces se puede
+afirmar, al 95% de confianza, que el parámetro de un grupo es
+mayor/menor al parámetro del otro grupo.</p></li>
 </ul>
 <div id="ejemplo" class="section level2">
 <h2>Ejemplo</h2>
-<p>Siguiendo con el ejemplo de <span class="citation">(LaLonde 1986)</span>, la hipótesis que se puede evaluar es si los ingresos de aquellos que participaron del programa son mayores que los ingresos de aquellos que no participaron (y fueron parte del grupo control).</p>
+<p>Siguiendo con el ejemplo de <span class="citation">(LaLonde
+1986)</span>, la hipótesis que se puede evaluar es si los ingresos de
+aquellos que participaron del programa son mayores que los ingresos de
+aquellos que no participaron (y fueron parte del grupo control).</p>
 <pre class="r"><code>library(rio)
 LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
-<p>Para esto, lo primero que debemos comparar son las estimaciones puntuales de ambos grupos. La hipótesis nula sería:</p>
-<p>H0: Promedio de ingresos de participantes del programa = Promedio de ingresos de no participantes del programa</p>
+<p>Para esto, lo primero que debemos comparar son las estimaciones
+puntuales de ambos grupos. La hipótesis nula sería:</p>
+<p>H0: Promedio de ingresos de participantes del programa = Promedio de
+ingresos de no participantes del programa</p>
 <pre class="r"><code>mean(LL$re78)</code></pre>
 <pre><code>## [1] 5454.636</code></pre>
 <pre class="r"><code>mean(LL$re78[LL$treated==0])</code></pre>
 <pre><code>## [1] 5090.048</code></pre>
 <pre class="r"><code>mean(LL$re78[LL$treated==1])</code></pre>
 <pre><code>## [1] 5976.352</code></pre>
-<p>Si comparamos las estimaciones puntuales, vemos que aquellos que fueron parte del programa de capacitación obtuvieron en promedio mayores ingresos ($5,976) que aquellos que no fueron parte ($5,090). La pregunta que surge es si esa conclusión (que aquellos que fueron parte del programa ganan más en promedio que aquellos que no) es extrapolable a la población.</p>
-<p>Para una comparación “informal” se tiene que calcular los IC de cada grupo.</p>
+<p>Si comparamos las estimaciones puntuales, vemos que aquellos que
+fueron parte del programa de capacitación obtuvieron en promedio mayores
+ingresos ($5,976) que aquellos que no fueron parte ($5,090). La pregunta
+que surge es si esa conclusión (que aquellos que fueron parte del
+programa ganan más en promedio que aquellos que no) es extrapolable a la
+población.</p>
+<p>Para una comparación “informal” se tiene que calcular los IC de cada
+grupo.</p>
 <pre class="r"><code>library(lsr)
 ciMean(LL$re78[LL$treated==0])</code></pre>
 <pre><code>##          2.5%    97.5%
@@ -475,11 +527,21 @@ ciMean(LL$re78[LL$treated==0])</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 5185.685 6767.019</code></pre>
 <ul>
-<li><p>El IC al 95% de confianza para aquellos que no participaron del programa es <span class="math display">\[4544.9 - 5635.2\]</span></p></li>
-<li><p>El IC al 95% de confianza para aquellos que sí participaron del programa es <span class="math display">\[5185.7 - 6767.0\]</span></p></li>
+<li><p>El IC al 95% de confianza para aquellos que no participaron del
+programa es <span class="math display">\[4544.9 -
+5635.2\]</span></p></li>
+<li><p>El IC al 95% de confianza para aquellos que sí participaron del
+programa es <span class="math display">\[5185.7 -
+6767.0\]</span></p></li>
 </ul>
-<p>Como ambos intervalos se cruzan (el mayor valor del primer IC, 5635.2, está dentro del rango de valores del segundo IC), entonces no se puede decir que esas diferencias se mantengan en la población (sería como un “empate técnico”).</p>
-<p>Este tipo de comparación se puede hacer también con respecto a otras variables, como las sociodemográficas. Por ejemplo, si un investigador quisiera evaluar si los afroamericanos ganan en promedio menos que los que no son afroamericanos, podría comparar los IC de ambos grupos.</p>
+<p>Como ambos intervalos se cruzan (el mayor valor del primer IC,
+5635.2, está dentro del rango de valores del segundo IC), entonces no se
+puede decir que esas diferencias se mantengan en la población (sería
+como un “empate técnico”).</p>
+<p>Este tipo de comparación se puede hacer también con respecto a otras
+variables, como las sociodemográficas. Por ejemplo, si un investigador
+quisiera evaluar si los afroamericanos ganan en promedio menos que los
+que no son afroamericanos, podría comparar los IC de ambos grupos.</p>
 <pre class="r"><code>ciMean(LL$re78[LL$black==0])</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 5823.747 7672.321</code></pre>
@@ -487,13 +549,23 @@ ciMean(LL$re78[LL$treated==0])</code></pre>
 <pre><code>##          2.5%   97.5%
 ## [1,] 4612.291 5652.52</code></pre>
 <ul>
-<li><p>El IC al 95% de confianza del ingreso en 1978 para los no afroamericanos es <span class="math display">\[5823.7 - 7672.3\]</span></p></li>
-<li><p>El IC al 95% de confianza del ingreso en 1978 para los afroamericanos es <span class="math display">\[4612.3 - 5652.5\]</span></p></li>
+<li><p>El IC al 95% de confianza del ingreso en 1978 para los no
+afroamericanos es <span class="math display">\[5823.7 -
+7672.3\]</span></p></li>
+<li><p>El IC al 95% de confianza del ingreso en 1978 para los
+afroamericanos es <span class="math display">\[4612.3 -
+5652.5\]</span></p></li>
 </ul>
-<p>En este caso, el mayor valor del IC al 95% de los ingresos para los afroamericanos es 5652.5, que es menor al menor valor del IC al 95% de los no afroamericanos. Es decir, ambos IC no se cruzan, por lo que se puede afirmar “informalmente” que estas diferencias son estadísticamente significativas (o extrapolables a la población) al 95% de confianza.</p>
-<p>También podemos usar la base de datos de la Encuesta Nacional Docente 2020. Lo primero es cargar la base de datos.</p>
+<p>En este caso, el mayor valor del IC al 95% de los ingresos para los
+afroamericanos es 5652.5, que es menor al menor valor del IC al 95% de
+los no afroamericanos. Es decir, ambos IC no se cruzan, por lo que se
+puede afirmar “informalmente” que estas diferencias son estadísticamente
+significativas (o extrapolables a la población) al 95% de confianza.</p>
+<p>También podemos usar la base de datos de la Encuesta Nacional Docente
+2020. Lo primero es cargar la base de datos.</p>
 <pre class="r"><code>endo2020 = import(&quot;bases/ENDO_REMOTO_2020.dta&quot;)</code></pre>
-<p>Con esta base se pueden calcular los intervalos de confianza del número de alumnos que acompañan los docentes hombres y mujeres.</p>
+<p>Con esta base se pueden calcular los intervalos de confianza del
+número de alumnos que acompañan los docentes hombres y mujeres.</p>
 <pre class="r"><code>ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 50.74019 53.75471</code></pre>
@@ -501,16 +573,22 @@ ciMean(LL$re78[LL$treated==0])</code></pre>
 <pre><code>##          2.5%    97.5%
 ## [1,] 33.29933 34.83182</code></pre>
 <ul>
-<li><p>El IC al 95% de confianza del número de alumnos para los docentes hombres es <span class="math display">\[50.7 - 53.8\]</span></p></li>
-<li><p>El IC al 95% de confianza del número de alumnos para las docentes mujeres es <span class="math display">\[33.3 - 34.8\]</span></p></li>
+<li><p>El IC al 95% de confianza del número de alumnos para los docentes
+hombres es <span class="math display">\[50.7 - 53.8\]</span></p></li>
+<li><p>El IC al 95% de confianza del número de alumnos para las docentes
+mujeres es <span class="math display">\[33.3 - 34.8\]</span></p></li>
 </ul>
-<p>Como ambos intervalos no se cruzan, podemos afirmar preliminarmente que los docentes hombres atienden a más alumnos en aula en promedio que las docentes mujeres en el Perú.</p>
-<p>Esta comparación entre grupos también se puede ver de manera visual, en un gráfico de los IC.</p>
+<p>Como ambos intervalos no se cruzan, podemos afirmar preliminarmente
+que los docentes hombres atienden a más alumnos en aula en promedio que
+las docentes mujeres en el Perú.</p>
+<p>Esta comparación entre grupos también se puede ver de manera visual,
+en un gráfico de los IC.</p>
 </div>
 </div>
 <div id="gráfico-de-ic-para-comparar-medias" class="section level1">
 <h1>Gráfico de IC para comparar medias</h1>
-<p>La forma más estándar para graficar los IC por grupo es usando el comando <code>plotmeans</code>.</p>
+<p>La forma más estándar para graficar los IC por grupo es usando el
+comando <code>plotmeans</code>.</p>
 <pre class="r"><code>library(gplots)</code></pre>
 <pre><code>## Registered S3 method overwritten by &#39;gplots&#39;:
 ##   method         from     
@@ -529,16 +607,24 @@ ciMean(LL$re78[LL$treated==0])</code></pre>
           mean.labels = T, digits = 1,
           connect = F)</code></pre>
 <p><img src="clase4_files/figure-html/grafico%20IC-1.png" width="672" /></p>
-<p>En este gráfico se observa el valor del ingreso promedio por cada grupo y los intervalos para cada grupo. Se esta manera se puede comparar visualmente que ambos IC se cruzan, por lo que no se puede decir que el ingreso promedio entre ambos grupos sea diferente.</p>
-<p>Lo mismo se puede hacer para los IC de ingresos entre afroamericanos y otros.</p>
+<p>En este gráfico se observa el valor del ingreso promedio por cada
+grupo y los intervalos para cada grupo. Se esta manera se puede comparar
+visualmente que ambos IC se cruzan, por lo que no se puede decir que el
+ingreso promedio entre ambos grupos sea diferente.</p>
+<p>Lo mismo se puede hacer para los IC de ingresos entre afroamericanos
+y otros.</p>
 <pre class="r"><code>plotmeans(LL$re78~LL$black, 
           xlab=&quot;Afroamericano&quot;, ylab=&quot;Ingreso 1978&quot;,
           ylim = c(0,8000),
           mean.labels = T, digits = 1,
           connect = F)</code></pre>
 <p><img src="clase4_files/figure-html/grafico%20IC%20afro-1.png" width="672" /></p>
-<p>Como se observa en el gráfico, los IC de los ingresos entre afroamericanos y los no afroamericanos no se traslapan, por lo que se puede concluir gráficamente que estas diferencias son estadísticamente significativos al 95% de confianza en la población.</p>
-<p>También podemos graficar los resultados del número de alumnos que atienden en aula los docentes hombres y mujeres.</p>
+<p>Como se observa en el gráfico, los IC de los ingresos entre
+afroamericanos y los no afroamericanos no se traslapan, por lo que se
+puede concluir gráficamente que estas diferencias son estadísticamente
+significativos al 95% de confianza en la población.</p>
+<p>También podemos graficar los resultados del número de alumnos que
+atienden en aula los docentes hombres y mujeres.</p>
 <pre class="r"><code>plotmeans(endo2020$P1_6~endo2020$P1_1, 
           xlab=&quot;Género del docente&quot;, ylab=&quot;Alumnos&quot;,
           ylim = c(0,60),
@@ -557,8 +643,14 @@ ciMean(LL$re78[LL$treated==0])</code></pre>
 <p><img src="clase4_files/figure-html/grafico%20IC%20docente-1.png" width="672" /></p>
 <div id="otra-forma-de-graficar" class="section level2">
 <h2>Otra forma de graficar</h2>
-<p>Además del comando <code>plotmeans</code>, también se puede usar la librería <code>ggplot</code> para configurar gráficos con más opciones gráficas.</p>
-<p>Lo primero es crear un objeto con los resultados de la comparación de medias entre grupos. Ahora vamos a evaluar la diferencia de medias entre latinos y no latinos. Para hacer esta comparación, se usará el comando <code>group.CI</code> de la librería <code>Rmisc</code>, que es otra manera de calcular los límites de los IC.</p>
+<p>Además del comando <code>plotmeans</code>, también se puede usar la
+librería <code>ggplot</code> para configurar gráficos con más opciones
+gráficas.</p>
+<p>Lo primero es crear un objeto con los resultados de la comparación de
+medias entre grupos. Ahora vamos a evaluar la diferencia de medias entre
+latinos y no latinos. Para hacer esta comparación, se usará el comando
+<code>group.CI</code> de la librería <code>Rmisc</code>, que es otra
+manera de calcular los límites de los IC.</p>
 <pre class="r"><code>library(Rmisc)</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
 <pre><code>## Loading required package: plyr</code></pre>
@@ -581,7 +673,8 @@ ing.latino</code></pre>
 <pre><code>##   hispanic re78.upper re78.mean re78.lower
 ## 1        0   5826.962  5337.184   4847.406
 ## 2        1   7686.162  6452.976   5219.789</code></pre>
-<p>Se puede usar ese nuevo objeto “ing.latino” para crear el gráfico con la librería <code>ggplot</code>, guardándolo en un objeto “graf1.”</p>
+<p>Se puede usar ese nuevo objeto “ing.latino” para crear el gráfico con
+la librería <code>ggplot</code>, guardándolo en un objeto “graf1”.</p>
 <pre class="r"><code>library(ggplot2)
 graf1 &lt;- ggplot(ing.latino, aes(x=hispanic, y=re78.mean))+
   geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
@@ -591,14 +684,20 @@ graf1 &lt;- ggplot(ing.latino, aes(x=hispanic, y=re78.mean))+
   ylim(0, 8000)
 graf1</code></pre>
 <p><img src="clase4_files/figure-html/grafico%20ggplot-1.png" width="672" /></p>
-<p>En el gráfico se observa que puntualmente los latinos tienen ingresos promedio más altos que los no latinos; sin embargo, los IC se traslapan por lo que no se puede afirmar que las medias entre grupos sean diferentes.</p>
-<p>De la misma manera, para graficas el número de alumnos que atienden los docentes hombre y mujeres, lo primero es crear una tabla con los resultados y guardarla en un objeto.</p>
+<p>En el gráfico se observa que puntualmente los latinos tienen ingresos
+promedio más altos que los no latinos; sin embargo, los IC se traslapan
+por lo que no se puede afirmar que las medias entre grupos sean
+diferentes.</p>
+<p>De la misma manera, para graficas el número de alumnos que atienden
+los docentes hombre y mujeres, lo primero es crear una tabla con los
+resultados y guardarla en un objeto.</p>
 <pre class="r"><code>alum &lt;- group.CI(P1_6~P1_1, endo2020)
 alum</code></pre>
 <pre><code>##   P1_1 P1_6.upper P1_6.mean P1_6.lower
 ## 1    1   53.75471  52.24745   50.74019
 ## 2    2   34.83182  34.06558   33.29933</code></pre>
-<p>Luego, usamos este objeto para crear el gráfico con la librería <code>ggplot</code>.</p>
+<p>Luego, usamos este objeto para crear el gráfico con la librería
+<code>ggplot</code>.</p>
 <pre class="r"><code>graf2 &lt;- ggplot(alum, aes(x=P1_1, y=P1_6.mean))+
   geom_bar(width=0.5, fill=&quot;darkcyan&quot;, colour=&quot;black&quot;, stat=&quot;identity&quot;)+
   geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
@@ -607,22 +706,36 @@ alum</code></pre>
   ylim(0, 60)
 graf2</code></pre>
 <p><img src="clase4_files/figure-html/grafico%20ggplot%20docentes-1.png" width="672" /></p>
-<p>¿Por qué la variable género presenta los valores 1.0 y 2.0, con 1.5 en medio?</p>
+<p>¿Por qué la variable género presenta los valores 1.0 y 2.0, con 1.5
+en medio?</p>
 </div>
 </div>
 <div id="nota-final" class="section level1">
 <h1>Nota final</h1>
-<p>La comparación de IC, ya sea calculando los valores para cada grupo o ya sea de manera gráfica, es una primera manera de analizar si las diferencias entre grupos se pueden extrapolar a la población.</p>
-<p>Pero esta es una manera “informal” de hacer esta comparación. Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias, que se verá en la siguiente sesión.</p>
+<p>La comparación de IC, ya sea calculando los valores para cada grupo o
+ya sea de manera gráfica, es una primera manera de analizar si las
+diferencias entre grupos se pueden extrapolar a la población.</p>
+<p>Pero esta es una manera “informal” de hacer esta comparación. Para
+formalizar esta comparación existe una prueba estadística llamada prueba
+t de diferencias de medias, que se verá en la siguiente sesión.</p>
 </div>
 <div id="bibliografía" class="section level1 unnumbered">
 <h1 class="unnumbered">Bibliografía</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-galarzaDetectandoDiscriminacionSexual2012" class="csl-entry">
-Galarza, Francisco, Liuba Kogan, and Gustavo Yamada. 2012. <span>“Detectando Discriminación Sexual y Racial En El Mercado Laboral de <span>Lima</span>.”</span> In <em>Chapters of <span>Books</span></em>, 1:103–35. <span>Fondo Editorial, Universidad del Pacífico</span>.
+<div id="ref-galarzaDetectandoDiscriminacionSexual2012"
+class="csl-entry">
+Galarza, Francisco, Liuba Kogan, and Gustavo Yamada. 2012.
+<span>“Detectando Discriminación Sexual y Racial En El Mercado Laboral
+de <span>Lima</span>.”</span> In <em>Chapters of
+<span>Books</span></em>, 1:103–35. <span>Fondo Editorial, Universidad
+del Pacífico</span>.
 </div>
-<div id="ref-lalondeEvaluatingEconometricEvaluations1986" class="csl-entry">
-LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations of Training Programs with Experimental Data.”</span> <em>The American Economic Review</em> 76 (4): 604–20. <a href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
+<div id="ref-lalondeEvaluatingEconometricEvaluations1986"
+class="csl-entry">
+LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations
+of Training Programs with Experimental Data.”</span> <em>The American
+Economic Review</em> 76 (4): 604–20. <a
+href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
 </div>
 </div>
 </div>

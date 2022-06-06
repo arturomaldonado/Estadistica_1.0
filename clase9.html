@@ -400,108 +400,192 @@ div.tocify {
 
 <div id="introducción" class="section level1">
 <h1>Introducción</h1>
-<p>El tema de la semana es la correlación y a la regresión lineal simple. Este es un método para analizar la relación entre dos variables cuantitativas: una dependiente y una independiente.</p>
-<p>Recordemos que el método del chi-cuadrado se trataba de analizar la relación entre dos variables cualitativas. La prueba t y ANOVA tienen una variable dependiente cuantitativa y una variable independiente cualitativa. La correlación es una extensión de esta serie de relaciones. El método de regresión lineal es un método generalizado, que, luego veremos, incluye a la prueba t y a ANOVA.</p>
-<p>La correlación se trata de la evaluación del cambio sistemático en las puntuaciones de dos variables numéricas (discretas o continuas, de intervalo o de razón).</p>
-<p>Con el método de la regresión lineal se puede responder las siguientes preguntas:</p>
+<p>El tema de la semana es la correlación y a la regresión lineal
+simple. Este es un método para analizar la relación entre dos variables
+cuantitativas: una dependiente y una independiente.</p>
+<p>Recordemos que el método del chi-cuadrado se trataba de analizar la
+relación entre dos variables cualitativas. La prueba t y ANOVA tienen
+una variable dependiente cuantitativa y una variable independiente
+cualitativa. La correlación es una extensión de esta serie de
+relaciones. El método de regresión lineal es un método generalizado,
+que, luego veremos, incluye a la prueba t y a ANOVA.</p>
+<p>La correlación se trata de la evaluación del cambio sistemático en
+las puntuaciones de dos variables numéricas (discretas o continuas, de
+intervalo o de razón).</p>
+<p>Con el método de la regresión lineal se puede responder las
+siguientes preguntas:</p>
 <ul>
-<li><p>Analizar si hay una <strong>asociación</strong> entre las variables mediante un test de independencia estadística.</p></li>
-<li><p>Analizar la <strong>dirección</strong> de la asociación (directa o inversa).</p></li>
-<li><p>Evaluar la <strong>fuerza</strong> de la asociación usando una medida de asociación llamada <strong>correlación de Pearson.</strong></p></li>
-<li><p>Estimar una ecuación de regresión que “<strong>predice</strong>” los valores de la variable dependiente para valores de la variable independiente.</p></li>
+<li><p>Analizar si hay una <strong>asociación</strong> entre las
+variables mediante un test de independencia estadística.</p></li>
+<li><p>Analizar la <strong>dirección</strong> de la asociación (directa
+o inversa).</p></li>
+<li><p>Evaluar la <strong>fuerza</strong> de la asociación usando una
+medida de asociación llamada <strong>correlación de
+Pearson.</strong></p></li>
+<li><p>Estimar una ecuación de regresión que “<strong>predice</strong>”
+los valores de la variable dependiente para valores de la variable
+independiente.</p></li>
 </ul>
 </div>
 <div id="espacio-cartesiano" class="section level1">
 <h1>Espacio cartesiano</h1>
-<p>Se trata de un espacio formado por dos ejes perpendiculares, el eje X (horizontal) y el eje Y (vertical). Cada uno de estos ejes se puede tratar como una regla donde se pueden mapear variables.</p>
+<p>Se trata de un espacio formado por dos ejes perpendiculares, el eje X
+(horizontal) y el eje Y (vertical). Cada uno de estos ejes se puede
+tratar como una regla donde se pueden mapear variables.</p>
 <p>Por ejemplo:</p>
 <ul>
-<li><p>En el eje X se puede mapear la variable edad (variable numérica discreta). La regla podría partir desde cero si se recoge información que incluye a niños o podría partir desde 18 si se recoge información de mayores de edad.</p></li>
-<li><p>En el eje Y se puede mapear la variable estatura (variable numérica continua).</p></li>
-<li><p>Si se combinan ambos ejes se forma el espacio, donde cada individuo estará mapeado, con sus datos de peso y de estatura como coordenadas de ubicación en este espacio.</p></li>
-<li><p>El conjunto de individuos (o puntos) formará una “nube” de puntos en este espacio. Este tipo de gráfico se llama Gráfico o Diagrama de Dispersión.</p></li>
+<li><p>En el eje X se puede mapear la variable edad (variable numérica
+discreta). La regla podría partir desde cero si se recoge información
+que incluye a niños o podría partir desde 18 si se recoge información de
+mayores de edad.</p></li>
+<li><p>En el eje Y se puede mapear la variable estatura (variable
+numérica continua).</p></li>
+<li><p>Si se combinan ambos ejes se forma el espacio, donde cada
+individuo estará mapeado, con sus datos de peso y de estatura como
+coordenadas de ubicación en este espacio.</p></li>
+<li><p>El conjunto de individuos (o puntos) formará una “nube” de puntos
+en este espacio. Este tipo de gráfico se llama Gráfico o Diagrama de
+Dispersión.</p></li>
 </ul>
 <p><img src="9.1.png" width="488" /></p>
-<p>Ahora presentaremos un ejemplo más político. Esta base incluye información a nivel departamental, sociodemográfica y electoral de 2016, todas variables numéricas.</p>
+<p>Ahora presentaremos un ejemplo más político. Esta base incluye
+información a nivel departamental, sociodemográfica y electoral de 2016,
+todas variables numéricas.</p>
 <pre class="r"><code>library(rio)
 data &lt;- import(&quot;bases/datos2016_v3.sav&quot;)</code></pre>
-<p>Para empezar usaremos dos variables para general el gráfico de dispersión:</p>
+<p>Para empezar usaremos dos variables para general el gráfico de
+dispersión:</p>
 <ul>
-<li><p>En el eje X se mapeará el porcentaje de hogares con acceso a internet (variable: Porc_Uso_internet).</p></li>
-<li><p>En el eje Y se mapeará el porcentaje de voto a PPK en primera vuelta de 2016 (variable: Voto_PPK_2016_1).</p></li>
+<li><p>En el eje X se mapeará el porcentaje de hogares con acceso a
+internet (variable: Porc_Uso_internet).</p></li>
+<li><p>En el eje Y se mapeará el porcentaje de voto a PPK en primera
+vuelta de 2016 (variable: Voto_PPK_2016_1).</p></li>
 </ul>
-<p>Para construir el gráfico de dispersión usaremos el comando <code>plot</code> que permite incluir ambas variables.</p>
+<p>Para construir el gráfico de dispersión usaremos el comando
+<code>plot</code> que permite incluir ambas variables.</p>
 <pre class="r"><code>plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab=&quot;Porcentaje de familias con conexión a internet por departamento&quot;,
      ylab=&quot;Voto a PPK (1era vuelta)&quot;,
      pch=15, xlim=c(0,60), ylim=c(0, 30))
 text(data$Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)</code></pre>
 <p><img src="clase9_files/figure-html/dispersion-1.png" width="672" /></p>
-<p>Esta “nube” de puntos nos dan una idea visual de la probable relación entre las variables. En estos casos vemos que las variables forman un patrón ascendente positivo: a medida que los departamentos reportan un mayor porcentaje de familias con conexión a internet, también se observa un mayor porcentaje de voto a PPK en 2016.</p>
+<p>Esta “nube” de puntos nos dan una idea visual de la probable relación
+entre las variables. En estos casos vemos que las variables forman un
+patrón ascendente positivo: a medida que los departamentos reportan un
+mayor porcentaje de familias con conexión a internet, también se observa
+un mayor porcentaje de voto a PPK en 2016.</p>
 </div>
 <div id="relación-lineal" class="section level1">
 <h1>Relación lineal</h1>
-<p>Esta probable relación entre estas dos variables se resumen/simplifica mediante una aproximación lineal. Es decir, mediante una recta de aproximación.</p>
+<p>Esta probable relación entre estas dos variables se
+resumen/simplifica mediante una aproximación lineal. Es decir, mediante
+una recta de aproximación.</p>
 <div id="ecuación-de-la-recta" class="section level2">
 <h2>Ecuación de la recta</h2>
-<p>Se tiene que recordar que una recta tiene la forma <span class="math inline">\(Y = a + bX\)</span>, donde “a” es la constante y “b” es la pendiente. Cualquier recta puede ser graficada con diferentes valores de a y b.</p>
+<p>Se tiene que recordar que una recta tiene la forma <span
+class="math inline">\(Y = a + bX\)</span>, donde “a” es la constante y
+“b” es la pendiente. Cualquier recta puede ser graficada con diferentes
+valores de a y b.</p>
 <p>La relación entre las variables depende de la pendiente:</p>
 <ul>
-<li><p>Si b es positivo, Y aumenta cuando X aumenta. Es una relación directa / positiva.</p></li>
-<li><p>Si b es negativo, Y aumenta cuando X disminuye. Es una relación inversa / negativa.</p></li>
-<li><p>Si b es cero. Y no cambia cuando X varía. No existe relación entre las variables.</p></li>
+<li><p>Si b es positivo, Y aumenta cuando X aumenta. Es una relación
+directa / positiva.</p></li>
+<li><p>Si b es negativo, Y aumenta cuando X disminuye. Es una relación
+inversa / negativa.</p></li>
+<li><p>Si b es cero. Y no cambia cuando X varía. No existe relación
+entre las variables.</p></li>
 </ul>
-<p>Como dijimos, la “nube” de puntos se modela mediante una recta. Esta recta de aproximación tiene la forma <span class="math inline">\(\hat{Y} = \hat{\alpha} + \hat{\beta}*X\)</span></p>
-<p>Los valores que tiene el “sombrero” son datos que se calculan con los datos observados. Una vez estimados estos valores (se verá la lógica en un momento), se puede estimar cualquier Y (por eso tiene también “sombrero”) para cualquier valor de X.</p>
-<p>En nuestro ejemplo, se le puede pedir a R que incluya la recta de aproximación en el gráfico de dispersión mediante el comando <code>abline</code> donde se anida el comando <code>lm</code>, que se usa para calcular un modelo lineal (que veremos en un momento)</p>
+<p>Como dijimos, la “nube” de puntos se modela mediante una recta. Esta
+recta de aproximación tiene la forma <span class="math inline">\(\hat{Y}
+= \hat{\alpha} + \hat{\beta}*X\)</span></p>
+<p>Los valores que tiene el “sombrero” son datos que se calculan con los
+datos observados. Una vez estimados estos valores (se verá la lógica en
+un momento), se puede estimar cualquier Y (por eso tiene también
+“sombrero”) para cualquier valor de X.</p>
+<p>En nuestro ejemplo, se le puede pedir a R que incluya la recta de
+aproximación en el gráfico de dispersión mediante el comando
+<code>abline</code> donde se anida el comando <code>lm</code>, que se
+usa para calcular un modelo lineal (que veremos en un momento)</p>
 <pre class="r"><code>plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab=&quot;Porcentaje de familias con conexión a internet por departamento&quot;,
      ylab=&quot;Voto a PPK (1era vuelta)&quot;,
      pch=19, xlim=c(0,60), ylim=c(0, 30))
 abline(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))</code></pre>
 <p><img src="clase9_files/figure-html/recta-1.png" width="672" /></p>
-<p>¿Cómo se calcula que ESA es la recta de aproximación, y no otra? La recta calculada se define como aquella que minimiza los residuos.</p>
+<p>¿Cómo se calcula que ESA es la recta de aproximación, y no otra? La
+recta calculada se define como aquella que minimiza los residuos.</p>
 </div>
 </div>
 <div id="residuos-o-errores" class="section level1">
 <h1>Residuos o errores</h1>
-<p>Se trata de la diferencia entre el valor observado y el valor calculado por la recta: <span class="math inline">\(Y - \hat{Y}\)</span></p>
-<p>Es decir, cada observación tiene un residuo, que sería visualmente, la distancia vertical del punto a la recta de aproximación.</p>
+<p>Se trata de la diferencia entre el valor observado y el valor
+calculado por la recta: <span class="math inline">\(Y -
+\hat{Y}\)</span></p>
+<p>Es decir, cada observación tiene un residuo, que sería visualmente,
+la distancia vertical del punto a la recta de aproximación.</p>
 <pre class="r"><code>plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab=&quot;Porcentaje de familias con conexión a internet por departamento&quot;,
      ylab=&quot;Voto a PPK (1era vuelta)&quot;,
      pch=19, xlim=c(0,60), ylim=c(0, 30))
 abline(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
+#Este código de abajo no se evaluará
 fitted &lt;- predict(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
 for (i in 1:25) {
   lines( c(data$Uso_internet[i], data$Uso_internet[i]), c(data$Voto_PPK_2016_1[i], fitted[i]), col=&quot;blue&quot;)
 }</code></pre>
 <p><img src="clase9_files/figure-html/residuos-1.png" width="672" /></p>
-<p>Cada punto se aproxima o se aleja más de la recta de aproximación. Estas distancias se pueden sumar para darnos una idea de qué tan bien esta recta “resume” la distribución de los datos.</p>
-<p>Se define la recta de aproximación como la recta que minimiza esta suma de residuos. Es decir, cualquier otra recta tendría una mayor suma de esas líneas azules. Esta recta tiene una ecuación de la recta, con una constante y una pendiente específica. De manera formal la suma se hace de los residuos al cuadrado para evitar los valores negativos</p>
-<pre class="r"><code>sum(data$Residuo^2)</code></pre>
-<pre><code>## [1] 0</code></pre>
-<p>Se puede comparar esta suma de residuos al cuadrado con los residuos que generan otra recta. Una forma de “predecir” el voto a PPK si no se tuviera información sería solo mediante el promedio del voto a PPK. El voto promedio a PPK es 15.7%. Sin otra información esta sería la mejor aproximación.</p>
+<p>Cada punto se aproxima o se aleja más de la recta de aproximación.
+Estas distancias se pueden sumar para darnos una idea de qué tan bien
+esta recta “resume” la distribución de los datos.</p>
+<p>Se define la recta de aproximación como la recta que minimiza esta
+suma de residuos. Es decir, cualquier otra recta tendría una mayor suma
+de esas líneas azules. Esta recta tiene una ecuación de la recta, con
+una constante y una pendiente específica. De manera formal la suma se
+hace de los residuos al cuadrado para evitar los valores negativos.</p>
+<p>Para esto se tiene que calcular el modelo lineal con el comando
+<code>lm</code>, y esto modelo se guarda en un objeto “modelo1”.</p>
+<pre class="r"><code>modelo1 &lt;- lm(data$Voto_PPK_2016_1 ~ data$Uso_internet)</code></pre>
+<p>Se pueden usar con la función <code>resid</code> para calcular los
+residuos de un modelo lineal. Estos residuos se elevan al cuadrado y se
+suman. Se obtiene que la suma total de residuos al cuadrado es 733.9.
+Este residuo se calcula sobre la base de la mejor recta de aproximación.
+Cualquier otra recta debería tener una suma total de residuos al
+cuadrado mayor a este valor.</p>
+<pre class="r"><code>sum(resid(modelo1)^2)</code></pre>
+<pre><code>## [1] 733.9481</code></pre>
+<p>Se puede comparar esta suma de residuos al cuadrado con los residuos
+que generan otra recta. Una forma de “predecir” el voto a PPK si no se
+tuviera información sería solo mediante el promedio del voto a PPK. El
+voto promedio a PPK es 15.7%. Sin otra información esta sería la mejor
+aproximación.</p>
 <pre class="r"><code>mean(data$Voto_PPK_2016_1, na.rm=T)</code></pre>
 <pre><code>## [1] 15.7412</code></pre>
-<p>Esta aproximación se puede graficar con una recta horizontal Y=15.7. Esta recta genera otros residuos que se calculan como la resta entre el valor observado y la media.</p>
+<p>Esta aproximación se puede graficar con una recta horizontal Y=15.7.
+Esta recta genera otros residuos que se calculan como la resta entre el
+valor observado y la media.</p>
 <pre class="r"><code>plot(data$Uso_internet, data$Voto_PPK_2016_1,
      xlab=&quot;Porcentaje de familias con conexión a internet por departamento&quot;,
      ylab=&quot;Voto a PPK (1era vuelta)&quot;,
      pch=19, xlim=c(0,60), ylim=c(0, 30))
 abline(h=15.7412)</code></pre>
 <p><img src="clase9_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>Se calcula el residuo con respecto a esta recta horizontal y luego se suman estos residuos al cuadrado.</p>
+<p>Se calcula el residuo con respecto a esta recta horizontal y luego se
+suman estos residuos al cuadrado.</p>
 <pre class="r"><code>data$res2 &lt;- data$Voto_PPK_2016_1-15.7412
 sum(data$res2^2, na.rm=T)</code></pre>
 <pre><code>## [1] 1251.632</code></pre>
-<p>Se observa que la suma de residuos de la recta calculada por R tiene una suma de residuos al cuadrado (730.7) menor que la suma de residuos al cuadrado con respecto a la recta horizontal (1251.6). En realidad, se podría hacer este ejercicio con cualquier recta y se obtendría una suma de residuos al cuadrado mayor de 730.7.</p>
+<p>Se observa que la suma de residuos de la recta calculada por R tiene
+una suma de residuos al cuadrado (733.9) menor que la suma de residuos
+al cuadrado con respecto a la recta horizontal (1251.6). En realidad, se
+podría hacer este ejercicio con cualquier recta y se obtendría una suma
+de residuos al cuadrado mayor de 733.9.</p>
 </div>
 <div id="recta-de-aproximación" class="section level1">
 <h1>Recta de aproximación</h1>
-<p>Esta recta es un modelo de la distribución de los datos. Este modelo se calcula con el comando <code>lm</code> (de linear model) y se reporta con <code>summary</code>.</p>
-<pre class="r"><code>modelo1 &lt;- lm(data$Voto_PPK_2016_1 ~ data$Uso_internet)
-summary(modelo1)</code></pre>
+<p>Esta recta es un modelo de la distribución de los datos. Este modelo
+se calcula con el comando <code>lm</code> (de linear model) y se reporta
+con <code>summary</code>.</p>
+<pre class="r"><code>summary(modelo1)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = data$Voto_PPK_2016_1 ~ data$Uso_internet)
@@ -520,169 +604,286 @@ summary(modelo1)</code></pre>
 ## Residual standard error: 5.649 on 23 degrees of freedom
 ## Multiple R-squared:  0.4136, Adjusted R-squared:  0.3881 
 ## F-statistic: 16.22 on 1 and 23 DF,  p-value: 0.0005251</code></pre>
-<p>Los primeros datos a analizar están en la columna “Estimate.” Estos datos definen la ecuación de la recta. Según estos datos se tendría <span class="math display">\[\hat{Y} = 3.52 + 0.37*X\]</span></p>
-<p>Con esta ecuación se puede <strong>estimar</strong> el valor de Y (es decir, el voto a PPK) para cualquier valor de X (de acceso a internet).</p>
-<p>Por ejemplo, en Amazonas se tiene 16.6% de acceso a internet, según la base de datos. De acuerdo a la ecuación, el voto estimado a PPK sería 3.52 + 0.37*16.6 = 9.66%.</p>
-<p>El voto observado a PPK en Amazonas fue 11.89%. Por lo tanto, el residuo de esta observación es 11.89-9.66 = 2.23. Las últimas columnas de la base de datos muestra el voto predicho a PPK para cada departamento y el residuo de cada observación.</p>
-<p>El voto predicho a PPK no solo se puede calcular para los valores observados de acceso a internet, sino también para cualquier valor de X.</p>
-<p>¿Cuánto sería el voto predicho a PPK en un departamento con acceso total a internet? ¿cuánto sería el voto predicho a PPK en un departamento aislado del acceso a internet?</p>
-<p>Estas dos preguntas implican el cálculo de <span class="math inline">\(\hat{Y}\)</span> para cuando X=100 (en la primera pregunta) y para cuando X=0 (en la segunda pregunta). En la realidad no tenemos dos departamentos con estos valores de X, pero estos se pueden <strong>predecir</strong> a partir del modelo generado.</p>
+<p>Los primeros datos a analizar están en la columna “Estimate”. Estos
+datos definen la ecuación de la recta. Según estos datos se tendría
+<span class="math display">\[\hat{Y} = 3.52 + 0.37*X\]</span></p>
+<p>Con esta ecuación se puede <strong>estimar</strong> el valor de Y (es
+decir, el voto a PPK) para cualquier valor de X (de acceso a
+internet).</p>
+<p>Por ejemplo, en Amazonas se tiene 16.6% de acceso a internet, según
+la base de datos. De acuerdo a la ecuación, el voto estimado a PPK sería
+3.52 + 0.37*16.6 = 9.66%.</p>
+<p>El voto observado a PPK en Amazonas fue 11.89%. Por lo tanto, el
+residuo de esta observación es 11.89-9.66 = 2.23. Las últimas columnas
+de la base de datos muestra el voto predicho a PPK para cada
+departamento y el residuo de cada observación.</p>
+<p>El voto predicho a PPK no solo se puede calcular para los valores
+observados de acceso a internet, sino también para cualquier valor de
+X.</p>
+<p>¿Cuánto sería el voto predicho a PPK en un departamento con acceso
+total a internet? ¿cuánto sería el voto predicho a PPK en un
+departamento aislado del acceso a internet?</p>
+<p>Estas dos preguntas implican el cálculo de <span
+class="math inline">\(\hat{Y}\)</span> para cuando X=100 (en la primera
+pregunta) y para cuando X=0 (en la segunda pregunta). En la realidad no
+tenemos dos departamentos con estos valores de X, pero estos se pueden
+<strong>predecir</strong> a partir del modelo generado.</p>
 </div>
 <div id="correlación-no-es-causalidad" class="section level1">
 <h1>Correlación no es causalidad</h1>
-<p>Que se pueda graficar los datos de dos variables en un espacio cartesiano y que se pueda calcular la mejor recta de aproximación NO significa que ambas variables necesariamente están relacionadas o que haya una relación de causalidad.</p>
+<p>Que se pueda graficar los datos de dos variables en un espacio
+cartesiano y que se pueda calcular la mejor recta de aproximación NO
+significa que ambas variables necesariamente están relacionadas o que
+haya una relación de causalidad.</p>
 <p>Para establecer una relación de causalidad hace falta:</p>
 <ul>
-<li><p>Que haya consistencia entre varios estudios: un estudio (casi) nunca es suficiente para definir un hallazgo. La convergencia entre diferentes estudios (en diferentes lugares y tiempos) le da mayor robustez a la relación entre dos variables.</p></li>
-<li><p>Que haya una (fuerza de) asociación: que existe una correlación es un primer paso para poder luego evaluar una probable causalidad. La relación es una estadística y no una relación determinista.</p></li>
-<li><p>Un mecanismo: una explicación basada en la teoría que defienda porqué es plausible hablar de una probable relación entre esas dos variables.</p></li>
-<li><p>Temporalidad: que la causa preceda al efecto. Es decir que la medición del X sea anterior a la del Y. En nuestro ejemplo, no se podría hablar de causalidad si el X hubiera sido medido en 2017.</p></li>
+<li><p>Que haya consistencia entre varios estudios: un estudio (casi)
+nunca es suficiente para definir un hallazgo. La convergencia entre
+diferentes estudios (en diferentes lugares y tiempos) le da mayor
+robustez a la relación entre dos variables.</p></li>
+<li><p>Que haya una (fuerza de) asociación: que existe una correlación
+es un primer paso para poder luego evaluar una probable causalidad. La
+relación es una estadística y no una relación determinista.</p></li>
+<li><p>Un mecanismo: una explicación basada en la teoría que defienda
+porqué es plausible hablar de una probable relación entre esas dos
+variables.</p></li>
+<li><p>Temporalidad: que la causa preceda al efecto. Es decir que la
+medición del X sea anterior a la del Y. En nuestro ejemplo, no se podría
+hablar de causalidad si el X hubiera sido medido en 2017.</p></li>
 </ul>
-<p>Un ejemplo que cumple estas condiciones es la relación entre consumo de tabaco y desarrollo de cáncer de pulmón.</p>
+<p>Un ejemplo que cumple estas condiciones es la relación entre consumo
+de tabaco y desarrollo de cáncer de pulmón.</p>
 <p><img src="tobacco_and_cancer.gif" /></p>
-<p>Para establecer una relación de causalidad entre ambas variables se han realizado múltiples estudios, se tiene una relación estadística robusta, se tiene un mecanismo en la nicotina y se tiene una secuencia temporal, se fuma y luego se desarrolla el cáncer de pulmón.</p>
-<p>Por ejemplo, puede existir una correlación entre el consumo de chocolate en un país y el número de premios Nobel que cuente ese país.La pregunta es cuál es el mecanismo explicativo entre una variable y la otra. Pueden ver más <a href="http://www.tylervigen.com/spurious-correlations">correlaciones locas</a> es este link.</p>
+<p>Para establecer una relación de causalidad entre ambas variables se
+han realizado múltiples estudios, se tiene una relación estadística
+robusta, se tiene un mecanismo en la nicotina y se tiene una secuencia
+temporal, se fuma y luego se desarrolla el cáncer de pulmón.</p>
+<p>Por ejemplo, puede existir una correlación entre el consumo de
+chocolate en un país y el número de premios Nobel que cuente ese país.La
+pregunta es cuál es el mecanismo explicativo entre una variable y la
+otra. Pueden ver más <a
+href="http://www.tylervigen.com/spurious-correlations">correlaciones
+locas</a> es este link.</p>
 <p><img src="nobel_choco.jpeg" width="558" /></p>
-<p>En algunos casos, la relación entre dos variables en realidad es explicada por una tercera variable. En este tipo de casos se habla de correlaciones espúreas. Por ejemplo:</p>
+<p>En algunos casos, la relación entre dos variables en realidad es
+explicada por una tercera variable. En este tipo de casos se habla de
+correlaciones espúreas. Por ejemplo:</p>
 <p><img src="Screenshot_20181203-080108.jpg" width="204" /></p>
 <p>De manera más gráfica:</p>
 <p><img src="notcausation.png" width="400" /></p>
 </div>
 <div id="modelo-lineal" class="section level1">
 <h1>Modelo lineal</h1>
-<p>Como indicamos, la relación entre dos variables cuantitativas se modela mediante una recta de aproximación. Para evaluar una relación entre dos variables numéricas, tenemos que responder las siguientes preguntas</p>
+<p>Como indicamos, la relación entre dos variables cuantitativas se
+modela mediante una recta de aproximación. Para evaluar una relación
+entre dos variables numéricas, tenemos que responder las siguientes
+preguntas</p>
 <ul>
 <li><p>¿Existe asociación?</p></li>
 <li><p>¿En qué dirección?</p></li>
 <li><p>¿Con qué fuerza?</p></li>
 <li><p>Predecir para valores significativos</p></li>
 </ul>
-<p>En esta sección vamos a trabajar con la información de las elecciones 2021. Los resultados que usaremos corresponden al conteo rápido elaborado por <a href="https://www.ipsos.com/es-pe/resultados-del-conteo-rapido-al-100-6-de-junio-2021">IPSOS</a> y a datos sociodemográficos, disponibles en la web del <a href="https://www.inei.gob.pe/">INEI</a>.</p>
+<p>En esta sección vamos a trabajar con la información de las elecciones
+2021. Los resultados que usaremos corresponden al conteo rápido
+elaborado por <a
+href="https://www.ipsos.com/es-pe/resultados-del-conteo-rapido-al-100-6-de-junio-2021">IPSOS</a>
+y a datos sociodemográficos, disponibles en la web del <a
+href="https://www.inei.gob.pe/">INEI</a>.</p>
 <pre class="r"><code>library(rio)
 data21 &lt;- import(&quot;bases/voto2021.xlsx&quot;)</code></pre>
-<p>En esta oportunidad, usaremos el voto a Pedro Castillo según conteo rápido por departamento como variable dependiente y el ingreso mensual medido en 2020 como variable independiente. Se parte de la hipótesis que existiría una relación inversa entre estas variables. Para hacer una primera verificación de esta relación, se puede crear el diagrama de dispersión.</p>
-<pre class="r"><code>plot(data21$VotoPL, data21$SeguroSalud,
-     xlab=&quot;% que cuenta con seguro de salud&quot;,
-     ylab=&quot;Voto a Pedro Castillo (conteo rápido 2da vuelta)&quot;,
-     pch=15, xlim=c(400,1400), ylim=c(20, 100))
-text(data21$IngresoMensual2020, data21$VotoPL, labels=data21$Departamento, cex=0.6, pos=4)</code></pre>
+<p>En esta oportunidad, usaremos el voto a Pedro Castillo en primera
+vuelta por departamento como variable dependiente y el porcentaje de
+personas analfabetas como variable independiente. Se parte de la
+hipótesis que existiría una relación directa entre estas variables. Para
+hacer una primera verificación de esta relación, se puede crear el
+diagrama de dispersión.</p>
+<pre class="r"><code>plot(data21$Analfabetismo, data21$VotoPL_1,
+     xlab=&quot;% Analfabetismo&quot;,
+     ylab=&quot;Voto a Pedro Castillo 1era vuelta)&quot;,
+     pch=19, xlim=c(0,15), ylim=c(0, 60))
+text(data21$Analfabetismo, data21$VotoPL_1, labels=data21$Departamento, cex=0.6, pos=4)</code></pre>
 <p><img src="clase9_files/figure-html/dispersion21-1.png" width="672" /></p>
-<p>El gráfico no nos muestra una relación muy clara entre las variables. Para analizar en más detalle, más allá de la relación visual, analizaremos el modelo de regresión lineal. Como indicamos antes, el modelo se calcula con el comando <code>lm</code> donde se indica la variable Y y luego la X. Este modelo de guarda en un objeto “modelo2” el que se puede describir con el comando <code>summary</code>.</p>
-<pre class="r"><code>modelo4 &lt;- lm(data21$VotoFP ~ data21$DesnutricionInfantil)
-summary(modelo4)</code></pre>
+<p>El gráfico no nos muestra una relación clara entre las variables.
+Para analizar en más detalle, más allá de la relación visual,
+analizaremos el modelo de regresión lineal. Como indicamos antes, el
+modelo se calcula con el comando <code>lm</code> donde se indica la
+variable Y y luego la X. Este modelo de guarda en un objeto “modelo2” el
+que se puede describir con el comando <code>summary</code>.</p>
+<pre class="r"><code>modelo2 &lt;- lm(data21$VotoPL_1 ~ data21$Analfabetismo)
+summary(modelo2)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = data21$VotoFP ~ data21$DesnutricionInfantil)
+## lm(formula = data21$VotoPL_1 ~ data21$Analfabetismo)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -27.4168 -14.9170   0.7645  17.1165  21.9972 
-## 
-## Coefficients:
-##                             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)                  49.6174     7.2875   6.809 6.07e-07 ***
-## data21$DesnutricionInfantil  -0.7620     0.4791  -1.590    0.125    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 17.16 on 23 degrees of freedom
-## Multiple R-squared:  0.09908,    Adjusted R-squared:  0.05991 
-## F-statistic:  2.53 on 1 and 23 DF,  p-value: 0.1254</code></pre>
-</div>
-<div id="existe-una-asociación-o-relación-entre-las-variables" class="section level1">
-<h1>¿Existe una asociación o relación entre las variables?</h1>
-<p>Según estos resultados la ecuación de la recta es:<br />
-<span class="math display">\[\hat{Y} = 87.4 - 0.03*X\]</span></p>
-<p>En esta ecuación, el dato que marca la relación entre ambas variables es la pendiente. El <span class="math inline">\(\hat{\beta} = -0.03\)</span>. Este dato es una aproximación desde los datos del “verdadero” valor de <span class="math inline">\(\beta\)</span>. Como toda aproximación a partir de datos, este valor de <span class="math inline">\(\hat{\beta}\)</span> tiene un error estándar y por lo tanto un intervalo de confianza de posibles valores del parámetro poblacional. Con el estimado y el error estándar se puede usar la distribución t para inferir a la población.</p>
-<p>La H0: <span class="math inline">\(\beta = 0\)</span></p>
-<p>La HA: <span class="math inline">\(\beta \not= 0\)</span></p>
-<p>Es decir, se pone a prueba cuál es la probabilidad de observar una pendiente de -0.03 si la “verdadera” pendiente es cero. Esta probabilidad se mide, como siempre, con el p-value (o Pr(&gt;|t|), en la tabla de resultados).</p>
-<p>En la fila correspondiente a la variable independiente se observa que el p-value = 0.123 (o 12.3%). Es decir, que tenemos 12.3% de probabilidades de observar una pendiente de -0.03 si la verdadera pendiente es cero. Como este valor es mayor a 0.05, NO se puede rechazar la H0.</p>
-<p>Con esto se concluye que no se puede decir que haya relación entre ambas variables.</p>
-<p>En un segundo ejemplo, analizaremos la relación entre el analfabetismo en un departamento y el voto a Pedro Castillo. Guardaremos el modelo lineal en un nuevo objeto “modelo3” que describiremos.</p>
-<pre class="r"><code>modelo3 &lt;- lm(data21$VotoPL ~ data21$Analfabetismo)
-summary(modelo3)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = data21$VotoPL ~ data21$Analfabetismo)
-## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -22.97 -12.51  -3.19  10.15  25.17 
+##     Min      1Q  Median      3Q     Max 
+## -21.023  -9.442  -4.795   9.798  19.872 
 ## 
 ## Coefficients:
 ##                      Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)           40.5925     6.3331   6.410 1.53e-06 ***
-## data21$Analfabetismo   2.9254     0.8226   3.556  0.00168 ** 
+## (Intercept)            6.5710     5.1709   1.271 0.216516    
+## data21$Analfabetismo   3.0273     0.6716   4.507 0.000159 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 14.52 on 23 degrees of freedom
-## Multiple R-squared:  0.3548, Adjusted R-squared:  0.3267 
-## F-statistic: 12.65 on 1 and 23 DF,  p-value: 0.001681</code></pre>
-<p>La ecuación de la recta, según estos resultados es:</p>
-<p><span class="math display">\[\hat{Y} = 40.59 + 2.93*X\]</span></p>
-<p>El valor de <span class="math inline">\(\hat{\beta} = 2.93\)</span>, con un p-value = 0.00168 (o 0.168%). Como el p-value es menor a 0.05 (o 5%), entonces podemos decir que la probabilidad de observar una pendiente de 2.93, siendo la verdadera cero es muy baja, por lo que lo más probable es que la pendiente no sea cero.</p>
-<p>Se rechaza la H0 y se afirma la HA, concluyendo que sí existe relación entre las variables.</p>
+## Residual standard error: 11.85 on 23 degrees of freedom
+## Multiple R-squared:  0.469,  Adjusted R-squared:  0.4459 
+## F-statistic: 20.32 on 1 and 23 DF,  p-value: 0.0001589</code></pre>
+</div>
+<div id="existe-una-asociación-o-relación-entre-las-variables"
+class="section level1">
+<h1>¿Existe una asociación o relación entre las variables?</h1>
+<p>Según estos resultados la ecuación de la recta es:<br />
+<span class="math display">\[\hat{Y} = 6.6 + 3.03*X\]</span></p>
+<p>En esta ecuación, el dato que marca la relación entre ambas variables
+es la pendiente. El <span class="math inline">\(\hat{\beta} =
++3.03\)</span>. Este dato es una aproximación desde los datos del
+“verdadero” valor de <span class="math inline">\(\beta\)</span>. Como
+toda aproximación a partir de datos, este valor de <span
+class="math inline">\(\hat{\beta}\)</span> tiene un error estándar y por
+lo tanto un intervalo de confianza de posibles valores del parámetro
+poblacional. Con el estimado y el error estándar se puede usar la
+distribución t para inferir a la población.</p>
+<p>La H0: <span class="math inline">\(\beta = 0\)</span></p>
+<p>La HA: <span class="math inline">\(\beta \not= 0\)</span></p>
+<p>Es decir, se pone a prueba cuál es la probabilidad de observar una
+pendiente de 3.03 si la “verdadera” pendiente es cero. Esta probabilidad
+se mide, como siempre, con el p-value (o Pr(&gt;|t|), en la tabla de
+resultados).</p>
+<p>En la fila correspondiente a la variable independiente se observa que
+el p-value = 0.000159 (o 0.0159%). Es decir, que tenemos muy bajas
+probabilidades de observar una pendiente de 3.03 si la verdadera
+pendiente es cero. Como este valor es menor a 0.05, se puede rechazar la
+H0.</p>
+<p>Con esto se concluye que se puede decir que SÍ hay una relación entre
+ambas variables.</p>
 </div>
 <div id="dirección" class="section level1">
 <h1>Dirección</h1>
-<p>La dirección de la relación entre las variables está marcada por el signo de la pendiente. Si el signo es positivo, la recta de aproximación tiene pendiente positiva y eso indica una relación positiva entre las variables (a mayor X, mayor Y). Si el signo es negativo, la recta de aproximación tiene una pendiente negativa y eso indica una relación negativa entre las variables (a mayor X, menor Y).</p>
-<p>En nuestro ejemplo, la pendiente (es decir, el valor de <span class="math inline">\(\hat{\beta}\)</span>) es positiva. Eso quiere decir que departamentos que presentan mayores tasas de analfabetismo, reportan, en <strong>promedio</strong>, un mayor voto hacia Pedro Castillo.</p>
+<p>La dirección de la relación entre las variables está marcada por el
+signo de la pendiente. Si el signo es positivo, la recta de aproximación
+tiene pendiente positiva y eso indica una relación positiva entre las
+variables (a mayor X, mayor Y). Si el signo es negativo, la recta de
+aproximación tiene una pendiente negativa y eso indica una relación
+negativa entre las variables (a mayor X, menor Y).</p>
+<p>En nuestro ejemplo, la pendiente (es decir, el valor de <span
+class="math inline">\(\hat{\beta}\)</span>) es positiva. Eso quiere
+decir que departamentos que presentan mayores tasas de analfabetismo,
+reportan, en <strong>promedio</strong>, un mayor voto hacia Pedro
+Castillo.</p>
 </div>
 <div id="coeficiente-de-correlación-de-pearson" class="section level1">
 <h1>Coeficiente de correlación de Pearson</h1>
-<p>El valor de <span class="math inline">\(\hat{\beta}\)</span> indica la tasa de cambio, es decir, por cada unidad de cambio en X, Y cambia <span class="math inline">\(\hat{\beta}\)</span> unidades. En nuestro ejemplo, por cada 1% de aumento en la tasa de analfabetismo, el voto a Pedro Castillo cambia 2.9%.</p>
-<p>Pero la pendiente no es un buen indicador de la fuerza de la relación entre las variables, pues depende de las unidades de medida de las variables. Para poder evaluar la relación entre las variables, requerimos una versión estandarizada de la pendiente, que mida el cambio en unidades de desviación estándar.</p>
-<p>Esta medida es el coeficiente de correlación de Pearson. Este coeficiente no solo mide el cambio entre las variables en unidades de desviación estándar, sino también el grado de ajuste de los puntos a la recta. Este coeficiente tiene las siguientes características:</p>
+<p>El valor de <span class="math inline">\(\hat{\beta}\)</span> indica
+la tasa de cambio, es decir, por cada unidad de cambio en X, Y cambia
+<span class="math inline">\(\hat{\beta}\)</span> unidades. En nuestro
+ejemplo, por cada 1% de aumento en la tasa de analfabetismo, el voto a
+Pedro Castillo cambia 3%.</p>
+<p>Pero la pendiente no es un buen indicador de la fuerza de la relación
+entre las variables, pues depende de las unidades de medida de las
+variables. Para poder evaluar la relación entre las variables,
+requerimos una versión estandarizada de la pendiente, que mida el cambio
+en unidades de desviación estándar.</p>
+<p>Esta medida es el coeficiente de correlación de Pearson. Este
+coeficiente no solo mide el cambio entre las variables en unidades de
+desviación estándar, sino también el grado de ajuste de los puntos a la
+recta. Este coeficiente tiene las siguientes características:</p>
 <ul>
-<li><p>El coeficiente r de Pearson varía entre -1 y +1. El coeficiente r tiene el mismo signo que la pendiente.</p></li>
+<li><p>El coeficiente r de Pearson varía entre -1 y +1. El coeficiente r
+tiene el mismo signo que la pendiente.</p></li>
 <li><p>r=0 si la pendiente también es cero.</p></li>
-<li><p>r=+1 o r=-1 si todos los puntos caen en la línea de predicción. Es decir, que la predicción es “perfecta.” Esta situación es hipótetica, nunca se da con datos en ciencias sociales.</p></li>
+<li><p>r=+1 o r=-1 si todos los puntos caen en la línea de predicción.
+Es decir, que la predicción es “perfecta”. Esta situación es hipótetica,
+nunca se da con datos en ciencias sociales.</p></li>
 </ul>
-<p>En nuestro ejemplo r=0.596. Es decir, por cada unidad de desviación estándar de cambio en X, Y cambia 0.596 desviaciones estándar.</p>
-<pre class="r"><code>cor.test(x=data21$Analfabetismo, y=data21$VotoPL, method=&quot;pearson&quot;)</code></pre>
+<p>En nuestro ejemplo r=0.685. Es decir, por cada unidad de desviación
+estándar de cambio en X, Y cambia 0.685 desviaciones estándar.</p>
+<pre class="r"><code>cor.test(x=data21$Analfabetismo, y=data21$VotoPL_1, method=&quot;pearson&quot;)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s product-moment correlation
 ## 
-## data:  data21$Analfabetismo and data21$VotoPL
-## t = 3.5563, df = 23, p-value = 0.001681
+## data:  data21$Analfabetismo and data21$VotoPL_1
+## t = 4.5073, df = 23, p-value = 0.0001589
 ## alternative hypothesis: true correlation is not equal to 0
 ## 95 percent confidence interval:
-##  0.2622213 0.8020111
+##  0.3972054 0.8499737
 ## sample estimates:
 ##       cor 
-## 0.5956372</code></pre>
-<p>Para tener una idea acerca de cómo interpretar este valor, la siguiente imagen muestra ejemplos de distribuciones de puntos a diferentes valores de r.</p>
+## 0.6848503</code></pre>
+<p>Para tener una idea acerca de cómo interpretar este valor, la
+siguiente imagen muestra ejemplos de distribuciones de puntos a
+diferentes valores de r.</p>
 <p><img src="person.png" width="547" /></p>
-<p>Como se observa, a medida que el valor de r se acerca a 1, los puntos se encuentran más alineados a la recta de predicción, por lo que habría menos residuos, llegando a cero, con puntos completamente ajustados a la recta.</p>
-<p>A medida que el valor de r se acerca a cero, los puntos se vuelven más dispersos, formando una nube de puntos. Esos puntos se ajustan menos a una recta de predicción.</p>
-<p>Para tener una idea más lúdica de la distribución de puntos a diferentes valores del coeficiente de Pearson, pueden entrar a este link de <a href="http://guessthecorrelation.com/">Guess the Correlation</a>, que “gamifica” acertar con el valor de r para diferentes dispersiones de puntos.</p>
+<p>Como se observa, a medida que el valor de r se acerca a 1, los puntos
+se encuentran más alineados a la recta de predicción, por lo que habría
+menos residuos, llegando a cero, con puntos completamente ajustados a la
+recta.</p>
+<p>A medida que el valor de r se acerca a cero, los puntos se vuelven
+más dispersos, formando una nube de puntos. Esos puntos se ajustan menos
+a una recta de predicción.</p>
+<p>Para tener una idea más lúdica de la distribución de puntos a
+diferentes valores del coeficiente de Pearson, pueden entrar a este link
+de <a href="http://guessthecorrelation.com/">Guess the Correlation</a>,
+que “gamifica” acertar con el valor de r para diferentes dispersiones de
+puntos.</p>
 </div>
 <div id="coeficiente-de-determinación-r2" class="section level1">
-<h1>Coeficiente de determinación <span class="math inline">\(R^2\)</span></h1>
-<p>En el contexto del análisis de regresión lineal, la fuerza de la relación entre dos variables se interpreta como qué tan bien X predice Y. Esta capacidad de X de predecir la variable Y se mida mediante el coeficiente de determinación <span class="math inline">\(R^2\)</span>. Este valor no es otro que el cuadrado del coeficiente de Pearson.</p>
-<p>Pero, se interpreta como la reducción proporcional en el error al usar la recta de predicción, en lugar de sólo usar <span class="math inline">\(\bar{Y}\)</span> (el promedio de Y) para predecir Y.</p>
-<p>Se tiene que recordar que los errores (o residuos) son las distancias de cada punto a la recta. Cada punto tiene una distancia a la recta de <span class="math inline">\(\bar{Y}\)</span> y también una distancia a la recta de predicción.</p>
-<p>En la imagen de la izquierda, se muestran las distancias de los puntos a la recta de <span class="math inline">\(\bar{Y}\)</span>. Todas estas distancias al cuadrado se pueden sumar. Esta suma es E1.</p>
-<p>En la imagen de la derecha, se muestran las distancias de los puntos a la recta de predicción <span class="math inline">\(\hat{Y}\)</span>. Todas estas distancias al cuadrado se pueden sumar. Esa suma es E2.</p>
+<h1>Coeficiente de determinación <span
+class="math inline">\(R^2\)</span></h1>
+<p>En el contexto del análisis de regresión lineal, la fuerza de la
+relación entre dos variables se interpreta como qué tan bien X predice
+Y. Esta capacidad de X de predecir la variable Y se mida mediante el
+coeficiente de determinación <span class="math inline">\(R^2\)</span>.
+Este valor no es otro que el cuadrado del coeficiente de Pearson.</p>
+<p>Pero, se interpreta como la reducción proporcional en el error al
+usar la recta de predicción, en lugar de sólo usar <span
+class="math inline">\(\bar{Y}\)</span> (el promedio de Y) para predecir
+Y.</p>
+<p>Se tiene que recordar que los errores (o residuos) son las distancias
+de cada punto a la recta. Cada punto tiene una distancia a la recta de
+<span class="math inline">\(\bar{Y}\)</span> y también una distancia a
+la recta de predicción.</p>
+<p>En la imagen de la izquierda, se muestran las distancias de los
+puntos a la recta de <span class="math inline">\(\bar{Y}\)</span>. Todas
+estas distancias al cuadrado se pueden sumar. Esta suma es E1.</p>
+<p>En la imagen de la derecha, se muestran las distancias de los puntos
+a la recta de predicción <span class="math inline">\(\hat{Y}\)</span>.
+Todas estas distancias al cuadrado se pueden sumar. Esa suma es E2.</p>
 <p><img src="determinacion.png" /></p>
-<p>Entonces, <span class="math inline">\(R^2 = \frac{E1-E2}{E1}\)</span>. Este cálculo es igual al cuadrado del valor de la correlación. Por lo tanto:</p>
+<p>Entonces, <span class="math inline">\(R^2 =
+\frac{E1-E2}{E1}\)</span>. Este cálculo es igual al cuadrado del valor
+de la correlación. Por lo tanto:</p>
 <ul>
-<li><p><span class="math inline">\(R^2\)</span> varía entre 0 y 1.</p></li>
-<li><p><span class="math inline">\(R^2=1\)</span> implica que E2 = 0, es decir que todos los puntos caen en la recta.</p></li>
-<li><p><span class="math inline">\(R^2=0\)</span> si la pendiente es cero.</p></li>
+<li><p><span class="math inline">\(R^2\)</span> varía entre 0 y
+1.</p></li>
+<li><p><span class="math inline">\(R^2=1\)</span> implica que E2 = 0, es
+decir que todos los puntos caen en la recta.</p></li>
+<li><p><span class="math inline">\(R^2=0\)</span> si la pendiente es
+cero.</p></li>
 </ul>
-<p>En nuestro ejemplo, <span class="math inline">\(R^2=0.35\)</span>. Este valor se encuentra en la penúltima fila del <code>summary</code> del modelo, con el nombre “Multiple R-squared.” Es decir, el modelo reduce un 35% el error de usar solamente el promedio para estimar Y. Es decir, en el rango entre 0 y 1, el valor de 0.35 corresponde a una fuerza moderada entre las variables.</p>
+<p>En nuestro ejemplo, <span class="math inline">\(R^2=0.47\)</span>.
+Este valor se encuentra en la penúltima fila del <code>summary</code>
+del modelo, con el nombre “Multiple R-squared”. Es decir, el modelo
+reduce un 47% el error de usar solamente el promedio para estimar Y. Es
+decir, en el rango entre 0 y 1, el valor de 0.47 corresponde a una
+fuerza moderada entre las variables.</p>
 </div>
 <div id="validez-del-modelo" class="section level1">
 <h1>Validez del modelo</h1>
-<p>La última fila del <code>summary</code> muestra los resultados de una prueba F, con un estadístico de la prueba y un p-value. Esta prueba es la que nos indica la validez del modelo en su conjunto.</p>
-<p>Cuando analizamos relaciones bivariadas, este p-value es igual al p-value de la pendiente, por lo que la validez se determina con cualquiera de ellas.</p>
-<p>Vamos a ver en la siguiente sección de análisis multivariado que el análisis de la prueba F es el primer paso, que indica la validez del modelo multivariado, y que se tiene que realizar antes de analizar los siguientes pasos, de relaciones, direcciones y fuerza.</p>
+<p>La última fila del <code>summary</code> muestra los resultados de una
+prueba F, con un estadístico de la prueba y un p-value. Esta prueba es
+la que nos indica la validez del modelo en su conjunto.</p>
+<p>Cuando analizamos relaciones bivariadas, este p-value es igual al
+p-value de la pendiente, por lo que la validez se determina con
+cualquiera de ellas.</p>
+<p>Vamos a ver en la siguiente sección de análisis multivariado que el
+análisis de la prueba F es el primer paso, que indica la validez del
+modelo multivariado, y que se tiene que realizar antes de analizar los
+siguientes pasos, de relaciones, direcciones y fuerza.</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgOSIKYXV0aG9yOiAiQXJ0dXJvIE1hbGRvbmFkbyIKZGF0ZTogIjI0LzA1LzIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGNvc21vCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlCmVkaXRvcl9vcHRpb25zOgogIG1hcmtkb3duOgogICAgd3JhcDogc2VudGVuY2UKYmlibGlvZ3JhcGh5OiByZWZlcmVuY2VzLmJpYgotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCmBgYAoKIyBJbnRyb2R1Y2Npw7NuCgpFbCB0ZW1hIGRlIGxhIHNlbWFuYSBlcyBsYSBjb3JyZWxhY2nDs24geSBhIGxhIHJlZ3Jlc2nDs24gbGluZWFsIHNpbXBsZS4KRXN0ZSBlcyB1biBtw6l0b2RvIHBhcmEgYW5hbGl6YXIgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgY3VhbnRpdGF0aXZhczogdW5hIGRlcGVuZGllbnRlIHkgdW5hIGluZGVwZW5kaWVudGUuCgpSZWNvcmRlbW9zIHF1ZSBlbCBtw6l0b2RvIGRlbCBjaGktY3VhZHJhZG8gc2UgdHJhdGFiYSBkZSBhbmFsaXphciBsYSByZWxhY2nDs24gZW50cmUgZG9zIHZhcmlhYmxlcyBjdWFsaXRhdGl2YXMuCkxhIHBydWViYSB0IHkgQU5PVkEgdGllbmVuIHVuYSB2YXJpYWJsZSBkZXBlbmRpZW50ZSBjdWFudGl0YXRpdmEgeSB1bmEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSBjdWFsaXRhdGl2YS4KTGEgY29ycmVsYWNpw7NuIGVzIHVuYSBleHRlbnNpw7NuIGRlIGVzdGEgc2VyaWUgZGUgcmVsYWNpb25lcy4KRWwgbcOpdG9kbyBkZSByZWdyZXNpw7NuIGxpbmVhbCBlcyB1biBtw6l0b2RvIGdlbmVyYWxpemFkbywgcXVlLCBsdWVnbyB2ZXJlbW9zLCBpbmNsdXllIGEgbGEgcHJ1ZWJhIHQgeSBhIEFOT1ZBLgoKTGEgY29ycmVsYWNpw7NuIHNlIHRyYXRhIGRlIGxhIGV2YWx1YWNpw7NuIGRlbCBjYW1iaW8gc2lzdGVtw6F0aWNvIGVuIGxhcyBwdW50dWFjaW9uZXMgZGUgZG9zIHZhcmlhYmxlcyBudW3DqXJpY2FzIChkaXNjcmV0YXMgbyBjb250aW51YXMsIGRlIGludGVydmFsbyBvIGRlIHJhesOzbikuCgpDb24gZWwgbcOpdG9kbyBkZSBsYSByZWdyZXNpw7NuIGxpbmVhbCBzZSBwdWVkZSByZXNwb25kZXIgbGFzIHNpZ3VpZW50ZXMgcHJlZ3VudGFzOgoKLSAgIEFuYWxpemFyIHNpIGhheSB1bmEgKiphc29jaWFjacOzbioqIGVudHJlIGxhcyB2YXJpYWJsZXMgbWVkaWFudGUgdW4gdGVzdCBkZSBpbmRlcGVuZGVuY2lhIGVzdGFkw61zdGljYS4KCi0gICBBbmFsaXphciBsYSAqKmRpcmVjY2nDs24qKiBkZSBsYSBhc29jaWFjacOzbiAoZGlyZWN0YSBvIGludmVyc2EpLgoKLSAgIEV2YWx1YXIgbGEgKipmdWVyemEqKiBkZSBsYSBhc29jaWFjacOzbiB1c2FuZG8gdW5hIG1lZGlkYSBkZSBhc29jaWFjacOzbiBsbGFtYWRhICoqY29ycmVsYWNpw7NuIGRlIFBlYXJzb24uKioKCi0gICBFc3RpbWFyIHVuYSBlY3VhY2nDs24gZGUgcmVncmVzacOzbiBxdWUgIioqcHJlZGljZSoqIiBsb3MgdmFsb3JlcyBkZSBsYSB2YXJpYWJsZSBkZXBlbmRpZW50ZSBwYXJhIHZhbG9yZXMgZGUgbGEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZS4KCiMgRXNwYWNpbyBjYXJ0ZXNpYW5vCgpTZSB0cmF0YSBkZSB1biBlc3BhY2lvIGZvcm1hZG8gcG9yIGRvcyBlamVzIHBlcnBlbmRpY3VsYXJlcywgZWwgZWplIFggKGhvcml6b250YWwpIHkgZWwgZWplIFkgKHZlcnRpY2FsKS4KQ2FkYSB1bm8gZGUgZXN0b3MgZWplcyBzZSBwdWVkZSB0cmF0YXIgY29tbyB1bmEgcmVnbGEgZG9uZGUgc2UgcHVlZGVuIG1hcGVhciB2YXJpYWJsZXMuCgpQb3IgZWplbXBsbzoKCi0gICBFbiBlbCBlamUgWCBzZSBwdWVkZSBtYXBlYXIgbGEgdmFyaWFibGUgZWRhZCAodmFyaWFibGUgbnVtw6lyaWNhIGRpc2NyZXRhKS4KICAgIExhIHJlZ2xhIHBvZHLDrWEgcGFydGlyIGRlc2RlIGNlcm8gc2kgc2UgcmVjb2dlIGluZm9ybWFjacOzbiBxdWUgaW5jbHV5ZSBhIG5pw7FvcyBvIHBvZHLDrWEgcGFydGlyIGRlc2RlIDE4IHNpIHNlIHJlY29nZSBpbmZvcm1hY2nDs24gZGUgbWF5b3JlcyBkZSBlZGFkLgoKLSAgIEVuIGVsIGVqZSBZIHNlIHB1ZWRlIG1hcGVhciBsYSB2YXJpYWJsZSBlc3RhdHVyYSAodmFyaWFibGUgbnVtw6lyaWNhIGNvbnRpbnVhKS4KCi0gICBTaSBzZSBjb21iaW5hbiBhbWJvcyBlamVzIHNlIGZvcm1hIGVsIGVzcGFjaW8sIGRvbmRlIGNhZGEgaW5kaXZpZHVvIGVzdGFyw6EgbWFwZWFkbywgY29uIHN1cyBkYXRvcyBkZSBwZXNvIHkgZGUgZXN0YXR1cmEgY29tbyBjb29yZGVuYWRhcyBkZSB1YmljYWNpw7NuIGVuIGVzdGUgZXNwYWNpby4KCi0gICBFbCBjb25qdW50byBkZSBpbmRpdmlkdW9zIChvIHB1bnRvcykgZm9ybWFyw6EgdW5hICJudWJlIiBkZSBwdW50b3MgZW4gZXN0ZSBlc3BhY2lvLgogICAgRXN0ZSB0aXBvIGRlIGdyw6FmaWNvIHNlIGxsYW1hIEdyw6FmaWNvIG8gRGlhZ3JhbWEgZGUgRGlzcGVyc2nDs24uCgohW10oOS4xLnBuZyl7d2lkdGg9IjQ4OCJ9CgpBaG9yYSBwcmVzZW50YXJlbW9zIHVuIGVqZW1wbG8gbcOhcyBwb2zDrXRpY28uCkVzdGEgYmFzZSBpbmNsdXllIGluZm9ybWFjacOzbiBhIG5pdmVsIGRlcGFydGFtZW50YWwsIHNvY2lvZGVtb2dyw6FmaWNhIHkgZWxlY3RvcmFsIGRlIDIwMTYsIHRvZGFzIHZhcmlhYmxlcyBudW3DqXJpY2FzLgoKYGBge3IgYmFzZSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShyaW8pCmRhdGEgPC0gaW1wb3J0KCJiYXNlcy9kYXRvczIwMTZfdjMuc2F2IikKYGBgCgpQYXJhIGVtcGV6YXIgdXNhcmVtb3MgZG9zIHZhcmlhYmxlcyBwYXJhIGdlbmVyYWwgZWwgZ3LDoWZpY28gZGUgZGlzcGVyc2nDs246CgotICAgRW4gZWwgZWplIFggc2UgbWFwZWFyw6EgZWwgcG9yY2VudGFqZSBkZSBob2dhcmVzIGNvbiBhY2Nlc28gYSBpbnRlcm5ldCAodmFyaWFibGU6IFBvcmNfVXNvX2ludGVybmV0KS4KCi0gICBFbiBlbCBlamUgWSBzZSBtYXBlYXLDoSBlbCBwb3JjZW50YWplIGRlIHZvdG8gYSBQUEsgZW4gcHJpbWVyYSB2dWVsdGEgZGUgMjAxNiAodmFyaWFibGU6IFZvdG9fUFBLXzIwMTZfMSkuCgpQYXJhIGNvbnN0cnVpciBlbCBncsOhZmljbyBkZSBkaXNwZXJzacOzbiB1c2FyZW1vcyBlbCBjb21hbmRvIGBwbG90YCBxdWUgcGVybWl0ZSBpbmNsdWlyIGFtYmFzIHZhcmlhYmxlcy4KCmBgYHtyIGRpc3BlcnNpb259CnBsb3QoZGF0YSRVc29faW50ZXJuZXQsIGRhdGEkVm90b19QUEtfMjAxNl8xLAogICAgIHhsYWI9IlBvcmNlbnRhamUgZGUgZmFtaWxpYXMgY29uIGNvbmV4acOzbiBhIGludGVybmV0IHBvciBkZXBhcnRhbWVudG8iLAogICAgIHlsYWI9IlZvdG8gYSBQUEsgKDFlcmEgdnVlbHRhKSIsCiAgICAgcGNoPTE1LCB4bGltPWMoMCw2MCksIHlsaW09YygwLCAzMCkpCnRleHQoZGF0YSRVc29faW50ZXJuZXQsIGRhdGEkVm90b19QUEtfMjAxNl8xLCBsYWJlbHM9ZGF0YSREcHRvLCBjZXg9MC42LCBwb3M9NCkKYGBgCgpFc3RhICJudWJlIiBkZSBwdW50b3Mgbm9zIGRhbiB1bmEgaWRlYSB2aXN1YWwgZGUgbGEgcHJvYmFibGUgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMuCkVuIGVzdG9zIGNhc29zIHZlbW9zIHF1ZSBsYXMgdmFyaWFibGVzIGZvcm1hbiB1biBwYXRyw7NuIGFzY2VuZGVudGUgcG9zaXRpdm86IGEgbWVkaWRhIHF1ZSBsb3MgZGVwYXJ0YW1lbnRvcyByZXBvcnRhbiB1biBtYXlvciBwb3JjZW50YWplIGRlIGZhbWlsaWFzIGNvbiBjb25leGnDs24gYSBpbnRlcm5ldCwgdGFtYmnDqW4gc2Ugb2JzZXJ2YSB1biBtYXlvciBwb3JjZW50YWplIGRlIHZvdG8gYSBQUEsgZW4gMjAxNi4KCiMgUmVsYWNpw7NuIGxpbmVhbAoKRXN0YSBwcm9iYWJsZSByZWxhY2nDs24gZW50cmUgZXN0YXMgZG9zIHZhcmlhYmxlcyBzZSByZXN1bWVuL3NpbXBsaWZpY2EgbWVkaWFudGUgdW5hIGFwcm94aW1hY2nDs24gbGluZWFsLgpFcyBkZWNpciwgbWVkaWFudGUgdW5hIHJlY3RhIGRlIGFwcm94aW1hY2nDs24uCgojIyBFY3VhY2nDs24gZGUgbGEgcmVjdGEKClNlIHRpZW5lIHF1ZSByZWNvcmRhciBxdWUgdW5hIHJlY3RhIHRpZW5lIGxhIGZvcm1hICRZID0gYSArIGJYJCwgZG9uZGUgImEiIGVzIGxhIGNvbnN0YW50ZSB5ICJiIiBlcyBsYSBwZW5kaWVudGUuCkN1YWxxdWllciByZWN0YSBwdWVkZSBzZXIgZ3JhZmljYWRhIGNvbiBkaWZlcmVudGVzIHZhbG9yZXMgZGUgYSB5IGIuCgpMYSByZWxhY2nDs24gZW50cmUgbGFzIHZhcmlhYmxlcyBkZXBlbmRlIGRlIGxhIHBlbmRpZW50ZToKCi0gICBTaSBiIGVzIHBvc2l0aXZvLCBZIGF1bWVudGEgY3VhbmRvIFggYXVtZW50YS4KICAgIEVzIHVuYSByZWxhY2nDs24gZGlyZWN0YSAvIHBvc2l0aXZhLgoKLSAgIFNpIGIgZXMgbmVnYXRpdm8sIFkgYXVtZW50YSBjdWFuZG8gWCBkaXNtaW51eWUuCiAgICBFcyB1bmEgcmVsYWNpw7NuIGludmVyc2EgLyBuZWdhdGl2YS4KCi0gICBTaSBiIGVzIGNlcm8uCiAgICBZIG5vIGNhbWJpYSBjdWFuZG8gWCB2YXLDrWEuCiAgICBObyBleGlzdGUgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMuCgpDb21vIGRpamltb3MsIGxhICJudWJlIiBkZSBwdW50b3Mgc2UgbW9kZWxhIG1lZGlhbnRlIHVuYSByZWN0YS4KRXN0YSByZWN0YSBkZSBhcHJveGltYWNpw7NuIHRpZW5lIGxhIGZvcm1hICRcaGF0e1l9ID0gXGhhdHtcYWxwaGF9ICsgXGhhdHtcYmV0YX0qWCQKCkxvcyB2YWxvcmVzIHF1ZSB0aWVuZSBlbCAic29tYnJlcm8iIHNvbiBkYXRvcyBxdWUgc2UgY2FsY3VsYW4gY29uIGxvcyBkYXRvcyBvYnNlcnZhZG9zLgpVbmEgdmV6IGVzdGltYWRvcyBlc3RvcyB2YWxvcmVzIChzZSB2ZXLDoSBsYSBsw7NnaWNhIGVuIHVuIG1vbWVudG8pLCBzZSBwdWVkZSBlc3RpbWFyIGN1YWxxdWllciBZIChwb3IgZXNvIHRpZW5lIHRhbWJpw6luICJzb21icmVybyIpIHBhcmEgY3VhbHF1aWVyIHZhbG9yIGRlIFguCgpFbiBudWVzdHJvIGVqZW1wbG8sIHNlIGxlIHB1ZWRlIHBlZGlyIGEgUiBxdWUgaW5jbHV5YSBsYSByZWN0YSBkZSBhcHJveGltYWNpw7NuIGVuIGVsIGdyw6FmaWNvIGRlIGRpc3BlcnNpw7NuIG1lZGlhbnRlIGVsIGNvbWFuZG8gYGFibGluZWAgZG9uZGUgc2UgYW5pZGEgZWwgY29tYW5kbyBgbG1gLCBxdWUgc2UgdXNhIHBhcmEgY2FsY3VsYXIgdW4gbW9kZWxvIGxpbmVhbCAocXVlIHZlcmVtb3MgZW4gdW4gbW9tZW50bykKCmBgYHtyIHJlY3RhfQpwbG90KGRhdGEkVXNvX2ludGVybmV0LCBkYXRhJFZvdG9fUFBLXzIwMTZfMSwKICAgICB4bGFiPSJQb3JjZW50YWplIGRlIGZhbWlsaWFzIGNvbiBjb25leGnDs24gYSBpbnRlcm5ldCBwb3IgZGVwYXJ0YW1lbnRvIiwKICAgICB5bGFiPSJWb3RvIGEgUFBLICgxZXJhIHZ1ZWx0YSkiLAogICAgIHBjaD0xOSwgeGxpbT1jKDAsNjApLCB5bGltPWMoMCwgMzApKQphYmxpbmUobG0oZGF0YSRWb3RvX1BQS18yMDE2XzEgfiBkYXRhJFVzb19pbnRlcm5ldCkpCmBgYAoKwr9Dw7NtbyBzZSBjYWxjdWxhIHF1ZSBFU0EgZXMgbGEgcmVjdGEgZGUgYXByb3hpbWFjacOzbiwgeSBubyBvdHJhPwpMYSByZWN0YSBjYWxjdWxhZGEgc2UgZGVmaW5lIGNvbW8gYXF1ZWxsYSBxdWUgbWluaW1pemEgbG9zIHJlc2lkdW9zLgoKIyBSZXNpZHVvcyBvIGVycm9yZXMKClNlIHRyYXRhIGRlIGxhIGRpZmVyZW5jaWEgZW50cmUgZWwgdmFsb3Igb2JzZXJ2YWRvIHkgZWwgdmFsb3IgY2FsY3VsYWRvIHBvciBsYSByZWN0YTogJFkgLSBcaGF0e1l9JAoKRXMgZGVjaXIsIGNhZGEgb2JzZXJ2YWNpw7NuIHRpZW5lIHVuIHJlc2lkdW8sIHF1ZSBzZXLDrWEgdmlzdWFsbWVudGUsIGxhIGRpc3RhbmNpYSB2ZXJ0aWNhbCBkZWwgcHVudG8gYSBsYSByZWN0YSBkZSBhcHJveGltYWNpw7NuLgoKYGBge3IgcmVzaWR1b3N9CnBsb3QoZGF0YSRVc29faW50ZXJuZXQsIGRhdGEkVm90b19QUEtfMjAxNl8xLAogICAgIHhsYWI9IlBvcmNlbnRhamUgZGUgZmFtaWxpYXMgY29uIGNvbmV4acOzbiBhIGludGVybmV0IHBvciBkZXBhcnRhbWVudG8iLAogICAgIHlsYWI9IlZvdG8gYSBQUEsgKDFlcmEgdnVlbHRhKSIsCiAgICAgcGNoPTE5LCB4bGltPWMoMCw2MCksIHlsaW09YygwLCAzMCkpCmFibGluZShsbShkYXRhJFZvdG9fUFBLXzIwMTZfMSB+IGRhdGEkVXNvX2ludGVybmV0KSkKZml0dGVkIDwtIHByZWRpY3QobG0oZGF0YSRWb3RvX1BQS18yMDE2XzEgfiBkYXRhJFVzb19pbnRlcm5ldCkpCmZvciAoaSBpbiAxOjI1KSB7CiAgbGluZXMoIGMoZGF0YSRVc29faW50ZXJuZXRbaV0sIGRhdGEkVXNvX2ludGVybmV0W2ldKSwgYyhkYXRhJFZvdG9fUFBLXzIwMTZfMVtpXSwgZml0dGVkW2ldKSwgY29sPSJibHVlIikKfQpgYGAKCkNhZGEgcHVudG8gc2UgYXByb3hpbWEgbyBzZSBhbGVqYSBtw6FzIGRlIGxhIHJlY3RhIGRlIGFwcm94aW1hY2nDs24uCkVzdGFzIGRpc3RhbmNpYXMgc2UgcHVlZGVuIHN1bWFyIHBhcmEgZGFybm9zIHVuYSBpZGVhIGRlIHF1w6kgdGFuIGJpZW4gZXN0YSByZWN0YSAicmVzdW1lIiBsYSBkaXN0cmlidWNpw7NuIGRlIGxvcyBkYXRvcy4KClNlIGRlZmluZSBsYSByZWN0YSBkZSBhcHJveGltYWNpw7NuIGNvbW8gbGEgcmVjdGEgcXVlIG1pbmltaXphIGVzdGEgc3VtYSBkZSByZXNpZHVvcy4KRXMgZGVjaXIsIGN1YWxxdWllciBvdHJhIHJlY3RhIHRlbmRyw61hIHVuYSBtYXlvciBzdW1hIGRlIGVzYXMgbMOtbmVhcyBhenVsZXMuCkVzdGEgcmVjdGEgdGllbmUgdW5hIGVjdWFjacOzbiBkZSBsYSByZWN0YSwgY29uIHVuYSBjb25zdGFudGUgeSB1bmEgcGVuZGllbnRlIGVzcGVjw61maWNhLgpEZSBtYW5lcmEgZm9ybWFsIGxhIHN1bWEgc2UgaGFjZSBkZSBsb3MgcmVzaWR1b3MgYWwgY3VhZHJhZG8gcGFyYSBldml0YXIgbG9zIHZhbG9yZXMgbmVnYXRpdm9zCgpgYGB7ciBzdW1hfQpzdW0oZGF0YSRSZXNpZHVvXjIpCmBgYAoKU2UgcHVlZGUgY29tcGFyYXIgZXN0YSBzdW1hIGRlIHJlc2lkdW9zIGFsIGN1YWRyYWRvIGNvbiBsb3MgcmVzaWR1b3MgcXVlIGdlbmVyYW4gb3RyYSByZWN0YS4KVW5hIGZvcm1hIGRlICJwcmVkZWNpciIgZWwgdm90byBhIFBQSyBzaSBubyBzZSB0dXZpZXJhIGluZm9ybWFjacOzbiBzZXLDrWEgc29sbyBtZWRpYW50ZSBlbCBwcm9tZWRpbyBkZWwgdm90byBhIFBQSy4KRWwgdm90byBwcm9tZWRpbyBhIFBQSyBlcyAxNS43JS4KU2luIG90cmEgaW5mb3JtYWNpw7NuIGVzdGEgc2Vyw61hIGxhIG1lam9yIGFwcm94aW1hY2nDs24uCgpgYGB7ciBtZWRpYX0KbWVhbihkYXRhJFZvdG9fUFBLXzIwMTZfMSwgbmEucm09VCkKYGBgCgpFc3RhIGFwcm94aW1hY2nDs24gc2UgcHVlZGUgZ3JhZmljYXIgY29uIHVuYSByZWN0YSBob3Jpem9udGFsIFk9MTUuNy4KRXN0YSByZWN0YSBnZW5lcmEgb3Ryb3MgcmVzaWR1b3MgcXVlIHNlIGNhbGN1bGFuIGNvbW8gbGEgcmVzdGEgZW50cmUgZWwgdmFsb3Igb2JzZXJ2YWRvIHkgbGEgbWVkaWEuCgpgYGB7cn0KcGxvdChkYXRhJFVzb19pbnRlcm5ldCwgZGF0YSRWb3RvX1BQS18yMDE2XzEsCiAgICAgeGxhYj0iUG9yY2VudGFqZSBkZSBmYW1pbGlhcyBjb24gY29uZXhpw7NuIGEgaW50ZXJuZXQgcG9yIGRlcGFydGFtZW50byIsCiAgICAgeWxhYj0iVm90byBhIFBQSyAoMWVyYSB2dWVsdGEpIiwKICAgICBwY2g9MTksIHhsaW09YygwLDYwKSwgeWxpbT1jKDAsIDMwKSkKYWJsaW5lKGg9MTUuNzQxMikKCmBgYAoKU2UgY2FsY3VsYSBlbCByZXNpZHVvIGNvbiByZXNwZWN0byBhIGVzdGEgcmVjdGEgaG9yaXpvbnRhbCB5IGx1ZWdvIHNlIHN1bWFuIGVzdG9zIHJlc2lkdW9zIGFsIGN1YWRyYWRvLgoKYGBge3J9CmRhdGEkcmVzMiA8LSBkYXRhJFZvdG9fUFBLXzIwMTZfMS0xNS43NDEyCnN1bShkYXRhJHJlczJeMiwgbmEucm09VCkKYGBgCgpTZSBvYnNlcnZhIHF1ZSBsYSBzdW1hIGRlIHJlc2lkdW9zIGRlIGxhIHJlY3RhIGNhbGN1bGFkYSBwb3IgUiB0aWVuZSB1bmEgc3VtYSBkZSByZXNpZHVvcyBhbCBjdWFkcmFkbyAoNzMwLjcpIG1lbm9yIHF1ZSBsYSBzdW1hIGRlIHJlc2lkdW9zIGFsIGN1YWRyYWRvIGNvbiByZXNwZWN0byBhIGxhIHJlY3RhIGhvcml6b250YWwgKDEyNTEuNikuCkVuIHJlYWxpZGFkLCBzZSBwb2Ryw61hIGhhY2VyIGVzdGUgZWplcmNpY2lvIGNvbiBjdWFscXVpZXIgcmVjdGEgeSBzZSBvYnRlbmRyw61hIHVuYSBzdW1hIGRlIHJlc2lkdW9zIGFsIGN1YWRyYWRvIG1heW9yIGRlIDczMC43LgoKIyBSZWN0YSBkZSBhcHJveGltYWNpw7NuCgpFc3RhIHJlY3RhIGVzIHVuIG1vZGVsbyBkZSBsYSBkaXN0cmlidWNpw7NuIGRlIGxvcyBkYXRvcy4KRXN0ZSBtb2RlbG8gc2UgY2FsY3VsYSBjb24gZWwgY29tYW5kbyBgbG1gIChkZSBsaW5lYXIgbW9kZWwpIHkgc2UgcmVwb3J0YSBjb24gYHN1bW1hcnlgLgoKYGBge3IgbW9kZWxvfQptb2RlbG8xIDwtIGxtKGRhdGEkVm90b19QUEtfMjAxNl8xIH4gZGF0YSRVc29faW50ZXJuZXQpCnN1bW1hcnkobW9kZWxvMSkKYGBgCgpMb3MgcHJpbWVyb3MgZGF0b3MgYSBhbmFsaXphciBlc3TDoW4gZW4gbGEgY29sdW1uYSAiRXN0aW1hdGUiLgpFc3RvcyBkYXRvcyBkZWZpbmVuIGxhIGVjdWFjacOzbiBkZSBsYSByZWN0YS4KU2Vnw7puIGVzdG9zIGRhdG9zIHNlIHRlbmRyw61hICQkXGhhdHtZfSA9IDMuNTIgKyAwLjM3KlgkJAoKQ29uIGVzdGEgZWN1YWNpw7NuIHNlIHB1ZWRlICoqZXN0aW1hcioqIGVsIHZhbG9yIGRlIFkgKGVzIGRlY2lyLCBlbCB2b3RvIGEgUFBLKSBwYXJhIGN1YWxxdWllciB2YWxvciBkZSBYIChkZSBhY2Nlc28gYSBpbnRlcm5ldCkuCgpQb3IgZWplbXBsbywgZW4gQW1hem9uYXMgc2UgdGllbmUgMTYuNiUgZGUgYWNjZXNvIGEgaW50ZXJuZXQsIHNlZ8O6biBsYSBiYXNlIGRlIGRhdG9zLgpEZSBhY3VlcmRvIGEgbGEgZWN1YWNpw7NuLCBlbCB2b3RvIGVzdGltYWRvIGEgUFBLIHNlcsOtYSAzLjUyICsgMC4zN1wqMTYuNiA9IDkuNjYlLgoKRWwgdm90byBvYnNlcnZhZG8gYSBQUEsgZW4gQW1hem9uYXMgZnVlIDExLjg5JS4KUG9yIGxvIHRhbnRvLCBlbCByZXNpZHVvIGRlIGVzdGEgb2JzZXJ2YWNpw7NuIGVzIDExLjg5LTkuNjYgPSAyLjIzLgpMYXMgw7psdGltYXMgY29sdW1uYXMgZGUgbGEgYmFzZSBkZSBkYXRvcyBtdWVzdHJhIGVsIHZvdG8gcHJlZGljaG8gYSBQUEsgcGFyYSBjYWRhIGRlcGFydGFtZW50byB5IGVsIHJlc2lkdW8gZGUgY2FkYSBvYnNlcnZhY2nDs24uCgpFbCB2b3RvIHByZWRpY2hvIGEgUFBLIG5vIHNvbG8gc2UgcHVlZGUgY2FsY3VsYXIgcGFyYSBsb3MgdmFsb3JlcyBvYnNlcnZhZG9zIGRlIGFjY2VzbyBhIGludGVybmV0LCBzaW5vIHRhbWJpw6luIHBhcmEgY3VhbHF1aWVyIHZhbG9yIGRlIFguCgrCv0N1w6FudG8gc2Vyw61hIGVsIHZvdG8gcHJlZGljaG8gYSBQUEsgZW4gdW4gZGVwYXJ0YW1lbnRvIGNvbiBhY2Nlc28gdG90YWwgYSBpbnRlcm5ldD8Kwr9jdcOhbnRvIHNlcsOtYSBlbCB2b3RvIHByZWRpY2hvIGEgUFBLIGVuIHVuIGRlcGFydGFtZW50byBhaXNsYWRvIGRlbCBhY2Nlc28gYSBpbnRlcm5ldD8KCkVzdGFzIGRvcyBwcmVndW50YXMgaW1wbGljYW4gZWwgY8OhbGN1bG8gZGUgJFxoYXR7WX0kIHBhcmEgY3VhbmRvIFg9MTAwIChlbiBsYSBwcmltZXJhIHByZWd1bnRhKSB5IHBhcmEgY3VhbmRvIFg9MCAoZW4gbGEgc2VndW5kYSBwcmVndW50YSkuCkVuIGxhIHJlYWxpZGFkIG5vIHRlbmVtb3MgZG9zIGRlcGFydGFtZW50b3MgY29uIGVzdG9zIHZhbG9yZXMgZGUgWCwgcGVybyBlc3RvcyBzZSBwdWVkZW4gKipwcmVkZWNpcioqIGEgcGFydGlyIGRlbCBtb2RlbG8gZ2VuZXJhZG8uCgojIENvcnJlbGFjacOzbiBubyBlcyBjYXVzYWxpZGFkCgpRdWUgc2UgcHVlZGEgZ3JhZmljYXIgbG9zIGRhdG9zIGRlIGRvcyB2YXJpYWJsZXMgZW4gdW4gZXNwYWNpbyBjYXJ0ZXNpYW5vIHkgcXVlIHNlIHB1ZWRhIGNhbGN1bGFyIGxhIG1lam9yIHJlY3RhIGRlIGFwcm94aW1hY2nDs24gTk8gc2lnbmlmaWNhIHF1ZSBhbWJhcyB2YXJpYWJsZXMgbmVjZXNhcmlhbWVudGUgZXN0w6FuIHJlbGFjaW9uYWRhcyBvIHF1ZSBoYXlhIHVuYSByZWxhY2nDs24gZGUgY2F1c2FsaWRhZC4KClBhcmEgZXN0YWJsZWNlciB1bmEgcmVsYWNpw7NuIGRlIGNhdXNhbGlkYWQgaGFjZSBmYWx0YToKCi0gICBRdWUgaGF5YSBjb25zaXN0ZW5jaWEgZW50cmUgdmFyaW9zIGVzdHVkaW9zOiB1biBlc3R1ZGlvIChjYXNpKSBudW5jYSBlcyBzdWZpY2llbnRlIHBhcmEgZGVmaW5pciB1biBoYWxsYXpnby4KICAgIExhIGNvbnZlcmdlbmNpYSBlbnRyZSBkaWZlcmVudGVzIGVzdHVkaW9zIChlbiBkaWZlcmVudGVzIGx1Z2FyZXMgeSB0aWVtcG9zKSBsZSBkYSBtYXlvciByb2J1c3RleiBhIGxhIHJlbGFjacOzbiBlbnRyZSBkb3MgdmFyaWFibGVzLgoKLSAgIFF1ZSBoYXlhIHVuYSAoZnVlcnphIGRlKSBhc29jaWFjacOzbjogcXVlIGV4aXN0ZSB1bmEgY29ycmVsYWNpw7NuIGVzIHVuIHByaW1lciBwYXNvIHBhcmEgcG9kZXIgbHVlZ28gZXZhbHVhciB1bmEgcHJvYmFibGUgY2F1c2FsaWRhZC4KICAgIExhIHJlbGFjacOzbiBlcyB1bmEgZXN0YWTDrXN0aWNhIHkgbm8gdW5hIHJlbGFjacOzbiBkZXRlcm1pbmlzdGEuCgotICAgVW4gbWVjYW5pc21vOiB1bmEgZXhwbGljYWNpw7NuIGJhc2FkYSBlbiBsYSB0ZW9yw61hIHF1ZSBkZWZpZW5kYSBwb3JxdcOpIGVzIHBsYXVzaWJsZSBoYWJsYXIgZGUgdW5hIHByb2JhYmxlIHJlbGFjacOzbiBlbnRyZSBlc2FzIGRvcyB2YXJpYWJsZXMuCgotICAgVGVtcG9yYWxpZGFkOiBxdWUgbGEgY2F1c2EgcHJlY2VkYSBhbCBlZmVjdG8uCiAgICBFcyBkZWNpciBxdWUgbGEgbWVkaWNpw7NuIGRlbCBYIHNlYSBhbnRlcmlvciBhIGxhIGRlbCBZLgogICAgRW4gbnVlc3RybyBlamVtcGxvLCBubyBzZSBwb2Ryw61hIGhhYmxhciBkZSBjYXVzYWxpZGFkIHNpIGVsIFggaHViaWVyYSBzaWRvIG1lZGlkbyBlbiAyMDE3LgoKVW4gZWplbXBsbyBxdWUgY3VtcGxlIGVzdGFzIGNvbmRpY2lvbmVzIGVzIGxhIHJlbGFjacOzbiBlbnRyZSBjb25zdW1vIGRlIHRhYmFjbyB5IGRlc2Fycm9sbG8gZGUgY8OhbmNlciBkZSBwdWxtw7NuLgoKIVtdKHRvYmFjY29fYW5kX2NhbmNlci5naWYpCgpQYXJhIGVzdGFibGVjZXIgdW5hIHJlbGFjacOzbiBkZSBjYXVzYWxpZGFkIGVudHJlIGFtYmFzIHZhcmlhYmxlcyBzZSBoYW4gcmVhbGl6YWRvIG3Dumx0aXBsZXMgZXN0dWRpb3MsIHNlIHRpZW5lIHVuYSByZWxhY2nDs24gZXN0YWTDrXN0aWNhIHJvYnVzdGEsIHNlIHRpZW5lIHVuIG1lY2FuaXNtbyBlbiBsYSBuaWNvdGluYSB5IHNlIHRpZW5lIHVuYSBzZWN1ZW5jaWEgdGVtcG9yYWwsIHNlIGZ1bWEgeSBsdWVnbyBzZSBkZXNhcnJvbGxhIGVsIGPDoW5jZXIgZGUgcHVsbcOzbi4KClBvciBlamVtcGxvLCBwdWVkZSBleGlzdGlyIHVuYSBjb3JyZWxhY2nDs24gZW50cmUgZWwgY29uc3VtbyBkZSBjaG9jb2xhdGUgZW4gdW4gcGHDrXMgeSBlbCBuw7ptZXJvIGRlIHByZW1pb3MgTm9iZWwgcXVlIGN1ZW50ZSBlc2UgcGHDrXMuTGEgcHJlZ3VudGEgZXMgY3XDoWwgZXMgZWwgbWVjYW5pc21vIGV4cGxpY2F0aXZvIGVudHJlIHVuYSB2YXJpYWJsZSB5IGxhIG90cmEuClB1ZWRlbiB2ZXIgbcOhcyBbY29ycmVsYWNpb25lcyBsb2Nhc10oaHR0cDovL3d3dy50eWxlcnZpZ2VuLmNvbS9zcHVyaW91cy1jb3JyZWxhdGlvbnMpIGVzIGVzdGUgbGluay4KCiFbXShub2JlbF9jaG9jby5qcGVnKXt3aWR0aD0iNTU4In0KCkVuIGFsZ3Vub3MgY2Fzb3MsIGxhIHJlbGFjacOzbiBlbnRyZSBkb3MgdmFyaWFibGVzIGVuIHJlYWxpZGFkIGVzIGV4cGxpY2FkYSBwb3IgdW5hIHRlcmNlcmEgdmFyaWFibGUuCkVuIGVzdGUgdGlwbyBkZSBjYXNvcyBzZSBoYWJsYSBkZSBjb3JyZWxhY2lvbmVzIGVzcMO6cmVhcy4KUG9yIGVqZW1wbG86CgohW10oU2NyZWVuc2hvdF8yMDE4MTIwMy0wODAxMDguanBnKXt3aWR0aD0iMjA0In0KCkRlIG1hbmVyYSBtw6FzIGdyw6FmaWNhOgoKIVtdKG5vdGNhdXNhdGlvbi5wbmcpe3dpZHRoPSI0MDAifQoKIyBNb2RlbG8gbGluZWFsCgpDb21vIGluZGljYW1vcywgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgY3VhbnRpdGF0aXZhcyBzZSBtb2RlbGEgbWVkaWFudGUgdW5hIHJlY3RhIGRlIGFwcm94aW1hY2nDs24uClBhcmEgZXZhbHVhciB1bmEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgbnVtw6lyaWNhcywgdGVuZW1vcyBxdWUgcmVzcG9uZGVyIGxhcyBzaWd1aWVudGVzIHByZWd1bnRhcwoKLSAgIMK/RXhpc3RlIGFzb2NpYWNpw7NuPwoKLSAgIMK/RW4gcXXDqSBkaXJlY2Npw7NuPwoKLSAgIMK/Q29uIHF1w6kgZnVlcnphPwoKLSAgIFByZWRlY2lyIHBhcmEgdmFsb3JlcyBzaWduaWZpY2F0aXZvcwoKRW4gZXN0YSBzZWNjacOzbiB2YW1vcyBhIHRyYWJhamFyIGNvbiBsYSBpbmZvcm1hY2nDs24gZGUgbGFzIGVsZWNjaW9uZXMgMjAyMS4KTG9zIHJlc3VsdGFkb3MgcXVlIHVzYXJlbW9zIGNvcnJlc3BvbmRlbiBhbCBjb250ZW8gcsOhcGlkbyBlbGFib3JhZG8gcG9yIFtJUFNPU10oaHR0cHM6Ly93d3cuaXBzb3MuY29tL2VzLXBlL3Jlc3VsdGFkb3MtZGVsLWNvbnRlby1yYXBpZG8tYWwtMTAwLTYtZGUtanVuaW8tMjAyMSkgeSBhIGRhdG9zIHNvY2lvZGVtb2dyw6FmaWNvcywgZGlzcG9uaWJsZXMgZW4gbGEgd2ViIGRlbCBbSU5FSV0oaHR0cHM6Ly93d3cuaW5laS5nb2IucGUvKS4KCmBgYHtyIGJhc2UyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHJpbykKZGF0YTIxIDwtIGltcG9ydCgiYmFzZXMvdm90bzIwMjEueGxzeCIpCmBgYAoKRW4gZXN0YSBvcG9ydHVuaWRhZCwgdXNhcmVtb3MgZWwgdm90byBhIFBlZHJvIENhc3RpbGxvIHNlZ8O6biBjb250ZW8gcsOhcGlkbyBwb3IgZGVwYXJ0YW1lbnRvIGNvbW8gdmFyaWFibGUgZGVwZW5kaWVudGUgeSBlbCBpbmdyZXNvIG1lbnN1YWwgbWVkaWRvIGVuIDIwMjAgY29tbyB2YXJpYWJsZSBpbmRlcGVuZGllbnRlLgpTZSBwYXJ0ZSBkZSBsYSBoaXDDs3Rlc2lzIHF1ZSBleGlzdGlyw61hIHVuYSByZWxhY2nDs24gaW52ZXJzYSBlbnRyZSBlc3RhcyB2YXJpYWJsZXMuClBhcmEgaGFjZXIgdW5hIHByaW1lcmEgdmVyaWZpY2FjacOzbiBkZSBlc3RhIHJlbGFjacOzbiwgc2UgcHVlZGUgY3JlYXIgZWwgZGlhZ3JhbWEgZGUgZGlzcGVyc2nDs24uCgpgYGB7ciBkaXNwZXJzaW9uMjF9CnBsb3QoZGF0YTIxJFZvdG9QTCwgZGF0YTIxJFNlZ3Vyb1NhbHVkLAogICAgIHhsYWI9IiUgcXVlIGN1ZW50YSBjb24gc2VndXJvIGRlIHNhbHVkIiwKICAgICB5bGFiPSJWb3RvIGEgUGVkcm8gQ2FzdGlsbG8gKGNvbnRlbyByw6FwaWRvIDJkYSB2dWVsdGEpIiwKICAgICBwY2g9MTUsIHhsaW09Yyg0MDAsMTQwMCksIHlsaW09YygyMCwgMTAwKSkKdGV4dChkYXRhMjEkSW5ncmVzb01lbnN1YWwyMDIwLCBkYXRhMjEkVm90b1BMLCBsYWJlbHM9ZGF0YTIxJERlcGFydGFtZW50bywgY2V4PTAuNiwgcG9zPTQpCmBgYAoKRWwgZ3LDoWZpY28gbm8gbm9zIG11ZXN0cmEgdW5hIHJlbGFjacOzbiBtdXkgY2xhcmEgZW50cmUgbGFzIHZhcmlhYmxlcy4KUGFyYSBhbmFsaXphciBlbiBtw6FzIGRldGFsbGUsIG3DoXMgYWxsw6EgZGUgbGEgcmVsYWNpw7NuIHZpc3VhbCwgYW5hbGl6YXJlbW9zIGVsIG1vZGVsbyBkZSByZWdyZXNpw7NuIGxpbmVhbC4KQ29tbyBpbmRpY2Ftb3MgYW50ZXMsIGVsIG1vZGVsbyBzZSBjYWxjdWxhIGNvbiBlbCBjb21hbmRvIGBsbWAgZG9uZGUgc2UgaW5kaWNhIGxhIHZhcmlhYmxlIFkgeSBsdWVnbyBsYSBYLgpFc3RlIG1vZGVsbyBkZSBndWFyZGEgZW4gdW4gb2JqZXRvICJtb2RlbG8yIiBlbCBxdWUgc2UgcHVlZGUgZGVzY3JpYmlyIGNvbiBlbCBjb21hbmRvIGBzdW1tYXJ5YC4KCmBgYHtyIG1vZGVsbzJ9Cm1vZGVsbzQgPC0gbG0oZGF0YTIxJFZvdG9GUCB+IGRhdGEyMSREZXNudXRyaWNpb25JbmZhbnRpbCkKc3VtbWFyeShtb2RlbG80KQpgYGAKCiMgwr9FeGlzdGUgdW5hIGFzb2NpYWNpw7NuIG8gcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXM/CgpTZWfDum4gZXN0b3MgcmVzdWx0YWRvcyBsYSBlY3VhY2nDs24gZGUgbGEgcmVjdGEgZXM6XAokJFxoYXR7WX0gPSA4Ny40IC0gMC4wMypYJCQKCkVuIGVzdGEgZWN1YWNpw7NuLCBlbCBkYXRvIHF1ZSBtYXJjYSBsYSByZWxhY2nDs24gZW50cmUgYW1iYXMgdmFyaWFibGVzIGVzIGxhIHBlbmRpZW50ZS4KRWwgJFxoYXR7XGJldGF9ID0gLTAuMDMkLgpFc3RlIGRhdG8gZXMgdW5hIGFwcm94aW1hY2nDs24gZGVzZGUgbG9zIGRhdG9zIGRlbCAidmVyZGFkZXJvIiB2YWxvciBkZSAkXGJldGEkLgpDb21vIHRvZGEgYXByb3hpbWFjacOzbiBhIHBhcnRpciBkZSBkYXRvcywgZXN0ZSB2YWxvciBkZSAkXGhhdHtcYmV0YX0kIHRpZW5lIHVuIGVycm9yIGVzdMOhbmRhciB5IHBvciBsbyB0YW50byB1biBpbnRlcnZhbG8gZGUgY29uZmlhbnphIGRlIHBvc2libGVzIHZhbG9yZXMgZGVsIHBhcsOhbWV0cm8gcG9ibGFjaW9uYWwuCkNvbiBlbCBlc3RpbWFkbyB5IGVsIGVycm9yIGVzdMOhbmRhciBzZSBwdWVkZSB1c2FyIGxhIGRpc3RyaWJ1Y2nDs24gdCBwYXJhIGluZmVyaXIgYSBsYSBwb2JsYWNpw7NuLgoKTGEgSDA6ICRcYmV0YSA9IDAkCgpMYSBIQTogJFxiZXRhIFxub3Q9IDAkCgpFcyBkZWNpciwgc2UgcG9uZSBhIHBydWViYSBjdcOhbCBlcyBsYSBwcm9iYWJpbGlkYWQgZGUgb2JzZXJ2YXIgdW5hIHBlbmRpZW50ZSBkZSAtMC4wMyBzaSBsYSAidmVyZGFkZXJhIiBwZW5kaWVudGUgZXMgY2Vyby4KRXN0YSBwcm9iYWJpbGlkYWQgc2UgbWlkZSwgY29tbyBzaWVtcHJlLCBjb24gZWwgcC12YWx1ZSAobyBQcig+XHx0XHwpLCBlbiBsYSB0YWJsYSBkZSByZXN1bHRhZG9zKS4KCkVuIGxhIGZpbGEgY29ycmVzcG9uZGllbnRlIGEgbGEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSBzZSBvYnNlcnZhIHF1ZSBlbCBwLXZhbHVlID0gMC4xMjMgKG8gMTIuMyUpLgpFcyBkZWNpciwgcXVlIHRlbmVtb3MgMTIuMyUgZGUgcHJvYmFiaWxpZGFkZXMgZGUgb2JzZXJ2YXIgdW5hIHBlbmRpZW50ZSBkZSAtMC4wMyBzaSBsYSB2ZXJkYWRlcmEgcGVuZGllbnRlIGVzIGNlcm8uCkNvbW8gZXN0ZSB2YWxvciBlcyBtYXlvciBhIDAuMDUsIE5PIHNlIHB1ZWRlIHJlY2hhemFyIGxhIEgwLgoKQ29uIGVzdG8gc2UgY29uY2x1eWUgcXVlIG5vIHNlIHB1ZWRlIGRlY2lyIHF1ZSBoYXlhIHJlbGFjacOzbiBlbnRyZSBhbWJhcyB2YXJpYWJsZXMuCgpFbiB1biBzZWd1bmRvIGVqZW1wbG8sIGFuYWxpemFyZW1vcyBsYSByZWxhY2nDs24gZW50cmUgZWwgYW5hbGZhYmV0aXNtbyBlbiB1biBkZXBhcnRhbWVudG8geSBlbCB2b3RvIGEgUGVkcm8gQ2FzdGlsbG8uCkd1YXJkYXJlbW9zIGVsIG1vZGVsbyBsaW5lYWwgZW4gdW4gbnVldm8gb2JqZXRvICJtb2RlbG8zIiBxdWUgZGVzY3JpYmlyZW1vcy4KCmBgYHtyfQptb2RlbG8zIDwtIGxtKGRhdGEyMSRWb3RvUEwgfiBkYXRhMjEkQW5hbGZhYmV0aXNtbykKc3VtbWFyeShtb2RlbG8zKQpgYGAKCkxhIGVjdWFjacOzbiBkZSBsYSByZWN0YSwgc2Vnw7puIGVzdG9zIHJlc3VsdGFkb3MgZXM6CgokJFxoYXR7WX0gPSA0MC41OSArIDIuOTMqWCQkCgpFbCB2YWxvciBkZSAkXGhhdHtcYmV0YX0gPSAyLjkzJCwgY29uIHVuIHAtdmFsdWUgPSAwLjAwMTY4IChvIDAuMTY4JSkuCkNvbW8gZWwgcC12YWx1ZSBlcyBtZW5vciBhIDAuMDUgKG8gNSUpLCBlbnRvbmNlcyBwb2RlbW9zIGRlY2lyIHF1ZSBsYSBwcm9iYWJpbGlkYWQgZGUgb2JzZXJ2YXIgdW5hIHBlbmRpZW50ZSBkZSAyLjkzLCBzaWVuZG8gbGEgdmVyZGFkZXJhIGNlcm8gZXMgbXV5IGJhamEsIHBvciBsbyBxdWUgbG8gbcOhcyBwcm9iYWJsZSBlcyBxdWUgbGEgcGVuZGllbnRlIG5vIHNlYSBjZXJvLgoKU2UgcmVjaGF6YSBsYSBIMCB5IHNlIGFmaXJtYSBsYSBIQSwgY29uY2x1eWVuZG8gcXVlIHPDrSBleGlzdGUgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMuCgojIERpcmVjY2nDs24KCkxhIGRpcmVjY2nDs24gZGUgbGEgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMgZXN0w6EgbWFyY2FkYSBwb3IgZWwgc2lnbm8gZGUgbGEgcGVuZGllbnRlLgpTaSBlbCBzaWdubyBlcyBwb3NpdGl2bywgbGEgcmVjdGEgZGUgYXByb3hpbWFjacOzbiB0aWVuZSBwZW5kaWVudGUgcG9zaXRpdmEgeSBlc28gaW5kaWNhIHVuYSByZWxhY2nDs24gcG9zaXRpdmEgZW50cmUgbGFzIHZhcmlhYmxlcyAoYSBtYXlvciBYLCBtYXlvciBZKS4KU2kgZWwgc2lnbm8gZXMgbmVnYXRpdm8sIGxhIHJlY3RhIGRlIGFwcm94aW1hY2nDs24gdGllbmUgdW5hIHBlbmRpZW50ZSBuZWdhdGl2YSB5IGVzbyBpbmRpY2EgdW5hIHJlbGFjacOzbiBuZWdhdGl2YSBlbnRyZSBsYXMgdmFyaWFibGVzIChhIG1heW9yIFgsIG1lbm9yIFkpLgoKRW4gbnVlc3RybyBlamVtcGxvLCBsYSBwZW5kaWVudGUgKGVzIGRlY2lyLCBlbCB2YWxvciBkZSAkXGhhdHtcYmV0YX0kKSBlcyBwb3NpdGl2YS4KRXNvIHF1aWVyZSBkZWNpciBxdWUgZGVwYXJ0YW1lbnRvcyBxdWUgcHJlc2VudGFuIG1heW9yZXMgdGFzYXMgZGUgYW5hbGZhYmV0aXNtbywgcmVwb3J0YW4sIGVuICoqcHJvbWVkaW8qKiwgdW4gbWF5b3Igdm90byBoYWNpYSBQZWRybyBDYXN0aWxsby4KCiMgQ29lZmljaWVudGUgZGUgY29ycmVsYWNpw7NuIGRlIFBlYXJzb24KCkVsIHZhbG9yIGRlICRcaGF0e1xiZXRhfSQgaW5kaWNhIGxhIHRhc2EgZGUgY2FtYmlvLCBlcyBkZWNpciwgcG9yIGNhZGEgdW5pZGFkIGRlIGNhbWJpbyBlbiBYLCBZIGNhbWJpYSAkXGhhdHtcYmV0YX0kIHVuaWRhZGVzLgpFbiBudWVzdHJvIGVqZW1wbG8sIHBvciBjYWRhIDElIGRlIGF1bWVudG8gZW4gbGEgdGFzYSBkZSBhbmFsZmFiZXRpc21vLCBlbCB2b3RvIGEgUGVkcm8gQ2FzdGlsbG8gY2FtYmlhIDIuOSUuCgpQZXJvIGxhIHBlbmRpZW50ZSBubyBlcyB1biBidWVuIGluZGljYWRvciBkZSBsYSBmdWVyemEgZGUgbGEgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMsIHB1ZXMgZGVwZW5kZSBkZSBsYXMgdW5pZGFkZXMgZGUgbWVkaWRhIGRlIGxhcyB2YXJpYWJsZXMuClBhcmEgcG9kZXIgZXZhbHVhciBsYSByZWxhY2nDs24gZW50cmUgbGFzIHZhcmlhYmxlcywgcmVxdWVyaW1vcyB1bmEgdmVyc2nDs24gZXN0YW5kYXJpemFkYSBkZSBsYSBwZW5kaWVudGUsIHF1ZSBtaWRhIGVsIGNhbWJpbyBlbiB1bmlkYWRlcyBkZSBkZXN2aWFjacOzbiBlc3TDoW5kYXIuCgpFc3RhIG1lZGlkYSBlcyBlbCBjb2VmaWNpZW50ZSBkZSBjb3JyZWxhY2nDs24gZGUgUGVhcnNvbi4KRXN0ZSBjb2VmaWNpZW50ZSBubyBzb2xvIG1pZGUgZWwgY2FtYmlvIGVudHJlIGxhcyB2YXJpYWJsZXMgZW4gdW5pZGFkZXMgZGUgZGVzdmlhY2nDs24gZXN0w6FuZGFyLCBzaW5vIHRhbWJpw6luIGVsIGdyYWRvIGRlIGFqdXN0ZSBkZSBsb3MgcHVudG9zIGEgbGEgcmVjdGEuCkVzdGUgY29lZmljaWVudGUgdGllbmUgbGFzIHNpZ3VpZW50ZXMgY2FyYWN0ZXLDrXN0aWNhczoKCi0gICBFbCBjb2VmaWNpZW50ZSByIGRlIFBlYXJzb24gdmFyw61hIGVudHJlIC0xIHkgKzEuCiAgICBFbCBjb2VmaWNpZW50ZSByIHRpZW5lIGVsIG1pc21vIHNpZ25vIHF1ZSBsYSBwZW5kaWVudGUuCgotICAgcj0wIHNpIGxhIHBlbmRpZW50ZSB0YW1iacOpbiBlcyBjZXJvLgoKLSAgIHI9KzEgbyByPS0xIHNpIHRvZG9zIGxvcyBwdW50b3MgY2FlbiBlbiBsYSBsw61uZWEgZGUgcHJlZGljY2nDs24uCiAgICBFcyBkZWNpciwgcXVlIGxhIHByZWRpY2Npw7NuIGVzICJwZXJmZWN0YSIuCiAgICBFc3RhIHNpdHVhY2nDs24gZXMgaGlww7N0ZXRpY2EsIG51bmNhIHNlIGRhIGNvbiBkYXRvcyBlbiBjaWVuY2lhcyBzb2NpYWxlcy4KCkVuIG51ZXN0cm8gZWplbXBsbyByPTAuNTk2LgpFcyBkZWNpciwgcG9yIGNhZGEgdW5pZGFkIGRlIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciBkZSBjYW1iaW8gZW4gWCwgWSBjYW1iaWEgMC41OTYgZGVzdmlhY2lvbmVzIGVzdMOhbmRhci4KCmBgYHtyIGNvcnJlbGFjaW9ufQpjb3IudGVzdCh4PWRhdGEyMSRBbmFsZmFiZXRpc21vLCB5PWRhdGEyMSRWb3RvUEwsIG1ldGhvZD0icGVhcnNvbiIpCmBgYAoKUGFyYSB0ZW5lciB1bmEgaWRlYSBhY2VyY2EgZGUgY8OzbW8gaW50ZXJwcmV0YXIgZXN0ZSB2YWxvciwgbGEgc2lndWllbnRlIGltYWdlbiBtdWVzdHJhIGVqZW1wbG9zIGRlIGRpc3RyaWJ1Y2lvbmVzIGRlIHB1bnRvcyBhIGRpZmVyZW50ZXMgdmFsb3JlcyBkZSByLgoKIVtdKHBlcnNvbi5wbmcpe3dpZHRoPSI1NDcifQoKQ29tbyBzZSBvYnNlcnZhLCBhIG1lZGlkYSBxdWUgZWwgdmFsb3IgZGUgciBzZSBhY2VyY2EgYSAxLCBsb3MgcHVudG9zIHNlIGVuY3VlbnRyYW4gbcOhcyBhbGluZWFkb3MgYSBsYSByZWN0YSBkZSBwcmVkaWNjacOzbiwgcG9yIGxvIHF1ZSBoYWJyw61hIG1lbm9zIHJlc2lkdW9zLCBsbGVnYW5kbyBhIGNlcm8sIGNvbiBwdW50b3MgY29tcGxldGFtZW50ZSBhanVzdGFkb3MgYSBsYSByZWN0YS4KCkEgbWVkaWRhIHF1ZSBlbCB2YWxvciBkZSByIHNlIGFjZXJjYSBhIGNlcm8sIGxvcyBwdW50b3Mgc2UgdnVlbHZlbiBtw6FzIGRpc3BlcnNvcywgZm9ybWFuZG8gdW5hIG51YmUgZGUgcHVudG9zLgpFc29zIHB1bnRvcyBzZSBhanVzdGFuIG1lbm9zIGEgdW5hIHJlY3RhIGRlIHByZWRpY2Npw7NuLgoKUGFyYSB0ZW5lciB1bmEgaWRlYSBtw6FzIGzDumRpY2EgZGUgbGEgZGlzdHJpYnVjacOzbiBkZSBwdW50b3MgYSBkaWZlcmVudGVzIHZhbG9yZXMgZGVsIGNvZWZpY2llbnRlIGRlIFBlYXJzb24sIHB1ZWRlbiBlbnRyYXIgYSBlc3RlIGxpbmsgZGUgW0d1ZXNzIHRoZSBDb3JyZWxhdGlvbl0oaHR0cDovL2d1ZXNzdGhlY29ycmVsYXRpb24uY29tLyksIHF1ZSAiZ2FtaWZpY2EiIGFjZXJ0YXIgY29uIGVsIHZhbG9yIGRlIHIgcGFyYSBkaWZlcmVudGVzIGRpc3BlcnNpb25lcyBkZSBwdW50b3MuCgojIENvZWZpY2llbnRlIGRlIGRldGVybWluYWNpw7NuICRSXjIkCgpFbiBlbCBjb250ZXh0byBkZWwgYW7DoWxpc2lzIGRlIHJlZ3Jlc2nDs24gbGluZWFsLCBsYSBmdWVyemEgZGUgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgc2UgaW50ZXJwcmV0YSBjb21vIHF1w6kgdGFuIGJpZW4gWCBwcmVkaWNlIFkuCkVzdGEgY2FwYWNpZGFkIGRlIFggZGUgcHJlZGVjaXIgbGEgdmFyaWFibGUgWSBzZSBtaWRhIG1lZGlhbnRlIGVsIGNvZWZpY2llbnRlIGRlIGRldGVybWluYWNpw7NuICRSXjIkLgpFc3RlIHZhbG9yIG5vIGVzIG90cm8gcXVlIGVsIGN1YWRyYWRvIGRlbCBjb2VmaWNpZW50ZSBkZSBQZWFyc29uLgoKUGVybywgc2UgaW50ZXJwcmV0YSBjb21vIGxhIHJlZHVjY2nDs24gcHJvcG9yY2lvbmFsIGVuIGVsIGVycm9yIGFsIHVzYXIgbGEgcmVjdGEgZGUgcHJlZGljY2nDs24sIGVuIGx1Z2FyIGRlIHPDs2xvIHVzYXIgJFxiYXJ7WX0kIChlbCBwcm9tZWRpbyBkZSBZKSBwYXJhIHByZWRlY2lyIFkuCgpTZSB0aWVuZSBxdWUgcmVjb3JkYXIgcXVlIGxvcyBlcnJvcmVzIChvIHJlc2lkdW9zKSBzb24gbGFzIGRpc3RhbmNpYXMgZGUgY2FkYSBwdW50byBhIGxhIHJlY3RhLgpDYWRhIHB1bnRvIHRpZW5lIHVuYSBkaXN0YW5jaWEgYSBsYSByZWN0YSBkZSAkXGJhcntZfSQgeSB0YW1iacOpbiB1bmEgZGlzdGFuY2lhIGEgbGEgcmVjdGEgZGUgcHJlZGljY2nDs24uCgpFbiBsYSBpbWFnZW4gZGUgbGEgaXpxdWllcmRhLCBzZSBtdWVzdHJhbiBsYXMgZGlzdGFuY2lhcyBkZSBsb3MgcHVudG9zIGEgbGEgcmVjdGEgZGUgJFxiYXJ7WX0kLgpUb2RhcyBlc3RhcyBkaXN0YW5jaWFzIGFsIGN1YWRyYWRvIHNlIHB1ZWRlbiBzdW1hci4KRXN0YSBzdW1hIGVzIEUxLgoKRW4gbGEgaW1hZ2VuIGRlIGxhIGRlcmVjaGEsIHNlIG11ZXN0cmFuIGxhcyBkaXN0YW5jaWFzIGRlIGxvcyBwdW50b3MgYSBsYSByZWN0YSBkZSBwcmVkaWNjacOzbiAkXGhhdHtZfSQuClRvZGFzIGVzdGFzIGRpc3RhbmNpYXMgYWwgY3VhZHJhZG8gc2UgcHVlZGVuIHN1bWFyLgpFc2Egc3VtYSBlcyBFMi4KCiFbXShkZXRlcm1pbmFjaW9uLnBuZykKCkVudG9uY2VzLCAkUl4yID0gXGZyYWN7RTEtRTJ9e0UxfSQuCkVzdGUgY8OhbGN1bG8gZXMgaWd1YWwgYWwgY3VhZHJhZG8gZGVsIHZhbG9yIGRlIGxhIGNvcnJlbGFjacOzbi4KUG9yIGxvIHRhbnRvOgoKLSAgICRSXjIkIHZhcsOtYSBlbnRyZSAwIHkgMS4KCi0gICAkUl4yPTEkIGltcGxpY2EgcXVlIEUyID0gMCwgZXMgZGVjaXIgcXVlIHRvZG9zIGxvcyBwdW50b3MgY2FlbiBlbiBsYSByZWN0YS4KCi0gICAkUl4yPTAkIHNpIGxhIHBlbmRpZW50ZSBlcyBjZXJvLgoKRW4gbnVlc3RybyBlamVtcGxvLCAkUl4yPTAuMzUkLgpFc3RlIHZhbG9yIHNlIGVuY3VlbnRyYSBlbiBsYSBwZW7Dumx0aW1hIGZpbGEgZGVsIGBzdW1tYXJ5YCBkZWwgbW9kZWxvLCBjb24gZWwgbm9tYnJlICJNdWx0aXBsZSBSLXNxdWFyZWQiLgpFcyBkZWNpciwgZWwgbW9kZWxvIHJlZHVjZSB1biAzNSUgZWwgZXJyb3IgZGUgdXNhciBzb2xhbWVudGUgZWwgcHJvbWVkaW8gcGFyYSBlc3RpbWFyIFkuCkVzIGRlY2lyLCBlbiBlbCByYW5nbyBlbnRyZSAwIHkgMSwgZWwgdmFsb3IgZGUgMC4zNSBjb3JyZXNwb25kZSBhIHVuYSBmdWVyemEgbW9kZXJhZGEgZW50cmUgbGFzIHZhcmlhYmxlcy4KCiMgVmFsaWRleiBkZWwgbW9kZWxvCgpMYSDDumx0aW1hIGZpbGEgZGVsIGBzdW1tYXJ5YCBtdWVzdHJhIGxvcyByZXN1bHRhZG9zIGRlIHVuYSBwcnVlYmEgRiwgY29uIHVuIGVzdGFkw61zdGljbyBkZSBsYSBwcnVlYmEgeSB1biBwLXZhbHVlLgpFc3RhIHBydWViYSBlcyBsYSBxdWUgbm9zIGluZGljYSBsYSB2YWxpZGV6IGRlbCBtb2RlbG8gZW4gc3UgY29uanVudG8uCgpDdWFuZG8gYW5hbGl6YW1vcyByZWxhY2lvbmVzIGJpdmFyaWFkYXMsIGVzdGUgcC12YWx1ZSBlcyBpZ3VhbCBhbCBwLXZhbHVlIGRlIGxhIHBlbmRpZW50ZSwgcG9yIGxvIHF1ZSBsYSB2YWxpZGV6IHNlIGRldGVybWluYSBjb24gY3VhbHF1aWVyYSBkZSBlbGxhcy4KClZhbW9zIGEgdmVyIGVuIGxhIHNpZ3VpZW50ZSBzZWNjacOzbiBkZSBhbsOhbGlzaXMgbXVsdGl2YXJpYWRvIHF1ZSBlbCBhbsOhbGlzaXMgZGUgbGEgcHJ1ZWJhIEYgZXMgZWwgcHJpbWVyIHBhc28sIHF1ZSBpbmRpY2EgbGEgdmFsaWRleiBkZWwgbW9kZWxvIG11bHRpdmFyaWFkbywgeSBxdWUgc2UgdGllbmUgcXVlIHJlYWxpemFyIGFudGVzIGRlIGFuYWxpemFyIGxvcyBzaWd1aWVudGVzIHBhc29zLCBkZSByZWxhY2lvbmVzLCBkaXJlY2Npb25lcyB5IGZ1ZXJ6YS4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgOSIKYXV0aG9yOiAiQXJ0dXJvIE1hbGRvbmFkbyIKZGF0ZTogIjI0LzA1LzIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGNvc21vCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlCmVkaXRvcl9vcHRpb25zOgogIG1hcmtkb3duOgogICAgd3JhcDogc2VudGVuY2UKYmlibGlvZ3JhcGh5OiByZWZlcmVuY2VzLmJpYgotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCmBgYAoKIyBJbnRyb2R1Y2Npw7NuCgpFbCB0ZW1hIGRlIGxhIHNlbWFuYSBlcyBsYSBjb3JyZWxhY2nDs24geSBhIGxhIHJlZ3Jlc2nDs24gbGluZWFsIHNpbXBsZS4KRXN0ZSBlcyB1biBtw6l0b2RvIHBhcmEgYW5hbGl6YXIgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgY3VhbnRpdGF0aXZhczogdW5hIGRlcGVuZGllbnRlIHkgdW5hIGluZGVwZW5kaWVudGUuCgpSZWNvcmRlbW9zIHF1ZSBlbCBtw6l0b2RvIGRlbCBjaGktY3VhZHJhZG8gc2UgdHJhdGFiYSBkZSBhbmFsaXphciBsYSByZWxhY2nDs24gZW50cmUgZG9zIHZhcmlhYmxlcyBjdWFsaXRhdGl2YXMuCkxhIHBydWViYSB0IHkgQU5PVkEgdGllbmVuIHVuYSB2YXJpYWJsZSBkZXBlbmRpZW50ZSBjdWFudGl0YXRpdmEgeSB1bmEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSBjdWFsaXRhdGl2YS4KTGEgY29ycmVsYWNpw7NuIGVzIHVuYSBleHRlbnNpw7NuIGRlIGVzdGEgc2VyaWUgZGUgcmVsYWNpb25lcy4KRWwgbcOpdG9kbyBkZSByZWdyZXNpw7NuIGxpbmVhbCBlcyB1biBtw6l0b2RvIGdlbmVyYWxpemFkbywgcXVlLCBsdWVnbyB2ZXJlbW9zLCBpbmNsdXllIGEgbGEgcHJ1ZWJhIHQgeSBhIEFOT1ZBLgoKTGEgY29ycmVsYWNpw7NuIHNlIHRyYXRhIGRlIGxhIGV2YWx1YWNpw7NuIGRlbCBjYW1iaW8gc2lzdGVtw6F0aWNvIGVuIGxhcyBwdW50dWFjaW9uZXMgZGUgZG9zIHZhcmlhYmxlcyBudW3DqXJpY2FzIChkaXNjcmV0YXMgbyBjb250aW51YXMsIGRlIGludGVydmFsbyBvIGRlIHJhesOzbikuCgpDb24gZWwgbcOpdG9kbyBkZSBsYSByZWdyZXNpw7NuIGxpbmVhbCBzZSBwdWVkZSByZXNwb25kZXIgbGFzIHNpZ3VpZW50ZXMgcHJlZ3VudGFzOgoKLSAgIEFuYWxpemFyIHNpIGhheSB1bmEgKiphc29jaWFjacOzbioqIGVudHJlIGxhcyB2YXJpYWJsZXMgbWVkaWFudGUgdW4gdGVzdCBkZSBpbmRlcGVuZGVuY2lhIGVzdGFkw61zdGljYS4KCi0gICBBbmFsaXphciBsYSAqKmRpcmVjY2nDs24qKiBkZSBsYSBhc29jaWFjacOzbiAoZGlyZWN0YSBvIGludmVyc2EpLgoKLSAgIEV2YWx1YXIgbGEgKipmdWVyemEqKiBkZSBsYSBhc29jaWFjacOzbiB1c2FuZG8gdW5hIG1lZGlkYSBkZSBhc29jaWFjacOzbiBsbGFtYWRhICoqY29ycmVsYWNpw7NuIGRlIFBlYXJzb24uKioKCi0gICBFc3RpbWFyIHVuYSBlY3VhY2nDs24gZGUgcmVncmVzacOzbiBxdWUgIioqcHJlZGljZSoqIiBsb3MgdmFsb3JlcyBkZSBsYSB2YXJpYWJsZSBkZXBlbmRpZW50ZSBwYXJhIHZhbG9yZXMgZGUgbGEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZS4KCiMgRXNwYWNpbyBjYXJ0ZXNpYW5vCgpTZSB0cmF0YSBkZSB1biBlc3BhY2lvIGZvcm1hZG8gcG9yIGRvcyBlamVzIHBlcnBlbmRpY3VsYXJlcywgZWwgZWplIFggKGhvcml6b250YWwpIHkgZWwgZWplIFkgKHZlcnRpY2FsKS4KQ2FkYSB1bm8gZGUgZXN0b3MgZWplcyBzZSBwdWVkZSB0cmF0YXIgY29tbyB1bmEgcmVnbGEgZG9uZGUgc2UgcHVlZGVuIG1hcGVhciB2YXJpYWJsZXMuCgpQb3IgZWplbXBsbzoKCi0gICBFbiBlbCBlamUgWCBzZSBwdWVkZSBtYXBlYXIgbGEgdmFyaWFibGUgZWRhZCAodmFyaWFibGUgbnVtw6lyaWNhIGRpc2NyZXRhKS4KICAgIExhIHJlZ2xhIHBvZHLDrWEgcGFydGlyIGRlc2RlIGNlcm8gc2kgc2UgcmVjb2dlIGluZm9ybWFjacOzbiBxdWUgaW5jbHV5ZSBhIG5pw7FvcyBvIHBvZHLDrWEgcGFydGlyIGRlc2RlIDE4IHNpIHNlIHJlY29nZSBpbmZvcm1hY2nDs24gZGUgbWF5b3JlcyBkZSBlZGFkLgoKLSAgIEVuIGVsIGVqZSBZIHNlIHB1ZWRlIG1hcGVhciBsYSB2YXJpYWJsZSBlc3RhdHVyYSAodmFyaWFibGUgbnVtw6lyaWNhIGNvbnRpbnVhKS4KCi0gICBTaSBzZSBjb21iaW5hbiBhbWJvcyBlamVzIHNlIGZvcm1hIGVsIGVzcGFjaW8sIGRvbmRlIGNhZGEgaW5kaXZpZHVvIGVzdGFyw6EgbWFwZWFkbywgY29uIHN1cyBkYXRvcyBkZSBwZXNvIHkgZGUgZXN0YXR1cmEgY29tbyBjb29yZGVuYWRhcyBkZSB1YmljYWNpw7NuIGVuIGVzdGUgZXNwYWNpby4KCi0gICBFbCBjb25qdW50byBkZSBpbmRpdmlkdW9zIChvIHB1bnRvcykgZm9ybWFyw6EgdW5hICJudWJlIiBkZSBwdW50b3MgZW4gZXN0ZSBlc3BhY2lvLgogICAgRXN0ZSB0aXBvIGRlIGdyw6FmaWNvIHNlIGxsYW1hIEdyw6FmaWNvIG8gRGlhZ3JhbWEgZGUgRGlzcGVyc2nDs24uCgohW10oOS4xLnBuZyl7d2lkdGg9IjQ4OCJ9CgpBaG9yYSBwcmVzZW50YXJlbW9zIHVuIGVqZW1wbG8gbcOhcyBwb2zDrXRpY28uCkVzdGEgYmFzZSBpbmNsdXllIGluZm9ybWFjacOzbiBhIG5pdmVsIGRlcGFydGFtZW50YWwsIHNvY2lvZGVtb2dyw6FmaWNhIHkgZWxlY3RvcmFsIGRlIDIwMTYsIHRvZGFzIHZhcmlhYmxlcyBudW3DqXJpY2FzLgoKYGBge3IgYmFzZSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShyaW8pCmRhdGEgPC0gaW1wb3J0KCJiYXNlcy9kYXRvczIwMTZfdjMuc2F2IikKYGBgCgpQYXJhIGVtcGV6YXIgdXNhcmVtb3MgZG9zIHZhcmlhYmxlcyBwYXJhIGdlbmVyYWwgZWwgZ3LDoWZpY28gZGUgZGlzcGVyc2nDs246CgotICAgRW4gZWwgZWplIFggc2UgbWFwZWFyw6EgZWwgcG9yY2VudGFqZSBkZSBob2dhcmVzIGNvbiBhY2Nlc28gYSBpbnRlcm5ldCAodmFyaWFibGU6IFBvcmNfVXNvX2ludGVybmV0KS4KCi0gICBFbiBlbCBlamUgWSBzZSBtYXBlYXLDoSBlbCBwb3JjZW50YWplIGRlIHZvdG8gYSBQUEsgZW4gcHJpbWVyYSB2dWVsdGEgZGUgMjAxNiAodmFyaWFibGU6IFZvdG9fUFBLXzIwMTZfMSkuCgpQYXJhIGNvbnN0cnVpciBlbCBncsOhZmljbyBkZSBkaXNwZXJzacOzbiB1c2FyZW1vcyBlbCBjb21hbmRvIGBwbG90YCBxdWUgcGVybWl0ZSBpbmNsdWlyIGFtYmFzIHZhcmlhYmxlcy4KCmBgYHtyIGRpc3BlcnNpb259CnBsb3QoZGF0YSRVc29faW50ZXJuZXQsIGRhdGEkVm90b19QUEtfMjAxNl8xLAogICAgIHhsYWI9IlBvcmNlbnRhamUgZGUgZmFtaWxpYXMgY29uIGNvbmV4acOzbiBhIGludGVybmV0IHBvciBkZXBhcnRhbWVudG8iLAogICAgIHlsYWI9IlZvdG8gYSBQUEsgKDFlcmEgdnVlbHRhKSIsCiAgICAgcGNoPTE1LCB4bGltPWMoMCw2MCksIHlsaW09YygwLCAzMCkpCnRleHQoZGF0YSRVc29faW50ZXJuZXQsIGRhdGEkVm90b19QUEtfMjAxNl8xLCBsYWJlbHM9ZGF0YSREcHRvLCBjZXg9MC42LCBwb3M9NCkKYGBgCgpFc3RhICJudWJlIiBkZSBwdW50b3Mgbm9zIGRhbiB1bmEgaWRlYSB2aXN1YWwgZGUgbGEgcHJvYmFibGUgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMuCkVuIGVzdG9zIGNhc29zIHZlbW9zIHF1ZSBsYXMgdmFyaWFibGVzIGZvcm1hbiB1biBwYXRyw7NuIGFzY2VuZGVudGUgcG9zaXRpdm86IGEgbWVkaWRhIHF1ZSBsb3MgZGVwYXJ0YW1lbnRvcyByZXBvcnRhbiB1biBtYXlvciBwb3JjZW50YWplIGRlIGZhbWlsaWFzIGNvbiBjb25leGnDs24gYSBpbnRlcm5ldCwgdGFtYmnDqW4gc2Ugb2JzZXJ2YSB1biBtYXlvciBwb3JjZW50YWplIGRlIHZvdG8gYSBQUEsgZW4gMjAxNi4KCiMgUmVsYWNpw7NuIGxpbmVhbAoKRXN0YSBwcm9iYWJsZSByZWxhY2nDs24gZW50cmUgZXN0YXMgZG9zIHZhcmlhYmxlcyBzZSByZXN1bWVuL3NpbXBsaWZpY2EgbWVkaWFudGUgdW5hIGFwcm94aW1hY2nDs24gbGluZWFsLgpFcyBkZWNpciwgbWVkaWFudGUgdW5hIHJlY3RhIGRlIGFwcm94aW1hY2nDs24uCgojIyBFY3VhY2nDs24gZGUgbGEgcmVjdGEKClNlIHRpZW5lIHF1ZSByZWNvcmRhciBxdWUgdW5hIHJlY3RhIHRpZW5lIGxhIGZvcm1hICRZID0gYSArIGJYJCwgZG9uZGUgImEiIGVzIGxhIGNvbnN0YW50ZSB5ICJiIiBlcyBsYSBwZW5kaWVudGUuCkN1YWxxdWllciByZWN0YSBwdWVkZSBzZXIgZ3JhZmljYWRhIGNvbiBkaWZlcmVudGVzIHZhbG9yZXMgZGUgYSB5IGIuCgpMYSByZWxhY2nDs24gZW50cmUgbGFzIHZhcmlhYmxlcyBkZXBlbmRlIGRlIGxhIHBlbmRpZW50ZToKCi0gICBTaSBiIGVzIHBvc2l0aXZvLCBZIGF1bWVudGEgY3VhbmRvIFggYXVtZW50YS4KICAgIEVzIHVuYSByZWxhY2nDs24gZGlyZWN0YSAvIHBvc2l0aXZhLgoKLSAgIFNpIGIgZXMgbmVnYXRpdm8sIFkgYXVtZW50YSBjdWFuZG8gWCBkaXNtaW51eWUuCiAgICBFcyB1bmEgcmVsYWNpw7NuIGludmVyc2EgLyBuZWdhdGl2YS4KCi0gICBTaSBiIGVzIGNlcm8uCiAgICBZIG5vIGNhbWJpYSBjdWFuZG8gWCB2YXLDrWEuCiAgICBObyBleGlzdGUgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMuCgpDb21vIGRpamltb3MsIGxhICJudWJlIiBkZSBwdW50b3Mgc2UgbW9kZWxhIG1lZGlhbnRlIHVuYSByZWN0YS4KRXN0YSByZWN0YSBkZSBhcHJveGltYWNpw7NuIHRpZW5lIGxhIGZvcm1hICRcaGF0e1l9ID0gXGhhdHtcYWxwaGF9ICsgXGhhdHtcYmV0YX0qWCQKCkxvcyB2YWxvcmVzIHF1ZSB0aWVuZSBlbCAic29tYnJlcm8iIHNvbiBkYXRvcyBxdWUgc2UgY2FsY3VsYW4gY29uIGxvcyBkYXRvcyBvYnNlcnZhZG9zLgpVbmEgdmV6IGVzdGltYWRvcyBlc3RvcyB2YWxvcmVzIChzZSB2ZXLDoSBsYSBsw7NnaWNhIGVuIHVuIG1vbWVudG8pLCBzZSBwdWVkZSBlc3RpbWFyIGN1YWxxdWllciBZIChwb3IgZXNvIHRpZW5lIHRhbWJpw6luICJzb21icmVybyIpIHBhcmEgY3VhbHF1aWVyIHZhbG9yIGRlIFguCgpFbiBudWVzdHJvIGVqZW1wbG8sIHNlIGxlIHB1ZWRlIHBlZGlyIGEgUiBxdWUgaW5jbHV5YSBsYSByZWN0YSBkZSBhcHJveGltYWNpw7NuIGVuIGVsIGdyw6FmaWNvIGRlIGRpc3BlcnNpw7NuIG1lZGlhbnRlIGVsIGNvbWFuZG8gYGFibGluZWAgZG9uZGUgc2UgYW5pZGEgZWwgY29tYW5kbyBgbG1gLCBxdWUgc2UgdXNhIHBhcmEgY2FsY3VsYXIgdW4gbW9kZWxvIGxpbmVhbCAocXVlIHZlcmVtb3MgZW4gdW4gbW9tZW50bykKCmBgYHtyIHJlY3RhfQpwbG90KGRhdGEkVXNvX2ludGVybmV0LCBkYXRhJFZvdG9fUFBLXzIwMTZfMSwKICAgICB4bGFiPSJQb3JjZW50YWplIGRlIGZhbWlsaWFzIGNvbiBjb25leGnDs24gYSBpbnRlcm5ldCBwb3IgZGVwYXJ0YW1lbnRvIiwKICAgICB5bGFiPSJWb3RvIGEgUFBLICgxZXJhIHZ1ZWx0YSkiLAogICAgIHBjaD0xOSwgeGxpbT1jKDAsNjApLCB5bGltPWMoMCwgMzApKQphYmxpbmUobG0oZGF0YSRWb3RvX1BQS18yMDE2XzEgfiBkYXRhJFVzb19pbnRlcm5ldCkpCmBgYAoKwr9Dw7NtbyBzZSBjYWxjdWxhIHF1ZSBFU0EgZXMgbGEgcmVjdGEgZGUgYXByb3hpbWFjacOzbiwgeSBubyBvdHJhPwpMYSByZWN0YSBjYWxjdWxhZGEgc2UgZGVmaW5lIGNvbW8gYXF1ZWxsYSBxdWUgbWluaW1pemEgbG9zIHJlc2lkdW9zLgoKIyBSZXNpZHVvcyBvIGVycm9yZXMKClNlIHRyYXRhIGRlIGxhIGRpZmVyZW5jaWEgZW50cmUgZWwgdmFsb3Igb2JzZXJ2YWRvIHkgZWwgdmFsb3IgY2FsY3VsYWRvIHBvciBsYSByZWN0YTogJFkgLSBcaGF0e1l9JAoKRXMgZGVjaXIsIGNhZGEgb2JzZXJ2YWNpw7NuIHRpZW5lIHVuIHJlc2lkdW8sIHF1ZSBzZXLDrWEgdmlzdWFsbWVudGUsIGxhIGRpc3RhbmNpYSB2ZXJ0aWNhbCBkZWwgcHVudG8gYSBsYSByZWN0YSBkZSBhcHJveGltYWNpw7NuLgoKYGBge3IgcmVzaWR1b3N9CnBsb3QoZGF0YSRVc29faW50ZXJuZXQsIGRhdGEkVm90b19QUEtfMjAxNl8xLAogICAgIHhsYWI9IlBvcmNlbnRhamUgZGUgZmFtaWxpYXMgY29uIGNvbmV4acOzbiBhIGludGVybmV0IHBvciBkZXBhcnRhbWVudG8iLAogICAgIHlsYWI9IlZvdG8gYSBQUEsgKDFlcmEgdnVlbHRhKSIsCiAgICAgcGNoPTE5LCB4bGltPWMoMCw2MCksIHlsaW09YygwLCAzMCkpCmFibGluZShsbShkYXRhJFZvdG9fUFBLXzIwMTZfMSB+IGRhdGEkVXNvX2ludGVybmV0KSkKI0VzdGUgY8OzZGlnbyBkZSBhYmFqbyBubyBzZSBldmFsdWFyw6EKZml0dGVkIDwtIHByZWRpY3QobG0oZGF0YSRWb3RvX1BQS18yMDE2XzEgfiBkYXRhJFVzb19pbnRlcm5ldCkpCmZvciAoaSBpbiAxOjI1KSB7CiAgbGluZXMoIGMoZGF0YSRVc29faW50ZXJuZXRbaV0sIGRhdGEkVXNvX2ludGVybmV0W2ldKSwgYyhkYXRhJFZvdG9fUFBLXzIwMTZfMVtpXSwgZml0dGVkW2ldKSwgY29sPSJibHVlIikKfQpgYGAKCkNhZGEgcHVudG8gc2UgYXByb3hpbWEgbyBzZSBhbGVqYSBtw6FzIGRlIGxhIHJlY3RhIGRlIGFwcm94aW1hY2nDs24uCkVzdGFzIGRpc3RhbmNpYXMgc2UgcHVlZGVuIHN1bWFyIHBhcmEgZGFybm9zIHVuYSBpZGVhIGRlIHF1w6kgdGFuIGJpZW4gZXN0YSByZWN0YSAicmVzdW1lIiBsYSBkaXN0cmlidWNpw7NuIGRlIGxvcyBkYXRvcy4KClNlIGRlZmluZSBsYSByZWN0YSBkZSBhcHJveGltYWNpw7NuIGNvbW8gbGEgcmVjdGEgcXVlIG1pbmltaXphIGVzdGEgc3VtYSBkZSByZXNpZHVvcy4KRXMgZGVjaXIsIGN1YWxxdWllciBvdHJhIHJlY3RhIHRlbmRyw61hIHVuYSBtYXlvciBzdW1hIGRlIGVzYXMgbMOtbmVhcyBhenVsZXMuCkVzdGEgcmVjdGEgdGllbmUgdW5hIGVjdWFjacOzbiBkZSBsYSByZWN0YSwgY29uIHVuYSBjb25zdGFudGUgeSB1bmEgcGVuZGllbnRlIGVzcGVjw61maWNhLgpEZSBtYW5lcmEgZm9ybWFsIGxhIHN1bWEgc2UgaGFjZSBkZSBsb3MgcmVzaWR1b3MgYWwgY3VhZHJhZG8gcGFyYSBldml0YXIgbG9zIHZhbG9yZXMgbmVnYXRpdm9zLgoKUGFyYSBlc3RvIHNlIHRpZW5lIHF1ZSBjYWxjdWxhciBlbCBtb2RlbG8gbGluZWFsIGNvbiBlbCBjb21hbmRvIGBsbWAsIHkgZXN0byBtb2RlbG8gc2UgZ3VhcmRhIGVuIHVuIG9iamV0byAibW9kZWxvMSIuCgpgYGB7ciBtb2RlbG99Cm1vZGVsbzEgPC0gbG0oZGF0YSRWb3RvX1BQS18yMDE2XzEgfiBkYXRhJFVzb19pbnRlcm5ldCkKYGBgCgpTZSBwdWVkZW4gdXNhciBjb24gbGEgZnVuY2nDs24gYHJlc2lkYCBwYXJhIGNhbGN1bGFyIGxvcyByZXNpZHVvcyBkZSB1biBtb2RlbG8gbGluZWFsLgpFc3RvcyByZXNpZHVvcyBzZSBlbGV2YW4gYWwgY3VhZHJhZG8geSBzZSBzdW1hbi4KU2Ugb2J0aWVuZSBxdWUgbGEgc3VtYSB0b3RhbCBkZSByZXNpZHVvcyBhbCBjdWFkcmFkbyBlcyA3MzMuOS4KRXN0ZSByZXNpZHVvIHNlIGNhbGN1bGEgc29icmUgbGEgYmFzZSBkZSBsYSBtZWpvciByZWN0YSBkZSBhcHJveGltYWNpw7NuLgpDdWFscXVpZXIgb3RyYSByZWN0YSBkZWJlcsOtYSB0ZW5lciB1bmEgc3VtYSB0b3RhbCBkZSByZXNpZHVvcyBhbCBjdWFkcmFkbyBtYXlvciBhIGVzdGUgdmFsb3IuCgpgYGB7ciBzdW1hfQpzdW0ocmVzaWQobW9kZWxvMSleMikKYGBgCgpTZSBwdWVkZSBjb21wYXJhciBlc3RhIHN1bWEgZGUgcmVzaWR1b3MgYWwgY3VhZHJhZG8gY29uIGxvcyByZXNpZHVvcyBxdWUgZ2VuZXJhbiBvdHJhIHJlY3RhLgpVbmEgZm9ybWEgZGUgInByZWRlY2lyIiBlbCB2b3RvIGEgUFBLIHNpIG5vIHNlIHR1dmllcmEgaW5mb3JtYWNpw7NuIHNlcsOtYSBzb2xvIG1lZGlhbnRlIGVsIHByb21lZGlvIGRlbCB2b3RvIGEgUFBLLgpFbCB2b3RvIHByb21lZGlvIGEgUFBLIGVzIDE1LjclLgpTaW4gb3RyYSBpbmZvcm1hY2nDs24gZXN0YSBzZXLDrWEgbGEgbWVqb3IgYXByb3hpbWFjacOzbi4KCmBgYHtyIG1lZGlhfQptZWFuKGRhdGEkVm90b19QUEtfMjAxNl8xLCBuYS5ybT1UKQpgYGAKCkVzdGEgYXByb3hpbWFjacOzbiBzZSBwdWVkZSBncmFmaWNhciBjb24gdW5hIHJlY3RhIGhvcml6b250YWwgWT0xNS43LgpFc3RhIHJlY3RhIGdlbmVyYSBvdHJvcyByZXNpZHVvcyBxdWUgc2UgY2FsY3VsYW4gY29tbyBsYSByZXN0YSBlbnRyZSBlbCB2YWxvciBvYnNlcnZhZG8geSBsYSBtZWRpYS4KCmBgYHtyfQpwbG90KGRhdGEkVXNvX2ludGVybmV0LCBkYXRhJFZvdG9fUFBLXzIwMTZfMSwKICAgICB4bGFiPSJQb3JjZW50YWplIGRlIGZhbWlsaWFzIGNvbiBjb25leGnDs24gYSBpbnRlcm5ldCBwb3IgZGVwYXJ0YW1lbnRvIiwKICAgICB5bGFiPSJWb3RvIGEgUFBLICgxZXJhIHZ1ZWx0YSkiLAogICAgIHBjaD0xOSwgeGxpbT1jKDAsNjApLCB5bGltPWMoMCwgMzApKQphYmxpbmUoaD0xNS43NDEyKQoKYGBgCgpTZSBjYWxjdWxhIGVsIHJlc2lkdW8gY29uIHJlc3BlY3RvIGEgZXN0YSByZWN0YSBob3Jpem9udGFsIHkgbHVlZ28gc2Ugc3VtYW4gZXN0b3MgcmVzaWR1b3MgYWwgY3VhZHJhZG8uCgpgYGB7cn0KZGF0YSRyZXMyIDwtIGRhdGEkVm90b19QUEtfMjAxNl8xLTE1Ljc0MTIKc3VtKGRhdGEkcmVzMl4yLCBuYS5ybT1UKQpgYGAKClNlIG9ic2VydmEgcXVlIGxhIHN1bWEgZGUgcmVzaWR1b3MgZGUgbGEgcmVjdGEgY2FsY3VsYWRhIHBvciBSIHRpZW5lIHVuYSBzdW1hIGRlIHJlc2lkdW9zIGFsIGN1YWRyYWRvICg3MzMuOSkgbWVub3IgcXVlIGxhIHN1bWEgZGUgcmVzaWR1b3MgYWwgY3VhZHJhZG8gY29uIHJlc3BlY3RvIGEgbGEgcmVjdGEgaG9yaXpvbnRhbCAoMTI1MS42KS4KRW4gcmVhbGlkYWQsIHNlIHBvZHLDrWEgaGFjZXIgZXN0ZSBlamVyY2ljaW8gY29uIGN1YWxxdWllciByZWN0YSB5IHNlIG9idGVuZHLDrWEgdW5hIHN1bWEgZGUgcmVzaWR1b3MgYWwgY3VhZHJhZG8gbWF5b3IgZGUgNzMzLjkuCgojIFJlY3RhIGRlIGFwcm94aW1hY2nDs24KCkVzdGEgcmVjdGEgZXMgdW4gbW9kZWxvIGRlIGxhIGRpc3RyaWJ1Y2nDs24gZGUgbG9zIGRhdG9zLgpFc3RlIG1vZGVsbyBzZSBjYWxjdWxhIGNvbiBlbCBjb21hbmRvIGBsbWAgKGRlIGxpbmVhciBtb2RlbCkgeSBzZSByZXBvcnRhIGNvbiBgc3VtbWFyeWAuCgpgYGB7ciByZXN1bWVuIG1vZGVsb30Kc3VtbWFyeShtb2RlbG8xKQpgYGAKCkxvcyBwcmltZXJvcyBkYXRvcyBhIGFuYWxpemFyIGVzdMOhbiBlbiBsYSBjb2x1bW5hICJFc3RpbWF0ZSIuCkVzdG9zIGRhdG9zIGRlZmluZW4gbGEgZWN1YWNpw7NuIGRlIGxhIHJlY3RhLgpTZWfDum4gZXN0b3MgZGF0b3Mgc2UgdGVuZHLDrWEgJCRcaGF0e1l9ID0gMy41MiArIDAuMzcqWCQkCgpDb24gZXN0YSBlY3VhY2nDs24gc2UgcHVlZGUgKiplc3RpbWFyKiogZWwgdmFsb3IgZGUgWSAoZXMgZGVjaXIsIGVsIHZvdG8gYSBQUEspIHBhcmEgY3VhbHF1aWVyIHZhbG9yIGRlIFggKGRlIGFjY2VzbyBhIGludGVybmV0KS4KClBvciBlamVtcGxvLCBlbiBBbWF6b25hcyBzZSB0aWVuZSAxNi42JSBkZSBhY2Nlc28gYSBpbnRlcm5ldCwgc2Vnw7puIGxhIGJhc2UgZGUgZGF0b3MuCkRlIGFjdWVyZG8gYSBsYSBlY3VhY2nDs24sIGVsIHZvdG8gZXN0aW1hZG8gYSBQUEsgc2Vyw61hIDMuNTIgKyAwLjM3XCoxNi42ID0gOS42NiUuCgpFbCB2b3RvIG9ic2VydmFkbyBhIFBQSyBlbiBBbWF6b25hcyBmdWUgMTEuODklLgpQb3IgbG8gdGFudG8sIGVsIHJlc2lkdW8gZGUgZXN0YSBvYnNlcnZhY2nDs24gZXMgMTEuODktOS42NiA9IDIuMjMuCkxhcyDDumx0aW1hcyBjb2x1bW5hcyBkZSBsYSBiYXNlIGRlIGRhdG9zIG11ZXN0cmEgZWwgdm90byBwcmVkaWNobyBhIFBQSyBwYXJhIGNhZGEgZGVwYXJ0YW1lbnRvIHkgZWwgcmVzaWR1byBkZSBjYWRhIG9ic2VydmFjacOzbi4KCkVsIHZvdG8gcHJlZGljaG8gYSBQUEsgbm8gc29sbyBzZSBwdWVkZSBjYWxjdWxhciBwYXJhIGxvcyB2YWxvcmVzIG9ic2VydmFkb3MgZGUgYWNjZXNvIGEgaW50ZXJuZXQsIHNpbm8gdGFtYmnDqW4gcGFyYSBjdWFscXVpZXIgdmFsb3IgZGUgWC4KCsK/Q3XDoW50byBzZXLDrWEgZWwgdm90byBwcmVkaWNobyBhIFBQSyBlbiB1biBkZXBhcnRhbWVudG8gY29uIGFjY2VzbyB0b3RhbCBhIGludGVybmV0PwrCv2N1w6FudG8gc2Vyw61hIGVsIHZvdG8gcHJlZGljaG8gYSBQUEsgZW4gdW4gZGVwYXJ0YW1lbnRvIGFpc2xhZG8gZGVsIGFjY2VzbyBhIGludGVybmV0PwoKRXN0YXMgZG9zIHByZWd1bnRhcyBpbXBsaWNhbiBlbCBjw6FsY3VsbyBkZSAkXGhhdHtZfSQgcGFyYSBjdWFuZG8gWD0xMDAgKGVuIGxhIHByaW1lcmEgcHJlZ3VudGEpIHkgcGFyYSBjdWFuZG8gWD0wIChlbiBsYSBzZWd1bmRhIHByZWd1bnRhKS4KRW4gbGEgcmVhbGlkYWQgbm8gdGVuZW1vcyBkb3MgZGVwYXJ0YW1lbnRvcyBjb24gZXN0b3MgdmFsb3JlcyBkZSBYLCBwZXJvIGVzdG9zIHNlIHB1ZWRlbiAqKnByZWRlY2lyKiogYSBwYXJ0aXIgZGVsIG1vZGVsbyBnZW5lcmFkby4KCiMgQ29ycmVsYWNpw7NuIG5vIGVzIGNhdXNhbGlkYWQKClF1ZSBzZSBwdWVkYSBncmFmaWNhciBsb3MgZGF0b3MgZGUgZG9zIHZhcmlhYmxlcyBlbiB1biBlc3BhY2lvIGNhcnRlc2lhbm8geSBxdWUgc2UgcHVlZGEgY2FsY3VsYXIgbGEgbWVqb3IgcmVjdGEgZGUgYXByb3hpbWFjacOzbiBOTyBzaWduaWZpY2EgcXVlIGFtYmFzIHZhcmlhYmxlcyBuZWNlc2FyaWFtZW50ZSBlc3TDoW4gcmVsYWNpb25hZGFzIG8gcXVlIGhheWEgdW5hIHJlbGFjacOzbiBkZSBjYXVzYWxpZGFkLgoKUGFyYSBlc3RhYmxlY2VyIHVuYSByZWxhY2nDs24gZGUgY2F1c2FsaWRhZCBoYWNlIGZhbHRhOgoKLSAgIFF1ZSBoYXlhIGNvbnNpc3RlbmNpYSBlbnRyZSB2YXJpb3MgZXN0dWRpb3M6IHVuIGVzdHVkaW8gKGNhc2kpIG51bmNhIGVzIHN1ZmljaWVudGUgcGFyYSBkZWZpbmlyIHVuIGhhbGxhemdvLgogICAgTGEgY29udmVyZ2VuY2lhIGVudHJlIGRpZmVyZW50ZXMgZXN0dWRpb3MgKGVuIGRpZmVyZW50ZXMgbHVnYXJlcyB5IHRpZW1wb3MpIGxlIGRhIG1heW9yIHJvYnVzdGV6IGEgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMuCgotICAgUXVlIGhheWEgdW5hIChmdWVyemEgZGUpIGFzb2NpYWNpw7NuOiBxdWUgZXhpc3RlIHVuYSBjb3JyZWxhY2nDs24gZXMgdW4gcHJpbWVyIHBhc28gcGFyYSBwb2RlciBsdWVnbyBldmFsdWFyIHVuYSBwcm9iYWJsZSBjYXVzYWxpZGFkLgogICAgTGEgcmVsYWNpw7NuIGVzIHVuYSBlc3RhZMOtc3RpY2EgeSBubyB1bmEgcmVsYWNpw7NuIGRldGVybWluaXN0YS4KCi0gICBVbiBtZWNhbmlzbW86IHVuYSBleHBsaWNhY2nDs24gYmFzYWRhIGVuIGxhIHRlb3LDrWEgcXVlIGRlZmllbmRhIHBvcnF1w6kgZXMgcGxhdXNpYmxlIGhhYmxhciBkZSB1bmEgcHJvYmFibGUgcmVsYWNpw7NuIGVudHJlIGVzYXMgZG9zIHZhcmlhYmxlcy4KCi0gICBUZW1wb3JhbGlkYWQ6IHF1ZSBsYSBjYXVzYSBwcmVjZWRhIGFsIGVmZWN0by4KICAgIEVzIGRlY2lyIHF1ZSBsYSBtZWRpY2nDs24gZGVsIFggc2VhIGFudGVyaW9yIGEgbGEgZGVsIFkuCiAgICBFbiBudWVzdHJvIGVqZW1wbG8sIG5vIHNlIHBvZHLDrWEgaGFibGFyIGRlIGNhdXNhbGlkYWQgc2kgZWwgWCBodWJpZXJhIHNpZG8gbWVkaWRvIGVuIDIwMTcuCgpVbiBlamVtcGxvIHF1ZSBjdW1wbGUgZXN0YXMgY29uZGljaW9uZXMgZXMgbGEgcmVsYWNpw7NuIGVudHJlIGNvbnN1bW8gZGUgdGFiYWNvIHkgZGVzYXJyb2xsbyBkZSBjw6FuY2VyIGRlIHB1bG3Ds24uCgohW10odG9iYWNjb19hbmRfY2FuY2VyLmdpZikKClBhcmEgZXN0YWJsZWNlciB1bmEgcmVsYWNpw7NuIGRlIGNhdXNhbGlkYWQgZW50cmUgYW1iYXMgdmFyaWFibGVzIHNlIGhhbiByZWFsaXphZG8gbcO6bHRpcGxlcyBlc3R1ZGlvcywgc2UgdGllbmUgdW5hIHJlbGFjacOzbiBlc3RhZMOtc3RpY2Egcm9idXN0YSwgc2UgdGllbmUgdW4gbWVjYW5pc21vIGVuIGxhIG5pY290aW5hIHkgc2UgdGllbmUgdW5hIHNlY3VlbmNpYSB0ZW1wb3JhbCwgc2UgZnVtYSB5IGx1ZWdvIHNlIGRlc2Fycm9sbGEgZWwgY8OhbmNlciBkZSBwdWxtw7NuLgoKUG9yIGVqZW1wbG8sIHB1ZWRlIGV4aXN0aXIgdW5hIGNvcnJlbGFjacOzbiBlbnRyZSBlbCBjb25zdW1vIGRlIGNob2NvbGF0ZSBlbiB1biBwYcOtcyB5IGVsIG7Dum1lcm8gZGUgcHJlbWlvcyBOb2JlbCBxdWUgY3VlbnRlIGVzZSBwYcOtcy5MYSBwcmVndW50YSBlcyBjdcOhbCBlcyBlbCBtZWNhbmlzbW8gZXhwbGljYXRpdm8gZW50cmUgdW5hIHZhcmlhYmxlIHkgbGEgb3RyYS4KUHVlZGVuIHZlciBtw6FzIFtjb3JyZWxhY2lvbmVzIGxvY2FzXShodHRwOi8vd3d3LnR5bGVydmlnZW4uY29tL3NwdXJpb3VzLWNvcnJlbGF0aW9ucykgZXMgZXN0ZSBsaW5rLgoKIVtdKG5vYmVsX2Nob2NvLmpwZWcpe3dpZHRoPSI1NTgifQoKRW4gYWxndW5vcyBjYXNvcywgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgZW4gcmVhbGlkYWQgZXMgZXhwbGljYWRhIHBvciB1bmEgdGVyY2VyYSB2YXJpYWJsZS4KRW4gZXN0ZSB0aXBvIGRlIGNhc29zIHNlIGhhYmxhIGRlIGNvcnJlbGFjaW9uZXMgZXNww7pyZWFzLgpQb3IgZWplbXBsbzoKCiFbXShTY3JlZW5zaG90XzIwMTgxMjAzLTA4MDEwOC5qcGcpe3dpZHRoPSIyMDQifQoKRGUgbWFuZXJhIG3DoXMgZ3LDoWZpY2E6CgohW10obm90Y2F1c2F0aW9uLnBuZyl7d2lkdGg9IjQwMCJ9CgojIE1vZGVsbyBsaW5lYWwKCkNvbW8gaW5kaWNhbW9zLCBsYSByZWxhY2nDs24gZW50cmUgZG9zIHZhcmlhYmxlcyBjdWFudGl0YXRpdmFzIHNlIG1vZGVsYSBtZWRpYW50ZSB1bmEgcmVjdGEgZGUgYXByb3hpbWFjacOzbi4KUGFyYSBldmFsdWFyIHVuYSByZWxhY2nDs24gZW50cmUgZG9zIHZhcmlhYmxlcyBudW3DqXJpY2FzLCB0ZW5lbW9zIHF1ZSByZXNwb25kZXIgbGFzIHNpZ3VpZW50ZXMgcHJlZ3VudGFzCgotICAgwr9FeGlzdGUgYXNvY2lhY2nDs24/CgotICAgwr9FbiBxdcOpIGRpcmVjY2nDs24/CgotICAgwr9Db24gcXXDqSBmdWVyemE/CgotICAgUHJlZGVjaXIgcGFyYSB2YWxvcmVzIHNpZ25pZmljYXRpdm9zCgpFbiBlc3RhIHNlY2Npw7NuIHZhbW9zIGEgdHJhYmFqYXIgY29uIGxhIGluZm9ybWFjacOzbiBkZSBsYXMgZWxlY2Npb25lcyAyMDIxLgpMb3MgcmVzdWx0YWRvcyBxdWUgdXNhcmVtb3MgY29ycmVzcG9uZGVuIGFsIGNvbnRlbyByw6FwaWRvIGVsYWJvcmFkbyBwb3IgW0lQU09TXShodHRwczovL3d3dy5pcHNvcy5jb20vZXMtcGUvcmVzdWx0YWRvcy1kZWwtY29udGVvLXJhcGlkby1hbC0xMDAtNi1kZS1qdW5pby0yMDIxKSB5IGEgZGF0b3Mgc29jaW9kZW1vZ3LDoWZpY29zLCBkaXNwb25pYmxlcyBlbiBsYSB3ZWIgZGVsIFtJTkVJXShodHRwczovL3d3dy5pbmVpLmdvYi5wZS8pLgoKYGBge3IgYmFzZTIsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkocmlvKQpkYXRhMjEgPC0gaW1wb3J0KCJiYXNlcy92b3RvMjAyMS54bHN4IikKYGBgCgpFbiBlc3RhIG9wb3J0dW5pZGFkLCB1c2FyZW1vcyBlbCB2b3RvIGEgUGVkcm8gQ2FzdGlsbG8gZW4gcHJpbWVyYSB2dWVsdGEgcG9yIGRlcGFydGFtZW50byBjb21vIHZhcmlhYmxlIGRlcGVuZGllbnRlIHkgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBhbmFsZmFiZXRhcyBjb21vIHZhcmlhYmxlIGluZGVwZW5kaWVudGUuClNlIHBhcnRlIGRlIGxhIGhpcMOzdGVzaXMgcXVlIGV4aXN0aXLDrWEgdW5hIHJlbGFjacOzbiBkaXJlY3RhIGVudHJlIGVzdGFzIHZhcmlhYmxlcy4KUGFyYSBoYWNlciB1bmEgcHJpbWVyYSB2ZXJpZmljYWNpw7NuIGRlIGVzdGEgcmVsYWNpw7NuLCBzZSBwdWVkZSBjcmVhciBlbCBkaWFncmFtYSBkZSBkaXNwZXJzacOzbi4KCmBgYHtyIGRpc3BlcnNpb24yMX0KcGxvdChkYXRhMjEkQW5hbGZhYmV0aXNtbywgZGF0YTIxJFZvdG9QTF8xLAogICAgIHhsYWI9IiUgQW5hbGZhYmV0aXNtbyIsCiAgICAgeWxhYj0iVm90byBhIFBlZHJvIENhc3RpbGxvIDFlcmEgdnVlbHRhKSIsCiAgICAgcGNoPTE5LCB4bGltPWMoMCwxNSksIHlsaW09YygwLCA2MCkpCnRleHQoZGF0YTIxJEFuYWxmYWJldGlzbW8sIGRhdGEyMSRWb3RvUExfMSwgbGFiZWxzPWRhdGEyMSREZXBhcnRhbWVudG8sIGNleD0wLjYsIHBvcz00KQpgYGAKCkVsIGdyw6FmaWNvIG5vIG5vcyBtdWVzdHJhIHVuYSByZWxhY2nDs24gY2xhcmEgZW50cmUgbGFzIHZhcmlhYmxlcy4KUGFyYSBhbmFsaXphciBlbiBtw6FzIGRldGFsbGUsIG3DoXMgYWxsw6EgZGUgbGEgcmVsYWNpw7NuIHZpc3VhbCwgYW5hbGl6YXJlbW9zIGVsIG1vZGVsbyBkZSByZWdyZXNpw7NuIGxpbmVhbC4KQ29tbyBpbmRpY2Ftb3MgYW50ZXMsIGVsIG1vZGVsbyBzZSBjYWxjdWxhIGNvbiBlbCBjb21hbmRvIGBsbWAgZG9uZGUgc2UgaW5kaWNhIGxhIHZhcmlhYmxlIFkgeSBsdWVnbyBsYSBYLgpFc3RlIG1vZGVsbyBkZSBndWFyZGEgZW4gdW4gb2JqZXRvICJtb2RlbG8yIiBlbCBxdWUgc2UgcHVlZGUgZGVzY3JpYmlyIGNvbiBlbCBjb21hbmRvIGBzdW1tYXJ5YC4KCmBgYHtyIG1vZGVsbzJ9Cm1vZGVsbzIgPC0gbG0oZGF0YTIxJFZvdG9QTF8xIH4gZGF0YTIxJEFuYWxmYWJldGlzbW8pCnN1bW1hcnkobW9kZWxvMikKYGBgCgojIMK/RXhpc3RlIHVuYSBhc29jaWFjacOzbiBvIHJlbGFjacOzbiBlbnRyZSBsYXMgdmFyaWFibGVzPwoKU2Vnw7puIGVzdG9zIHJlc3VsdGFkb3MgbGEgZWN1YWNpw7NuIGRlIGxhIHJlY3RhIGVzOlwKJCRcaGF0e1l9ID0gNi42ICsgMy4wMypYJCQKCkVuIGVzdGEgZWN1YWNpw7NuLCBlbCBkYXRvIHF1ZSBtYXJjYSBsYSByZWxhY2nDs24gZW50cmUgYW1iYXMgdmFyaWFibGVzIGVzIGxhIHBlbmRpZW50ZS4KRWwgJFxoYXR7XGJldGF9ID0gKzMuMDMkLgpFc3RlIGRhdG8gZXMgdW5hIGFwcm94aW1hY2nDs24gZGVzZGUgbG9zIGRhdG9zIGRlbCAidmVyZGFkZXJvIiB2YWxvciBkZSAkXGJldGEkLgpDb21vIHRvZGEgYXByb3hpbWFjacOzbiBhIHBhcnRpciBkZSBkYXRvcywgZXN0ZSB2YWxvciBkZSAkXGhhdHtcYmV0YX0kIHRpZW5lIHVuIGVycm9yIGVzdMOhbmRhciB5IHBvciBsbyB0YW50byB1biBpbnRlcnZhbG8gZGUgY29uZmlhbnphIGRlIHBvc2libGVzIHZhbG9yZXMgZGVsIHBhcsOhbWV0cm8gcG9ibGFjaW9uYWwuCkNvbiBlbCBlc3RpbWFkbyB5IGVsIGVycm9yIGVzdMOhbmRhciBzZSBwdWVkZSB1c2FyIGxhIGRpc3RyaWJ1Y2nDs24gdCBwYXJhIGluZmVyaXIgYSBsYSBwb2JsYWNpw7NuLgoKTGEgSDA6ICRcYmV0YSA9IDAkCgpMYSBIQTogJFxiZXRhIFxub3Q9IDAkCgpFcyBkZWNpciwgc2UgcG9uZSBhIHBydWViYSBjdcOhbCBlcyBsYSBwcm9iYWJpbGlkYWQgZGUgb2JzZXJ2YXIgdW5hIHBlbmRpZW50ZSBkZSAzLjAzIHNpIGxhICJ2ZXJkYWRlcmEiIHBlbmRpZW50ZSBlcyBjZXJvLgpFc3RhIHByb2JhYmlsaWRhZCBzZSBtaWRlLCBjb21vIHNpZW1wcmUsIGNvbiBlbCBwLXZhbHVlIChvIFByKFw+XHx0XHwpLCBlbiBsYSB0YWJsYSBkZSByZXN1bHRhZG9zKS4KCkVuIGxhIGZpbGEgY29ycmVzcG9uZGllbnRlIGEgbGEgdmFyaWFibGUgaW5kZXBlbmRpZW50ZSBzZSBvYnNlcnZhIHF1ZSBlbCBwLXZhbHVlID0gMC4wMDAxNTkgKG8gMC4wMTU5JSkuCkVzIGRlY2lyLCBxdWUgdGVuZW1vcyBtdXkgYmFqYXMgcHJvYmFiaWxpZGFkZXMgZGUgb2JzZXJ2YXIgdW5hIHBlbmRpZW50ZSBkZSAzLjAzIHNpIGxhIHZlcmRhZGVyYSBwZW5kaWVudGUgZXMgY2Vyby4KQ29tbyBlc3RlIHZhbG9yIGVzIG1lbm9yIGEgMC4wNSwgc2UgcHVlZGUgcmVjaGF6YXIgbGEgSDAuCgpDb24gZXN0byBzZSBjb25jbHV5ZSBxdWUgc2UgcHVlZGUgZGVjaXIgcXVlIFPDjSBoYXkgdW5hIHJlbGFjacOzbiBlbnRyZSBhbWJhcyB2YXJpYWJsZXMuCgojIERpcmVjY2nDs24KCkxhIGRpcmVjY2nDs24gZGUgbGEgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMgZXN0w6EgbWFyY2FkYSBwb3IgZWwgc2lnbm8gZGUgbGEgcGVuZGllbnRlLgpTaSBlbCBzaWdubyBlcyBwb3NpdGl2bywgbGEgcmVjdGEgZGUgYXByb3hpbWFjacOzbiB0aWVuZSBwZW5kaWVudGUgcG9zaXRpdmEgeSBlc28gaW5kaWNhIHVuYSByZWxhY2nDs24gcG9zaXRpdmEgZW50cmUgbGFzIHZhcmlhYmxlcyAoYSBtYXlvciBYLCBtYXlvciBZKS4KU2kgZWwgc2lnbm8gZXMgbmVnYXRpdm8sIGxhIHJlY3RhIGRlIGFwcm94aW1hY2nDs24gdGllbmUgdW5hIHBlbmRpZW50ZSBuZWdhdGl2YSB5IGVzbyBpbmRpY2EgdW5hIHJlbGFjacOzbiBuZWdhdGl2YSBlbnRyZSBsYXMgdmFyaWFibGVzIChhIG1heW9yIFgsIG1lbm9yIFkpLgoKRW4gbnVlc3RybyBlamVtcGxvLCBsYSBwZW5kaWVudGUgKGVzIGRlY2lyLCBlbCB2YWxvciBkZSAkXGhhdHtcYmV0YX0kKSBlcyBwb3NpdGl2YS4KRXNvIHF1aWVyZSBkZWNpciBxdWUgZGVwYXJ0YW1lbnRvcyBxdWUgcHJlc2VudGFuIG1heW9yZXMgdGFzYXMgZGUgYW5hbGZhYmV0aXNtbywgcmVwb3J0YW4sIGVuICoqcHJvbWVkaW8qKiwgdW4gbWF5b3Igdm90byBoYWNpYSBQZWRybyBDYXN0aWxsby4KCiMgQ29lZmljaWVudGUgZGUgY29ycmVsYWNpw7NuIGRlIFBlYXJzb24KCkVsIHZhbG9yIGRlICRcaGF0e1xiZXRhfSQgaW5kaWNhIGxhIHRhc2EgZGUgY2FtYmlvLCBlcyBkZWNpciwgcG9yIGNhZGEgdW5pZGFkIGRlIGNhbWJpbyBlbiBYLCBZIGNhbWJpYSAkXGhhdHtcYmV0YX0kIHVuaWRhZGVzLgpFbiBudWVzdHJvIGVqZW1wbG8sIHBvciBjYWRhIDElIGRlIGF1bWVudG8gZW4gbGEgdGFzYSBkZSBhbmFsZmFiZXRpc21vLCBlbCB2b3RvIGEgUGVkcm8gQ2FzdGlsbG8gY2FtYmlhIDMlLgoKUGVybyBsYSBwZW5kaWVudGUgbm8gZXMgdW4gYnVlbiBpbmRpY2Fkb3IgZGUgbGEgZnVlcnphIGRlIGxhIHJlbGFjacOzbiBlbnRyZSBsYXMgdmFyaWFibGVzLCBwdWVzIGRlcGVuZGUgZGUgbGFzIHVuaWRhZGVzIGRlIG1lZGlkYSBkZSBsYXMgdmFyaWFibGVzLgpQYXJhIHBvZGVyIGV2YWx1YXIgbGEgcmVsYWNpw7NuIGVudHJlIGxhcyB2YXJpYWJsZXMsIHJlcXVlcmltb3MgdW5hIHZlcnNpw7NuIGVzdGFuZGFyaXphZGEgZGUgbGEgcGVuZGllbnRlLCBxdWUgbWlkYSBlbCBjYW1iaW8gZW4gdW5pZGFkZXMgZGUgZGVzdmlhY2nDs24gZXN0w6FuZGFyLgoKRXN0YSBtZWRpZGEgZXMgZWwgY29lZmljaWVudGUgZGUgY29ycmVsYWNpw7NuIGRlIFBlYXJzb24uCkVzdGUgY29lZmljaWVudGUgbm8gc29sbyBtaWRlIGVsIGNhbWJpbyBlbnRyZSBsYXMgdmFyaWFibGVzIGVuIHVuaWRhZGVzIGRlIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciwgc2lubyB0YW1iacOpbiBlbCBncmFkbyBkZSBhanVzdGUgZGUgbG9zIHB1bnRvcyBhIGxhIHJlY3RhLgpFc3RlIGNvZWZpY2llbnRlIHRpZW5lIGxhcyBzaWd1aWVudGVzIGNhcmFjdGVyw61zdGljYXM6CgotICAgRWwgY29lZmljaWVudGUgciBkZSBQZWFyc29uIHZhcsOtYSBlbnRyZSAtMSB5ICsxLgogICAgRWwgY29lZmljaWVudGUgciB0aWVuZSBlbCBtaXNtbyBzaWdubyBxdWUgbGEgcGVuZGllbnRlLgoKLSAgIHI9MCBzaSBsYSBwZW5kaWVudGUgdGFtYmnDqW4gZXMgY2Vyby4KCi0gICByPSsxIG8gcj0tMSBzaSB0b2RvcyBsb3MgcHVudG9zIGNhZW4gZW4gbGEgbMOtbmVhIGRlIHByZWRpY2Npw7NuLgogICAgRXMgZGVjaXIsIHF1ZSBsYSBwcmVkaWNjacOzbiBlcyAicGVyZmVjdGEiLgogICAgRXN0YSBzaXR1YWNpw7NuIGVzIGhpcMOzdGV0aWNhLCBudW5jYSBzZSBkYSBjb24gZGF0b3MgZW4gY2llbmNpYXMgc29jaWFsZXMuCgpFbiBudWVzdHJvIGVqZW1wbG8gcj0wLjY4NS4KRXMgZGVjaXIsIHBvciBjYWRhIHVuaWRhZCBkZSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgZGUgY2FtYmlvIGVuIFgsIFkgY2FtYmlhIDAuNjg1IGRlc3ZpYWNpb25lcyBlc3TDoW5kYXIuCgpgYGB7ciBjb3JyZWxhY2lvbn0KY29yLnRlc3QoeD1kYXRhMjEkQW5hbGZhYmV0aXNtbywgeT1kYXRhMjEkVm90b1BMXzEsIG1ldGhvZD0icGVhcnNvbiIpCmBgYAoKUGFyYSB0ZW5lciB1bmEgaWRlYSBhY2VyY2EgZGUgY8OzbW8gaW50ZXJwcmV0YXIgZXN0ZSB2YWxvciwgbGEgc2lndWllbnRlIGltYWdlbiBtdWVzdHJhIGVqZW1wbG9zIGRlIGRpc3RyaWJ1Y2lvbmVzIGRlIHB1bnRvcyBhIGRpZmVyZW50ZXMgdmFsb3JlcyBkZSByLgoKIVtdKHBlcnNvbi5wbmcpe3dpZHRoPSI1NDcifQoKQ29tbyBzZSBvYnNlcnZhLCBhIG1lZGlkYSBxdWUgZWwgdmFsb3IgZGUgciBzZSBhY2VyY2EgYSAxLCBsb3MgcHVudG9zIHNlIGVuY3VlbnRyYW4gbcOhcyBhbGluZWFkb3MgYSBsYSByZWN0YSBkZSBwcmVkaWNjacOzbiwgcG9yIGxvIHF1ZSBoYWJyw61hIG1lbm9zIHJlc2lkdW9zLCBsbGVnYW5kbyBhIGNlcm8sIGNvbiBwdW50b3MgY29tcGxldGFtZW50ZSBhanVzdGFkb3MgYSBsYSByZWN0YS4KCkEgbWVkaWRhIHF1ZSBlbCB2YWxvciBkZSByIHNlIGFjZXJjYSBhIGNlcm8sIGxvcyBwdW50b3Mgc2UgdnVlbHZlbiBtw6FzIGRpc3BlcnNvcywgZm9ybWFuZG8gdW5hIG51YmUgZGUgcHVudG9zLgpFc29zIHB1bnRvcyBzZSBhanVzdGFuIG1lbm9zIGEgdW5hIHJlY3RhIGRlIHByZWRpY2Npw7NuLgoKUGFyYSB0ZW5lciB1bmEgaWRlYSBtw6FzIGzDumRpY2EgZGUgbGEgZGlzdHJpYnVjacOzbiBkZSBwdW50b3MgYSBkaWZlcmVudGVzIHZhbG9yZXMgZGVsIGNvZWZpY2llbnRlIGRlIFBlYXJzb24sIHB1ZWRlbiBlbnRyYXIgYSBlc3RlIGxpbmsgZGUgW0d1ZXNzIHRoZSBDb3JyZWxhdGlvbl0oaHR0cDovL2d1ZXNzdGhlY29ycmVsYXRpb24uY29tLyksIHF1ZSAiZ2FtaWZpY2EiIGFjZXJ0YXIgY29uIGVsIHZhbG9yIGRlIHIgcGFyYSBkaWZlcmVudGVzIGRpc3BlcnNpb25lcyBkZSBwdW50b3MuCgojIENvZWZpY2llbnRlIGRlIGRldGVybWluYWNpw7NuICRSXjIkCgpFbiBlbCBjb250ZXh0byBkZWwgYW7DoWxpc2lzIGRlIHJlZ3Jlc2nDs24gbGluZWFsLCBsYSBmdWVyemEgZGUgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXMgc2UgaW50ZXJwcmV0YSBjb21vIHF1w6kgdGFuIGJpZW4gWCBwcmVkaWNlIFkuCkVzdGEgY2FwYWNpZGFkIGRlIFggZGUgcHJlZGVjaXIgbGEgdmFyaWFibGUgWSBzZSBtaWRhIG1lZGlhbnRlIGVsIGNvZWZpY2llbnRlIGRlIGRldGVybWluYWNpw7NuICRSXjIkLgpFc3RlIHZhbG9yIG5vIGVzIG90cm8gcXVlIGVsIGN1YWRyYWRvIGRlbCBjb2VmaWNpZW50ZSBkZSBQZWFyc29uLgoKUGVybywgc2UgaW50ZXJwcmV0YSBjb21vIGxhIHJlZHVjY2nDs24gcHJvcG9yY2lvbmFsIGVuIGVsIGVycm9yIGFsIHVzYXIgbGEgcmVjdGEgZGUgcHJlZGljY2nDs24sIGVuIGx1Z2FyIGRlIHPDs2xvIHVzYXIgJFxiYXJ7WX0kIChlbCBwcm9tZWRpbyBkZSBZKSBwYXJhIHByZWRlY2lyIFkuCgpTZSB0aWVuZSBxdWUgcmVjb3JkYXIgcXVlIGxvcyBlcnJvcmVzIChvIHJlc2lkdW9zKSBzb24gbGFzIGRpc3RhbmNpYXMgZGUgY2FkYSBwdW50byBhIGxhIHJlY3RhLgpDYWRhIHB1bnRvIHRpZW5lIHVuYSBkaXN0YW5jaWEgYSBsYSByZWN0YSBkZSAkXGJhcntZfSQgeSB0YW1iacOpbiB1bmEgZGlzdGFuY2lhIGEgbGEgcmVjdGEgZGUgcHJlZGljY2nDs24uCgpFbiBsYSBpbWFnZW4gZGUgbGEgaXpxdWllcmRhLCBzZSBtdWVzdHJhbiBsYXMgZGlzdGFuY2lhcyBkZSBsb3MgcHVudG9zIGEgbGEgcmVjdGEgZGUgJFxiYXJ7WX0kLgpUb2RhcyBlc3RhcyBkaXN0YW5jaWFzIGFsIGN1YWRyYWRvIHNlIHB1ZWRlbiBzdW1hci4KRXN0YSBzdW1hIGVzIEUxLgoKRW4gbGEgaW1hZ2VuIGRlIGxhIGRlcmVjaGEsIHNlIG11ZXN0cmFuIGxhcyBkaXN0YW5jaWFzIGRlIGxvcyBwdW50b3MgYSBsYSByZWN0YSBkZSBwcmVkaWNjacOzbiAkXGhhdHtZfSQuClRvZGFzIGVzdGFzIGRpc3RhbmNpYXMgYWwgY3VhZHJhZG8gc2UgcHVlZGVuIHN1bWFyLgpFc2Egc3VtYSBlcyBFMi4KCiFbXShkZXRlcm1pbmFjaW9uLnBuZykKCkVudG9uY2VzLCAkUl4yID0gXGZyYWN7RTEtRTJ9e0UxfSQuCkVzdGUgY8OhbGN1bG8gZXMgaWd1YWwgYWwgY3VhZHJhZG8gZGVsIHZhbG9yIGRlIGxhIGNvcnJlbGFjacOzbi4KUG9yIGxvIHRhbnRvOgoKLSAgICRSXjIkIHZhcsOtYSBlbnRyZSAwIHkgMS4KCi0gICAkUl4yPTEkIGltcGxpY2EgcXVlIEUyID0gMCwgZXMgZGVjaXIgcXVlIHRvZG9zIGxvcyBwdW50b3MgY2FlbiBlbiBsYSByZWN0YS4KCi0gICAkUl4yPTAkIHNpIGxhIHBlbmRpZW50ZSBlcyBjZXJvLgoKRW4gbnVlc3RybyBlamVtcGxvLCAkUl4yPTAuNDckLgpFc3RlIHZhbG9yIHNlIGVuY3VlbnRyYSBlbiBsYSBwZW7Dumx0aW1hIGZpbGEgZGVsIGBzdW1tYXJ5YCBkZWwgbW9kZWxvLCBjb24gZWwgbm9tYnJlICJNdWx0aXBsZSBSLXNxdWFyZWQiLgpFcyBkZWNpciwgZWwgbW9kZWxvIHJlZHVjZSB1biA0NyUgZWwgZXJyb3IgZGUgdXNhciBzb2xhbWVudGUgZWwgcHJvbWVkaW8gcGFyYSBlc3RpbWFyIFkuCkVzIGRlY2lyLCBlbiBlbCByYW5nbyBlbnRyZSAwIHkgMSwgZWwgdmFsb3IgZGUgMC40NyBjb3JyZXNwb25kZSBhIHVuYSBmdWVyemEgbW9kZXJhZGEgZW50cmUgbGFzIHZhcmlhYmxlcy4KCiMgVmFsaWRleiBkZWwgbW9kZWxvCgpMYSDDumx0aW1hIGZpbGEgZGVsIGBzdW1tYXJ5YCBtdWVzdHJhIGxvcyByZXN1bHRhZG9zIGRlIHVuYSBwcnVlYmEgRiwgY29uIHVuIGVzdGFkw61zdGljbyBkZSBsYSBwcnVlYmEgeSB1biBwLXZhbHVlLgpFc3RhIHBydWViYSBlcyBsYSBxdWUgbm9zIGluZGljYSBsYSB2YWxpZGV6IGRlbCBtb2RlbG8gZW4gc3UgY29uanVudG8uCgpDdWFuZG8gYW5hbGl6YW1vcyByZWxhY2lvbmVzIGJpdmFyaWFkYXMsIGVzdGUgcC12YWx1ZSBlcyBpZ3VhbCBhbCBwLXZhbHVlIGRlIGxhIHBlbmRpZW50ZSwgcG9yIGxvIHF1ZSBsYSB2YWxpZGV6IHNlIGRldGVybWluYSBjb24gY3VhbHF1aWVyYSBkZSBlbGxhcy4KClZhbW9zIGEgdmVyIGVuIGxhIHNpZ3VpZW50ZSBzZWNjacOzbiBkZSBhbsOhbGlzaXMgbXVsdGl2YXJpYWRvIHF1ZSBlbCBhbsOhbGlzaXMgZGUgbGEgcHJ1ZWJhIEYgZXMgZWwgcHJpbWVyIHBhc28sIHF1ZSBpbmRpY2EgbGEgdmFsaWRleiBkZWwgbW9kZWxvIG11bHRpdmFyaWFkbywgeSBxdWUgc2UgdGllbmUgcXVlIHJlYWxpemFyIGFudGVzIGRlIGFuYWxpemFyIGxvcyBzaWd1aWVudGVzIHBhc29zLCBkZSByZWxhY2lvbmVzLCBkaXJlY2Npb25lcyB5IGZ1ZXJ6YS4K</div>
 
 
 </div>

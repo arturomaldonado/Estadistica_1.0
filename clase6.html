@@ -422,68 +422,128 @@ div.tocify {
 
 <div id="introducción" class="section level1">
 <h1>Introducción</h1>
-<p>Hasta el momento se ha visto una prueba, la prueba t, para comparar medias de solo 2 grupos. En esta sección veremos cómo expandir la comparación para varias medias usando otra prueba de inferencia. Es decir, se busca analizar la relación entre una variable dependiente cuantitativa (o numérica) y una variable independiente categórica (o de factor).</p>
-<p>La media de la variable dependiente es comparada para cada grupo de la variable independiente categórica, típicamente una variable nominal. Por ejemplo:</p>
+<p>Hasta el momento se ha visto una prueba, la prueba t, para comparar
+medias de solo 2 grupos. En esta sección veremos cómo expandir la
+comparación para varias medias usando otra prueba de inferencia. Es
+decir, se busca analizar la relación entre una variable dependiente
+cuantitativa (o numérica) y una variable independiente categórica (o de
+factor).</p>
+<p>La media de la variable dependiente es comparada para cada grupo de
+la variable independiente categórica, típicamente una variable nominal.
+Por ejemplo:</p>
 <ul>
 <li><p>Ingresos entre grupos étnicos.</p></li>
-<li><p>CRAEST entre alumnos de especialidades de Ciencias Sociales.</p></li>
-<li><p>Posición ideológica entre simpatizantes de diferentes partidos.</p></li>
+<li><p>CRAEST entre alumnos de especialidades de Ciencias
+Sociales.</p></li>
+<li><p>Posición ideológica entre simpatizantes de diferentes
+partidos.</p></li>
 </ul>
-<p>Para poder hacer estas comparaciones entre varios grupos vamos a usar el test del ANOVA</p>
+<p>Para poder hacer estas comparaciones entre varios grupos vamos a usar
+el test del ANOVA</p>
 </div>
 <div id="test-de-anova" class="section level1">
 <h1>Test de ANOVA</h1>
-<p>El test de ANOVA sirve para comparar la media (o la proporción de una variable dummy) de una variable dependiente numérica entre grupos de una variable de tipo factor (con más de 2 grupos.</p>
-<p>Este test parte teóricamente de la distribución general de la variable numérica, la que tiene una media poblacional <span class="math inline">\(\mu\)</span>, y compara esta media poblacional general, con las medias poblacionales de la variable numérica por cada grupo de la variable de factor con n grupos, <span class="math inline">\(\mu_1...\mu_2...\mu_3...\mu_n\)</span>.</p>
+<p>El test de ANOVA sirve para comparar la media (o la proporción de una
+variable dummy) de una variable dependiente numérica entre grupos de una
+variable de tipo factor (con más de 2 grupos.</p>
+<p>Este test parte teóricamente de la distribución general de la
+variable numérica, la que tiene una media poblacional <span
+class="math inline">\(\mu\)</span>, y compara esta media poblacional
+general, con las medias poblacionales de la variable numérica por cada
+grupo de la variable de factor con n grupos, <span
+class="math inline">\(\mu_1...\mu_2...\mu_3...\mu_n\)</span>.</p>
 <p><img src="anova1.png" width="534" /></p>
-<p>Esta prueba se basa en la distribución F y propone la siguiente hipótesis nula para la comparación de una variable numérica X entre n grupos de la variable de factor.</p>
+<p>Esta prueba se basa en la distribución F y propone la siguiente
+hipótesis nula para la comparación de una variable numérica X entre n
+grupos de la variable de factor.</p>
 <p><span class="math display">\[
 H0: \mu_{x1} = \mu_{x2} = \mu_{x1} =...= \mu_{xn}
 \]</span></p>
-<p>La hipótesis alternativa que propone es que al menos una media poblacional de un grupo es diferente. Es decir, si se rechaza la H0, quizá todas las medias poblacionales entre grupos sean distintas, quizá algunas o quizá solo una difiere de las otras.</p>
-<p>Esta prueba se basa en una comparación entre la variabilidad entre (between) y la variabilidad intra (within).</p>
+<p>La hipótesis alternativa que propone es que al menos una media
+poblacional de un grupo es diferente. Es decir, si se rechaza la H0,
+quizá todas las medias poblacionales entre grupos sean distintas, quizá
+algunas o quizá solo una difiere de las otras.</p>
+<p>Esta prueba se basa en una comparación entre la variabilidad entre
+(between) y la variabilidad intra (within).</p>
 <div id="variabilidad-entre" class="section level2">
 <h2>Variabilidad entre</h2>
 <ul>
-<li><p>La variabilidad entre se refiere a la comparación de la media muestral grupal <span class="math inline">\(\overline{X}_1\)</span> y la media general <span class="math inline">\(\overline{X}\)</span>.</p></li>
-<li><p>Se entiende como un promedio ponderado de las distancias <span class="math inline">\(\overline{X_g}-\overline{X}\)</span>.</p></li>
-<li><p>Para evitar que sea una distancia negativa se eleva al cuadrado <span class="math inline">\((\overline{X_g}-\overline{X})^2\)</span>.</p></li>
-<li><p>Se pondera por el número de observaciones de cada grupo <span class="math inline">\(n_g*(\overline{X_g}-\overline{X})^2\)</span>.</p></li>
-<li><p>Se suma estas cantidades de cada grupo: <span class="math inline">\(\sum n_g*(\overline{X_g}-\overline{X})^2\)</span>.</p></li>
-<li><p>Esa suma se divide entre los grados de libertad g-1 (número de grupos -1).</p></li>
+<li><p>La variabilidad entre se refiere a la comparación de la media
+muestral grupal <span class="math inline">\(\overline{X}_1\)</span> y la
+media general <span
+class="math inline">\(\overline{X}\)</span>.</p></li>
+<li><p>Se entiende como un promedio ponderado de las distancias <span
+class="math inline">\(\overline{X_g}-\overline{X}\)</span>.</p></li>
+<li><p>Para evitar que sea una distancia negativa se eleva al cuadrado
+<span
+class="math inline">\((\overline{X_g}-\overline{X})^2\)</span>.</p></li>
+<li><p>Se pondera por el número de observaciones de cada grupo <span
+class="math inline">\(n_g*(\overline{X_g}-\overline{X})^2\)</span>.</p></li>
+<li><p>Se suma estas cantidades de cada grupo: <span
+class="math inline">\(\sum
+n_g*(\overline{X_g}-\overline{X})^2\)</span>.</p></li>
+<li><p>Esa suma se divide entre los grados de libertad g-1 (número de
+grupos -1).</p></li>
 </ul>
 </div>
 <div id="variabilidad-intra" class="section level2">
 <h2>Variabilidad intra</h2>
 <ul>
-<li><p>Es la variabilidad entre las observaciones de cada grupo con su media grupal.</p></li>
-<li><p>Se entiende como el cálculo de la desviación estándar en cada grupo.</p></li>
-<li><p>Se calcula <span class="math inline">\(\sum (X_i-\overline{X_g})^2\)</span> en cada grupo. Estas sumatorias se suman.</p></li>
-<li><p>Esa suma total se divide entre los grados de libertad N-g (total de observaciones - número de grupos).</p></li>
+<li><p>Es la variabilidad entre las observaciones de cada grupo con su
+media grupal.</p></li>
+<li><p>Se entiende como el cálculo de la desviación estándar en cada
+grupo.</p></li>
+<li><p>Se calcula <span class="math inline">\(\sum
+(X_i-\overline{X_g})^2\)</span> en cada grupo. Estas sumatorias se
+suman.</p></li>
+<li><p>Esa suma total se divide entre los grados de libertad N-g (total
+de observaciones - número de grupos).</p></li>
 </ul>
 </div>
 <div id="estadístico-de-la-prueba-f" class="section level2">
 <h2>Estadístico de la prueba F</h2>
 <ul>
-<li>Se calcula como F = estimado de la variabilidad entre / estimado de la variabilidad intra</li>
+<li>Se calcula como F = estimado de la variabilidad entre / estimado de
+la variabilidad intra</li>
 </ul>
-<p>El estadístico F se hace grande cuando: hay mayor variabilidad entre y/o menos variabilidad intra.</p>
-<p>El estadístico F se hace pequeño cuando: hay menor variabilidad entre y/o mayor variabilidad intra.</p>
-<p>A medida que el estadístico F es más grande, se ubica más en la cola de la distribución, por lo que el p-value será menor, con los que se tendría una mayor evidencia en contra de la H0 sobre la igualdad de medias poblacionales.</p>
+<p>El estadístico F se hace grande cuando: hay mayor variabilidad entre
+y/o menos variabilidad intra.</p>
+<p>El estadístico F se hace pequeño cuando: hay menor variabilidad entre
+y/o mayor variabilidad intra.</p>
+<p>A medida que el estadístico F es más grande, se ubica más en la cola
+de la distribución, por lo que el p-value será menor, con los que se
+tendría una mayor evidencia en contra de la H0 sobre la igualdad de
+medias poblacionales.</p>
 <p><img src="anova2.png" width="534" /></p>
-<p>Por lo tanto se concluiría que al menos una de las medias grupales sería significativamente diferente de las otras medias grupales. El tema es que la prueba de ANOVA no llega hasta ahí, no nos indica qué medias son diferentes. Para saber qué media(s) es(son) diferente(s) se tiene que hacer un test posterior.</p>
+<p>Por lo tanto se concluiría que al menos una de las medias grupales
+sería significativamente diferente de las otras medias grupales. El tema
+es que la prueba de ANOVA no llega hasta ahí, no nos indica qué medias
+son diferentes. Para saber qué media(s) es(son) diferente(s) se tiene
+que hacer un test posterior.</p>
 </div>
 <div id="post-hoc-test-de-tukey" class="section level2">
 <h2>Post hoc: Test de Tukey</h2>
-<p>Este test sirve para analizar qué diferencias entre grupos son significativas. Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pareja calcula una prueba t de diferencia de medias y la reporta.</p>
+<p>Este test sirve para analizar qué diferencias entre grupos son
+significativas. Es decir, reporta todos los emparejamientos posibles
+entre grupos y en cada pareja calcula una prueba t de diferencia de
+medias y la reporta.</p>
 </div>
 </div>
 <div id="para-una-variable-numérica" class="section level1">
 <h1>Para una variable numérica</h1>
-<p>En esta sección seguiremos usando el paper de <span class="citation">(LaLonde 1986)</span> para evaluar los ingresos. En la sección anterior se encontró que había una diferencia estadísticamente significativa entre los afros y no afros en sus ingresos en 1978.</p>
+<p>En esta sección seguiremos usando el paper de <span
+class="citation">(LaLonde 1986)</span> para evaluar los ingresos. En la
+sección anterior se encontró que había una diferencia estadísticamente
+significativa entre los afros y no afros en sus ingresos en 1978.</p>
 <pre class="r"><code>library(rio)
 LL &lt;- import(&quot;bases/LL.csv&quot;)</code></pre>
-<p>Adicionalmente, se puede evaluar si existen diferencias extrapolables entre aquellos con un grado académico y aquellos que no. Para esto se vuelve a usar la prueba t entre estos dos grupos. En primer lugar, se evalúa si las varianzas son iguales o no. Ojo, el código lanza un mensaje que indica que la variable “degree” no es un factor, y, efectivamente, es importanda como una variable de tipo “int,” pero es coercionada como factor, pues R identifica que solo tiene 2 valores.</p>
+<p>Adicionalmente, se puede evaluar si existen diferencias extrapolables
+entre aquellos con un grado académico y aquellos que no. Para esto se
+vuelve a usar la prueba t entre estos dos grupos. En primer lugar, se
+evalúa si las varianzas son iguales o no. Ojo, el código lanza un
+mensaje que indica que la variable “degree” no es un factor, y,
+efectivamente, es importanda como una variable de tipo “int”, pero es
+coercionada como factor, pues R identifica que solo tiene 2 valores.</p>
 <pre class="r"><code>library(DescTools)
 LeveneTest(LL$re78, LL$nodegree)</code></pre>
 <pre><code>## Warning in LeveneTest.default(LL$re78, LL$nodegree): LL$nodegree coerced to
@@ -494,7 +554,9 @@ LeveneTest(LL$re78, LL$nodegree)</code></pre>
 ##       720                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>El resultado indica que se puede rechazar la hipótesis de igualdad de varianzas y asumir que son diferentes. Con esto se corre la prueba t.</p>
+<p>El resultado indica que se puede rechazar la hipótesis de igualdad de
+varianzas y asumir que son diferentes. Con esto se corre la prueba
+t.</p>
 <pre class="r"><code>t.test(re78 ~ nodegree, data = LL, var.equal=F)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -507,20 +569,27 @@ LeveneTest(LL$re78, LL$nodegree)</code></pre>
 ## sample estimates:
 ## mean in group 0 mean in group 1 
 ##        6451.289        5173.165</code></pre>
-<p>Se encuentra que sí hay diferencias entre aquellos con un grado académico y aquellos que no. Ahora lo que queremos evaluar es si existen diferencias entre los afroamericanos con grado académico y sin grado académico y los no afroamericanos con grado y sin grado. Para hacer esta evaluación entre 4 grupos, lo primero es construir la variable que es la combinación de las variables “black” y “nodegree.”</p>
+<p>Se encuentra que sí hay diferencias entre aquellos con un grado
+académico y aquellos que no. Ahora lo que queremos evaluar es si existen
+diferencias entre los afroamericanos con grado académico y sin grado
+académico y los no afroamericanos con grado y sin grado. Para hacer esta
+evaluación entre 4 grupos, lo primero es construir la variable que es la
+combinación de las variables “black” y “nodegree”.</p>
 <pre class="r"><code>LL$axd &lt;-NA
 LL$axd[LL$black==0 &amp; LL$nodegree==0] &lt;- 1 #no afro sin grado
 LL$axd[LL$black==0 &amp; LL$nodegree==1] &lt;- 2 #no afro con grado
 LL$axd[LL$black==1 &amp; LL$nodegree==0] &lt;- 3 #afro sin grado
 LL$axd[LL$black==1 &amp; LL$nodegree==1] &lt;- 4 #afro con grado</code></pre>
-<p>La variable creada es una variable numérica, la que se convierte a factor y se etiqueta.</p>
+<p>La variable creada es una variable numérica, la que se convierte a
+factor y se etiqueta.</p>
 <pre class="r"><code>LL$axd &lt;- as.factor(LL$axd)
 levels(LL$axd) &lt;- c(&quot;No afro s/grado&quot;, &quot;No afro c/grado&quot;, &quot;Afro s/grado&quot;, &quot;Afro c/grado&quot;)
 table(LL$axd)</code></pre>
 <pre><code>## 
 ## No afro s/grado No afro c/grado    Afro s/grado    Afro c/grado 
 ##              36             108             123             455</code></pre>
-<p>Antes de correr la prueba, es una buena práctica hacer una inspección descriptiva de los ingresos entre estos 4 grupos.</p>
+<p>Antes de correr la prueba, es una buena práctica hacer una inspección
+descriptiva de los ingresos entre estos 4 grupos.</p>
 <pre class="r"><code>library(psych)
 tabla1 &lt;- describeBy(LL$re78, group=LL$axd)
 tabla1</code></pre>
@@ -549,12 +618,14 @@ tabla1</code></pre>
 ## X1    1 455 4849.1 6059.72 3228.5 3890.72 4786.58   0 60307.93 60307.93 2.77
 ##    kurtosis     se
 ## X1    16.85 284.08</code></pre>
-<p>O también se puede hacer una inspección visual. A primera vista, no parece haber diferencias entre ningún grupo, en cuanto a ingresos.</p>
+<p>O también se puede hacer una inspección visual. A primera vista, no
+parece haber diferencias entre ningún grupo, en cuanto a ingresos.</p>
 <pre class="r"><code>library(gplots)
 plotmeans(LL$re78~LL$axd, connect=F, barwidth=3, xlab=&quot;Grupos&quot;, ylab=&quot;Ingresos 1978&quot;,
           main=&quot;Ingresos por grupos&quot;)</code></pre>
 <p><img src="clase6_files/figure-html/medias%20afro%20x%20grado-1.png" width="672" /></p>
-<p>Esta observación visual se tiene que confirmar con la prueba de ANOVA.</p>
+<p>Esta observación visual se tiene que confirmar con la prueba de
+ANOVA.</p>
 <pre class="r"><code>anova1 &lt;- aov(LL$re78~LL$axd)
 summary(anova1)</code></pre>
 <pre><code>##              Df    Sum Sq   Mean Sq F value  Pr(&gt;F)   
@@ -562,7 +633,10 @@ summary(anova1)</code></pre>
 ## Residuals   718 2.770e+10  38578131                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Con la prueba de ANOVA y el p-value correspondiente no se puede rechazar la H0. Este p-value sí sería significativo a 0.10, pero tendríamos una probabilidad mayor de error de tipo I. Para confirmar esto, se corre la prueba de Tukey para analizar cada emparejamiento.</p>
+<p>Con la prueba de ANOVA y el p-value correspondiente no se puede
+rechazar la H0. Este p-value sí sería significativo a 0.10, pero
+tendríamos una probabilidad mayor de error de tipo I. Para confirmar
+esto, se corre la prueba de Tukey para analizar cada emparejamiento.</p>
 <pre class="r"><code>TukeyHSD(anova1)</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
@@ -577,37 +651,69 @@ summary(anova1)</code></pre>
 ## Afro s/grado-No afro c/grado     -358.0369 -2467.146 1751.07240 0.9720359
 ## Afro c/grado-No afro c/grado    -1689.3424 -3401.304   22.61978 0.0546548
 ## Afro c/grado-Afro s/grado       -1331.3054 -2956.716  294.10557 0.1511262</code></pre>
-<p>En este caso se observa que la diferencia entre afroamericanos con grado y no afroamericanos con grado es la que explica que ANOVA sea marginalmente significativo.</p>
-<p>NOTA: Hay ocasiones como esta en que la prueba de ANOVA indica que existe un emparejamiento con una diferencia significativa, y luego, cuando se evalúan los emparejamientos, no se observa esa diferencia. Eso es debido a que cada emparejamiento de evalúa mediante la prueba t de manera autónoma.</p>
+<p>En este caso se observa que la diferencia entre afroamericanos con
+grado y no afroamericanos con grado es la que explica que ANOVA sea
+marginalmente significativo.</p>
+<p>NOTA: Hay ocasiones como esta en que la prueba de ANOVA indica que
+existe un emparejamiento con una diferencia significativa, y luego,
+cuando se evalúan los emparejamientos, no se observa esa diferencia. Eso
+es debido a que cada emparejamiento de evalúa mediante la prueba t de
+manera autónoma.</p>
 </div>
 <div id="para-una-variable-categórica" class="section level1">
 <h1>Para una variable categórica</h1>
-<p>De la misma manera que en la sección anterior, ANOVA también se puede utilizar de manera <strong>referencial</strong> para evaluar las diferencias de proporciones entre más de 2 grupos. Por ejemplo, el último informe del Barómetro de las Américas del Proyecto de Opinión Pública en América Latina, disponible <a href="https://iep.org.pe/wp-content/uploads/2021/04/Peru.-Cultura-politica-de-la-democracia-2021.pdf">aquí</a>, presenta esta gráfico sobre satisfacción con la democracia en Perú a lo largo del tiempo.</p>
+<p>De la misma manera que en la sección anterior, ANOVA también se puede
+utilizar de manera <strong>referencial</strong> para evaluar las
+diferencias de proporciones entre más de 2 grupos. Por ejemplo, el
+último informe del Barómetro de las Américas del Proyecto de Opinión
+Pública en América Latina, disponible <a
+href="https://iep.org.pe/wp-content/uploads/2021/04/Peru.-Cultura-politica-de-la-democracia-2021.pdf">aquí</a>,
+presenta esta gráfico sobre satisfacción con la democracia en Perú a lo
+largo del tiempo.</p>
 <p><img src="Grafico6.2.png" width="591" /></p>
-<p>Como indica el informe, la satisfacción con la democracia se mide con la pregunta: En general, usted diría que está muy satisfecho(a), satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que la democracia funciona en Perú? Este pregunta se recodifica en otra variable que agrupa a aquellos que están satisfechos o muy satisfechos. El porcentaje de este grupo es lo que se muestra en el gráfico a lo largo de los años. Es decir, se está comparando esta porcentaje por años.</p>
-<p>Para evaluar si existen diferencias en la satisfacción con la democracia en Perú y entre qué años se puede decir que haya diferencia, lo primero es cargar la base de datos del Barómetro para Perú.</p>
+<p>Como indica el informe, la satisfacción con la democracia se mide con
+la pregunta: En general, usted diría que está muy satisfecho(a),
+satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que
+la democracia funciona en Perú? Este pregunta se recodifica en otra
+variable que agrupa a aquellos que están satisfechos o muy satisfechos.
+El porcentaje de este grupo es lo que se muestra en el gráfico a lo
+largo de los años. Es decir, se está comparando esta porcentaje por
+años.</p>
+<p>Para evaluar si existen diferencias en la satisfacción con la
+democracia en Perú y entre qué años se puede decir que haya diferencia,
+lo primero es cargar la base de datos del Barómetro para Perú.</p>
 <pre class="r"><code>lapop &lt;- import(&quot;bases/PER_2006-2021.dta&quot;)</code></pre>
-<p>La variable que mide la satisfacción con la democracia es “pn4.” En primer lugar, vamos a describir la variable.</p>
+<p>La variable que mide la satisfacción con la democracia es “pn4”. En
+primer lugar, vamos a describir la variable.</p>
 <pre class="r"><code>table(lapop$pn4)</code></pre>
 <pre><code>## 
 ##    1    2    3    4 
 ##  350 3745 6615 1261</code></pre>
-<p>Los códigos numéricos referidos a “satisfecho” y “muy satisfecho” son el 1 y 2. Se tiene que crear una nueva variable donde estos códigos numéricos sean recodificados como 100.</p>
+<p>Los códigos numéricos referidos a “satisfecho” y “muy satisfecho” son
+el 1 y 2. Se tiene que crear una nueva variable donde estos códigos
+numéricos sean recodificados como 100.</p>
 <pre class="r"><code>lapop$pn4rec = car::recode(lapop$pn4, &quot;1:2=100; 3:4=0&quot;)
 table(lapop$pn4rec)</code></pre>
 <pre><code>## 
 ##    0  100 
 ## 7876 4095</code></pre>
-<p>Con esta variable podemos calcular la media de la satisfacción con la democracia en Perú, que es el porcentaje, para todas las rondas del Barómetro.</p>
+<p>Con esta variable podemos calcular la media de la satisfacción con la
+democracia en Perú, que es el porcentaje, para todas las rondas del
+Barómetro.</p>
 <pre class="r"><code>mean(lapop$pn4rec, na.rm = T)</code></pre>
 <pre><code>## [1] 34.20767</code></pre>
-<p>También se podría calcular el porcentaje de satisfacción con la democracia por año. La variable que indica el año es “year.” Antes de calcular, la variable “year” es cargada como una variable numérica, de tipo “num.” Para poder operar en anova, esta variable se tiene que convertir en una variable de tipo factor.</p>
+<p>También se podría calcular el porcentaje de satisfacción con la
+democracia por año. La variable que indica el año es “year”. Antes de
+calcular, la variable “year” es cargada como una variable numérica, de
+tipo “num”. Para poder operar en anova, esta variable se tiene que
+convertir en una variable de tipo factor.</p>
 <pre class="r"><code>lapop$year = as.factor(lapop$year)
 table(lapop$year)</code></pre>
 <pre><code>## 
 ## 2006 2008 2010 2012 2014 2017 2019 2021 
 ## 1500 1500 1500 1500 1500 2647 1521 3038</code></pre>
-<p>Ahora, calculamos los porcentajes de satisfacción con la democracia por años.</p>
+<p>Ahora, calculamos los porcentajes de satisfacción con la democracia
+por años.</p>
 <pre class="r"><code>tabla2 = describeBy(lapop$pn4rec, group=lapop$year)
 tabla2</code></pre>
 <pre><code>## 
@@ -643,7 +749,10 @@ tabla2</code></pre>
 ## group: 2021
 ##    vars    n  mean   sd median trimmed mad min max range skew kurtosis   se
 ## X1    1 1476 20.66 40.5      0   13.37   0   0 100   100 1.45      0.1 1.05</code></pre>
-<p>También se puede crear un gráfico de comparación de media. En la especificación <code>connect=T</code> indica que queremos que los porcentajes de satisfacción con la democracia se conecten, de la misma manera que en el gráfico 6.2.</p>
+<p>También se puede crear un gráfico de comparación de media. En la
+especificación <code>connect=T</code> indica que queremos que los
+porcentajes de satisfacción con la democracia se conecten, de la misma
+manera que en el gráfico 6.2.</p>
 <pre class="r"><code>library(gplots)
 plotmeans(lapop$pn4rec~lapop$year, connect=T, barwidth=3, xlab=&quot;Año&quot;, 
           ylab=&quot;Satisfacción con la democracia&quot;,
@@ -695,7 +804,13 @@ plotmeans(lapop$pn4rec~lapop$year, connect=T, barwidth=3, xlab=&quot;Año&quot;,
 ## Warning in arrows(x, ui, x, pmin(y + gap, ui), col = barcol, lwd = lwd, : zero-
 ## length arrow is of indeterminate angle and so skipped</code></pre>
 <p><img src="clase6_files/figure-html/grafico%20pn4-1.png" width="672" /></p>
-<p>Para formalizar la comparación de satisfacción con la democracia por años, calculamos la prueba de anova. El p-value &lt; 0.05. Esto nos lleva a poder rechazar la H0 de igualdad de medias grupales poblacionales. Por lo tanto concluimos que alguna de estas medias grupales es diferente. Es decir, podemos concluir que al menos un porcentaje de satisfacción con la democracia es diferente entre los años en Perú.</p>
+<p>Para formalizar la comparación de satisfacción con la democracia por
+años, calculamos la prueba de anova. El p-value &lt; 0.05. Esto nos
+lleva a poder rechazar la H0 de igualdad de medias grupales
+poblacionales. Por lo tanto concluimos que alguna de estas medias
+grupales es diferente. Es decir, podemos concluir que al menos un
+porcentaje de satisfacción con la democracia es diferente entre los años
+en Perú.</p>
 <pre class="r"><code>anova2 &lt;- aov(lapop$pn4rec~lapop$year)
 summary(anova2)</code></pre>
 <pre><code>##                Df   Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -704,7 +819,12 @@ summary(anova2)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 2735 observations deleted due to missingness</code></pre>
-<p>Para comprobar que diferencias entre años particulares son estadísticamente significativas, calculamos la prueba post-hoc de Tukey. Esta tabla nos muestra que hay varios emparejamientos entre años que tienen unb p-value &lt; 0.05, por ejemplo, la diferencia en satisfacción con la democracia entre 2006 y 2012 o esta diferencia entre 2008 y 2012.</p>
+<p>Para comprobar que diferencias entre años particulares son
+estadísticamente significativas, calculamos la prueba post-hoc de Tukey.
+Esta tabla nos muestra que hay varios emparejamientos entre años que
+tienen unb p-value &lt; 0.05, por ejemplo, la diferencia en satisfacción
+con la democracia entre 2006 y 2012 o esta diferencia entre 2008 y
+2012.</p>
 <pre class="r"><code>TukeyHSD(anova2)</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
@@ -741,13 +861,35 @@ summary(anova2)</code></pre>
 ## 2019-2017  -6.053213 -10.683456  -1.4229701 0.0019056
 ## 2021-2017 -13.357063 -18.002170  -8.7119568 0.0000000
 ## 2021-2019  -7.303850 -12.525869  -2.0818317 0.0005946</code></pre>
-<p>Siguiendo con el ejemplo sobre discriminación en CVs <span class="citation">(Bertrand and Mullainathan 2004)</span> que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos y entre hombres y mujeres. Estos investigadores enviaron CVs manipulando la raza y el género percibidos mediante nombres claramente asociados a los afroamericanos y nombres claramente asociados a angloamericanos, tanto nombres masculinos como femeninos.</p>
-<p>En la sección anterior se encontró que sí había un sesgo en contra de los afroamericanos, pero que no se podía decir que hubiera un sesgo en contra de las mujeres en el mercado laboral. En los resultados comparando género, cuando se compara hombre y mujeres, en ambos grupos hay afroamericanos y angloamericanos.</p>
-<p>Una posibilidad es que haya una discriminación en el mercado laboral aún mayor en contra de las mujeres afroamericanos con respecto a los hombres afroamericanos, y de estos con respecto a los angloamericanos, sean hombre o mujeres. Es decir, que la tasa de respuesta a CVs sería menor para las mujeres afro que para los hombres afro y estos menores que la tasa de respuesta a los CVs de hombre o mujeres angloamericanos.</p>
-<p>Para evaluar esta hipótesis, primero cargamos nuevamente la base de datos.</p>
+<p>Siguiendo con el ejemplo sobre discriminación en CVs <span
+class="citation">(Bertrand and Mullainathan 2004)</span> que buscan
+evaluar si hay una discriminación en el mercado laboral entre
+afroamericanos y angloamericanos y entre hombres y mujeres. Estos
+investigadores enviaron CVs manipulando la raza y el género percibidos
+mediante nombres claramente asociados a los afroamericanos y nombres
+claramente asociados a angloamericanos, tanto nombres masculinos como
+femeninos.</p>
+<p>En la sección anterior se encontró que sí había un sesgo en contra de
+los afroamericanos, pero que no se podía decir que hubiera un sesgo en
+contra de las mujeres en el mercado laboral. En los resultados
+comparando género, cuando se compara hombre y mujeres, en ambos grupos
+hay afroamericanos y angloamericanos.</p>
+<p>Una posibilidad es que haya una discriminación en el mercado laboral
+aún mayor en contra de las mujeres afroamericanos con respecto a los
+hombres afroamericanos, y de estos con respecto a los angloamericanos,
+sean hombre o mujeres. Es decir, que la tasa de respuesta a CVs sería
+menor para las mujeres afro que para los hombres afro y estos menores
+que la tasa de respuesta a los CVs de hombre o mujeres
+angloamericanos.</p>
+<p>Para evaluar esta hipótesis, primero cargamos nuevamente la base de
+datos.</p>
 <pre class="r"><code>library(rio)
 cv &lt;- import(&quot;https://raw.github.com/arturomaldonado/Estadistica_1.0/main/cv.csv&quot;)</code></pre>
-<p>En esta base de datos se tiene la raza y el género como variables separadas. Para hacer la evaluación que se busca se requiere crear una nueva variable de factor que combine los 4 grupos de raza y género. Se tiene que prestar atención a la forma de calcular una variable como condición de las variables “race” y “sex,” ambas de tipo “chr.”</p>
+<p>En esta base de datos se tiene la raza y el género como variables
+separadas. Para hacer la evaluación que se busca se requiere crear una
+nueva variable de factor que combine los 4 grupos de raza y género. Se
+tiene que prestar atención a la forma de calcular una variable como
+condición de las variables “race” y “sex”, ambas de tipo “chr”.</p>
 <pre class="r"><code>cv$rxg &lt;- NA
 cv$rxg[cv$race==&quot;black&quot; &amp; cv$sex==&quot;female&quot;] &lt;- 1
 cv$rxg[cv$race==&quot;black&quot; &amp; cv$sex==&quot;male&quot;] &lt;- 2
@@ -759,10 +901,12 @@ table(cv$rxg)</code></pre>
 <pre><code>## 
 ## Black woman   Black man White woman   White man 
 ##        1886         549        1860         575</code></pre>
-<p>Lo primero es recordar que la tasa de respuesta general es de 8% para toda la muestra.</p>
+<p>Lo primero es recordar que la tasa de respuesta general es de 8% para
+toda la muestra.</p>
 <pre class="r"><code>mean(cv$call)*100</code></pre>
 <pre><code>## [1] 8.049281</code></pre>
-<p>Ahora podemos calcular la tasa de respuesta a los CVs por cada grupo. Esta comparación se puede guardar en un objeto “tabla1.”</p>
+<p>Ahora podemos calcular la tasa de respuesta a los CVs por cada grupo.
+Esta comparación se puede guardar en un objeto “tabla1”.</p>
 <pre class="r"><code>library(psych)
 tabla2 &lt;- describeBy(cv$call*100, group=cv$rxg)
 tabla2</code></pre>
@@ -783,12 +927,14 @@ tabla2</code></pre>
 ## group: White man
 ##    vars   n mean    sd median trimmed mad min max range skew kurtosis   se
 ## X1    1 575 8.87 28.46      0       0   0   0 100   100 2.89     6.34 1.19</code></pre>
-<p>También se puede ver esta comparación descriptiva en forma de gráfico.</p>
+<p>También se puede ver esta comparación descriptiva en forma de
+gráfico.</p>
 <pre class="r"><code>library(gplots)
 plotmeans(cv$call*100~cv$rxg, connect=F, barwidth=3, xlab=&quot;Grupos&quot;, ylab=&quot;Tasa de respuesta&quot;,
           ylim=c(0, 15), main=&quot;Tasa de respuesta por grupos&quot;)</code></pre>
 <p><img src="clase6_files/figure-html/plot-1.png" width="672" /></p>
-<p>Para comprobar esta comparación “informal” se tiene que correr el test de ANOVA.</p>
+<p>Para comprobar esta comparación “informal” se tiene que correr el
+test de ANOVA.</p>
 <pre class="r"><code>anova3 &lt;- aov(cv$call*100~cv$rxg)
 summary(anova3)</code></pre>
 <pre><code>##               Df  Sum Sq Mean Sq F value   Pr(&gt;F)    
@@ -796,8 +942,12 @@ summary(anova3)</code></pre>
 ## Residuals   4866 3591244     738                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Se obtiene un estadístico F de 5.97, con lo que se calcula un p-value &lt; 0.05. Esto nos lleva a poder rechazar la H0 de igualdad de medias grupales poblacionales. Por lo tanto concluimos que alguna de estas medias grupales es diferente.</p>
-<p>Para saber cuál es diferente se tiene que correr el Test de Tukey.</p>
+<p>Se obtiene un estadístico F de 5.97, con lo que se calcula un p-value
+&lt; 0.05. Esto nos lleva a poder rechazar la H0 de igualdad de medias
+grupales poblacionales. Por lo tanto concluimos que alguna de estas
+medias grupales es diferente.</p>
+<p>Para saber cuál es diferente se tiene que correr el Test de
+Tukey.</p>
 <pre class="r"><code>TukeyHSD(anova3)</code></pre>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
@@ -812,17 +962,31 @@ summary(anova3)</code></pre>
 ## White woman-Black man    4.0636935  0.6726627 7.454724 0.0112033
 ## White man-Black man      3.0407856 -1.1252122 7.206783 0.2385995
 ## White man-White woman   -1.0229079 -4.3542181 2.308402 0.8594370</code></pre>
-<p>Este test nos brinda resultados por cada emparejamiento. Se concluye que hay 2 emparejamientos relevantes, que llevan a la conclusión que las mujeres blancas tienen una tasa de respuesta mayor que los hombre y mujeres afro.</p>
+<p>Este test nos brinda resultados por cada emparejamiento. Se concluye
+que hay 2 emparejamientos relevantes, que llevan a la conclusión que las
+mujeres blancas tienen una tasa de respuesta mayor que los hombre y
+mujeres afro.</p>
 <p>Estas diferencias se pueden ver de manera gráfica.</p>
 <pre class="r"><code>plot(TukeyHSD(anova3))</code></pre>
 <p><img src="clase6_files/figure-html/plot%20Tukey-1.png" width="672" /></p>
-<p>Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.</p>
+<p>Aquellos emparejamientos cuyas líneas no crucen la línea vertical del
+cero, se puede decir que hay diferencias estadísticamente
+significativas.</p>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bertrandAreEmilyGreg2004" class="csl-entry">
-Bertrand, Marianne, and Sendhil Mullainathan. 2004. <span>“Are <span>Emily</span> and <span>Greg More Employable Than Lakisha</span> and <span>Jamal</span>? <span>A Field Experiment</span> on <span>Labor Market Discrimination</span>.”</span> <em>American Economic Review</em> 94 (4): 991–1013. <a href="https://doi.org/10.1257/0002828042002561">https://doi.org/10.1257/0002828042002561</a>.
+Bertrand, Marianne, and Sendhil Mullainathan. 2004. <span>“Are
+<span>Emily</span> and <span>Greg More Employable Than Lakisha</span>
+and <span>Jamal</span>? <span>A Field Experiment</span> on <span>Labor
+Market Discrimination</span>.”</span> <em>American Economic Review</em>
+94 (4): 991–1013. <a
+href="https://doi.org/10.1257/0002828042002561">https://doi.org/10.1257/0002828042002561</a>.
 </div>
-<div id="ref-lalondeEvaluatingEconometricEvaluations1986" class="csl-entry">
-LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations of Training Programs with Experimental Data.”</span> <em>The American Economic Review</em> 76 (4): 604–20. <a href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
+<div id="ref-lalondeEvaluatingEconometricEvaluations1986"
+class="csl-entry">
+LaLonde, Robert J. 1986. <span>“Evaluating the Econometric Evaluations
+of Training Programs with Experimental Data.”</span> <em>The American
+Economic Review</em> 76 (4): 604–20. <a
+href="https://www.jstor.org/stable/1806062">https://www.jstor.org/stable/1806062</a>.
 </div>
 </div>
 </div>

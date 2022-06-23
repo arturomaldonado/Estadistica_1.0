@@ -288,7 +288,7 @@ Para evaluar una relación entre dos variables numéricas, tenemos que responder
 -   Predecir para valores significativos
 
 En esta sección vamos a trabajar con la información de las elecciones 2021.
-Los resultados que usaremos corresponden al conteo rápido elaborado por [IPSOS](https://www.ipsos.com/es-pe/resultados-del-conteo-rapido-al-100-6-de-junio-2021) y a datos sociodemográficos, disponibles en la web del [INEI](https://www.inei.gob.pe/).
+Los resultados que usaremos corresponden a los resultados publicados por la ONPE y a datos sociodemográficos, disponibles en la web del [INEI](https://www.inei.gob.pe/).
 
 ```{r base2, message=FALSE, warning=FALSE}
 library(rio)

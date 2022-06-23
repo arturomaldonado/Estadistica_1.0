@@ -157,7 +157,7 @@ Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como varia
 El comando `lm` permite incluir varios predictores independientes en un mismo modelo con el símbolo +.
 
 ```{r ols multiple}
-modelo3 <- lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014 + Log_Transf + Tasa_Delitos + costa + sierra, data=data)
+modelo3 <- lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014 + Analfabetismo_2014, data=data)
 summary(modelo3)
 ```
 
@@ -174,7 +174,7 @@ $H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$
 La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
 
 Para evaluar esta hipótesis se analiza los resultados de la prueba F (en la última línea de resultados del modelo).
-El estadístico F = 7.74 tiene un p-value asociado de 0.003.
+El estadístico F = 7.71 tiene un p-value asociado de 0.0012.
 Este p-value es menor de 0.05, por lo que podemos rechazar la H0 y afirmar que al menos un coeficiente debe ser diferente de cero.
 
 ## Test de inferencia: ¿hay relación entre las VIs y la VD?
@@ -212,8 +212,8 @@ El signo del coeficiente es positivo (+), lo que indica que departamentos con un
 De la misma manera que en el análisis bivariado, la fuerza del modelo se entiende como el porcentaje de la variación total de la variable dependiente explicada por las variables independientes.
 Este dato se obtiene con el $R^2$.
 
-En nuestro ejemplo se tiene un $R^2=0.424$.
-Esta dato indicaría que el modelo que incluye las variables acceso a interney y PBI per cápita explican el 42.4% de la variación total del voto a PPK.
+En nuestro ejemplo se tiene un $R^2=0.37$.
+Esta dato indicaría que el modelo que incluye las variables acceso a internet y PBI per cápita explican el 37% de la variación total del voto a PPK.
 Esto según nuestra escala equivale a una relación de fuerza moderada.
 
 Los resultados también muestran un $R^2$ ajustado.

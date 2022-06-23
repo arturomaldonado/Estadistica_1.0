@@ -1,7 +1,7 @@
 ---
 title: "Clase 13"
 author: "Arturo Maldonado"
-date: "7/4/2021"
+date: "21/6/2022"
 output:
   html_document:
     toc: true
@@ -63,7 +63,7 @@ LeveneTest(data$Voto_PPK_2016_1, data$costa)
 Luego del test de igualdad de varianzas, se puede correr la prueba t.
 
 ```{r prueba t}
-t.test(Voto_PPK_2016_1 ~ costa, data=data, var.equal=T)
+t.test(Voto_KF_2016_1 ~ sierra, data=data, var.equal=T)
 ```
 
 De estos resultados, vemos que se obtiene un p-value de 0.08, que es menor a 0.1.
@@ -80,6 +80,7 @@ plot(data$costa, data$Voto_PPK_2016_1,
      xlab="Departamento de la costa",
      ylab="Voto a PPK (1era vuelta)",
      pch=15, ylim=c(0, 30))
+abline(lm(data$Voto_PPK_2016_1 ~ data$costa))
 ```
 
 En este gráfico también se puede pensar en una mejor recta de predicción, que reduce la distancia de los puntos a la recta.
@@ -88,7 +89,7 @@ Esta recta atraviesa por la media de cada grupo.
 Por lo tanto, un modelo de regresión que use el voto a PPK en primera vuelta en 2016 como variable dependiente y la variable dicotómica "costa" como variable independiente nos daría los datos para la construcción de esta recta de aproximación.
 
 ```{r modelo1}
-modelo1 <- lm(data$Voto_PPK_2016_1 ~ data$costa)
+modelo1 <- lm(data$Voto_KF_2016_1 ~ data$sierra)
 summary(modelo1)
 ```
 

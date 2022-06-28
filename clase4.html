@@ -390,6 +390,9 @@ div.tocify {
   <a href="clase13.html">Clase 13</a>
 </li>
 <li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
 <li>
@@ -589,19 +592,8 @@ en un gráfico de los IC.</p>
 <h1>Gráfico de IC para comparar medias</h1>
 <p>La forma más estándar para graficar los IC por grupo es usando el
 comando <code>plotmeans</code>.</p>
-<pre class="r"><code>library(gplots)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;gplots&#39;:
-##   method         from     
-##   reorder.factor DescTools</code></pre>
-<pre><code>## 
-## Attaching package: &#39;gplots&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:DescTools&#39;:
-## 
-##     reorder.factor</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     lowess</code></pre>
-<pre class="r"><code>plotmeans(LL$re78~LL$treated, 
+<pre class="r"><code>library(gplots)
+plotmeans(LL$re78~LL$treated, 
           xlab=&quot;Grupo&quot;, ylab=&quot;Ingreso 1978&quot;,
           ylim = c(0,9000),
           mean.labels = T, digits = 1,

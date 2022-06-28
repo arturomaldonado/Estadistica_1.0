@@ -1,0 +1,207 @@
+---
+title: "Clase 14"
+author: "Arturo Maldonado"
+date: "28/6/2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: cosmo
+    highlight: textmate
+editor_options:
+  markdown:
+    wrap: sentence
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Repaso
+
+## Buscando y cargando datos
+
+Abrir la base de datos de las elecciones 2021 a nivel departamental en Excel.
+
+-   Buscar la información acerca de autoidentificación étnica y agregar las columnas para el porcentaje de personas que se autoidentifica como población indígena u originaria
+
+-   Agregar otra columna para el porcentaje de personas que se autoidentifica como "afro".
+
+-   Agregar otra columna para el porcentaje de ciudadanos que votaron por otro candidato(a) diferente a Pedro Castillo o Keiko Fujimori.
+
+Este nuevo archivo Excel cárguenlo en RStudio.
+
+```{r base}
+library(rio)
+data <- import("bases/voto2021_v2.xlsx")
+```
+
+## Manipulando datos
+
+-   Calcular el porcentaje total de personas que se autoidentifican con algún grupo étnico (suma de % de población indígena u originaria + % de personas afro)
+
+```{r suma}
+
+```
+
+## Descriptivos
+
+Comparar los descriptivos de las variables del voto a los(as) 3 candidatos(as).
+
+```{r descriptivos}
+summary(data$VotoPL_1)
+summary(data$VotoFP_1)
+summary(data$VotoVM_1)
+sd(data$VotoPL_1)
+sd(data$VotoFP_1)
+sd(data$VotoVM_1)
+```
+
+Graficar descriptivamente mediante un gráfico de cajas.
+
+```{r boxplot}
+boxplot(data$VotoPL_1, ylim=c(0, 60))
+boxplot(data$VotoFP_1, ylim=c(0, 60))
+boxplot(data$VotoVM_1, ylim=c(0, 60))
+```
+
+## Inferencia
+
+Comparar IC entre grupos:
+
+-   Voto a un candidato entre 2 grupos de pobreza
+
+```{r pobre}
+data$pobre = ifelse(data$Pobreza2020>34.6, 1, 0)
+```
+
+-   Voto a PC entre grupos de etnicidad
+
+-   Comparar gráficamente IC de un candidato versus el otro
+
+```{r inferencia}
+library(lsr)
+ciMean(data$VotoPL_1[data$pobre==0])
+ciMean(data$VotoPL_1[data$pobre==1])
+```
+
+-   Graficar alguna de estas comparaciones
+
+```{r grafico ic}
+library(gplots)
+plotmeans(data$VotoPL_1~data$pobre)
+```
+
+## Pruebas de significancia
+
+Correr pruebas:
+
+-   Realizar una prueba para poner a prueba la comparación entre grupos
+
+```{r significancia}
+library(DescTools)
+LeveneTest(data$VotoPL_1, data$pobre)
+```
+
+```{r t}
+t.test(data$VotoPL_1~data$pobre, var.equal=T)
+```
+
+```{r anova}
+#anova = aov()
+#summary(anova)
+```
+
+## Correlación
+
+-   Presentar gráfico de dispersión del voto a candidato PC por etnicidad
+
+-   Presentar gráfico de dispersión del voto a PC por otraa variable
+
+-   Presentar gráfico de dispersión del voto a otro candidato(a) por variable de interés
+
+```{r var etnicidad}
+data$etni=data$indigena+data$afro
+```
+
+```{r dispersion}
+plot(data$indigena, data$VotoPL_1)
+abline(lm(data$VotoPL_1 ~ data$indigena))
+```
+
+## Regresión lineal simple
+
+-   Realizar un modelo de alguno de los gráficos de dispersión
+
+```{r ols}
+modelo1 = lm(data$VotoPL_1 ~ data$indigena)
+```
+
+## Regresión lineal múltiple
+
+-   Seguir con el modelo simple, ahora introduciendo controles
+
+```{r ols multiple}
+modelo2 = lm(data$VotoPL_1 ~ data$indigena + data$Pobreza2020 + data$Analfabetismo)
+summary(modelo2)
+```
+
+# Hacia el próximo ciclo[^1]
+
+[^1]: Si aprueban
+
+El método de regresión lineal multivariado debe cumplir unos requisitos que no se verán en este curso.
+Estos requisitos son:
+
+-   Linealidad: que la relación entre las variables sea lineal.
+
+-   Multicolinealidad: los predictores no deben "medir" el mismo concepto.
+    Es decir, variables independientes no deben tener una alta correlación.
+
+-   Heterocedasticidad: los errores deben ser aleatorios y no ser sistemáticos.
+    Si los errores tiene una relación sistemática con los valores de la variable dependiente, se habla de heterocedasticidad.
+
+-   Autocorrelación: en particular cuando se trabaja con una variable temporal.
+    Se dice que hay autocorrelación cuando el valor en t+1 depende del valor de t.
+
+Estos requisitos se verán en el curso de Estadística 2.
+
+Otro tema que se verá en el siguiente curso es el modelo que se usa cuando la variable dependiente no es una numérica, sino una variable dicotómica.
+Cuando tenemos esta variable dependiente se usa un modelo de regresión logística.
+
+# Resumen
+
+En esta sección presentamos un mapa de temas que hemos visto a lo largo de todo el semestre.
+Como se ve en el esquema, las herramientas que hemos visto en el curso dependen de un punto de partida inicial, que es la distinción entre tipos de variables: cualitativas o categóricas y cuantitativas o numéricas.
+Dependiendo de esta categorización, se desprende el tipo de análisis descriptivo, tanto de la tendencia central, como de la dispersión, así como las formas de graficar estas variables.
+
+Como paso previo a la inferencia, se construyeron intervalos de confianza de la media (variables cuantitavitas) o de proporciones (variables cualitativas).
+Se analizó que se podían construir intervalos de confianza de medias o proporciones para grupos.
+Este es el primer paso de la inferencia.
+Se evaluó si los intervalos de confianza se traslapaban o no.
+Esto daba paso al análisis bivariado en la segunda parte del curso.
+
+![](Resumen.png)
+
+En el libro de Ritchey se muestra este árbol de decisión.
+La rama derecha de "Dos muestras o dos variables" muestra el resumen de la segunda parte de este curso.
+Esta segunda parte ha estado dedicada a la inferencia en el análisis bivariado.
+Como hemos avanzado en este curso, se ha presentado la prueba de inferencia t, la prueba F de ANOVA, la prueba de chi-cuadrado y la regresión bivariada.
+Luego, se dio el paso al análisis multivariado.
+
+![](arbol.png)
+
+Finalmente, el objetivo de este curso es presentar herramientas iniciales para el análisis de datos sociales.
+Se espera que luego de este curso los alumnos sean consumidores o productores capaces de estadística.
+Como consumidores, los alumnos van a estar expuestos a literatura especializada que use métodos estadísticos.
+Las herramientas vistas en este curso permitirían que los alumnos puedan evaluar estos artículos y los hallazgos de manera crítica.
+
+Como productores, se espera que los alumnos utilicen evidencia numérica y análisis estadístico en sus trabajos de cursos y en sus tesis de pregrado.
+Ya sea para presentar análisis descriptivo o para realizar análisis inferencial, los alumnos deberían estar en la capacidad de recoger datos numéricos y trabajar con estos usando técnicas vistas en este curso.
+Es completamente válido que los alumnos usen otros métodos, por ejemplo cualitativos, pero si este curso y el siguiente logran que algunos de ustedes se "atrevan" a usar métodos cuantitativos, ese será el mayor logro de este curso.
+Gracias!!!

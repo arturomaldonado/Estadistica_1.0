@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase 14</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 7</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 9</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase 14</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">28/6/2022</h4>
+
+</div>
+
+
+<div id="repaso" class="section level1">
+<h1>Repaso</h1>
+<div id="buscando-y-cargando-datos" class="section level2">
+<h2>Buscando y cargando datos</h2>
+<p>Abrir la base de datos de las elecciones 2021 a nivel departamental
+en Excel.</p>
+<ul>
+<li><p>Buscar la información acerca de autoidentificación étnica y
+agregar las columnas para el porcentaje de personas que se
+autoidentifica como población indígena u originaria</p></li>
+<li><p>Agregar otra columna para el porcentaje de personas que se
+autoidentifica como “afro”.</p></li>
+<li><p>Agregar otra columna para el porcentaje de ciudadanos que votaron
+por otro candidato(a) diferente a Pedro Castillo o Keiko
+Fujimori.</p></li>
+</ul>
+<p>Este nuevo archivo Excel cárguenlo en RStudio.</p>
+<pre class="r"><code>library(rio)
+data &lt;- import(&quot;bases/voto2021_v2.xlsx&quot;)</code></pre>
+</div>
+<div id="manipulando-datos" class="section level2">
+<h2>Manipulando datos</h2>
+<ul>
+<li>Calcular el porcentaje total de personas que se autoidentifican con
+algún grupo étnico (suma de % de población indígena u originaria + % de
+personas afro)</li>
+</ul>
+</div>
+<div id="descriptivos" class="section level2">
+<h2>Descriptivos</h2>
+<p>Comparar los descriptivos de las variables del voto a los(as) 3
+candidatos(as).</p>
+<pre class="r"><code>summary(data$VotoPL_1)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    5.00   12.90   26.10   27.28   37.60   54.20</code></pre>
+<pre class="r"><code>summary(data$VotoFP_1)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2.80    7.10   13.50   13.17   15.30   37.10</code></pre>
+<pre class="r"><code>summary(data$VotoVM_1)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   4.780   5.770   6.900   7.467   8.010  20.290</code></pre>
+<pre class="r"><code>sd(data$VotoPL_1)</code></pre>
+<pre><code>## [1] 15.92487</code></pre>
+<pre class="r"><code>sd(data$VotoFP_1)</code></pre>
+<pre><code>## [1] 7.628047</code></pre>
+<pre class="r"><code>sd(data$VotoVM_1)</code></pre>
+<pre><code>## [1] 2.98721</code></pre>
+<p>Graficar descriptivamente mediante un gráfico de cajas.</p>
+<pre class="r"><code>boxplot(data$VotoPL_1, ylim=c(0, 60))</code></pre>
+<p><img src="Clase14_files/figure-html/boxplot-1.png" width="672" /></p>
+<pre class="r"><code>boxplot(data$VotoFP_1, ylim=c(0, 60))</code></pre>
+<p><img src="Clase14_files/figure-html/boxplot-2.png" width="672" /></p>
+<pre class="r"><code>boxplot(data$VotoVM_1, ylim=c(0, 60))</code></pre>
+<p><img src="Clase14_files/figure-html/boxplot-3.png" width="672" /></p>
+</div>
+<div id="inferencia" class="section level2">
+<h2>Inferencia</h2>
+<p>Comparar IC entre grupos:</p>
+<ul>
+<li>Voto a un candidato entre 2 grupos de pobreza</li>
+</ul>
+<pre class="r"><code>data$pobre = ifelse(data$Pobreza2020&gt;34.6, 1, 0)</code></pre>
+<ul>
+<li><p>Voto a PC entre grupos de etnicidad</p></li>
+<li><p>Comparar gráficamente IC de un candidato versus el otro</p></li>
+</ul>
+<pre class="r"><code>library(lsr)
+ciMean(data$VotoPL_1[data$pobre==0])</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 15.16345 28.17339</code></pre>
+<pre class="r"><code>ciMean(data$VotoPL_1[data$pobre==1])</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 36.78645 53.34688</code></pre>
+<ul>
+<li>Graficar alguna de estas comparaciones</li>
+</ul>
+<pre class="r"><code>library(gplots)</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;gplots&#39;:
+##   method         from     
+##   reorder.factor DescTools</code></pre>
+<pre><code>## 
+## Attaching package: &#39;gplots&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:DescTools&#39;:
+## 
+##     reorder.factor</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     lowess</code></pre>
+<pre class="r"><code>plotmeans(data$VotoPL_1~data$pobre)</code></pre>
+<p><img src="Clase14_files/figure-html/grafico%20ic-1.png" width="672" /></p>
+</div>
+<div id="pruebas-de-significancia" class="section level2">
+<h2>Pruebas de significancia</h2>
+<p>Correr pruebas:</p>
+<ul>
+<li>Realizar una prueba para poner a prueba la comparación entre
+grupos</li>
+</ul>
+<pre class="r"><code>library(DescTools)
+LeveneTest(data$VotoPL_1, data$pobre)</code></pre>
+<pre><code>## Warning in LeveneTest.default(data$VotoPL_1, data$pobre): data$pobre coerced to
+## factor.</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  1  2.5433 0.1244
+##       23</code></pre>
+<pre class="r"><code>t.test(data$VotoPL_1~data$pobre, var.equal=T)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  data$VotoPL_1 by data$pobre
+## t = -3.9993, df = 23, p-value = 0.0005635
+## alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+## 95 percent confidence interval:
+##  -35.50104 -11.29545
+## sample estimates:
+## mean in group 0 mean in group 1 
+##        21.66842        45.06667</code></pre>
+<pre class="r"><code>#anova = aov()
+#summary(anova)</code></pre>
+</div>
+<div id="correlación" class="section level2">
+<h2>Correlación</h2>
+<ul>
+<li><p>Presentar gráfico de dispersión del voto a candidato PC por
+etnicidad</p></li>
+<li><p>Presentar gráfico de dispersión del voto a PC por otraa
+variable</p></li>
+<li><p>Presentar gráfico de dispersión del voto a otro candidato(a) por
+variable de interés</p></li>
+</ul>
+<pre class="r"><code>data$etni=data$indigena+data$afro</code></pre>
+<pre class="r"><code>plot(data$indigena, data$VotoPL_1)
+abline(lm(data$VotoPL_1 ~ data$indigena))</code></pre>
+<p><img src="Clase14_files/figure-html/dispersion-1.png" width="672" /></p>
+</div>
+<div id="regresión-lineal-simple" class="section level2">
+<h2>Regresión lineal simple</h2>
+<ul>
+<li>Realizar un modelo de alguno de los gráficos de dispersión</li>
+</ul>
+<pre class="r"><code>modelo1 = lm(data$VotoPL_1 ~ data$indigena)</code></pre>
+</div>
+<div id="regresión-lineal-múltiple" class="section level2">
+<h2>Regresión lineal múltiple</h2>
+<ul>
+<li>Seguir con el modelo simple, ahora introduciendo controles</li>
+</ul>
+<pre class="r"><code>modelo2 = lm(data$VotoPL_1 ~ data$indigena + data$Pobreza2020 + data$Analfabetismo)
+summary(modelo2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = data$VotoPL_1 ~ data$indigena + data$Pobreza2020 + 
+##     data$Analfabetismo)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -18.968  -7.633  -2.819  10.883  18.413 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)         11.2650     8.1400   1.384  0.18092    
+## data$indigena        0.4194     0.4690   0.894  0.38133    
+## data$Pobreza2020    -0.3222     0.3317  -0.971  0.34245    
+## data$Analfabetismo   3.6346     0.9452   3.845  0.00094 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 11.99 on 21 degrees of freedom
+## Multiple R-squared:  0.5043, Adjusted R-squared:  0.4335 
+## F-statistic: 7.123 on 3 and 21 DF,  p-value: 0.001764</code></pre>
+</div>
+</div>
+<div id="hacia-el-próximo-ciclo1" class="section level1">
+<h1>Hacia el próximo ciclo<a href="#fn1" class="footnote-ref"
+id="fnref1"><sup>1</sup></a></h1>
+<p>El método de regresión lineal multivariado debe cumplir unos
+requisitos que no se verán en este curso. Estos requisitos son:</p>
+<ul>
+<li><p>Linealidad: que la relación entre las variables sea
+lineal.</p></li>
+<li><p>Multicolinealidad: los predictores no deben “medir” el mismo
+concepto. Es decir, variables independientes no deben tener una alta
+correlación.</p></li>
+<li><p>Heterocedasticidad: los errores deben ser aleatorios y no ser
+sistemáticos. Si los errores tiene una relación sistemática con los
+valores de la variable dependiente, se habla de
+heterocedasticidad.</p></li>
+<li><p>Autocorrelación: en particular cuando se trabaja con una variable
+temporal. Se dice que hay autocorrelación cuando el valor en t+1 depende
+del valor de t.</p></li>
+</ul>
+<p>Estos requisitos se verán en el curso de Estadística 2.</p>
+<p>Otro tema que se verá en el siguiente curso es el modelo que se usa
+cuando la variable dependiente no es una numérica, sino una variable
+dicotómica. Cuando tenemos esta variable dependiente se usa un modelo de
+regresión logística.</p>
+</div>
+<div id="resumen" class="section level1">
+<h1>Resumen</h1>
+<p>En esta sección presentamos un mapa de temas que hemos visto a lo
+largo de todo el semestre. Como se ve en el esquema, las herramientas
+que hemos visto en el curso dependen de un punto de partida inicial, que
+es la distinción entre tipos de variables: cualitativas o categóricas y
+cuantitativas o numéricas. Dependiendo de esta categorización, se
+desprende el tipo de análisis descriptivo, tanto de la tendencia
+central, como de la dispersión, así como las formas de graficar estas
+variables.</p>
+<p>Como paso previo a la inferencia, se construyeron intervalos de
+confianza de la media (variables cuantitavitas) o de proporciones
+(variables cualitativas). Se analizó que se podían construir intervalos
+de confianza de medias o proporciones para grupos. Este es el primer
+paso de la inferencia. Se evaluó si los intervalos de confianza se
+traslapaban o no. Esto daba paso al análisis bivariado en la segunda
+parte del curso.</p>
+<p><img src="Resumen.png" /></p>
+<p>En el libro de Ritchey se muestra este árbol de decisión. La rama
+derecha de “Dos muestras o dos variables” muestra el resumen de la
+segunda parte de este curso. Esta segunda parte ha estado dedicada a la
+inferencia en el análisis bivariado. Como hemos avanzado en este curso,
+se ha presentado la prueba de inferencia t, la prueba F de ANOVA, la
+prueba de chi-cuadrado y la regresión bivariada. Luego, se dio el paso
+al análisis multivariado.</p>
+<p><img src="arbol.png" /></p>
+<p>Finalmente, el objetivo de este curso es presentar herramientas
+iniciales para el análisis de datos sociales. Se espera que luego de
+este curso los alumnos sean consumidores o productores capaces de
+estadística. Como consumidores, los alumnos van a estar expuestos a
+literatura especializada que use métodos estadísticos. Las herramientas
+vistas en este curso permitirían que los alumnos puedan evaluar estos
+artículos y los hallazgos de manera crítica.</p>
+<p>Como productores, se espera que los alumnos utilicen evidencia
+numérica y análisis estadístico en sus trabajos de cursos y en sus tesis
+de pregrado. Ya sea para presentar análisis descriptivo o para realizar
+análisis inferencial, los alumnos deberían estar en la capacidad de
+recoger datos numéricos y trabajar con estos usando técnicas vistas en
+este curso. Es completamente válido que los alumnos usen otros métodos,
+por ejemplo cualitativos, pero si este curso y el siguiente logran que
+algunos de ustedes se “atrevan” a usar métodos cuantitativos, ese será
+el mayor logro de este curso. Gracias!!!</p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>Si aprueban<a href="#fnref1"
+class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgMTQiCmF1dGhvcjogIkFydHVybyBNYWxkb25hZG8iCmRhdGU6ICIyOC82LzIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGNvc21vCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlCmVkaXRvcl9vcHRpb25zOgogIG1hcmtkb3duOgogICAgd3JhcDogc2VudGVuY2UKYmlibGlvZ3JhcGh5OiByZWZlcmVuY2VzLmJpYgotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpCmBgYAoKIyBSZXBhc28KCiMjIEJ1c2NhbmRvIHkgY2FyZ2FuZG8gZGF0b3MKCkFicmlyIGxhIGJhc2UgZGUgZGF0b3MgZGUgbGFzIGVsZWNjaW9uZXMgMjAyMSBhIG5pdmVsIGRlcGFydGFtZW50YWwgZW4gRXhjZWwuCgotICAgQnVzY2FyIGxhIGluZm9ybWFjacOzbiBhY2VyY2EgZGUgYXV0b2lkZW50aWZpY2FjacOzbiDDqXRuaWNhIHkgYWdyZWdhciBsYXMgY29sdW1uYXMgcGFyYSBlbCBwb3JjZW50YWplIGRlIHBlcnNvbmFzIHF1ZSBzZSBhdXRvaWRlbnRpZmljYSBjb21vIHBvYmxhY2nDs24gaW5kw61nZW5hIHUgb3JpZ2luYXJpYQoKLSAgIEFncmVnYXIgb3RyYSBjb2x1bW5hIHBhcmEgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBxdWUgc2UgYXV0b2lkZW50aWZpY2EgY29tbyAiYWZybyIuCgotICAgQWdyZWdhciBvdHJhIGNvbHVtbmEgcGFyYSBlbCBwb3JjZW50YWplIGRlIGNpdWRhZGFub3MgcXVlIHZvdGFyb24gcG9yIG90cm8gY2FuZGlkYXRvKGEpIGRpZmVyZW50ZSBhIFBlZHJvIENhc3RpbGxvIG8gS2Vpa28gRnVqaW1vcmkuCgpFc3RlIG51ZXZvIGFyY2hpdm8gRXhjZWwgY8Ohcmd1ZW5sbyBlbiBSU3R1ZGlvLgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pCmRhdGEgPC0gaW1wb3J0KCJiYXNlcy92b3RvMjAyMV92Mi54bHN4IikKYGBgCgojIyBNYW5pcHVsYW5kbyBkYXRvcwoKLSAgIENhbGN1bGFyIGVsIHBvcmNlbnRhamUgdG90YWwgZGUgcGVyc29uYXMgcXVlIHNlIGF1dG9pZGVudGlmaWNhbiBjb24gYWxnw7puIGdydXBvIMOpdG5pY28gKHN1bWEgZGUgJSBkZSBwb2JsYWNpw7NuIGluZMOtZ2VuYSB1IG9yaWdpbmFyaWEgKyAlIGRlIHBlcnNvbmFzIGFmcm8pCgpgYGB7ciBzdW1hfQoKYGBgCgojIyBEZXNjcmlwdGl2b3MKCkNvbXBhcmFyIGxvcyBkZXNjcmlwdGl2b3MgZGUgbGFzIHZhcmlhYmxlcyBkZWwgdm90byBhIGxvcyhhcykgMyBjYW5kaWRhdG9zKGFzKS4KCmBgYHtyIGRlc2NyaXB0aXZvc30Kc3VtbWFyeShkYXRhJFZvdG9QTF8xKQpzdW1tYXJ5KGRhdGEkVm90b0ZQXzEpCnN1bW1hcnkoZGF0YSRWb3RvVk1fMSkKc2QoZGF0YSRWb3RvUExfMSkKc2QoZGF0YSRWb3RvRlBfMSkKc2QoZGF0YSRWb3RvVk1fMSkKYGBgCgpHcmFmaWNhciBkZXNjcmlwdGl2YW1lbnRlIG1lZGlhbnRlIHVuIGdyw6FmaWNvIGRlIGNhamFzLgoKYGBge3IgYm94cGxvdH0KYm94cGxvdChkYXRhJFZvdG9QTF8xLCB5bGltPWMoMCwgNjApKQpib3hwbG90KGRhdGEkVm90b0ZQXzEsIHlsaW09YygwLCA2MCkpCmJveHBsb3QoZGF0YSRWb3RvVk1fMSwgeWxpbT1jKDAsIDYwKSkKYGBgCgojIyBJbmZlcmVuY2lhCgpDb21wYXJhciBJQyBlbnRyZSBncnVwb3M6CgotICAgVm90byBhIHVuIGNhbmRpZGF0byBlbnRyZSAyIGdydXBvcyBkZSBwb2JyZXphCgpgYGB7ciBwb2JyZX0KZGF0YSRwb2JyZSA9IGlmZWxzZShkYXRhJFBvYnJlemEyMDIwPjM0LjYsIDEsIDApCmBgYAoKLSAgIFZvdG8gYSBQQyBlbnRyZSBncnVwb3MgZGUgZXRuaWNpZGFkCgotICAgQ29tcGFyYXIgZ3LDoWZpY2FtZW50ZSBJQyBkZSB1biBjYW5kaWRhdG8gdmVyc3VzIGVsIG90cm8KCmBgYHtyIGluZmVyZW5jaWF9CmxpYnJhcnkobHNyKQpjaU1lYW4oZGF0YSRWb3RvUExfMVtkYXRhJHBvYnJlPT0wXSkKY2lNZWFuKGRhdGEkVm90b1BMXzFbZGF0YSRwb2JyZT09MV0pCmBgYAoKLSAgIEdyYWZpY2FyIGFsZ3VuYSBkZSBlc3RhcyBjb21wYXJhY2lvbmVzCgpgYGB7ciBncmFmaWNvIGljfQpsaWJyYXJ5KGdwbG90cykKcGxvdG1lYW5zKGRhdGEkVm90b1BMXzF+ZGF0YSRwb2JyZSkKYGBgCgojIyBQcnVlYmFzIGRlIHNpZ25pZmljYW5jaWEKCkNvcnJlciBwcnVlYmFzOgoKLSAgIFJlYWxpemFyIHVuYSBwcnVlYmEgcGFyYSBwb25lciBhIHBydWViYSBsYSBjb21wYXJhY2nDs24gZW50cmUgZ3J1cG9zCgpgYGB7ciBzaWduaWZpY2FuY2lhfQpsaWJyYXJ5KERlc2NUb29scykKTGV2ZW5lVGVzdChkYXRhJFZvdG9QTF8xLCBkYXRhJHBvYnJlKQpgYGAKCmBgYHtyIHR9CnQudGVzdChkYXRhJFZvdG9QTF8xfmRhdGEkcG9icmUsIHZhci5lcXVhbD1UKQpgYGAKCmBgYHtyIGFub3ZhfQojYW5vdmEgPSBhb3YoKQojc3VtbWFyeShhbm92YSkKYGBgCgojIyBDb3JyZWxhY2nDs24KCi0gICBQcmVzZW50YXIgZ3LDoWZpY28gZGUgZGlzcGVyc2nDs24gZGVsIHZvdG8gYSBjYW5kaWRhdG8gUEMgcG9yIGV0bmljaWRhZAoKLSAgIFByZXNlbnRhciBncsOhZmljbyBkZSBkaXNwZXJzacOzbiBkZWwgdm90byBhIFBDIHBvciBvdHJhYSB2YXJpYWJsZQoKLSAgIFByZXNlbnRhciBncsOhZmljbyBkZSBkaXNwZXJzacOzbiBkZWwgdm90byBhIG90cm8gY2FuZGlkYXRvKGEpIHBvciB2YXJpYWJsZSBkZSBpbnRlcsOpcwoKYGBge3IgdmFyIGV0bmljaWRhZH0KZGF0YSRldG5pPWRhdGEkaW5kaWdlbmErZGF0YSRhZnJvCmBgYAoKYGBge3IgZGlzcGVyc2lvbn0KcGxvdChkYXRhJGluZGlnZW5hLCBkYXRhJFZvdG9QTF8xKQphYmxpbmUobG0oZGF0YSRWb3RvUExfMSB+IGRhdGEkaW5kaWdlbmEpKQpgYGAKCiMjIFJlZ3Jlc2nDs24gbGluZWFsIHNpbXBsZQoKLSAgIFJlYWxpemFyIHVuIG1vZGVsbyBkZSBhbGd1bm8gZGUgbG9zIGdyw6FmaWNvcyBkZSBkaXNwZXJzacOzbgoKYGBge3Igb2xzfQptb2RlbG8xID0gbG0oZGF0YSRWb3RvUExfMSB+IGRhdGEkaW5kaWdlbmEpCmBgYAoKIyMgUmVncmVzacOzbiBsaW5lYWwgbcO6bHRpcGxlCgotICAgU2VndWlyIGNvbiBlbCBtb2RlbG8gc2ltcGxlLCBhaG9yYSBpbnRyb2R1Y2llbmRvIGNvbnRyb2xlcwoKYGBge3Igb2xzIG11bHRpcGxlfQptb2RlbG8yID0gbG0oZGF0YSRWb3RvUExfMSB+IGRhdGEkaW5kaWdlbmEgKyBkYXRhJFBvYnJlemEyMDIwICsgZGF0YSRBbmFsZmFiZXRpc21vKQpzdW1tYXJ5KG1vZGVsbzIpCmBgYAoKIyBIYWNpYSBlbCBwcsOzeGltbyBjaWNsb1teMV0KClteMV06IFNpIGFwcnVlYmFuCgpFbCBtw6l0b2RvIGRlIHJlZ3Jlc2nDs24gbGluZWFsIG11bHRpdmFyaWFkbyBkZWJlIGN1bXBsaXIgdW5vcyByZXF1aXNpdG9zIHF1ZSBubyBzZSB2ZXLDoW4gZW4gZXN0ZSBjdXJzby4KRXN0b3MgcmVxdWlzaXRvcyBzb246CgotICAgTGluZWFsaWRhZDogcXVlIGxhIHJlbGFjacOzbiBlbnRyZSBsYXMgdmFyaWFibGVzIHNlYSBsaW5lYWwuCgotICAgTXVsdGljb2xpbmVhbGlkYWQ6IGxvcyBwcmVkaWN0b3JlcyBubyBkZWJlbiAibWVkaXIiIGVsIG1pc21vIGNvbmNlcHRvLgogICAgRXMgZGVjaXIsIHZhcmlhYmxlcyBpbmRlcGVuZGllbnRlcyBubyBkZWJlbiB0ZW5lciB1bmEgYWx0YSBjb3JyZWxhY2nDs24uCgotICAgSGV0ZXJvY2VkYXN0aWNpZGFkOiBsb3MgZXJyb3JlcyBkZWJlbiBzZXIgYWxlYXRvcmlvcyB5IG5vIHNlciBzaXN0ZW3DoXRpY29zLgogICAgU2kgbG9zIGVycm9yZXMgdGllbmUgdW5hIHJlbGFjacOzbiBzaXN0ZW3DoXRpY2EgY29uIGxvcyB2YWxvcmVzIGRlIGxhIHZhcmlhYmxlIGRlcGVuZGllbnRlLCBzZSBoYWJsYSBkZSBoZXRlcm9jZWRhc3RpY2lkYWQuCgotICAgQXV0b2NvcnJlbGFjacOzbjogZW4gcGFydGljdWxhciBjdWFuZG8gc2UgdHJhYmFqYSBjb24gdW5hIHZhcmlhYmxlIHRlbXBvcmFsLgogICAgU2UgZGljZSBxdWUgaGF5IGF1dG9jb3JyZWxhY2nDs24gY3VhbmRvIGVsIHZhbG9yIGVuIHQrMSBkZXBlbmRlIGRlbCB2YWxvciBkZSB0LgoKRXN0b3MgcmVxdWlzaXRvcyBzZSB2ZXLDoW4gZW4gZWwgY3Vyc28gZGUgRXN0YWTDrXN0aWNhIDIuCgpPdHJvIHRlbWEgcXVlIHNlIHZlcsOhIGVuIGVsIHNpZ3VpZW50ZSBjdXJzbyBlcyBlbCBtb2RlbG8gcXVlIHNlIHVzYSBjdWFuZG8gbGEgdmFyaWFibGUgZGVwZW5kaWVudGUgbm8gZXMgdW5hIG51bcOpcmljYSwgc2lubyB1bmEgdmFyaWFibGUgZGljb3TDs21pY2EuCkN1YW5kbyB0ZW5lbW9zIGVzdGEgdmFyaWFibGUgZGVwZW5kaWVudGUgc2UgdXNhIHVuIG1vZGVsbyBkZSByZWdyZXNpw7NuIGxvZ8Otc3RpY2EuCgojIFJlc3VtZW4KCkVuIGVzdGEgc2VjY2nDs24gcHJlc2VudGFtb3MgdW4gbWFwYSBkZSB0ZW1hcyBxdWUgaGVtb3MgdmlzdG8gYSBsbyBsYXJnbyBkZSB0b2RvIGVsIHNlbWVzdHJlLgpDb21vIHNlIHZlIGVuIGVsIGVzcXVlbWEsIGxhcyBoZXJyYW1pZW50YXMgcXVlIGhlbW9zIHZpc3RvIGVuIGVsIGN1cnNvIGRlcGVuZGVuIGRlIHVuIHB1bnRvIGRlIHBhcnRpZGEgaW5pY2lhbCwgcXVlIGVzIGxhIGRpc3RpbmNpw7NuIGVudHJlIHRpcG9zIGRlIHZhcmlhYmxlczogY3VhbGl0YXRpdmFzIG8gY2F0ZWfDs3JpY2FzIHkgY3VhbnRpdGF0aXZhcyBvIG51bcOpcmljYXMuCkRlcGVuZGllbmRvIGRlIGVzdGEgY2F0ZWdvcml6YWNpw7NuLCBzZSBkZXNwcmVuZGUgZWwgdGlwbyBkZSBhbsOhbGlzaXMgZGVzY3JpcHRpdm8sIHRhbnRvIGRlIGxhIHRlbmRlbmNpYSBjZW50cmFsLCBjb21vIGRlIGxhIGRpc3BlcnNpw7NuLCBhc8OtIGNvbW8gbGFzIGZvcm1hcyBkZSBncmFmaWNhciBlc3RhcyB2YXJpYWJsZXMuCgpDb21vIHBhc28gcHJldmlvIGEgbGEgaW5mZXJlbmNpYSwgc2UgY29uc3RydXllcm9uIGludGVydmFsb3MgZGUgY29uZmlhbnphIGRlIGxhIG1lZGlhICh2YXJpYWJsZXMgY3VhbnRpdGF2aXRhcykgbyBkZSBwcm9wb3JjaW9uZXMgKHZhcmlhYmxlcyBjdWFsaXRhdGl2YXMpLgpTZSBhbmFsaXrDsyBxdWUgc2UgcG9kw61hbiBjb25zdHJ1aXIgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEgZGUgbWVkaWFzIG8gcHJvcG9yY2lvbmVzIHBhcmEgZ3J1cG9zLgpFc3RlIGVzIGVsIHByaW1lciBwYXNvIGRlIGxhIGluZmVyZW5jaWEuClNlIGV2YWx1w7Mgc2kgbG9zIGludGVydmFsb3MgZGUgY29uZmlhbnphIHNlIHRyYXNsYXBhYmFuIG8gbm8uCkVzdG8gZGFiYSBwYXNvIGFsIGFuw6FsaXNpcyBiaXZhcmlhZG8gZW4gbGEgc2VndW5kYSBwYXJ0ZSBkZWwgY3Vyc28uCgohW10oUmVzdW1lbi5wbmcpCgpFbiBlbCBsaWJybyBkZSBSaXRjaGV5IHNlIG11ZXN0cmEgZXN0ZSDDoXJib2wgZGUgZGVjaXNpw7NuLgpMYSByYW1hIGRlcmVjaGEgZGUgIkRvcyBtdWVzdHJhcyBvIGRvcyB2YXJpYWJsZXMiIG11ZXN0cmEgZWwgcmVzdW1lbiBkZSBsYSBzZWd1bmRhIHBhcnRlIGRlIGVzdGUgY3Vyc28uCkVzdGEgc2VndW5kYSBwYXJ0ZSBoYSBlc3RhZG8gZGVkaWNhZGEgYSBsYSBpbmZlcmVuY2lhIGVuIGVsIGFuw6FsaXNpcyBiaXZhcmlhZG8uCkNvbW8gaGVtb3MgYXZhbnphZG8gZW4gZXN0ZSBjdXJzbywgc2UgaGEgcHJlc2VudGFkbyBsYSBwcnVlYmEgZGUgaW5mZXJlbmNpYSB0LCBsYSBwcnVlYmEgRiBkZSBBTk9WQSwgbGEgcHJ1ZWJhIGRlIGNoaS1jdWFkcmFkbyB5IGxhIHJlZ3Jlc2nDs24gYml2YXJpYWRhLgpMdWVnbywgc2UgZGlvIGVsIHBhc28gYWwgYW7DoWxpc2lzIG11bHRpdmFyaWFkby4KCiFbXShhcmJvbC5wbmcpCgpGaW5hbG1lbnRlLCBlbCBvYmpldGl2byBkZSBlc3RlIGN1cnNvIGVzIHByZXNlbnRhciBoZXJyYW1pZW50YXMgaW5pY2lhbGVzIHBhcmEgZWwgYW7DoWxpc2lzIGRlIGRhdG9zIHNvY2lhbGVzLgpTZSBlc3BlcmEgcXVlIGx1ZWdvIGRlIGVzdGUgY3Vyc28gbG9zIGFsdW1ub3Mgc2VhbiBjb25zdW1pZG9yZXMgbyBwcm9kdWN0b3JlcyBjYXBhY2VzIGRlIGVzdGFkw61zdGljYS4KQ29tbyBjb25zdW1pZG9yZXMsIGxvcyBhbHVtbm9zIHZhbiBhIGVzdGFyIGV4cHVlc3RvcyBhIGxpdGVyYXR1cmEgZXNwZWNpYWxpemFkYSBxdWUgdXNlIG3DqXRvZG9zIGVzdGFkw61zdGljb3MuCkxhcyBoZXJyYW1pZW50YXMgdmlzdGFzIGVuIGVzdGUgY3Vyc28gcGVybWl0aXLDrWFuIHF1ZSBsb3MgYWx1bW5vcyBwdWVkYW4gZXZhbHVhciBlc3RvcyBhcnTDrWN1bG9zIHkgbG9zIGhhbGxhemdvcyBkZSBtYW5lcmEgY3LDrXRpY2EuCgpDb21vIHByb2R1Y3RvcmVzLCBzZSBlc3BlcmEgcXVlIGxvcyBhbHVtbm9zIHV0aWxpY2VuIGV2aWRlbmNpYSBudW3DqXJpY2EgeSBhbsOhbGlzaXMgZXN0YWTDrXN0aWNvIGVuIHN1cyB0cmFiYWpvcyBkZSBjdXJzb3MgeSBlbiBzdXMgdGVzaXMgZGUgcHJlZ3JhZG8uCllhIHNlYSBwYXJhIHByZXNlbnRhciBhbsOhbGlzaXMgZGVzY3JpcHRpdm8gbyBwYXJhIHJlYWxpemFyIGFuw6FsaXNpcyBpbmZlcmVuY2lhbCwgbG9zIGFsdW1ub3MgZGViZXLDrWFuIGVzdGFyIGVuIGxhIGNhcGFjaWRhZCBkZSByZWNvZ2VyIGRhdG9zIG51bcOpcmljb3MgeSB0cmFiYWphciBjb24gZXN0b3MgdXNhbmRvIHTDqWNuaWNhcyB2aXN0YXMgZW4gZXN0ZSBjdXJzby4KRXMgY29tcGxldGFtZW50ZSB2w6FsaWRvIHF1ZSBsb3MgYWx1bW5vcyB1c2VuIG90cm9zIG3DqXRvZG9zLCBwb3IgZWplbXBsbyBjdWFsaXRhdGl2b3MsIHBlcm8gc2kgZXN0ZSBjdXJzbyB5IGVsIHNpZ3VpZW50ZSBsb2dyYW4gcXVlIGFsZ3Vub3MgZGUgdXN0ZWRlcyBzZSAiYXRyZXZhbiIgYSB1c2FyIG3DqXRvZG9zIGN1YW50aXRhdGl2b3MsIGVzZSBzZXLDoSBlbCBtYXlvciBsb2dybyBkZSBlc3RlIGN1cnNvLgpHcmFjaWFzISEhCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Clase14.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

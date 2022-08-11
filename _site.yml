@@ -6,6 +6,10 @@ navbar:
   right:
     - text: "Home"
       href: index.html
+    - text: "Introducción"
+      href: intro.html
+    - text: "Procedimientos básicos"
+      href: basico.html
     - text: "Clase 1"
       href: clase1.html
     - text: "Clase 2"

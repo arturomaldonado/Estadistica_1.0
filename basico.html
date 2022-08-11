@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Procedimientos básicos</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 7</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 9</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Procedimientos básicos</h1>
+
+</div>
+
+
+<style type="text/css">
+.columns {display: flex;}
+h1 {color: #3366CC;}
+</style>
+<div id="introducción" class="section level1">
+<h1>Introducción</h1>
+<p>En este documento se verán aspectos básicos del uso de R y
+RStudio.</p>
+</div>
+<div id="objetos" class="section level1">
+<h1>Objetos</h1>
+<p>En la sección anterior se mencionó que el Environment muestra los
+objetos creados. En R se puede crear objetos y luego manipularlos. Por
+ejemplo, el gráfico muestra el porcentaje de personas que apoyan a la
+democracia en cada país. Si queremos guardar el resultados de Uruguay
+(UY), podemos crear un objeto.</p>
+<p><img src="Figure1.1.png" width="539" /></p>
+<p>La siguiente línea de código crea un objeto llamado “UY” que almacena
+el número 80. Esto objeto se muestra en el Environment, tanto el nombre,
+como el valor que almacena.</p>
+<pre class="r"><code>UY = 80</code></pre>
+<p>Si quisiéramos calcular la diferencia en porcentaje entre Uruguay, el
+país que muestra el mayor apoyo a la democracia, y Haití, el que muestra
+el menor porcentaje, se puede calcular haciendo la resta del objeto
+menos el valor del porcentaje en Haití. Cuando se corre este código,
+RStudio nos muestra el resultado.</p>
+<pre class="r"><code>UY - 46</code></pre>
+<pre><code>## [1] 34</code></pre>
+<p>Los objetos en R no solo almacenan números, sino que también pueden
+guardar letras (o cadenas de caracteres).</p>
+<p>El Barómetro de las Américas recoje información de casi todos los
+países de las Américas. La tabla siguiente muestra los países en los que
+se ha recogido información en alguna ronda.</p>
+<p><img src="pais.png" width="552" /></p>
+<p>Si queremos guardar el nombre de un país en un objeto, se puede
+nombrar al objeto “pais1” y escribir el nombre del país (que es una
+cadena de caracteres) entre comillas.</p>
+<pre class="r"><code>pais1 = &quot;México&quot;</code></pre>
+<p>Como se observa, el nombre del objeto no lleva tilde. Es posible
+crear un objeto con tildes, pero se recomienda no hacerlo pues puede
+crear problemas posteriores. La cadena de caracteres “México” sí incluye
+la tilde. Esto no representa ningún problema.</p>
+</div>
+<div id="vectores" class="section level1">
+<h1>Vectores</h1>
+<p>Un vector es un objeto que contiene un conjunto de elementos, sean
+números o cadenas de caracteres, entre otros. Por ejemplo, podemos crear
+un vector que almacene todos los porcentajes del Gráfico 1.1.</p>
+<pre class="r"><code>apoyo = c(80, 73, 71, 69, 68, 67, 66, 63, 63, 63, 62, 61, 61, 57, 53, 52, 50, 50, 49, 46)</code></pre>
+<p>De manera similar, podemos crear un vector con los nombres (o siglas)
+de los países.</p>
+<pre class="r"><code>pais = c(&quot;UY&quot;, &quot;SV&quot;, &quot;CR&quot;, &quot;AR&quot;, &quot;CL&quot;, &quot;BR&quot;, &quot;GY&quot;, &quot;MX&quot;, &quot;EC&quot;, &quot;NI&quot;, &quot;DO&quot;, &quot;PN&quot;, &quot;BO&quot;, &quot;JA&quot;, &quot;CO&quot;, &quot;GT&quot;, &quot;PY&quot;, &quot;PE&quot;, &quot;HN&quot;, &quot;HT&quot;)</code></pre>
+<p>No es necesario seguir el mismo orden del gráfico; sin embargo, es
+recomendable por razones que se explicarán más abajo.</p>
+<p>Se puede seleccionar elementos particulares de un vector usando
+<code>[…]</code>. Por ejemplo, si queremos seleccionar el país de
+Argentina, tanto su nombre, como su porcentaje, se tiene que colocar
+entre corchetes la posición en la que se encuentra.</p>
+<pre class="r"><code>pais[4]</code></pre>
+<pre><code>## [1] &quot;AR&quot;</code></pre>
+<pre class="r"><code>apoyo[4]</code></pre>
+<pre><code>## [1] 69</code></pre>
+</div>
+<div id="funciones" class="section level1">
+<h1>Funciones</h1>
+<p>Una función es un procedimiento que recibe un input y produce un
+output. Por ejemplo, la función Y = X^2, recibe un valor X cualquiera,
+por ejemplo 2, y devuelve un valor Y, en este caso 4. En R se tienen las
+funciones algebraicas, como raíz cuadrada o logaritmo. Por ejemplo, la
+función <code>log(…)</code> recibe un valor X y devuelve un valor Y
+igual al logaritmo de X.</p>
+<pre class="r"><code>sqrt(36) #por squared root</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>log(20)</code></pre>
+<pre><code>## [1] 2.995732</code></pre>
+<p>También se puede aplicar una función a un conjunto de datos, como los
+almacenados en un vector. Por ejemplo, si quisiéramos calcular la tasa
+de personas que apoya a la democracia por cada 1000 habitantes en todos
+los países, tendríamos que multiplicar el vector “pais” entre 10. En
+este caso, la función de multiplicación se aplica a cada elemento del
+vector.</p>
+<pre class="r"><code>apoyo2 = apoyo*10
+apoyo2</code></pre>
+<pre><code>##  [1] 800 730 710 690 680 670 660 630 630 630 620 610 610 570 530 520 500 500 490
+## [20] 460</code></pre>
+<p>Hay otras funciones que resultan más útiles para nuestros objetivos
+porque trabajan sobre un conjunto de valores, como los almacenados en un
+vector, calculando un valor único. Por ejemplo, si queremos calcular el
+apoyo a la democracia promedio en todos los países mostrados en el
+Gráfico 1.1 se puede usar la función <code>mean(…)</code>.</p>
+<pre class="r"><code>mean(apoyo)</code></pre>
+<pre><code>## [1] 61.2</code></pre>
+<p>Esta función recibe todos los valores de un vector, los suma y los
+divide entre el número de observaciones, mostrando la media.</p>
+<p>Otra funciones muy usadas en estadística son la mediana, la
+desviación estándar, el mínimo, el máximo y la suma.</p>
+<pre class="r"><code>median(apoyo)</code></pre>
+<pre><code>## [1] 62.5</code></pre>
+<pre class="r"><code>sd(apoyo)</code></pre>
+<pre><code>## [1] 9.070484</code></pre>
+<pre class="r"><code>min(apoyo)</code></pre>
+<pre><code>## [1] 46</code></pre>
+<pre class="r"><code>max(apoyo)</code></pre>
+<pre><code>## [1] 80</code></pre>
+<pre class="r"><code>sum(apoyo)</code></pre>
+<pre><code>## [1] 1224</code></pre>
+<p>El Gráfico 1.1 muestra los resultados para los países donde se tiene
+información. Sin embargo, en algunos casos un vector puede incluir un
+valor perdido. Por ejemplo, el gráfico no muestra información para
+Venezuela, país donde no se realizó trabajo de campo por motivos de
+seguridad. Si quisiéramos crear un vector que incluya este valor
+faltante, se podría hacer así:</p>
+<pre class="r"><code>apoyo2 = c(apoyo, NA)
+apoyo2</code></pre>
+<pre><code>##  [1] 80 73 71 69 68 67 66 63 63 63 62 61 61 57 53 52 50 50 49 46 NA</code></pre>
+<p>En el procedimiento que hemos realizado hemos usado el mismo nombre
+“apoyo2”, por lo que hemos sobreescrito el vector con estos nuevos
+resultados. La cadena de número ahora incluye un valor final NA.</p>
+<p>Algunas funciones no pueden calcular directamente su procedimiento en
+vectores que contienen valores NA. Por ejemplo, la función
+<code>mean</code>.</p>
+<pre class="r"><code>mean(apoyo2)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>El cálculo directo de la media del vector “apoyo2” nos devuelve un
+resultado NA. Para poder hacer el cálculo, indicándole a la función que
+no tome en cuenta este valor NA, se tiene que usar la especificación
+<code>na.rm=True</code>.</p>
+<pre class="r"><code>mean(apoyo2, na.rm=T)</code></pre>
+<pre><code>## [1] 61.2</code></pre>
+</div>
+<div id="paquetes" class="section level1">
+<h1>Paquetes</h1>
+<p>R es un proyecto colaborativo. Muchos desarrolladores producen nuevos
+paquetes que son administrados por el mismo proyecto de R. Estos
+paquetes pueden incluir muchas funciones que ayudan a manejar datos.</p>
+<p>Por ejemplo, R tiene funciones nativas para importar bases de datos
+de diferentes formatos, como Excel, SPSS o Stata. Cada formato tiene una
+función específica, como <code>read_csv</code> o <code>read_dta</code>.
+Sin embargo, unos desarrolladores han producido un paquete llamado “rio”
+que incluye una función <code>import</code> que permite importar
+cualquier tipo de base de datos. Este paquete no viene instalado en la
+descarga básica de R, por lo que se tiene que instalar el paquete para
+poder usarlo.</p>
+<p>Para instalar un paquete se usa el comando
+<code>install.packages</code> con el nombre del paquete que se quiere
+instalar entre comillas. En este caso hemos usado un # antes del código
+debido a que ya se tiene instalado el paquete. Esto sirve para mostrar
+que los comentarios o líneas de código que queremos mostrar, pero que no
+se corran, se pueden hacer con un # antes del comentario o código.</p>
+<pre class="r"><code># install.packages(&quot;rio&quot;)</code></pre>
+<p>Una vez instalado, se tiene que activar el paquete para poder usar
+sus funciones. Esto se hace con el comando <code>library</code>. Una vez
+activado, se puede usar cualquier función de esta librería, como la
+función <code>import</code>. Para activar ya no se requiere comillas.
+Este procedimiento se puede verificar en el panel inferior derecho, en
+la pestaña “Packages”. El paquete “rio” aparece con un check.</p>
+<pre class="r"><code>library(rio)</code></pre>
+</div>
+<div id="dataframes" class="section level1">
+<h1>Dataframes</h1>
+<p>Los dataframes son estructuras de datos rectangulares. Como
+convención, los dataframes tienen en sus columnas a los vectores y en
+las filas a las observaciones. Para crear un dataframe se usa el comando
+<code>data.frame(...)</code>.</p>
+<p>Por ejemplo, podemos crear un dataframe que junte los datos del
+vector “pais” con los del vector “apoyo”. Estos dos vectores tienen que
+tener las mismas dimensiones. Vemos en el Environment que ambos tienen
+como dimensión [1:20]. Este dataframe se puede guardar en un objeto
+“apoyoAL”.</p>
+<pre class="r"><code>apoyoAL = data.frame(pais, apoyo)
+apoyoAL</code></pre>
+<pre><code>##    pais apoyo
+## 1    UY    80
+## 2    SV    73
+## 3    CR    71
+## 4    AR    69
+## 5    CL    68
+## 6    BR    67
+## 7    GY    66
+## 8    MX    63
+## 9    EC    63
+## 10   NI    63
+## 11   DO    62
+## 12   PN    61
+## 13   BO    61
+## 14   JA    57
+## 15   CO    53
+## 16   GT    52
+## 17   PY    50
+## 18   PE    50
+## 19   HN    49
+## 20   HT    46</code></pre>
+<p>Vemos que el objeto “apoyoAL” se ha guardado en una sección aparte
+del Envorinment que se llama “Data”. Este objeto tiene 20 observaciones
+(es decir, 20 filas o países) y dos variables (es decir, dos vectores o
+dos columnas). Se puede hacer click en este objeto y se puede ver la
+plancha de datos en una pestaña aparte.</p>
+<p>Si se quisiera hacer un dataframe con los vectores “pais” y “apoyo2”,
+R nos daría un mensaje de error debido a que estos vectores tienen
+diferentes dimensiones.</p>
+<p>Ahora, el vector “apoyo” forma parte de la base de datos “apoyoAL”.
+Para poder usar las funciones en un dataframe se debe especificar la
+columna de la que se quiere calcular la función. Por ejemplo, si ahora
+se quisiera calcular el promedio de apoyo a la democracia desde la base
+de datos “apoyoAL” se tiene que especificar la columna con “$”.</p>
+<pre class="r"><code>mean(apoyoAL$apoyo)</code></pre>
+<pre><code>## [1] 61.2</code></pre>
+<p>En general, cualquier base de datos es una estructura rectangular
+donde en las filas tenemos las observaciones y en las columnas, las
+variables, lo que cambia es el número de filas y de columnas.</p>
+<p>Por ejemplo, una base de datos del Barómetro de las Américas de un
+país puede tener 1,500 observaciones (1,500 filas) y más de 100
+variables (más de 100 columnas). En ese caso, cada observación
+corresponde a una persona que respondió la encuesta y una columna (o
+vector de datos) representa las respuestas de todos los entrevistados a
+una pregunta del cuestionario.</p>
+<p>Es más, la base de datos conjunta (el merge de datos) es la base de
+datos de todos los países. Esta base de datos puede tener más de 30 mil
+observaciones (es decir, todos los entrevistados en todos los países en
+una ronda determinada) y más de 100 columnas.</p>
+<p>Más allá del tamaño de la base de datos, las columnas son vectores a
+los que se les puede aplicar funciones.</p>
+<p>En la siguiente sección sobre importación de los datos del Barómetro
+de las Américas en RStudio se verá la manera de descargar una base de
+datos del proyecto y cargarla en RStudio.</p>
+</div>
+<div id="resumen" class="section level1">
+<h1>Resumen</h1>
+<p>En este documento se han revisado los elementos básico de R, como
+objetos y vectores, y las funciones básicas que se pueden aplicar a
+estos objetos. También se ha revisado la manera de instalar librerías y
+de activarlas para poder usar sus funciones. Finalmente, se ha explicado
+la idea de un dataframe.</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUHJvY2VkaW1pZW50b3MgYsOhc2ljb3MiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGZsYXRseQogICAgI2NvZGVfZm9sZGluZzogaGlkZQplZGl0b3Jfb3B0aW9uczogCiAgbWFya2Rvd246IAogICAgd3JhcDogc2VudGVuY2UKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KG1lc3NhZ2U9RkFMU0Usd2FybmluZz1GQUxTRSwgY2FjaGU9VFJVRSkKYGBgCgpgYGB7Y3NzIGNvbG9yLCBlY2hvPUZBTFNFfQouY29sdW1ucyB7ZGlzcGxheTogZmxleDt9CmgxIHtjb2xvcjogIzMzNjZDQzt9CmBgYAoKIyBJbnRyb2R1Y2Npw7NuCgpFbiBlc3RlIGRvY3VtZW50byBzZSB2ZXLDoW4gYXNwZWN0b3MgYsOhc2ljb3MgZGVsIHVzbyBkZSBSIHkgUlN0dWRpby4KCiMgT2JqZXRvcwoKRW4gbGEgc2VjY2nDs24gYW50ZXJpb3Igc2UgbWVuY2lvbsOzIHF1ZSBlbCBFbnZpcm9ubWVudCBtdWVzdHJhIGxvcyBvYmpldG9zIGNyZWFkb3MuCkVuIFIgc2UgcHVlZGUgY3JlYXIgb2JqZXRvcyB5IGx1ZWdvIG1hbmlwdWxhcmxvcy4KUG9yIGVqZW1wbG8sIGVsIGdyw6FmaWNvIG11ZXN0cmEgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBxdWUgYXBveWFuIGEgbGEgZGVtb2NyYWNpYSBlbiBjYWRhIHBhw61zLgpTaSBxdWVyZW1vcyBndWFyZGFyIGVsIHJlc3VsdGFkb3MgZGUgVXJ1Z3VheSAoVVkpLCBwb2RlbW9zIGNyZWFyIHVuIG9iamV0by4KCiFbXShGaWd1cmUxLjEucG5nKXt3aWR0aD0iNTM5In0KCkxhIHNpZ3VpZW50ZSBsw61uZWEgZGUgY8OzZGlnbyBjcmVhIHVuIG9iamV0byBsbGFtYWRvICJVWSIgcXVlIGFsbWFjZW5hIGVsIG7Dum1lcm8gODAuCkVzdG8gb2JqZXRvIHNlIG11ZXN0cmEgZW4gZWwgRW52aXJvbm1lbnQsIHRhbnRvIGVsIG5vbWJyZSwgY29tbyBlbCB2YWxvciBxdWUgYWxtYWNlbmEuCgpgYGB7ciBvYmpldG99ClVZID0gODAKYGBgCgpTaSBxdWlzacOpcmFtb3MgY2FsY3VsYXIgbGEgZGlmZXJlbmNpYSBlbiBwb3JjZW50YWplIGVudHJlIFVydWd1YXksIGVsIHBhw61zIHF1ZSBtdWVzdHJhIGVsIG1heW9yIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSwgeSBIYWl0w60sIGVsIHF1ZSBtdWVzdHJhIGVsIG1lbm9yIHBvcmNlbnRhamUsIHNlIHB1ZWRlIGNhbGN1bGFyIGhhY2llbmRvIGxhIHJlc3RhIGRlbCBvYmpldG8gbWVub3MgZWwgdmFsb3IgZGVsIHBvcmNlbnRhamUgZW4gSGFpdMOtLgpDdWFuZG8gc2UgY29ycmUgZXN0ZSBjw7NkaWdvLCBSU3R1ZGlvIG5vcyBtdWVzdHJhIGVsIHJlc3VsdGFkby4KCmBgYHtyIHJlc3RhfQpVWSAtIDQ2CmBgYAoKTG9zIG9iamV0b3MgZW4gUiBubyBzb2xvIGFsbWFjZW5hbiBuw7ptZXJvcywgc2lubyBxdWUgdGFtYmnDqW4gcHVlZGVuIGd1YXJkYXIgbGV0cmFzIChvIGNhZGVuYXMgZGUgY2FyYWN0ZXJlcykuCgpFbCBCYXLDs21ldHJvIGRlIGxhcyBBbcOpcmljYXMgcmVjb2plIGluZm9ybWFjacOzbiBkZSBjYXNpIHRvZG9zIGxvcyBwYcOtc2VzIGRlIGxhcyBBbcOpcmljYXMuCkxhIHRhYmxhIHNpZ3VpZW50ZSBtdWVzdHJhIGxvcyBwYcOtc2VzIGVuIGxvcyBxdWUgc2UgaGEgcmVjb2dpZG8gaW5mb3JtYWNpw7NuIGVuIGFsZ3VuYSByb25kYS4KCiFbXShwYWlzLnBuZyl7d2lkdGg9IjU1MiJ9CgpTaSBxdWVyZW1vcyBndWFyZGFyIGVsIG5vbWJyZSBkZSB1biBwYcOtcyBlbiB1biBvYmpldG8sIHNlIHB1ZWRlIG5vbWJyYXIgYWwgb2JqZXRvICJwYWlzMSIgeSBlc2NyaWJpciBlbCBub21icmUgZGVsIHBhw61zIChxdWUgZXMgdW5hIGNhZGVuYSBkZSBjYXJhY3RlcmVzKSBlbnRyZSBjb21pbGxhcy4KCmBgYHtyIHBhaXN9CnBhaXMxID0gIk3DqXhpY28iCmBgYAoKQ29tbyBzZSBvYnNlcnZhLCBlbCBub21icmUgZGVsIG9iamV0byBubyBsbGV2YSB0aWxkZS4KRXMgcG9zaWJsZSBjcmVhciB1biBvYmpldG8gY29uIHRpbGRlcywgcGVybyBzZSByZWNvbWllbmRhIG5vIGhhY2VybG8gcHVlcyBwdWVkZSBjcmVhciBwcm9ibGVtYXMgcG9zdGVyaW9yZXMuCkxhIGNhZGVuYSBkZSBjYXJhY3RlcmVzICJNw6l4aWNvIiBzw60gaW5jbHV5ZSBsYSB0aWxkZS4KRXN0byBubyByZXByZXNlbnRhIG5pbmfDum4gcHJvYmxlbWEuCgojIFZlY3RvcmVzCgpVbiB2ZWN0b3IgZXMgdW4gb2JqZXRvIHF1ZSBjb250aWVuZSB1biBjb25qdW50byBkZSBlbGVtZW50b3MsIHNlYW4gbsO6bWVyb3MgbyBjYWRlbmFzIGRlIGNhcmFjdGVyZXMsIGVudHJlIG90cm9zLgpQb3IgZWplbXBsbywgcG9kZW1vcyBjcmVhciB1biB2ZWN0b3IgcXVlIGFsbWFjZW5lIHRvZG9zIGxvcyBwb3JjZW50YWplcyBkZWwgR3LDoWZpY28gMS4xLgoKYGBge3IgdmVjdG9yIHBvcmNlbnRhamVzfQphcG95byA9IGMoODAsIDczLCA3MSwgNjksIDY4LCA2NywgNjYsIDYzLCA2MywgNjMsIDYyLCA2MSwgNjEsIDU3LCA1MywgNTIsIDUwLCA1MCwgNDksIDQ2KQpgYGAKCkRlIG1hbmVyYSBzaW1pbGFyLCBwb2RlbW9zIGNyZWFyIHVuIHZlY3RvciBjb24gbG9zIG5vbWJyZXMgKG8gc2lnbGFzKSBkZSBsb3MgcGHDrXNlcy4KCmBgYHtyIHZlY3RvciBwYWlzfQpwYWlzID0gYygiVVkiLCAiU1YiLCAiQ1IiLCAiQVIiLCAiQ0wiLCAiQlIiLCAiR1kiLCAiTVgiLCAiRUMiLCAiTkkiLCAiRE8iLCAiUE4iLCAiQk8iLCAiSkEiLCAiQ08iLCAiR1QiLCAiUFkiLCAiUEUiLCAiSE4iLCAiSFQiKQpgYGAKCk5vIGVzIG5lY2VzYXJpbyBzZWd1aXIgZWwgbWlzbW8gb3JkZW4gZGVsIGdyw6FmaWNvOyBzaW4gZW1iYXJnbywgZXMgcmVjb21lbmRhYmxlIHBvciByYXpvbmVzIHF1ZSBzZSBleHBsaWNhcsOhbiBtw6FzIGFiYWpvLgoKU2UgcHVlZGUgc2VsZWNjaW9uYXIgZWxlbWVudG9zIHBhcnRpY3VsYXJlcyBkZSB1biB2ZWN0b3IgdXNhbmRvIGBb4oCmXWAuClBvciBlamVtcGxvLCBzaSBxdWVyZW1vcyBzZWxlY2Npb25hciBlbCBwYcOtcyBkZSBBcmdlbnRpbmEsIHRhbnRvIHN1IG5vbWJyZSwgY29tbyBzdSBwb3JjZW50YWplLCBzZSB0aWVuZSBxdWUgY29sb2NhciBlbnRyZSBjb3JjaGV0ZXMgbGEgcG9zaWNpw7NuIGVuIGxhIHF1ZSBzZSBlbmN1ZW50cmEuCgpgYGB7ciBzZWxlY2Npb25hciB2ZWN0b3J9CnBhaXNbNF0KYXBveW9bNF0KYGBgCgojIEZ1bmNpb25lcwoKVW5hIGZ1bmNpw7NuIGVzIHVuIHByb2NlZGltaWVudG8gcXVlIHJlY2liZSB1biBpbnB1dCB5IHByb2R1Y2UgdW4gb3V0cHV0LgpQb3IgZWplbXBsbywgbGEgZnVuY2nDs24gWSA9IFhcXjIsIHJlY2liZSB1biB2YWxvciBYIGN1YWxxdWllcmEsIHBvciBlamVtcGxvIDIsIHkgZGV2dWVsdmUgdW4gdmFsb3IgWSwgZW4gZXN0ZSBjYXNvIDQuCkVuIFIgc2UgdGllbmVuIGxhcyBmdW5jaW9uZXMgYWxnZWJyYWljYXMsIGNvbW8gcmHDrXogY3VhZHJhZGEgbyBsb2dhcml0bW8uClBvciBlamVtcGxvLCBsYSBmdW5jacOzbiBgbG9nKOKApilgIHJlY2liZSB1biB2YWxvciBYIHkgZGV2dWVsdmUgdW4gdmFsb3IgWSBpZ3VhbCBhbCBsb2dhcml0bW8gZGUgWC4KCmBgYHtyIHJhaXp9CnNxcnQoMzYpICNwb3Igc3F1YXJlZCByb290CmxvZygyMCkKYGBgCgpUYW1iacOpbiBzZSBwdWVkZSBhcGxpY2FyIHVuYSBmdW5jacOzbiBhIHVuIGNvbmp1bnRvIGRlIGRhdG9zLCBjb21vIGxvcyBhbG1hY2VuYWRvcyBlbiB1biB2ZWN0b3IuClBvciBlamVtcGxvLCBzaSBxdWlzacOpcmFtb3MgY2FsY3VsYXIgbGEgdGFzYSBkZSBwZXJzb25hcyBxdWUgYXBveWEgYSBsYSBkZW1vY3JhY2lhIHBvciBjYWRhIDEwMDAgaGFiaXRhbnRlcyBlbiB0b2RvcyBsb3MgcGHDrXNlcywgdGVuZHLDrWFtb3MgcXVlIG11bHRpcGxpY2FyIGVsIHZlY3RvciAicGFpcyIgZW50cmUgMTAuCkVuIGVzdGUgY2FzbywgbGEgZnVuY2nDs24gZGUgbXVsdGlwbGljYWNpw7NuIHNlIGFwbGljYSBhIGNhZGEgZWxlbWVudG8gZGVsIHZlY3Rvci4KCmBgYHtyIGFwb3lvMn0KYXBveW8yID0gYXBveW8qMTAKYXBveW8yCmBgYAoKSGF5IG90cmFzIGZ1bmNpb25lcyBxdWUgcmVzdWx0YW4gbcOhcyDDunRpbGVzIHBhcmEgbnVlc3Ryb3Mgb2JqZXRpdm9zIHBvcnF1ZSB0cmFiYWphbiBzb2JyZSB1biBjb25qdW50byBkZSB2YWxvcmVzLCBjb21vIGxvcyBhbG1hY2VuYWRvcyBlbiB1biB2ZWN0b3IsIGNhbGN1bGFuZG8gdW4gdmFsb3Igw7puaWNvLgpQb3IgZWplbXBsbywgc2kgcXVlcmVtb3MgY2FsY3VsYXIgZWwgYXBveW8gYSBsYSBkZW1vY3JhY2lhIHByb21lZGlvIGVuIHRvZG9zIGxvcyBwYcOtc2VzIG1vc3RyYWRvcyBlbiBlbCBHcsOhZmljbyAxLjEgc2UgcHVlZGUgdXNhciBsYSBmdW5jacOzbiBgbWVhbijigKYpYC4KCmBgYHtyIG1lZGlhfQptZWFuKGFwb3lvKQpgYGAKCkVzdGEgZnVuY2nDs24gcmVjaWJlIHRvZG9zIGxvcyB2YWxvcmVzIGRlIHVuIHZlY3RvciwgbG9zIHN1bWEgeSBsb3MgZGl2aWRlIGVudHJlIGVsIG7Dum1lcm8gZGUgb2JzZXJ2YWNpb25lcywgbW9zdHJhbmRvIGxhIG1lZGlhLgoKT3RyYSBmdW5jaW9uZXMgbXV5IHVzYWRhcyBlbiBlc3RhZMOtc3RpY2Egc29uIGxhIG1lZGlhbmEsIGxhIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciwgZWwgbcOtbmltbywgZWwgbcOheGltbyB5IGxhIHN1bWEuCgpgYGB7ciBvdHJhcyBmdW5jaW9uZXN9Cm1lZGlhbihhcG95bykKc2QoYXBveW8pCm1pbihhcG95bykKbWF4KGFwb3lvKQpzdW0oYXBveW8pCmBgYAoKRWwgR3LDoWZpY28gMS4xIG11ZXN0cmEgbG9zIHJlc3VsdGFkb3MgcGFyYSBsb3MgcGHDrXNlcyBkb25kZSBzZSB0aWVuZSBpbmZvcm1hY2nDs24uClNpbiBlbWJhcmdvLCBlbiBhbGd1bm9zIGNhc29zIHVuIHZlY3RvciBwdWVkZSBpbmNsdWlyIHVuIHZhbG9yIHBlcmRpZG8uClBvciBlamVtcGxvLCBlbCBncsOhZmljbyBubyBtdWVzdHJhIGluZm9ybWFjacOzbiBwYXJhIFZlbmV6dWVsYSwgcGHDrXMgZG9uZGUgbm8gc2UgcmVhbGl6w7MgdHJhYmFqbyBkZSBjYW1wbyBwb3IgbW90aXZvcyBkZSBzZWd1cmlkYWQuClNpIHF1aXNpw6lyYW1vcyBjcmVhciB1biB2ZWN0b3IgcXVlIGluY2x1eWEgZXN0ZSB2YWxvciBmYWx0YW50ZSwgc2UgcG9kcsOtYSBoYWNlciBhc8OtOgoKYGBge3IgYXBveW8gY29uIE5BfQphcG95bzIgPSBjKGFwb3lvLCBOQSkKYXBveW8yCmBgYAoKRW4gZWwgcHJvY2VkaW1pZW50byBxdWUgaGVtb3MgcmVhbGl6YWRvIGhlbW9zIHVzYWRvIGVsIG1pc21vIG5vbWJyZSAiYXBveW8yIiwgcG9yIGxvIHF1ZSBoZW1vcyBzb2JyZWVzY3JpdG8gZWwgdmVjdG9yIGNvbiBlc3RvcyBudWV2b3MgcmVzdWx0YWRvcy4KTGEgY2FkZW5hIGRlIG7Dum1lcm8gYWhvcmEgaW5jbHV5ZSB1biB2YWxvciBmaW5hbCBOQS4KCkFsZ3VuYXMgZnVuY2lvbmVzIG5vIHB1ZWRlbiBjYWxjdWxhciBkaXJlY3RhbWVudGUgc3UgcHJvY2VkaW1pZW50byBlbiB2ZWN0b3JlcyBxdWUgY29udGllbmVuIHZhbG9yZXMgTkEuClBvciBlamVtcGxvLCBsYSBmdW5jacOzbiBgbWVhbmAuCgpgYGB7ciBtZWRpYSBhcG95bzJ9Cm1lYW4oYXBveW8yKQpgYGAKCkVsIGPDoWxjdWxvIGRpcmVjdG8gZGUgbGEgbWVkaWEgZGVsIHZlY3RvciAiYXBveW8yIiBub3MgZGV2dWVsdmUgdW4gcmVzdWx0YWRvIE5BLgpQYXJhIHBvZGVyIGhhY2VyIGVsIGPDoWxjdWxvLCBpbmRpY8OhbmRvbGUgYSBsYSBmdW5jacOzbiBxdWUgbm8gdG9tZSBlbiBjdWVudGEgZXN0ZSB2YWxvciBOQSwgc2UgdGllbmUgcXVlIHVzYXIgbGEgZXNwZWNpZmljYWNpw7NuIGBuYS5ybT1UcnVlYC4KCmBgYHtyIG1lZGlhIGFwb3lvIG5hLnJtfQptZWFuKGFwb3lvMiwgbmEucm09VCkKYGBgCgojIFBhcXVldGVzCgpSIGVzIHVuIHByb3llY3RvIGNvbGFib3JhdGl2by4KTXVjaG9zIGRlc2Fycm9sbGFkb3JlcyBwcm9kdWNlbiBudWV2b3MgcGFxdWV0ZXMgcXVlIHNvbiBhZG1pbmlzdHJhZG9zIHBvciBlbCBtaXNtbyBwcm95ZWN0byBkZSBSLgpFc3RvcyBwYXF1ZXRlcyBwdWVkZW4gaW5jbHVpciBtdWNoYXMgZnVuY2lvbmVzIHF1ZSBheXVkYW4gYSBtYW5lamFyIGRhdG9zLgoKUG9yIGVqZW1wbG8sIFIgdGllbmUgZnVuY2lvbmVzIG5hdGl2YXMgcGFyYSBpbXBvcnRhciBiYXNlcyBkZSBkYXRvcyBkZSBkaWZlcmVudGVzIGZvcm1hdG9zLCBjb21vIEV4Y2VsLCBTUFNTIG8gU3RhdGEuCkNhZGEgZm9ybWF0byB0aWVuZSB1bmEgZnVuY2nDs24gZXNwZWPDrWZpY2EsIGNvbW8gYHJlYWRfY3N2YCBvIGByZWFkX2R0YWAuClNpbiBlbWJhcmdvLCB1bm9zIGRlc2Fycm9sbGFkb3JlcyBoYW4gcHJvZHVjaWRvIHVuIHBhcXVldGUgbGxhbWFkbyAicmlvIiBxdWUgaW5jbHV5ZSB1bmEgZnVuY2nDs24gYGltcG9ydGAgcXVlIHBlcm1pdGUgaW1wb3J0YXIgY3VhbHF1aWVyIHRpcG8gZGUgYmFzZSBkZSBkYXRvcy4KRXN0ZSBwYXF1ZXRlIG5vIHZpZW5lIGluc3RhbGFkbyBlbiBsYSBkZXNjYXJnYSBiw6FzaWNhIGRlIFIsIHBvciBsbyBxdWUgc2UgdGllbmUgcXVlIGluc3RhbGFyIGVsIHBhcXVldGUgcGFyYSBwb2RlciB1c2FybG8uCgpQYXJhIGluc3RhbGFyIHVuIHBhcXVldGUgc2UgdXNhIGVsIGNvbWFuZG8gYGluc3RhbGwucGFja2FnZXNgIGNvbiBlbCBub21icmUgZGVsIHBhcXVldGUgcXVlIHNlIHF1aWVyZSBpbnN0YWxhciBlbnRyZSBjb21pbGxhcy4KRW4gZXN0ZSBjYXNvIGhlbW9zIHVzYWRvIHVuIFwjIGFudGVzIGRlbCBjw7NkaWdvIGRlYmlkbyBhIHF1ZSB5YSBzZSB0aWVuZSBpbnN0YWxhZG8gZWwgcGFxdWV0ZS4KRXN0byBzaXJ2ZSBwYXJhIG1vc3RyYXIgcXVlIGxvcyBjb21lbnRhcmlvcyBvIGzDrW5lYXMgZGUgY8OzZGlnbyBxdWUgcXVlcmVtb3MgbW9zdHJhciwgcGVybyBxdWUgbm8gc2UgY29ycmFuLCBzZSBwdWVkZW4gaGFjZXIgY29uIHVuIFwjIGFudGVzIGRlbCBjb21lbnRhcmlvIG8gY8OzZGlnby4KCmBgYHtyIGluc3RhbGFyIHBhcXVldGVzfQojIGluc3RhbGwucGFja2FnZXMoInJpbyIpCgpgYGAKClVuYSB2ZXogaW5zdGFsYWRvLCBzZSB0aWVuZSBxdWUgYWN0aXZhciBlbCBwYXF1ZXRlIHBhcmEgcG9kZXIgdXNhciBzdXMgZnVuY2lvbmVzLgpFc3RvIHNlIGhhY2UgY29uIGVsIGNvbWFuZG8gYGxpYnJhcnlgLgpVbmEgdmV6IGFjdGl2YWRvLCBzZSBwdWVkZSB1c2FyIGN1YWxxdWllciBmdW5jacOzbiBkZSBlc3RhIGxpYnJlcsOtYSwgY29tbyBsYSBmdW5jacOzbiBgaW1wb3J0YC4KUGFyYSBhY3RpdmFyIHlhIG5vIHNlIHJlcXVpZXJlIGNvbWlsbGFzLgpFc3RlIHByb2NlZGltaWVudG8gc2UgcHVlZGUgdmVyaWZpY2FyIGVuIGVsIHBhbmVsIGluZmVyaW9yIGRlcmVjaG8sIGVuIGxhIHBlc3Rhw7FhICJQYWNrYWdlcyIuCkVsIHBhcXVldGUgInJpbyIgYXBhcmVjZSBjb24gdW4gY2hlY2suCgpgYGB7ciBhY3RpdmFyfQpsaWJyYXJ5KHJpbykKYGBgCgojIERhdGFmcmFtZXMKCkxvcyBkYXRhZnJhbWVzIHNvbiBlc3RydWN0dXJhcyBkZSBkYXRvcyByZWN0YW5ndWxhcmVzLgpDb21vIGNvbnZlbmNpw7NuLCBsb3MgZGF0YWZyYW1lcyB0aWVuZW4gZW4gc3VzIGNvbHVtbmFzIGEgbG9zIHZlY3RvcmVzIHkgZW4gbGFzIGZpbGFzIGEgbGFzIG9ic2VydmFjaW9uZXMuClBhcmEgY3JlYXIgdW4gZGF0YWZyYW1lIHNlIHVzYSBlbCBjb21hbmRvIGBkYXRhLmZyYW1lKC4uLilgLgoKUG9yIGVqZW1wbG8sIHBvZGVtb3MgY3JlYXIgdW4gZGF0YWZyYW1lIHF1ZSBqdW50ZSBsb3MgZGF0b3MgZGVsIHZlY3RvciAicGFpcyIgY29uIGxvcyBkZWwgdmVjdG9yICJhcG95byIuCkVzdG9zIGRvcyB2ZWN0b3JlcyB0aWVuZW4gcXVlIHRlbmVyIGxhcyBtaXNtYXMgZGltZW5zaW9uZXMuClZlbW9zIGVuIGVsIEVudmlyb25tZW50IHF1ZSBhbWJvcyB0aWVuZW4gY29tbyBkaW1lbnNpw7NuIFsxOjIwXS4KRXN0ZSBkYXRhZnJhbWUgc2UgcHVlZGUgZ3VhcmRhciBlbiB1biBvYmpldG8gImFwb3lvQUwiLgoKYGBge3IgZGF0YWZyYW1lfQphcG95b0FMID0gZGF0YS5mcmFtZShwYWlzLCBhcG95bykKYXBveW9BTApgYGAKClZlbW9zIHF1ZSBlbCBvYmpldG8gImFwb3lvQUwiIHNlIGhhIGd1YXJkYWRvIGVuIHVuYSBzZWNjacOzbiBhcGFydGUgZGVsIEVudm9yaW5tZW50IHF1ZSBzZSBsbGFtYSAiRGF0YSIuCkVzdGUgb2JqZXRvIHRpZW5lIDIwIG9ic2VydmFjaW9uZXMgKGVzIGRlY2lyLCAyMCBmaWxhcyBvIHBhw61zZXMpIHkgZG9zIHZhcmlhYmxlcyAoZXMgZGVjaXIsIGRvcyB2ZWN0b3JlcyBvIGRvcyBjb2x1bW5hcykuClNlIHB1ZWRlIGhhY2VyIGNsaWNrIGVuIGVzdGUgb2JqZXRvIHkgc2UgcHVlZGUgdmVyIGxhIHBsYW5jaGEgZGUgZGF0b3MgZW4gdW5hIHBlc3Rhw7FhIGFwYXJ0ZS4KClNpIHNlIHF1aXNpZXJhIGhhY2VyIHVuIGRhdGFmcmFtZSBjb24gbG9zIHZlY3RvcmVzICJwYWlzIiB5ICJhcG95bzIiLCBSIG5vcyBkYXLDrWEgdW4gbWVuc2FqZSBkZSBlcnJvciBkZWJpZG8gYSBxdWUgZXN0b3MgdmVjdG9yZXMgdGllbmVuIGRpZmVyZW50ZXMgZGltZW5zaW9uZXMuCgpBaG9yYSwgZWwgdmVjdG9yICJhcG95byIgZm9ybWEgcGFydGUgZGUgbGEgYmFzZSBkZSBkYXRvcyAiYXBveW9BTCIuClBhcmEgcG9kZXIgdXNhciBsYXMgZnVuY2lvbmVzIGVuIHVuIGRhdGFmcmFtZSBzZSBkZWJlIGVzcGVjaWZpY2FyIGxhIGNvbHVtbmEgZGUgbGEgcXVlIHNlIHF1aWVyZSBjYWxjdWxhciBsYSBmdW5jacOzbi4KUG9yIGVqZW1wbG8sIHNpIGFob3JhIHNlIHF1aXNpZXJhIGNhbGN1bGFyIGVsIHByb21lZGlvIGRlIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSBkZXNkZSBsYSBiYXNlIGRlIGRhdG9zICJhcG95b0FMIiBzZSB0aWVuZSBxdWUgZXNwZWNpZmljYXIgbGEgY29sdW1uYSBjb24gIlwkIi4KCmBgYHtyIGFwb3lvIGRhdGF9Cm1lYW4oYXBveW9BTCRhcG95bykKYGBgCgpFbiBnZW5lcmFsLCBjdWFscXVpZXIgYmFzZSBkZSBkYXRvcyBlcyB1bmEgZXN0cnVjdHVyYSByZWN0YW5ndWxhciBkb25kZSBlbiBsYXMgZmlsYXMgdGVuZW1vcyBsYXMgb2JzZXJ2YWNpb25lcyB5IGVuIGxhcyBjb2x1bW5hcywgbGFzIHZhcmlhYmxlcywgbG8gcXVlIGNhbWJpYSBlcyBlbCBuw7ptZXJvIGRlIGZpbGFzIHkgZGUgY29sdW1uYXMuCgpQb3IgZWplbXBsbywgdW5hIGJhc2UgZGUgZGF0b3MgZGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBkZSB1biBwYcOtcyBwdWVkZSB0ZW5lciAxLDUwMCBvYnNlcnZhY2lvbmVzICgxLDUwMCBmaWxhcykgeSBtw6FzIGRlIDEwMCB2YXJpYWJsZXMgKG3DoXMgZGUgMTAwIGNvbHVtbmFzKS4KRW4gZXNlIGNhc28sIGNhZGEgb2JzZXJ2YWNpw7NuIGNvcnJlc3BvbmRlIGEgdW5hIHBlcnNvbmEgcXVlIHJlc3BvbmRpw7MgbGEgZW5jdWVzdGEgeSB1bmEgY29sdW1uYSAobyB2ZWN0b3IgZGUgZGF0b3MpIHJlcHJlc2VudGEgbGFzIHJlc3B1ZXN0YXMgZGUgdG9kb3MgbG9zIGVudHJldmlzdGFkb3MgYSB1bmEgcHJlZ3VudGEgZGVsIGN1ZXN0aW9uYXJpby4KCkVzIG3DoXMsIGxhIGJhc2UgZGUgZGF0b3MgY29uanVudGEgKGVsIG1lcmdlIGRlIGRhdG9zKSBlcyBsYSBiYXNlIGRlIGRhdG9zIGRlIHRvZG9zIGxvcyBwYcOtc2VzLgpFc3RhIGJhc2UgZGUgZGF0b3MgcHVlZGUgdGVuZXIgbcOhcyBkZSAzMCBtaWwgb2JzZXJ2YWNpb25lcyAoZXMgZGVjaXIsIHRvZG9zIGxvcyBlbnRyZXZpc3RhZG9zIGVuIHRvZG9zIGxvcyBwYcOtc2VzIGVuIHVuYSByb25kYSBkZXRlcm1pbmFkYSkgeSBtw6FzIGRlIDEwMCBjb2x1bW5hcy4KCk3DoXMgYWxsw6EgZGVsIHRhbWHDsW8gZGUgbGEgYmFzZSBkZSBkYXRvcywgbGFzIGNvbHVtbmFzIHNvbiB2ZWN0b3JlcyBhIGxvcyBxdWUgc2UgbGVzIHB1ZWRlIGFwbGljYXIgZnVuY2lvbmVzLgoKRW4gbGEgc2lndWllbnRlIHNlY2Npw7NuIHNvYnJlIGltcG9ydGFjacOzbiBkZSBsb3MgZGF0b3MgZGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBlbiBSU3R1ZGlvIHNlIHZlcsOhIGxhIG1hbmVyYSBkZSBkZXNjYXJnYXIgdW5hIGJhc2UgZGUgZGF0b3MgZGVsIHByb3llY3RvIHkgY2FyZ2FybGEgZW4gUlN0dWRpby4KCiMgUmVzdW1lbgoKRW4gZXN0ZSBkb2N1bWVudG8gc2UgaGFuIHJldmlzYWRvIGxvcyBlbGVtZW50b3MgYsOhc2ljbyBkZSBSLCBjb21vIG9iamV0b3MgeSB2ZWN0b3JlcywgeSBsYXMgZnVuY2lvbmVzIGLDoXNpY2FzIHF1ZSBzZSBwdWVkZW4gYXBsaWNhciBhIGVzdG9zIG9iamV0b3MuClRhbWJpw6luIHNlIGhhIHJldmlzYWRvIGxhIG1hbmVyYSBkZSBpbnN0YWxhciBsaWJyZXLDrWFzIHkgZGUgYWN0aXZhcmxhcyBwYXJhIHBvZGVyIHVzYXIgc3VzIGZ1bmNpb25lcy4KRmluYWxtZW50ZSwgc2UgaGEgZXhwbGljYWRvIGxhIGlkZWEgZGUgdW4gZGF0YWZyYW1lLgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("basico.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

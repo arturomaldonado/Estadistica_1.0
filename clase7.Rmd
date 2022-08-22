@@ -204,25 +204,25 @@ prop.table(table(lapop18$satis))*100
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------+---------------------------------------------------------------+----------------------------------------------------+
-| Col1 | Hombres                                                       | Mujeres                                            |
-+======+===============================================================+====================================================+
-| MS   | 6.4% de hombres-\> #observaciones si no hay relación          | 6.4% de mujeres                                    |
-|      |                                                               |                                                    |
-|      | cuánto es el 6.4% de 13608= 871.9 #obs si NO hubiera relación | 6.4% de 13,330 = 852.1 #obs si NO hubiera relación |
-|      |                                                               |                                                    |
-|      | 919 lo realmente observado                                    | (803-852,1)\^2                                     |
-|      |                                                               |                                                    |
-|      | (919-871.9)\^2                                                |                                                    |
-+------+---------------------------------------------------------------+----------------------------------------------------+
-| S    | 33.1%                                                         | 33.1%                                              |
-+------+---------------------------------------------------------------+----------------------------------------------------+
-| I    | 46.2%                                                         | 46.2%                                              |
-+------+---------------------------------------------------------------+----------------------------------------------------+
-| MI   | 14.3%                                                         | 14.3%                                              |
-+------+---------------------------------------------------------------+----------------------------------------------------+
-|      | 13608                                                         |                                                    |
-+------+---------------------------------------------------------------+----------------------------------------------------+
++------------+---------------------------------------------------------------+----------------------------------------------------+
+| Col1       | Hombres                                                       | Mujeres                                            |
++============+===============================================================+====================================================+
+| MS         | 6.4% de hombres-\> #observaciones si no hay relación          | 6.4% de mujeres                                    |
+|            |                                                               |                                                    |
+|            | cuánto es el 6.4% de 13608= 871.9 #obs si NO hubiera relación | 6.4% de 13,330 = 852.1 #obs si NO hubiera relación |
+|            |                                                               |                                                    |
+|            | 919 lo realmente observado                                    | (803-852,1)\^2                                     |
+|            |                                                               |                                                    |
+|            | (919-871.9)\^2                                                |                                                    |
++------------+---------------------------------------------------------------+----------------------------------------------------+
+| S          | 33.1%                                                         | 33.1%                                              |
++------------+---------------------------------------------------------------+----------------------------------------------------+
+| I          | 46.2%                                                         | 46.2%                                              |
++------------+---------------------------------------------------------------+----------------------------------------------------+
+| MI         | 14.3%                                                         | 14.3%                                              |
++------------+---------------------------------------------------------------+----------------------------------------------------+
+|            | 13608                                                         |                                                    |
++------------+---------------------------------------------------------------+----------------------------------------------------+
 
 En las primeras celda, la lógica sería:
 
@@ -373,8 +373,8 @@ Para comprobar la relación entre estas variables, también se puede usar la pru
 Esta evaluación se guarda en un objeto "prueba2".
 
 ```{r chi ed}
-prueba2 <- chisq.test(lapop18$satis, lapop18$educ)
-prueba2
+#prueba2 <- chisq.test(lapop18$satis, lapop18$educ)
+#prueba2
 ```
 
 Con el valor de estadístico se obtiene un p-value menor de 0.05, con lo que se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que existiría una relación de dependencia entre las variables.
@@ -384,17 +384,17 @@ Para esto usaremos la librería `DescTools` y los comandos `GoodmanKrustalGamma`
 
 ```{r asoc ordinal, message=FALSE, warning=FALSE}
 library(DescTools)
-tabla2 <- table(lapop18$satis, lapop18$educ)
-GoodmanKruskalGamma(tabla2)
-KendallTauB(tabla2)
-StuartTauC(tabla2)
+#tabla2 <- table(lapop18$satis, lapop18$educ)
+#GoodmanKruskalGamma(tabla2)
+#KendallTauB(tabla2)
+#StuartTauC(tabla2)
 ```
 
 Otra forma es usando la librería `oii` y el comando `association.measures`.
 
 ```{r ordinal}
 library(oii)
-association.measures(lapop18$satis, lapop18$educ)
+#association.measures(lapop18$satis, lapop18$educ)
 ```
 
 En este caso se observan las medidas de asociación para variables ordinales.

@@ -7,22 +7,13 @@ output:
     collapsed: false
     number_sections: false
     toc_depth: 1
-    theme: flatly
-    #code_folding: hide
+    theme: cosmo
+    highlight: textmate
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
-```
-
-```{css color, echo=FALSE}
-.columns {display: flex;}
-h1 {color: #3366CC;}
-```
 
 # ¿Cómo instalar ambas aplicaciones?
 
-[R](http://www.r-project.org) es un programa de software libre que puede ser usado para el análisis estadístico, la visualización de datos y muchas otras cosas. En este caso lo usaremos para el análisis de datos de opinión pública, en particular, los datos del Barómetro de las Américas del Proyecto de Opinión Pública en América Latina, [LAPOP Lab](https://www.vanderbilt.edu/lapop/) por sus siglas en inglés. R puede ser descargado desde su propio repositorio (<https://cran.r-project.org>)
+[R](http://www.r-project.org) es un programa de software libre que puede ser usado para el análisis estadístico, la visualización de datos y muchas otras cosas. En este caso lo usaremos para el análisis de datos de ciencia política. R puede ser descargado desde su propio repositorio (<https://cran.r-project.org>)
 
 Otro programa de software libre es [RStudio](http://www.rstudio.com), que es una interface gráfica IDE para R. En estos enlaces se pueden descargar estos programas. Primero descargue R y luego RStudio. Ambos tiene versiones para Windows, IOS o Linux.
 
@@ -36,7 +27,7 @@ Luego de la instalación se puede abrir la interface RStudio. No es necesario ab
 
 -   Objetos: este panel se muestra 4 pestañas. La más importante es la primera, que muestra el Environment. En esta pestaña se muestra todos los objetos que se hayan cargado o creado, como bases de datos, vectores, listas, funciones, etc.
 
--   Consola: en este panel se puede escribir líneas de códigos, aunque no se guardarán. Aquí se procesan los códigos que se corran en algún script o Markdown y se muestran los resultados. La pestaña de consola muestra además el directorio de trabajo. En este directorio se pueden almacener los archivos producidos en RStudio.
+-   Consola: en este panel se puede escribir líneas de códigos, aunque no se guardarán. Aquí se procesan los códigos que se corran en algún script o Markdown y se muestran los resultados. La pestaña de consola muestra además el directorio de trabajo. En este directorio se pueden almacenar los archivos producidos en RStudio.
 
 -   Panel de files/gráficos/paquetes/ayuda: en la pestaña de Files se muestra los archivos que se encuentran en el directorio de trabajo. En la pestaña de Plots se muestran los gráficos realizados. En la pestaña de Packages se muestran todos los paquetes cargados en la librería de R y se muestra los activos con un check. En la pestaña de Help se puede buscar ayuda dentro de los recursos de R, como manuales, páginas de cada librería, la documentación de los comandos.
 

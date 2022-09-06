@@ -35,6 +35,8 @@ Si no estuviera en el directorio de trabajo se tendría que especificar la ruta 
 Guardamos esta base de datos en un nuevo objeto (dataframe) llamado res2016.
 Se sugiere siempre trabajar con nombres cortos de bases de datos y de variables.
 
+Van a poder escribir
+
 ```{r}
 library(rio)
 res2016 = import("resultados2016.xlsx")
@@ -79,7 +81,7 @@ En nuestro caso vamos a seleccionar las observaciones que en el vector o variabl
 Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
 
 ```{r}
-mean(res2016$fp[res2016$dpto =="LIMA"])
+mean(res2016$fp[res2016$dpto =="TUMBES"])
 ```
 
 Encontramos que en Lima el promedio provincial de voto a Fuerza Popular es mayor que el promedio provincial general.
@@ -92,6 +94,10 @@ Para ver esta asimetría se puede graficar la distribución de frecuencias de es
 ```{r}
 mean(res2016$fa)
 median(res2016$fa)
+```
+
+```{r}
+mean(res2016$fa[res2016$dpto =="CUSCO"])
 ```
 
 Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
@@ -117,7 +123,7 @@ prop.table(table(res2016$gana))*100
 Una de las tareas más comunes en el manejo de datos es la visualización de los resultados.
 En R hay dos maneras de proceder.
 La primera es usar los comandos de base de R.
-La otra es usar una librería `ggplot` que permite una mayor flexibilización en la producción y estética de los gráficos.
+La otra es usar una librería `ggplot2` que permite una mayor flexibilización en la producción y estética de los gráficos.
 
 Para esto se carga la librería `ggplot2`.
 Esta tiene un comando `ggplot` en el que se define los aspectos del gráfico.
@@ -611,7 +617,7 @@ median(LL$re74)
 
 Como se observa la mediana es mucho menor que la media y, en este caso, es un mejor resumen de la "realidad" del conjunto de ingresos de los participantes en este estudio.
 
-¿Qué pasa si en mi ejemplo de la fila, la última persona que gana 5000 recibe un súper aumento y pasa a ganar 15000 soles.
+¿Qué pasa si en mi ejemplo de la fila, la última persona que gana 5000 recibe un super aumento y pasa a ganar 15000 soles.
 ¿Cambia la media?
 ¿Cambia la mediana?
 

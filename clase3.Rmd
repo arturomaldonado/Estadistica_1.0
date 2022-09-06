@@ -1,7 +1,7 @@
 ---
-title: 'Clase 3 y Ejemplo de LaLonde (1996) y ENDO 2020'
+title: 'Clase 3: Intervalos de confianza'
 author: "Arturo Maldonado"
-date: "5/4/2022"
+date: "6/9/2022"
 output:
   html_document:
     toc: true
@@ -24,48 +24,61 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
+# Encuesta Nacional Docente 2020
+
+Cada dos años, el Ministerio de Educación realiza una encuesta a una muestra de docentes de educación básica en el Perú.
+La última disponible fue hecha en 2020, en medio de la pandemia del COVID-19.
+Las bases de datos y cuestionarios de esta encuesta se encuentran disponibles [aquí](http://www.minedu.gob.pe/politicas/docencia/encuesta-nacional-a-docentes-endo.php).
+
+En esta ubicación se encuentra la base de datos, que puede ser descargada y leída en R con el siguiente código.
+
+```{r endo}
+library(rio)
+endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+```
+
 # Estimación puntual
 
 De una variable numérica, la medida de tendencia central más útil es la media.
-Por ejemplo, siguiendo con el ejemplo de @lalondeEvaluatingEconometricEvaluations1986, podemos calcular la media de ingresos antes y después de la intervención.
+La encuesta a docentes incluye la pregunta:
 
-Primero leemos la base de datos.
+6.  ¿A cuántos estudiantes le brinda acompañamiento como docente de aula en esta IE? (Ver cuestionario)
 
-```{r base}
-library(rio)
-LL <- import("bases/LL.csv")
+De esta pregunta podemos preguntarnos: ¿A cuántos alumnos en promedio acompaña el docente peruano en aula?
+Esta encuesta tiene una pregunta que nos permite calcular esta media y la desviación estándar.
+
+```{r desc alumnos}
+mean(endo2020$P1_6, na.rm = T)
+sd(endo2020$P1_6, na.rm = T)
 ```
 
-Y calculamos las medias general de ingresos en ambos años.
+Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula.
+¿Existen diferencias en el número promedio de alumnos que acompañan docentes hombres y docentes mujeres?
 
-```{r media}
-mean(LL$re74)
-mean(LL$re78)
+Calculamos primero los datos para el grupo de docentes hombres.
+
+```{r docentos hombre}
+mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+sd(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
 ```
 
-La manera de describir una variable categórica es a través de una tabla de frecuencias.
-Siguiendo con el artículo, se puede calcular la tabla de frecuencias de los individuos afroamericanos y de los latinos.
+Y luego para las mujeres.
 
-```{r tabla}
-table(LL$black)
-table(LL$hispanic)
+```{r docentes mujeres}
+mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
 ```
 
-El comando `table` nos ofrece las frecuencias absolutas.
-Para obtener las proporciones se puede usar el comando `prop.table`.
-Los porcentajes (las frecuencias relativas) se pueden obtener multiplicando las proporciones por 100.
+Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos en promedio.
 
-```{r tabla de frecuencias}
-prop.table(table(LL$black))*100
-prop.table(table(LL$hispanic))*100
-```
+Todos estos resultados son puntuales y aplican para la muestra de 28,216 profesores.
+¿Cómo se pueden extrapolar estos resultados al universo de profesores peruanos?
 
-En el caso de las tablas de frecuencias, se puede hallar la proporción (una forma de llamar a los porcentajes) por cada categoría de la variable.
-Esta muestra de individuos tiene un 80.1% de afroamericanos y un 10.5% de latinos.
+# Estimación por intervalos
 
-Tanto la media, como la proporción, son estimaciones puntuales, basados en los resultados de la muestra.
-Es decir, estas son estimaciones correspondientes a las 722 observaciones que son parte de este estudio.
-Sin embargo, esta muestra forma parte de un universo o población (el conjunto de individuos que carecen de habilidades laborales para insertarse en el mercado de trabajo), del que seguramente se quiere decir algo.
+Tanto la media muestral, como la proporción muestral, son estimaciones puntuales, basados en los resultados de la muestra.
+Es decir, estas son estimaciones correspondientes a las 28,216 observaciones que son parte de este estudio.
+Sin embargo, esta muestra forma parte de un universo o población (el conjunto de profesores del Perú), del que seguramente se quiere decir algo.
 
 El mismo razonamiento aplica a una encuesta de opinión convencional.
 La ficha técnica de una encuesta menciona, generalmente, el tamaño de muestra y la población a la que se busca representar.
@@ -115,7 +128,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
+|:---------------:|:-----------------------------------:|:----------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |
@@ -140,7 +153,7 @@ Los estadísticos de todas estas casi infinitas muestras se pueden tabular y gra
 
 Este teorema muestra que la **distribución de muestreo se aproxima a una distribución normal**, con centro en el parámetro, en la medida que el tamaño de muestra aumenta.
 
-Por lo tanto, la distribución de muestreo de N grandes seguirá las características de cualquier curva normal.
+Por lo tanto, la distribución de muestreo de N grandes para cualquier variable seguirá las características de cualquier curva normal.
 Toda curva normal es simétrica y sabemos que si desde el centro se desplaza 1 desviación estándar en ambas direcciones, entre esos límites estarán el 68.3% de todas las observaciones.
 Si se desplaza 2 desviaciones estándar en ambas direcciones, se acumularían el 95.4% de todas las observaciones.
 Con 3 desviaciones estándar hacia ambos lados, se acumularía el 99.7% de todas las observaciones.
@@ -151,15 +164,16 @@ Traduciendo a la distribución de muestreo, la idea es que si se tabulan y se ha
 Sabríamos que si desde ese centro nos desplazamos 2 desviaciones estándar en ambas direcciones, entre esos límites estarían el 95% de todas las muestra probables.
 
 Es altamente probable (95% probable) que si en una investigación se extrae una sola muestra, esta sea parte del 95% de muestras posibles a +/- 2 desviaciones estándar del parámetro.
+De la misma manera, es poco probable (5% probable) que una sola muestra no esté a +/- 2 desviaciones estándar del parámetro.
 
-# Estimación de intervalo
+# Estimación de intervalos de confianza
 
 La distribución de muestreo es teórica, muy difícilmente se puede calcular en la realidad.
 Regularmente tampoco sabemos los datos del universo.
 Lo que tenemos a mano es **1 muestra observada**.
 Es decir, en un estudio de las muuuuuchas muestras probables, se selecciona 1 muestra.
 
-En el caso de @lalondeEvaluatingEconometricEvaluations1986, por ejemplo, del universo de desempleados sin habilidades laborales, se seleccionó 1 muestra de 722 observaciones, de las muuuuchas muestras de 722 individuos de la población total.
+En el caso de la encuesta ENDO, por ejemplo, del universo de profesores peruanos, se seleccionó 1 muestra de 28,216 observaciones, de las muuuuchas muestras de 28,216 individuos de la población total.
 
 Si teóricamente sabemos que en la distribución muestral, el 95% de todas las muestras están a +/- 2 desviaciones estándar[^1] del centro, que coincide con el parámetro poblacional, es muy probable que la única muestra que se ha observado sea parte de ese conjunto.
 De hecho, se puede decir que se tiene 95% de probabilidades de que sea parte de ese grupo.
@@ -182,6 +196,96 @@ Se observa que la línea en negrita no incluye la linea vertical entrecortada qu
 
 Sin embargo, sabemos que es mucho más probable (95% de probabilidades) que si una muestra observada es parte del 95% de muestras alrededor del parámetro, este intervalo incluya al parámetro poblacional.
 A estos límites le llamamos "intervalos de confianza".
+
+En cualquier investigación solo se cuenta con una muestra observada, cuyo estadístico muestral, sea una media o un proporción, es una aproximación del parámetro poblacional.
+
+Para poder extrapolar desde la muestra hasta la población, se tiene que construir un intervalo de confianza alrededor del estadístico muestral.
+Este intervalo se construye aplicando la "distancia" de +/- 1.96 errores estándar, para tener una confianza de 95% de incluir al parámetro poblacional.
+
+Si se está extrapolando para una variable numérica, mediante la media, el error estándar (o se) es:
+
+$$
+se = 1.96 * \frac{s} {\sqrt{n}}
+$$
+
+Si se está extrapolando para una variable categórica, mediante una proporción, el error estándar (o se) es:
+
+$$
+se = 1.96 * \sqrt{\frac{(p * (1-p))} {n}}
+$$
+
+A manera de resumen, la siguiente tabla nos muestra el parámetro, el estadístico puntual y el error estándar para cada tipo de variable y cómo se forma el intervalo de confianza.
+
+![](c3.5.png)
+
+En estas fórmulas, se usa el símbolo "t" y "z" para referir a las distribuciones teóricas que se usan.
+Para fines prácticos, cuando la muestra es grande, ambas distribuciones son iguales.
+El valor de "t" o "z" depende del nivel de confianza que queremos.
+Es decir, de la probabilidad que queremos de que el intervalo incluya al parámetro.
+De esta manera:
+
+-   Z al 90% = 1.645
+
+-   Z al 95% = 1.96
+
+-   Z al 98% = 2.326
+
+-   Z al 99% = 2.576
+
+¿Qué pasa con el IC cuando se quiere mayor confianza?
+¿Se vuelve más o menos preciso?
+
+En el ejemplo del cálculo del promedio de alumnos que atiende los profesores, se puede añadir el cálculo de los intervalos de confianza en ambos casos, para hombres y mujeres.
+El comando para hacer esto es `ciMean` que es parte de la librería `lsr`.
+
+```{r IC docentes}
+library(lsr)
+ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50.7 y 53.8 alumnos, mientras que en el caso de las docentes mujeres está entre 33.3 y 34.8 alumnos en aula.
+
+¿Qué más se puede decir de esta comparación entre intervalos de confianza?
+¿Cómo graficar estos intervalos de confianza?
+
+# Ejemplo LaLonde
+
+Por ejemplo, siguiendo con el ejemplo de @lalondeEvaluatingEconometricEvaluations1986, podemos calcular la media de ingresos antes y después de la intervención.
+
+Primero leemos la base de datos.
+
+```{r base}
+library(rio)
+LL <- import("bases/LL.csv")
+```
+
+Y calculamos las medias general de ingresos en ambos años.
+
+```{r media}
+mean(LL$re74)
+mean(LL$re78)
+```
+
+La manera de describir una variable categórica es a través de una tabla de frecuencias.
+Siguiendo con el artículo, se puede calcular la tabla de frecuencias de los individuos afroamericanos y de los latinos.
+
+```{r tabla}
+table(LL$black)
+table(LL$hispanic)
+```
+
+El comando `table` nos ofrece las frecuencias absolutas.
+Para obtener las proporciones se puede usar el comando `prop.table`.
+Los porcentajes (las frecuencias relativas) se pueden obtener multiplicando las proporciones por 100.
+
+```{r tabla de frecuencias}
+prop.table(table(LL$black))*100
+prop.table(table(LL$hispanic))*100
+```
+
+En el caso de las tablas de frecuencias, se puede hallar la proporción (una forma de llamar a los porcentajes) por cada categoría de la variable.
+Esta muestra de individuos tiene un 80.1% de afroamericanos y un 10.5% de latinos.
 
 ## Ejemplo de distribución de muestreo
 
@@ -228,50 +332,6 @@ hist(x, breaks=100)
 mean(x)
 ```
 
-## Intervalos de confianza
-
-En cualquier investigación solo se cuenta con una muestra observada, cuyo estadístico muestral, sea una media o un proporción, es una aproximación del parámetro poblacional.
-
-Para poder extrapolar desde la muestra hasta la población, se tiene que construir un intervalo de confianza alrededor del estadístico muestral.
-Este intervalo se construye aplicando la "distancia" de +/- 1.96 errores estándar, para tener una confianza de 95% de incluir al parámetro poblacional.
-
-Si se está extrapolando para una variable numérica, mediante la media, el error estándar (o se) es:
-
-$$
-se = 1.96 * \frac{s} {\sqrt{n}}
-$$
-
-Si se está extrapolando para una variable categórica, mediante una proporción, el error estándar (o se) es:
-
-$$
-se = 1.96 * \sqrt{\frac{(p * (1-p))} {n}}
-$$
-
-A manera de resumen, la siguiente tabla nos muestra el parámetro, el estadístico puntual y el error estándar para cada tipo de variable y cómo se forma el intervalo de confianza.
-
-![](c3.5.png)
-
-En estas fórmulas, se usa el símbolo "t" y "z" para referir a las distribuciones teóricas que se usan.
-Para fines prácticos, cuando la muestra es grande, ambas distribuciones son iguales.
-El valor de "t" o "z" depende del nivel de confianza que queremos.
-Es decir, de la probabilidad que queremos de que el intervalo incluya al parámetro.
-De esta manera:
-
--   Z al 90% = 1.645
-
--   Z al 95% = 1.96
-
--   Z al 98% = 2.326
-
--   Z al 99% = 2.576
-
-¿Qué para con el IC cuando se quiere mayor confianza?
-¿Se vuelve más o menos preciso?
-
-------------------------------------------------------------------------
-
-# Ejemplo de LaLonde
-
 En el trabajo de LaLonde se han recogido 722 observaciones de un universo desconocido, pero que se asume grande.
 La idea es pasar de estimaciones puntuales a estimaciones por intervalos, es decir de datos que corresponden a los 722 participantes del estudio hacia el universo de personas sin habilidades laborales para insertarse en el mercado de trabajo.
 Por ejemplo, los datos de los ingresos puntuales en el año 1974 y 1978 corresponden a esos 722 individuos.
@@ -301,13 +361,12 @@ $$
 
 -   Límite Superior es: 3630.7 + 453.8 = 4084.5
 
-Por lo tanto el IC es \[3176.9, 4084.5\] y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido.
+Por lo tanto el IC es $$[3176.9, 4084.5]$$ y asumimos que con ese rango tenemos 95% de confianza que incluya al parámetro poblacional desconocido.
 Es decir, estamos infiriendo de la muestra a la población.
 
 El parámetro poblacional podría ser entendido como el promedio de ingresos en 1974 de TODOS los individuos sin habilidades laborales, si es que esa información fuera recogida de manera perfecta, es decir, en un mismo momento, en las mismas condiciones.
 
 Como eso es imposible de hacer o poco eficiente, confiamos en el IC que se genera a partir de una muestra.
-
 Para evitar el cálculo manual del IC, se puede usar el comando `ciMean` de la librería `lsr`.
 
 ```{r IC74}
@@ -342,7 +401,7 @@ $$
 
 -   Límite superior: 0.8 + 0.029 = 0.829 o 82.9%
 
-Por lo tanto el IC es \[77.1%, 82.9%\] y asumimos que en ese rango se encuentra la proporción poblacional de afroamericanos al 95% de confianza.
+Por lo tanto el IC es $$[77.1%, 82.9%]$$ y asumimos que en ese rango se encuentra la proporción poblacional de afroamericanos al 95% de confianza.
 
 En R no se cuenta con un comando particular para el cálculo directo de ICs de proporciones.
 Pero, cuando las variables categóricas son variables "dummy", es decir codificadas como 0/1, entonces la media de la variable es igual a la proporción y se puede usar el comando `CI` para el cálculo del IC.
@@ -355,55 +414,5 @@ cihisp
 ```
 
 Para los hispanos, se puede decir que la proporción poblacional está entre 8.3% y 12.8% al 95% de confianza.
-
-# Ejemplo Encuesta Nacional Docente 2020
-
-Cada dos años, el Ministerio de Educación realiza una encuesta a una muestra de docentes de educación básica en el Perú.
-La última disponible fue hecha en 2020, en medio de la pandemia del COVID-19.
-Las bases de datos y cuestionarios de esta encuesta se encuentran disponibles [aquí](http://www.minedu.gob.pe/politicas/docencia/encuesta-nacional-a-docentes-endo.php).
-
-En esta ubicación se encuentra la base de datos, que puede ser descargada y leída en R con el siguiente código.
-
-```{r endo}
-endo2020 = import("bases/ENDO_REMOTO_2020.dta")
-```
-
-¿A cuántos alumnos en promedio acompaña el docente peruano en aula?
-Esta encuesta tiene una pregunta que nos permite calcular esta media y la desviación estándar.
-
-```{r promedio alumnos}
-mean(endo2020$P1_6, na.rm = T)
-sd(endo2020$P1_6, na.rm = T)
-```
-
-Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula.
-¿Existen diferencias en el número promedio de alumnos que acompañan docentes hombres y docentes mujeres?
-
-Calculamos primero los datos para el grupo de docentes hombres.
-
-```{r docentes hombres}
-mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-sd(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-```
-
-Y luego para las mujeres.
-
-```{r docentes mujeres}
-mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
-sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
-```
-
-Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos.
-
-Se puede añadir el cálculo de los intervalos de confianza en ambos casos.
-
-```{r IC hombre mujeres}
-ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
-```
-
-Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50.7 y 53.8 alumnos, mientras que en el caso de las docentes mujeres está entre 33.3 y 34.8 alumnos en aula.
-
-¿Qué más se puede decir de esta comparación entre intervalos de confianza?
 
 # Bibliografía

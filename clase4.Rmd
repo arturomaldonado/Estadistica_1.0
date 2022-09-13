@@ -1,7 +1,7 @@
 ---
 title: "Clase 4"
 author: "Arturo Maldonado"
-date: "12/04/2022"
+date: "13/08/2022"
 output:
   html_document:
     toc: true
@@ -80,7 +80,99 @@ La regla de decisión "informal" es:
 
 -   Si los IC de ambos grupos NO se cruzan, entonces se puede afirmar, al 95% de confianza, que el parámetro de un grupo es mayor/menor al parámetro del otro grupo.
 
-## Ejemplo
+# Ejemplo ENDO 2020
+
+Siguiendo con el ejemplo de la ENDO 2020, la hipótesis que se puede evaluar es si los profesores atienden a diferente número de alumnos de acuerdo a su sexo.
+Como vimos antes, las comparaciones puntuales sugieren diferencias, donde los docentes hombres atienden a más alumnos que las docentes mujeres.
+
+La hipótesis cero sería:
+
+Ho: Promedio de alumnos que acompaña un docente hombre = Promedio de alumnos que acompaña una docente mujer.
+
+```{r endo}
+library(rio)
+endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+```
+
+```{r medias}
+mean(endo2020$P1_6, na.rm = T)
+mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+Se encuentra que los docentes hombres acompañan a 52 alumnos en promedio, en comparación con las docentes mujeres que acompañan a 34 alumnos en promedio, es decir 18 alumnos menos en promedio.
+
+Para una comparación usando los intervalos de confianza, se puede usar el comando `ciMean` de la librería `lsr`.
+
+```{r IC sexo}
+library(lsr)
+ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+-   El IC al 95% de confianza, el promedio de alumnos que acompañan los docentes hombre está en el siguiente intervalo $$50.7 - 53.8$$
+
+-   El IC al 95% de confianza el promedio de alumnos que acompañan las docentes mujeres está en el siguiente intervalo $$33.3 - 34.8$$
+
+Como ambos intervalos NO se traslapan (el mayor valor del segundo IC, 34.8 , es menor al mejor valor del primer IC, 50.7), entonces se puede afirmar que esas diferencias se pueden extrapolar la población.
+
+Si los IC se traslapan, entonces, no se puede afirmar que existan diferencias en el número de alumnos que acompañan docentes hombres o mujeres (sería un "empate técnico").
+
+## Nota
+
+La variable P1_1 (sexo del docente) está definida originalmente como una variable numérica (esto se puede comprobar con el código `str(endo2020$P1_1)`.
+Esta variable, sin embargo es de tipo factor.
+
+Se puede crear una nueva variable "sexo" con la variable transformada y etiquetada.
+
+```{r factor sexo}
+endo2020$sexo = as.factor(endo2020$P1_1)
+levels(endo2020$sexo) = c("Hombre", "Mujer")
+```
+
+# Gráfico de IC para comparar medias
+
+Se puede graficar ambos intervalos de confianza.
+Para hacer esto, se debe crear una tabla que incluya el valor de la media de cada grupo y el límite inferior y superior de los IC de ambos grupos.
+Esto se puede lograr con el comando `group.CI` que es parte de la librería `Rmisc`.
+
+Estos resultados se almacenan en un nuevo objeto de R llamado `alumnos.sexo`, que guarda el límite superior ("upper"), la media ("mean") y el límite inferior ("lower").
+Estos resultados son los mismos encontrados más arriba.
+
+```{r ci x sexo}
+library(Rmisc)
+alumnos.sexo <- group.CI(P1_6~sexo, endo2020)
+alumnos.sexo
+```
+
+Esta tabla se puede usar para crear un gráfico que compare ambos IC con la librería `ggplot2` y con la geometría `geom_errorbar`.
+Se agrega `geom_text` para incluir el "texto" con los valores promedio de ambos grupos.
+
+```{r grafico1}
+library(ggplot2)
+graf1 <- ggplot(alumnos.sexo, aes(x=sexo, y=P1_6.mean))+
+  geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
+  geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-2.5, size=4)+
+  xlab("Sexo del docente") + ylab("Alumnos atendidos")+
+  ylim(30, 60)
+graf1
+```
+
+En este gráfico queda más claro que ambos IC no se traslapan por lo que se puede decir que sí existen diferencias entre docentes hombre y mujeres en el número de alumnos que acompañan en el Perú.
+
+OJO: no se debe confundir este gráfico con un gráfico de cajas.
+
+¿Por qué?...
+Aquí viene la interpretación de cientista social.
+
+# Nota final
+
+La comparación de IC, ya sea calculando los valores para cada grupo o ya sea de manera gráfica, es una primera manera de analizar si las diferencias entre grupos se pueden extrapolar a la población.
+
+Pero esta es una manera "informal" de hacer esta comparación.
+Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias, que se verá en la siguiente sesión.
+
+# Ejemplo LaLonde
 
 Siguiendo con el ejemplo de [@lalondeEvaluatingEconometricEvaluations1986], la hipótesis que se puede evaluar es si los ingresos de aquellos que participaron del programa son mayores que los ingresos de aquellos que no participaron (y fueron parte del grupo control).
 
@@ -111,9 +203,9 @@ ciMean(LL$re78[LL$treated==0])
 ciMean(LL$re78[LL$treated==1])
 ```
 
--   El IC al 95% de confianza para aquellos que no participaron del programa es \[4544.9 - 5635.2\]
+-   El IC al 95% de confianza para aquellos que no participaron del programa es $$4544.9 - 5635.2$$
 
--   El IC al 95% de confianza para aquellos que sí participaron del programa es \[5185.7 - 6767.0\]
+-   El IC al 95% de confianza para aquellos que sí participaron del programa es $$5185.7 - 6767.0$$
 
 Como ambos intervalos se cruzan (el mayor valor del primer IC, 5635.2, está dentro del rango de valores del segundo IC), entonces no se puede decir que esas diferencias se mantengan en la población (sería como un "empate técnico").
 
@@ -125,38 +217,16 @@ ciMean(LL$re78[LL$black==0])
 ciMean(LL$re78[LL$black==1])
 ```
 
--   El IC al 95% de confianza del ingreso en 1978 para los no afroamericanos es \[5823.7 - 7672.3\]
+-   El IC al 95% de confianza del ingreso en 1978 para los no afroamericanos es $$5823.7 - 7672.3$$
 
--   El IC al 95% de confianza del ingreso en 1978 para los afroamericanos es \[4612.3 - 5652.5\]
+-   El IC al 95% de confianza del ingreso en 1978 para los afroamericanos es $$4612.3 - 5652.5$$
 
 En este caso, el mayor valor del IC al 95% de los ingresos para los afroamericanos es 5652.5, que es menor al menor valor del IC al 95% de los no afroamericanos.
 Es decir, ambos IC no se cruzan, por lo que se puede afirmar "informalmente" que estas diferencias son estadísticamente significativas (o extrapolables a la población) al 95% de confianza.
 
-También podemos usar la base de datos de la Encuesta Nacional Docente 2020.
-Lo primero es cargar la base de datos.
-
-```{r base endo}
-endo2020 = import("bases/ENDO_REMOTO_2020.dta")
-```
-
-Con esta base se pueden calcular los intervalos de confianza del número de alumnos que acompañan los docentes hombres y mujeres.
-
-```{r IC docente}
-ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
-```
-
--   El IC al 95% de confianza del número de alumnos para los docentes hombres es \[50.7 - 53.8\]
-
--   El IC al 95% de confianza del número de alumnos para las docentes mujeres es \[33.3 - 34.8\]
-
-Como ambos intervalos no se cruzan, podemos afirmar preliminarmente que los docentes hombres atienden a más alumnos en aula en promedio que las docentes mujeres en el Perú.
-
-Esta comparación entre grupos también se puede ver de manera visual, en un gráfico de los IC.
-
 # Gráfico de IC para comparar medias
 
-La forma más estándar para graficar los IC por grupo es usando el comando `plotmeans`.
+Otra forma de graficar usando los comandos de base de R es mediante la librería `gplots` y usando el comando `plotmeans`.
 
 ```{r grafico IC}
 library(gplots)
@@ -194,7 +264,7 @@ plotmeans(endo2020$P1_6~endo2020$P1_1,
 
 ## Otra forma de graficar
 
-Además del comando `plotmeans`, también se puede usar la librería `ggplot` para configurar gráficos con más opciones gráficas.
+Además del comando `plotmeans`, también se puede usar la librería `ggplot2` para configurar gráficos con más opciones gráficas.
 
 Lo primero es crear un objeto con los resultados de la comparación de medias entre grupos.
 Ahora vamos a evaluar la diferencia de medias entre latinos y no latinos.
@@ -206,7 +276,7 @@ ing.latino <- group.CI(re78~hispanic, LL)
 ing.latino
 ```
 
-Se puede usar ese nuevo objeto "ing.latino" para crear el gráfico con la librería `ggplot`, guardándolo en un objeto "graf1".
+Se puede usar ese nuevo objeto "ing.latino" para crear el gráfico con la librería `ggplot2`, guardándolo en un objeto "graf1".
 
 ```{r grafico ggplot}
 library(ggplot2)
@@ -220,33 +290,5 @@ graf1
 ```
 
 En el gráfico se observa que puntualmente los latinos tienen ingresos promedio más altos que los no latinos; sin embargo, los IC se traslapan por lo que no se puede afirmar que las medias entre grupos sean diferentes.
-
-De la misma manera, para graficas el número de alumnos que atienden los docentes hombre y mujeres, lo primero es crear una tabla con los resultados y guardarla en un objeto.
-
-```{r}
-alum <- group.CI(P1_6~P1_1, endo2020)
-alum
-```
-
-Luego, usamos este objeto para crear el gráfico con la librería `ggplot`.
-
-```{r grafico ggplot docentes}
-graf2 <- ggplot(alum, aes(x=P1_1, y=P1_6.mean))+
-  geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+
-  geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
-  geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-2.5, size=4)+
-  xlab("Género") + ylab("Alumnos")+
-  ylim(0, 60)
-graf2
-```
-
-¿Por qué la variable género presenta los valores 1.0 y 2.0, con 1.5 en medio?
-
-# Nota final
-
-La comparación de IC, ya sea calculando los valores para cada grupo o ya sea de manera gráfica, es una primera manera de analizar si las diferencias entre grupos se pueden extrapolar a la población.
-
-Pero esta es una manera "informal" de hacer esta comparación.
-Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias, que se verá en la siguiente sesión.
 
 # Bibliografía

@@ -51,7 +51,7 @@ Usamos las medidas de tendencia central para describir una variable numérica.
 Podemos usar el comando `mean` para calcular el promedio de voto provincial a Fuerza Popular en 2016 (39.5%).
 Este comando asume que se tienen datos completos.
 Si existiera un dato perdido, el comando no correría, y se tendría que añadir la especificación `, na.rm = T`.
-También se pouede calcular la mediana, con el comando `median`.
+También se puede calcular la mediana, con el comando `median`.
 
 Se observa que ambas medidas son aproximadamente iguales, indicando una distribución simétrica de datos.
 
@@ -116,6 +116,7 @@ Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
 
 ```{r}
 prop.table(table(res2016$gana))*100
+round(prop.table(table(res2016$gana))*100, 1)
 ```
 
 # Visualización
@@ -143,6 +144,7 @@ ggplot(res2016, aes(x=fp))+
   geom_histogram(binwidth = 5)+
   xlab("% Voto FP 2011")+
   ylab("Frecuencia")+
+  ylim(0, 30)
   theme_bw()
 ```
 

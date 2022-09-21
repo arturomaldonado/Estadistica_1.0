@@ -145,25 +145,39 @@ alumnos.sexo <- group.CI(P1_6~sexo, endo2020)
 alumnos.sexo
 ```
 
+```{r}
+library(Rmisc)
+alumnos.tipo <- group.CI(P1_6~P1_7, endo2020)
+alumnos.tipo
+```
+
 Esta tabla se puede usar para crear un gráfico que compare ambos IC con la librería `ggplot2` y con la geometría `geom_errorbar`.
 Se agrega `geom_text` para incluir el "texto" con los valores promedio de ambos grupos.
 
 ```{r grafico1}
 library(ggplot2)
 graf1 <- ggplot(alumnos.sexo, aes(x=sexo, y=P1_6.mean))+
+  geom_bar(stat="identity")+
   geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
   geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-2.5, size=4)+
   xlab("Sexo del docente") + ylab("Alumnos atendidos")+
-  ylim(30, 60)
+  ylim(0, 60)
 graf1
 ```
 
 En este gráfico queda más claro que ambos IC no se traslapan por lo que se puede decir que sí existen diferencias entre docentes hombre y mujeres en el número de alumnos que acompañan en el Perú.
 
-OJO: no se debe confundir este gráfico con un gráfico de cajas.
+Este tipo de gráfico es bastante usual en los reportes estadísticos.
+Por ejemplo, se pueden ver este tipo de gráficos en los reportes de [El Pulso de la Democracia](https://www.vanderbilt.edu/lapop/ab2021/2021_LAPOP_AmericasBarometer_2021_Pulse_of_Democracy_SPA.pdf) del proyecto LAPOP.
+En el último reporte para Perú se presenta el siguiente gráfico que muestra los niveles de satisfacción con la democracia entre grupos de satisfacción con los servicios públicos.
+Estos gráficos son construidos de la misma manera que se ha construido el gráfico de arriba.
+
+![](graf6.6.png){width="635"}
 
 ¿Por qué?...
-Aquí viene la interpretación de cientista social.
+Aquí viene la interpretación del politólogo .
+
+OJO: no se debe confundir este gráfico con un gráfico de cajas.
 
 # Nota final
 

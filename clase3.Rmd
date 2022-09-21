@@ -35,6 +35,7 @@ En esta ubicación se encuentra la base de datos, que puede ser descargada y le�
 ```{r endo}
 library(rio)
 endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+#CAMBIAR A PROPIO DIRECTORIO DE TRABAJO
 ```
 
 # Estimación puntual
@@ -128,7 +129,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
+|:----------------:|:------------------------------------:|:---------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |
@@ -238,6 +239,13 @@ De esta manera:
 En el ejemplo del cálculo del promedio de alumnos que atiende los profesores, se puede añadir el cálculo de los intervalos de confianza en ambos casos, para hombres y mujeres.
 El comando para hacer esto es `ciMean` que es parte de la librería `lsr`.
 
+```{r}
+library(lsr)
+ciMean(endo2020$P1_6, na.rm = T)
+```
+
+Si se calculan los intervalos de confianza por grupos, estos se pueden comparar.
+
 ```{r IC docentes}
 library(lsr)
 ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
@@ -248,6 +256,11 @@ Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50
 
 ¿Qué más se puede decir de esta comparación entre intervalos de confianza?
 ¿Cómo graficar estos intervalos de confianza?
+
+```{r}
+prop.table(table(endo2020$P1_7))*100
+
+```
 
 # Ejemplo LaLonde
 

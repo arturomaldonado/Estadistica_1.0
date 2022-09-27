@@ -1,7 +1,7 @@
 ---
-title: "Clase 5"
+title: "Clase 5-7"
 author: "Arturo Maldonado"
-date: "20/09/2022"
+date: "27/09/2022"
 output:
   html_document:
     toc: true
@@ -32,7 +32,7 @@ En esta sección se verá cómo pasar de la evaluación "informal" a la "formal"
 
 # Prueba t de diferencia de medias
 
-Esta prueba compara la media de una variable de numérica para dos grupos o categorías de una variable nominal u ordinal.
+Esta prueba compara la media de una variable numérica entre dos grupos o categorías de una variable nominal u ordinal.
 Los grupos que forman la variable nominal/ordinal tienen que ser independientes.
 Es decir, cada observación debe pertenecer a un grupo o al otro, pero no a ambos.
 
@@ -125,7 +125,186 @@ La conclusión NO es que se afirma la H0.
 
 -   Se afirma que sí existe una diferencia de medias entre ambos grupos con un 95% de confianza.
 
-# Ejemplo 1
+# Ejemplo ENDO 2020
+
+```{r base endo}
+library(rio)
+endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+```
+
+La diferencia de medias entre el número de alumnos con los que trabaja un profesor hombre y una profesora mujer es:
+
+```{r dif alumnos por sexo}
+mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T) - mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+```
+
+¿Se puede afirmar que existe esta diferencia en la población?
+
+Para esto, lo primero es evaluar la hipótesis de la igualdad de varianzas mediante el test de Levene.
+Para esto usamos el comando `LeveneTest,` que es parte de la librería `DescTools`.
+
+```{r Levene}
+library(DescTools)
+LeveneTest(endo2020$P1_6, endo2020$P1_1)
+```
+
+Como el p-value es \< 0.05, se rechazar la igualdad de varianzas, por lo que se tiene que asumir que son diferentes.
+Para evaluar si existen o no diferencias poblacionales, usamos el comando `t.test`.
+Este comando requiere de la especificación `var.equal=F`, de acuerdo a los resultados de la prueba de Levene.
+
+```{r prueba t}
+t.test(P1_6 ~ P1_1, data = endo2020, var.equal=F)
+```
+
+Como el p-value \< 0.05, entonces se rechaza la H0 y se puede afirmar que esa diferencia existe en la población a tal nivel de significancia.
+
+# Evaluación de diferencia de proporciones
+
+La prueba adecuada para evaluar una prueba de diferencia de proporciones es mediante el comando `prop.test`.
+Este comando, como se puede ver en el "help", pide como argumentos los datos de "éxitos" (la proporción que se quiere evaluar) y los datos de "intentos" (el n total).
+Es decir, a diferencia del comando `t.test` que pido como argumentos las variables, aquí se tiene primero que encontrar los "éxitos" e "intentos".
+Esto se puede hacer mediante el comando `table`, pero en lugqr de describir una variable, se puede hacer la tabla cruzada.
+
+```{r tabla nombrados x sexo}
+table(endo2020$P1_7, endo2020$P1_1)
+```
+
+Con esta tabla se encuentra que entre los hombres (código 1 porque no se ha convertido en factor) se tiene 3303 éxitos y para las mujeres un total de 7140 éxitos.
+Lo que no se encuentra directamente es el total, que se tiene que calcular sobre cada grupo, sobre cada columna.
+Con el comando `addmargins` se puede agregar los totales por filas y columnas.
+
+```{r nombrado x sexo total}
+addmargins(table(endo2020$P1_7, endo2020$P1_1))
+```
+
+De esta manera se encuentra que entre los hombres se tiene 3303 éxitos de un total de 6171 intentos (53.5.4%).
+Entre los mujeres se tiene 7140 intentos de un total de 12779 intentos (55.9%).
+
+Estos datos son los que requiere el comando `prop.table` para evaluar la diferencia de proporciones (9.7-6.4= 3.3%).
+
+```{r prop test 0}
+prop.test(x=c(3303, 7140), n=c(6170, 12779), conf.level=0.95)
+```
+
+Como se observa de los resultados, el estadístico de la prueba "X-squared" se llama chi-cuadrado y no es el mismo que el estadístico t.
+El p-value asociado es 0.0025 \< 0.05, por lo que lleva a la conclusión de rechazar la H0 de igualdad de proporciones y afirmar que entre ambos grupos existe una diferencia en la proporción de "nombrados" entre hombres y mujeres en la población.
+
+Se puede hacer lo mismo para evaluar la diferencia en la proporción de profesores que han recibido apoyo psicológico (P1_13) entre hombres y mujeres.
+En primer lugar, se calcula la tabla cruzada.
+
+```{r apoyo psi x sexo}
+addmargins(table(endo2020$P1_13, endo2020$P1_1))
+```
+
+Luego se calcula la diferencia de proporciones.
+
+```{r prop test}
+prop.test(x=c(2777, 6699), n=c(6163, 12767), conf.level=0.95)
+```
+
+Se encuentra que el 45% de profesores hombres versus el 52.7% de profesoras mujeres han recibido apoyo psicológico.
+Se encuentra que el p-value es \< 0.05 por lo que se rechaza la igualdad de proporciones y se afirma que son diferentes en la población.
+
+Este resultado también se puede calcular de frente anidando la tabla en el comando.
+Este procedimiento no da el mismo valor de p-value, pero no nos ofrece las proporciones correctas.
+
+```{r anidado}
+prop.test(table(endo2020$P1_13, endo2020$P1_1))
+```
+
+Es importante notar cuando se concluye que *no se puede decir* o *no se puede afirmar.* Cuando se obtiene un p-value \<= 0.05, se rechaza la H0 y se afirma la HA, que la diferencia existe en la población con un 95% de confianza.
+Pero, cuando se obtiene un p-value \> 0.05, no se afirma la HA, lo que se concluye es que no se puede rechazar la H0.
+Esto quiere decir que no afirmamos que las medias poblacionales sean iguales, sino que, con los datos que tenemos, no podemos decir que son diferentes.
+
+Para aclarar esto, vale la pena hacer una analogía jurídica.
+
+# Analogía del juicio
+
+Ya sea mediante nuestra experiencia viendo JusticiaTV o viendo series sobre abogados, la imagen que tenemos de un juicio es como esta imagen.
+
+![](5.juicio.jpeg){width="472"}
+
+En esta imagen hay varios actores:
+
+-   El acusado: entre rejas y con el traje naranja.
+
+-   El policía que cuida al acusado, pero que también simboliza a la institución que se encarga del recojo de pruebas.
+
+-   El fiscal o parte acusadora: que se encuentra mostrando una imagen de un cuchillo, posiblemente tomada por un policía.
+
+-   Los abogados defensores: sentados.
+
+-   El jurado: que evalúan las pruebas y tienen la facultad de emitir un veredicto.
+
+-   El juez: que anuncia el veredicto y le da carácter legal.
+
+La lógica que sigue este tipo de procedimiento es similar a la que sigue una prueba de inferencia estadística.
+
+-   La H0 es la hipótesis de no efecto.
+    En el caso del juicio es el supuesto de entrada de que el acusado es inocente.
+    Se llama "presunción de inocencia".
+    La hipótesis alternativa es que es culpable, pero para llegar a ella se requiere negar la H0 mediante datos o "evidencia".
+
+-   La policía es la que recoge la evidencia para que la fiscalía pueda acusar.
+    Es decir, la policía armaría la "base de datos" de evidencia.
+
+-   La labor de la fiscalía (la parte que acusa) es armar el caso.
+    Es decir, presentar la evidencia recogida por la policía de tal manera que el jurado se convenza del caso.
+    La fiscalía sería como la prueba de inferencia estadística.
+
+-   Mientras más y mejor evidencia presente la fiscalía, más elementos para que el jurado rechace la H0 de "presunción de inocencia".
+
+-   Si la evidencia no es sólida, el jurado tendrá dudas y puede no rechazar la Ho de presunción de inocencia.
+
+-   En el juicio no hay una medida matemática que resuma la evidencia a favor o en contra (como el p-value) ni un valor crítico para tomar una decisión.
+    Se asume que los jurados sabrán establecer ese límite en el cual la evidencia es lo suficientemente sólida para rechazar la H0.
+
+-   Si la evidencia cruza ese umbral de los jurados, se rechazará la H0.
+    El jurado recomendará su decisión al juez.
+    El juez anunciará que el acusado es "culpable".
+    Es decir, se afirma la HA.
+
+-   Si la evidencia no cruza ese umbral de los jurados, no se rechaza la H0.
+    El jurado trasladará su decisión al juez y el juez anunciará que el acusado "no es culpable".
+    Es decir, no se puede rechazar la H0.
+
+-   Es importante notar la decisión cuando la evidencia no es sólida.
+    No es lo mismo decir "no es culpable" a decir "es inocente".
+    Decir que el acusado no es culpable involucra una situación de incertidumbre.
+    Por ejemplo, si la policía no hizo bien su trabajo y no recogió la evidencia de manera adecuada, es posible que haya dudas con respecto al acusado.
+    Decir que el acusado es inocente, por el contrario, implica una certeza, que la evidencia es contundente en apuntar en esa dirección.
+
+-   A pesar que este método es científico puede llevar a errores.
+
+-   Falso positivo (o error de tipo I): cuando declaras culpable a un inocente.
+
+-   Falso negativo (o error de tipo II): cuando declaras no culpable a un culpable.
+
+![](error%20tipo%201%20y%202.jpg){width="466"}
+
+-   Para evitar falsos positivos se propone pedir evidencia cada vez más sólida para condenar a alguien. Pero, si se exige evidencia cada vez más solida, aumenta la probabilidad de falsos negativos. Ambos tipos de errores se contrabalancean mutuamente.
+
+![](chef.png){width="439"}
+
+¿Qué tipo de error es más pernicioso?
+Es un tema que los filósofos tratan de responder.
+
+"There are two ways to be fooled. One is to believe what isn´t true. The other is to refuse to believe what is true" (Soren Kierkegaard).
+
+# Nota final
+
+Este procedimiento se podría decir que es parte del método científico, en el sentido popperiano de "falseabilidad".
+Desde esta perspectiva, una investigación científica parte de una hipótesis de no efecto que busca negar con evidencia empírica para llegar a la conclusión que sí existen ese efecto.
+Las conclusiones a las que se llegan siempre tienen un componente de incertidumbre.
+
+Este método es contraintuitivo.
+El ser humano, por el contrario, generalmente busca evidencia para afirmar una hipótesis de que existe un efecto o relación.
+En cierto sentido, se busca reafirmar las prenociones.
+
+Por ejemplo, no es lo mismo partir de la hipótesis que la "revolución capitalista" en el Perú trajo bienestar y desarrollo y buscar evidencia que apoya esta hipótesis, que partir de la hipótesis que la "revolución capitalista" NO trajo bienestar y desarrollo y buscar evidencia suficiente para negar esa hipótesis y afirmar que sí lo hizo.
+Para una muestra de esta diferencia ver el [comentario de Cotler al libro de Althaus](https://www.youtube.com/watch?v=935LKOuri54&t=43s).
+
+# Ejemplo adicional
 
 En la sección anterior se evaluó de manera "informal" o "visual" la hipótesis de Lalonde acerca de la diferencia en ingresos entre aquellos que son parte del programa de capacitación y aquellos que no son parte del programa, y entre aquellos que son afro y los que no.
 Ahora vamos a evaluar esta hipótesis formalmente mediante la prueba t.
@@ -186,7 +365,7 @@ t.test(re78 ~ black, data = LL, var.equal=T)
 
 En este caso, el p-value = 0.0054 \< 0.05, por lo que se rechaza la H0 y se concluye que la diferencia de 1,600 dólares entre afroamericanos y no afroamericanos sí existe en la población.
 
-# Evaluación de diferencia de proporciones
+# Ejemplo de diferencia de proporciones
 
 En la sección anterior se hizo referencia al texto de Galarza, Yamada y Kogan [@galarzaDetectandoDiscriminacionSexual2012].
 Para este ejemplo vamos a usar el paper original [@bertrandAreEmilyGreg2004] que buscan evaluar si hay una discriminación en el mercado laboral entre afroamericanos y angloamericanos.
@@ -374,7 +553,7 @@ Entre los anglos se tiene 235 intentos de un total de 2435 intentos (9.7%).
 
 Estos datos son los que requiere el comando `prop.table` para evaluar la diferencia de proporciones (9.7-6.4= 3.3%).
 
-```{r prop test 1}
+```{r prop test 2}
 prop.test(x=c(157, 235), n=c(2278+157, 2200+235), conf.level=0.95)
 ```
 
@@ -382,7 +561,7 @@ Otra forma de hacer la evaluación es incluir la tabla dentro del comando.
 De esta forma se calcula el mismo p-value y el mismo intervalo de confianza de la diferencia de proporciones.
 Sin embargo, de esta manera no se obtiene las proporciones adecuadas.
 
-```{r prop test 2}
+```{r prop test 3}
 prop.test(table(cv$race, cv$call))
 ```
 
@@ -398,7 +577,7 @@ addmargins(table(cv$call, cv$sex))
 
 Luego se calcula la diferencia de proporciones.
 
-```{r prop test 3}
+```{r prop test 4}
 prop.test(x=c(309, 83), n=c(3437+309, 1041+83), conf.level=0.95)
 ```
 
@@ -414,91 +593,3 @@ En este texto es importante notar las itálicas de *no se puede decir* o *no se 
 Cuando se obtiene un p-value \<= 0.05, se rechaza la H0 y se afirma la HA, que la diferencia existe en la población con un 95% de confianza.
 Pero, cuando se obtiene un p-value \> 0.05, no se afirma la HA, lo que se concluye es que no se puede rechazar la H0.
 Esto quiere decir que no afirmamos que las medias poblacionales sean iguales, sino que, con los datos que tenemos, no podemos decir que son diferentes.
-
-Para aclarar esto, vale la pena hacer una analogía jurídica.
-
-# Analogía del juicio
-
-Ya sea mediante nuestra experiencia viendo JusticiaTV o viendo series sobre abogados, la imagen que tenemos de un juicio es como esta imagen.
-
-![](5.juicio.jpeg){width="472"}
-
-En esta imagen hay varios actores:
-
--   El acusado: entre rejas y con el traje naranja.
-
--   El policía que cuida al acusado, pero que también simboliza a la institución que se encarga del recojo de pruebas.
-
--   El fiscal o parte acusadora: que se encuentra mostrando una imagen de un cuchillo, posiblemente tomada por un policía.
-
--   Los abogados defensores: sentados.
-
--   El jurado: que evalúan las pruebas y tienen la facultad de emitir un veredicto.
-
--   El juez: que anuncia el veredicto y le da carácter legal.
-
-La lógica que sigue este tipo de procedimiento es similar a la que sigue una prueba de inferencia estadística.
-
--   La H0 es la hipótesis de no efecto.
-    En el caso del juicio es el supuesto de entrada de que el acusado es inocente.
-    Se llama "presunción de inocencia".
-    La hipótesis alternativa es que es culpable, pero para llegar a ella se requiere negar la H0 mediante datos o "evidencia".
-
--   La policía es la que recoge la evidencia para que la fiscalía pueda acusar.
-    Es decir, la policía armaría la "base de datos" de evidencia.
-
--   La labor de la fiscalía (la parte que acusa) es armar el caso.
-    Es decir, presentar la evidencia recogida por la policía de tal manera que el jurado se convenza del caso.
-    La fiscalía sería como la prueba de inferencia estadística.
-
--   Mientras más y mejor evidencia presente la fiscalía, más elementos para que el jurado rechace la H0 de "presunción de inocencia".
-
--   Si la evidencia no es sólida, el jurado tendrá dudas y puede no rechazar la Ho de presunción de inocencia.
-
--   En el juicio no hay una medida matemática que resuma la evidencia a favor o en contra (como el p-value) ni un valor crítico para tomar una decisión.
-    Se asume que los jurados sabrán establecer ese límite en el cual la evidencia es lo suficientemente sólida para rechazar la H0.
-
--   Si la evidencia cruza ese umbral de los jurados, se rechazará la H0.
-    El jurado recomendará su decisión al juez.
-    El juez anunciará que el acusado es "culpable".
-    Es decir, se afirma la HA.
-
--   Si la evidencia no cruza ese umbral de los jurados, no se rechaza la H0.
-    El jurado trasladará su decisión al juez y el juez anunciará que el acusado "no es culpable".
-    Es decir, no se puede rechazar la H0.
-
--   Es importante notar la decisión cuando la evidencia no es sólida.
-    No es lo mismo decir "no es culpable" a decir "es inocente".
-    Decir que el acusado no es culpable involucra una situación de incertidumbre.
-    Por ejemplo, si la policía no hizo bien su trabajo y no recogió la evidencia de manera adecuada, es posible que haya dudas con respecto al acusado.
-    Decir que el acusado es inocente, por el contrario, implica una certeza, que la evidencia es contundente en apuntar en esa dirección.
-
--   A pesar que este método es científico puede llevar a errores.
-
--   Falso positivo (o error de tipo I): cuando declaras culpable a un inocente.
-
--   Falso negativo (o error de tipo II): cuando declaras no culpable a un culpable.
-
-![](error%20tipo%201%20y%202.jpg){width="466"}
-
--   Para evitar falsos positivos se propone pedir evidencia cada vez más sólida para condenar a alguien. Pero, si se exige evidencia cada vez más solida, aumenta la probabilidad de falsos negativos. Ambos tipos de errores se contrabalancean mutuamente.
-
-![](chef.png){width="439"}
-
-¿Qué tipo de error es más pernicioso?
-Es un tema que los filósofos tratan de responder.
-
-"There are two ways to be fooled. One is to believe what isn´t true. The other is to refuse to believe what is true" (Soren Kierkegaard).
-
-# Nota final
-
-Este procedimiento se podría decir que es parte del método científico, en el sentido popperiano de "falseabilidad".
-Desde esta perspectiva, una investigación científica parte de una hipótesis de no efecto que busca negar con evidencia empírica para llegar a la conclusión que sí existen ese efecto.
-Las conclusiones a las que se llegan siempre tienen un componente de incertidumbre.
-
-Este método es contraintuitivo.
-El ser humano, por el contrario, generalmente busca evidencia para afirmar una hipótesis de que existe un efecto o relación.
-En cierto sentido, se busca reafirmar las prenociones.
-
-Por ejemplo, no es lo mismo partir de la hipótesis que la "revolución capitalista" en el Perú trajo bienestar y desarrollo y buscar evidencia que apoya esta hipótesis, que partir de la hipótesis que la "revolución capitalista" NO trajo bienestar y desarrollo y buscar evidencia suficiente para negar esa hipótesis y afirmar que sí lo hizo.
-Para una muestra de esta diferencia ver el [comentario de Cotler al libro de Althaus](https://www.youtube.com/watch?v=935LKOuri54&t=43s).

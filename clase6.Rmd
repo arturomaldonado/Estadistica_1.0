@@ -1,7 +1,7 @@
 ---
-title: "Clase 6"
+title: "Clase 6-7"
 author: "Arturo Maldonado"
-date: "3/5/2022"
+date: "27/09/2022"
 output:
   html_document:
     toc: true
@@ -41,7 +41,7 @@ Para poder hacer estas comparaciones entre varios grupos vamos a usar el test de
 
 # Test de ANOVA
 
-El test de ANOVA sirve para comparar la media (o la proporción de una variable dummy) de una variable dependiente numérica entre grupos de una variable de tipo factor (con más de 2 grupos.
+El test de ANOVA sirve para comparar la media de una variable dependiente numérica entre grupos de una variable de tipo factor (con más de 2 grupos).
 
 Este test parte teóricamente de la distribución general de la variable numérica, la que tiene una media poblacional $\mu$, y compara esta media poblacional general, con las medias poblacionales de la variable numérica por cada grupo de la variable de factor con n grupos, $\mu_1...\mu_2...\mu_3...\mu_n$.
 
@@ -104,7 +104,74 @@ Para saber qué media(s) es(son) diferente(s) se tiene que hacer un test posteri
 Este test sirve para analizar qué diferencias entre grupos son significativas.
 Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pareja calcula una prueba t de diferencia de medias y la reporta.
 
-# Para una variable numérica
+# Ejemplo para una variable numérica entre 2+ grupos
+
+```{r base endo}
+library(rio)
+endo2020 = import("bases/ENDO_REMOTO_2020.dta")
+```
+
+Si queremos evaluar si existen diferencias entre el número promedio de alumnos con los que trabaja un profesor entre tipos de profesores (nombrados, contratados con concurso o nombrados con otra modalidad), se puede usar ANOVA.
+
+```{r}
+mean(endo2020$P1_6[endo2020$P1_7==1], na.rm = T)
+mean(endo2020$P1_6[endo2020$P1_7==2], na.rm = T)
+mean(endo2020$P1_6[endo2020$P1_7==3], na.rm = T)
+```
+
+Para tener una descripción completa entre los 3 grupos, se puede usar:
+
+```{r}
+library(psych)
+tabla1 <- describeBy(endo2020$P1_6, group=endo2020$P1_7)
+tabla1
+```
+
+O también se puede hacer una inspección visual.
+
+```{r}
+library(Rmisc)
+alumnos.tipo <- group.CI(P1_6~P1_7, endo2020)
+alumnos.tipo
+```
+
+¿Qué conclusiones iniciales se pueden sacar del gráfico?
+
+```{r}
+library(ggplot2)
+graf1 <- ggplot(alumnos.tipo, aes(x=P1_7, y=P1_6.mean))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
+  geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-2.5, size=4)+
+  xlab("Tipo del contrato") + ylab("Alumnos atendidos")+
+  ylim(0, 80)
+graf1
+```
+
+Esta observación visual se tiene que confirmar con la prueba de ANOVA.
+
+```{r anova alumnos x tipo}
+anova1 <- aov(endo2020$P1_6~as.factor(endo2020$P1_7))
+summary(anova1)
+```
+
+Con la prueba de ANOVA y el p-value correspondiente se puede rechazar la H0.
+Para confirmar las diferencias, se evalúa la prueba de Tukey para analizar cada emparejamiento.
+
+```{r Tukey alumnos x tipo}
+TukeyHSD(anova1)
+```
+
+Se observa que los resultados comprueban las observaciones del gráfico.
+Estos emparejamientos se pueden graficar.
+
+```{r}
+plot(TukeyHSD(anova1))
+```
+
+Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.
+
+# Otro ejemplo
 
 En esta sección seguiremos usando el paper de [@lalondeEvaluatingEconometricEvaluations1986] para evaluar los ingresos.
 En la sección anterior se encontró que había una diferencia estadísticamente significativa entre los afros y no afros en sus ingresos en 1978.

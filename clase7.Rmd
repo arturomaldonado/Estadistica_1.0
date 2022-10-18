@@ -1,7 +1,7 @@
 ---
 title: "Clase 7"
 author: "Arturo Maldonado"
-date: "10/05/2022"
+date: "18/10/2022"
 output:
   html_document:
     toc: true
@@ -57,7 +57,7 @@ Esta evaluación se realiza mediante la prueba de chi-cuadrado.
 
     -   Variable independiente(nivel educativo) -\> Variable dependiente (satisfacción con la democracia)
 
-Como dijimos en la clase 5 y 6, la comparación de proporciones son casos especiales de lo que veremos ahora.
+Como dijimos en clases anteriores, la comparación de proporciones son casos especiales de lo que veremos ahora.
 
 # Tablas de contingencia
 
@@ -81,28 +81,22 @@ Este reporte presenta los principales hallazgos del proyecto del Barómetro de l
 En este documento se reportan los resultados de la última ronda disponible de 2018/19.
 
 Pueden descargar los datos de manera libre [aquí](%5Bhttp://datasets.americasbarometer.org/database/login.php).](<http://datasets.americasbarometer.org/database/login.php>).) En este enlace, se pueden registrar o entrar como "Free User".
-En el buscador, se puede ingresar el texto "2018".
-Ahí se tendrá acceso a la base de datos completa "2018 LAPOP AmericasBarometer Merge_v1.0.dta" en versión para STATA.
-Se descarga la base de datos en formato zip, la que se descomprime en formato .dta.
+En el buscador, se puede ingresar el texto "2021".
+Ahí se tendrá acceso a las bases de datos completas de cada país de la ronda 2021en versión para STATA.
+Se descarga la base de datos en formato .dta.
 Una vez descargada y guardada en el directorio de trabajo, se tiene que leer la base de datos como un objeto dataframe en R.
-En este documento se carga una base de datos recortada.
-Esta base de datos se encuentra alojada en el repositorio "materials_edu" de la cuenta de LAPOP en GitHub.
-Mediante la librería `rio` y el comando `import` se puede importar esta base de datos desde este repositorio.
-Además, se seleccionan los datos de países con códigos menores o iguales a 35, es decir, se elimina las observaciones de Estados Unidos y Canadá.
 El cuestionario de esta base de datos puede ser visto en este [enlace](https://www.vanderbilt.edu/lapop/ab2018/AB2018-v12.0-Spa-190131_W.pdf).
 
 ```{r base}
 library(rio)
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
-lapop18 <- subset(lapop18, pais<=35)
+peru <- import("PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
 ```
 
 Desde la pag.
 20 del reporte se hace una evaluación de la democracia en la práctica.
 En particular, se trabaja con la variable PN4.
-En general, ¿usted diría que está muy satisfecho(a), satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que la democracia funciona en $$país$$?
-
-En el reporte se indica que los datos se recodifican en una variable dicotómica.
+En general, ¿usted diría que está muy satisfecho(a), satisfecho(a), insatisfecho(a) o muy insatisfecho(a) con la forma en que la democracia funciona en Perú.
+El reporte se indica que los datos se recodifican en una variable dicotómica.
 En este documento vamos a trabajar con la variable original.
 Esta variable es una variable categórica, ordinal o de factor.
 En el Gráfico 1.14 del reporte se presenta una evaluación de la satisfacción con la democracia por variables demográficas y socioeconómica, como nivel educativo, quintiles de riqueza, lugar de residencia, género o grupos de edad.
@@ -110,26 +104,32 @@ Es decir, se usa la satisfacción con la democracia como variable dependiente y 
 
 Por ejemplo, se reporta que entre los hombres, el 42.3% están satisfechos con la democracia, mientras que entre las mujeres, este porcentaje disminuye a 36.9%.
 Aquí vamos a analizar estas mismas variables, pero usando la variable PN4 en su forma original.
-Antes de proceder, tenemos que recodificar las variables en forma de factor y etiquetar.
+
+Antes de proceder, tenemos que recodificar las variables, ponerlas en forma de factor y etiquetar.
+
+```{r reco0}
+peru$genero = car::recode(peru$q1tb, "1=1; 2:3=2")
+table(peru$genero)
+```
 
 ```{r reco1}
-lapop18$genero <- as.factor(lapop18$q1)
-levels(lapop18$genero) <- c("Hombre", "Mujer")
-table(lapop18$genero)
+peru$genero = as.factor(peru$genero)
+levels(peru$genero) = c("Hombre", "Mujer/Otro")
+table(peru$genero)
 ```
 
 Lo mismo para la variable PN4 que se transforma en la variable "satis".
 
 ```{r reco2}
-lapop18$satis <- as.factor(lapop18$pn4)
-levels(lapop18$satis) <- c("Muy satisfecho", "Satisfecho", "Insatisfecho", "Muy insatisfecho")
-table(lapop18$satis)
+peru$satis = as.factor(peru$pn4)
+levels(peru$satis) = c("Muy satisfecho", "Satisfecho", "Insatisfecho", "Muy insatisfecho")
+table(peru$satis)
 ```
 
 Para calcular la tabla de satisfacción con la democracia, independiente del género de la persona, se puede calcular los porcentajes de esta variable.
 
 ```{r satisporc}
-prop.table(table(lapop18$satis))*100
+prop.table(table(peru$satis))*100
 ```
 
 Lo primero es calcular la tabla de contingencia entre satisfacción y género.
@@ -138,7 +138,7 @@ La variable dependiente "satisfacción con la democracia" se ubica en las filas 
 Se verifica que las 1,727 observaciones que están muy satisfechas con la democracia, se dividen en 919 hombres, 803 mujeres y 5 NAs.
 
 ```{r tabla}
-table(lapop18$satis, lapop18$genero)
+table(peru$satis, peru$genero)
 ```
 
 Para calcular las frecuencias relativas, se tiene que anidar `table` dentro del comando `prop.table`.
@@ -147,13 +147,13 @@ Se agrega la especificación `(…,2)` para indicar que se quiere las proporcion
 Se anida todo dentro del comando `addmargins` para verificar la suma de proporciones sobre las columnas y no se incluye los valores perdidos.
 
 ```{r tabla1}
-prop.table(table(lapop18$satis, lapop18$genero))*100
-prop.table(table(lapop18$satis, lapop18$genero), 2)*100
+prop.table(table(peru$satis, peru$genero))*100
+prop.table(table(peru$satis, peru$genero), 2)*100
 ```
 
 En la segunda tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
-Por ejemplo, el 6.8% de los hombres se encuentras muy satisfechos con la democracia, un porcentaje muy similar el 6% de las mujeres.
-El 35.4% de los hombres se encuentran satisfechos con la democracia, 5 puntos porcentuales por encima que las mujeres.
+Por ejemplo, el 2.4% de los hombres se encuentras muy satisfechos con la democracia, un porcentaje algo similar el 1.7% de las mujeres.
+El 20.4% de los hombres se encuentran satisfechos con la democracia, 4 puntos porcentuales por encima que las mujeres.
 
 De esta manera, se pueden comparar los porcentajes por cada categoría de la variable dependiente entre grupos de la variable independiente y, además, se puede comparar con los porcentajes no condicionales de la variable satisfacción con la democracia.
 
@@ -166,10 +166,10 @@ Ser hombre o mujer no cambia nada las opiniones con respecto a la satisfacción 
 
 | Satisfacción con la democracia | Hombre | Mujer |
 |--------------------------------|:------:|:-----:|
-| Muy satisfecho                 |   6%   |  6%   |
-| Satisfecho                     |  30%   |  30%  |
-| Insatisfecho                   |  45%   |  45%  |
-| Muy insatisfecho               |  19%   |  19%  |
+| Muy satisfecho                 |  2.4%  | 1.7%  |
+| Satisfecho                     | 20.4%  | 16.5% |
+| Insatisfecho                   |  59%   |  64%  |
+| Muy insatisfecho               |  9.8%  | 8.3%  |
 
 VI: fuma ---------\> VD: cáncer de pulmón
 
@@ -192,75 +192,45 @@ En nuestro ejemplo, podemos calcular las frecuencias observadas con el comando `
 Se trata del número de observaciones en cada una de las 8 celdas del cruce de ambas variables.
 
 ```{r tabla2}
-addmargins(table(lapop18$satis, lapop18$genero), 1)
+addmargins(table(peru$satis, peru$genero), 1)
 ```
 
-Para el cálculo de las frecuencias observadas requerimos la distribución de la variables "satisfacción con la democracia.
+Para el cálculo de las frecuencias observadas requerimos la distribución de la variables "satisfacción con la democracia".
 
 ```{r fo satis}
-addmargins(table(lapop18$satis))
-prop.table(table(lapop18$satis))*100
+addmargins(table(peru$satis))
+prop.table(table(peru$satis))*100
 ```
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| Col1       | Hombres                                                       | Mujeres                                            |
-+============+===============================================================+====================================================+
-| MS         | 6.4% de hombres-\> #observaciones si no hay relación          | 6.4% de mujeres                                    |
-|            |                                                               |                                                    |
-|            | cuánto es el 6.4% de 13608= 871.9 #obs si NO hubiera relación | 6.4% de 13,330 = 852.1 #obs si NO hubiera relación |
-|            |                                                               |                                                    |
-|            | 919 lo realmente observado                                    | (803-852,1)\^2                                     |
-|            |                                                               |                                                    |
-|            | (919-871.9)\^2                                                |                                                    |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| S          | 33.1%                                                         | 33.1%                                              |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| I          | 46.2%                                                         | 46.2%                                              |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-| MI         | 14.3%                                                         | 14.3%                                              |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
-|            | 13608                                                         |                                                    |
-+------------+---------------------------------------------------------------+----------------------------------------------------+
++-------------+-------------------------------------------------------------+-------------------------------------------------------------+
+| Col1        | Hombres                                                     | Mujeres                                                     |
++=============+=============================================================+=============================================================+
+| MS          | 2.1% de hombres-\> #observaciones si no hay relación        | 2.1% de mujeres                                             |
+|             |                                                             |                                                             |
+|             | cuánto es el 6.4% de 790= 50.56 #obs si NO hubiera relación | cuánto es el 6.4% de 686 = 43.9 #obs si NO hubiera relación |
+|             |                                                             |                                                             |
+|             | Pero, 19 es lo realmente observado                          | Pero, 12 es lo realmente observado                          |
+|             |                                                             |                                                             |
+|             | (919-50.56)\^2                                              | (12-43.9)\^2                                                |
++-------------+-------------------------------------------------------------+-------------------------------------------------------------+
+| S           | 18.6%                                                       | 18.6%                                                       |
++-------------+-------------------------------------------------------------+-------------------------------------------------------------+
+| I           | 61.3%                                                       | 61.3%                                                       |
++-------------+-------------------------------------------------------------+-------------------------------------------------------------+
+| MI          | 18%                                                         | 18%                                                         |
++-------------+-------------------------------------------------------------+-------------------------------------------------------------+
+|             | 13608                                                       |                                                             |
++-------------+-------------------------------------------------------------+-------------------------------------------------------------+
 
-En las primeras celda, la lógica sería:
-
-+--------------------------------+-----------------------------------------------------------------+----------------------------------------------------------------+---------------------+
-| Satisfacción con la democracia | Hombre                                                          | Mujer                                                          | Total               |
-+================================+:===============================================================:+:==============================================================:+:===================:+
-| Muy satisfecho                 | 6.8% = % observado                                              | 6% = % observado                                               | 6.4% (1,727/26,953) |
-|                                |                                                                 |                                                                |                     |
-|                                | 919 = frecuencia observada                                      | 803 = frec observada                                           | 1,727               |
-|                                |                                                                 |                                                                |                     |
-|                                | Si no hubiera relación, habría 6.4% de hombres muy satisfechos. | Si no hubiera relación habría 6.4% de mujeres muy satisfechas. |                     |
-|                                |                                                                 |                                                                |                     |
-|                                | Es decir 6.4% de 13,608 hombres. Y 6.4% es 1,727/26,953         | Frec. esperada = 1,727\*13,330/26,953                          |                     |
-|                                |                                                                 |                                                                |                     |
-|                                | Frec. esperada =1,727\*13,608/26,953 = 871.9                    |                                                                |                     |
-+--------------------------------+-----------------------------------------------------------------+----------------------------------------------------------------+---------------------+
-| Satisfecho                     | 35.4% = % observado                                             | 30.7% = % observado                                            | 33.1%               |
-|                                |                                                                 |                                                                |                     |
-|                                | 4821 = frec. observada                                          | 4091 = frec. observada                                         | 8,916               |
-|                                |                                                                 |                                                                |                     |
-|                                | Si no hubiera relación, habría 33.1% de hombres satisfechos     | Si no hubiera relación habría 33.1% de mujeres satisfechas     |                     |
-+--------------------------------+-----------------------------------------------------------------+----------------------------------------------------------------+---------------------+
-| Insatisfecho                   | 46.2%                                                           | 46.2%                                                          | 46.2%               |
-|                                |                                                                 |                                                                |                     |
-|                                |                                                                 |                                                                | 12,455              |
-+--------------------------------+-----------------------------------------------------------------+----------------------------------------------------------------+---------------------+
-| Muy insatisfecho               | 14.3%                                                           | 14.3%                                                          | 14.3%               |
-|                                |                                                                 |                                                                |                     |
-|                                |                                                                 |                                                                | 3,855               |
-+--------------------------------+-----------------------------------------------------------------+----------------------------------------------------------------+---------------------+
-| Total                          | 100%                                                            | 100%                                                           | 100%                |
-|                                |                                                                 |                                                                |                     |
-|                                | 13,608                                                          | 13,330                                                         | 26,953              |
-+--------------------------------+-----------------------------------------------------------------+----------------------------------------------------------------+---------------------+
++-------+:-----:+:-----:+:-----:+-------+-------+-------+-------+
+|       |       |       |       |       |       |       |       |
++-------+-------+-------+-------+-------+-------+-------+-------+
 
 # Prueba estadística
 
-El chi-cuadrado resume qué tan cerca las frecuencias esperadas están de las frecuencias observadas.
+El chi-cuadrado resume qué tan cerca están las frecuencias esperadas de las frecuencias observadas.
 Mientras más pequeña la distancia en cada celda, menos probabilidades de rechazar la hipótesis nula.
 Mientras la distancia más grande en cada celda ,más probabilidades de rechazar la hipótesis nula.
 
@@ -284,13 +254,13 @@ En R se usa el comando `chisq.test` para calcular el estadístico y el p-value.
 Esta prueba es mejor guardarla en un objeto nuevo
 
 ```{r prueba}
-prueba <- chisq.test(lapop18$satis, lapop18$genero)
+prueba = chisq.test(peru$satis, peru$genero)
 prueba$observed
 prueba$expected
 ```
 
 La primera tabla presenta las frecuencias observadas, que es lo que realmente se recoge en campo.
-La segunda table presenta las frecuencias esperadas (si no hubiera relación).
+La segunda tabla presenta las frecuencias esperadas (si no hubiera relación).
 Se comprueba los cálculos que se hizo en la tabla anterior (las diferencias son debido a la aproximación decimal).
 
 El estadístico $\chi^2$ resume las diferencias entre las frecuencias observadas y esperadas en cada celda y las suma de acuerdo a la fórmula.
@@ -299,7 +269,7 @@ El estadístico $\chi^2$ resume las diferencias entre las frecuencias observadas
 prueba
 ```
 
-La prueba nos da como resultado un p-value \< 0.05, por lo que se puede rechazar la hipótesis nula y concluir que sí existe asociación/relación/dependencia entre las variables.
+La prueba nos da como resultado un p-value \< 0.15, por lo que NO se puede rechazar la hipótesis nula y se concluye que no sabemos si existe asociación/relación/dependencia entre las variables.
 
 # Medidas de asociación
 
@@ -332,7 +302,7 @@ Para hacer esta evaluación, se guarda la tabla de contingencia en un objeto y s
 
 ```{r asoc}
 library(vcd)
-tabla <- table(lapop18$satis, lapop18$genero)
+tabla = table(peru$satis, peru$genero)
 assocstats(tabla)
 ```
 
@@ -352,49 +322,52 @@ El Gráfico 1.14 del reporte muestra los datos de satisfacción con la democraci
 Como segundo ejemplo, aquí vamos a replicar esa relación usando la variable original de tipo factor.
 
 Lo primero es recodificar la variable educación.
-La variable original "ed" está recogida como una variable numérica (años de estudio).
-Esta variable tiene valores que van desde 0 a 18.
+La variable original "edr" separa a los analfabetos de los que tienen primaria.
+Los analfabetos son un grupo muy pequeño y podrían causar problemas.
+
+```{r analfabeto}
+peru$educ = car::recode(peru$edr, "0:1=1; 2=2; 3=3")
+table(peru$educ)
+```
 
 ```{r reco ed}
-library(car)
-lapop18$educ <- recode(lapop18$ed, "0=0; 1:6=1; 7:11=2; 12:18=3")
-lapop18$educ <- as.factor(lapop18$educ)
-levels(lapop18$educ) <- c("Analfabeto", "Primaria", "Secundaria", "Superior")
-table(lapop18$educ)
+peru$educ = as.factor(peru$educ)
+levels(peru$educ) = c("Hasta primaria", "Secundaria", "Superior")
+table(peru$educ)
 ```
 
 Con la variable recodificada se puede calcular la tabla cruzada de satisfacción con la democracia según niveles educativos.
 
 ```{r tabla ed}
-addmargins(prop.table(table(lapop18$satis, lapop18$educ), 2)*100, 1)
+addmargins(prop.table(table(peru$satis, peru$educ), 2)*100, 1)
 ```
 
 Para comprobar la relación entre estas variables, también se puede usar la prueba de independencia de $\chi^2$.
 Esta evaluación se guarda en un objeto "prueba2".
 
 ```{r chi ed}
-#prueba2 <- chisq.test(lapop18$satis, lapop18$educ)
-#prueba2
+prueba2 <- chisq.test(peru$satis, peru$educ)
+prueba2
 ```
 
-Con el valor de estadístico se obtiene un p-value menor de 0.05, con lo que se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que existiría una relación de dependencia entre las variables.
+Con el valor de estadístico se obtiene un p-value mayor a 0.05, con lo que NO se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que no sabemos si existiría una relación de dependencia entre las variables.
 
 Para evaluar la fuerza de la relación, se tiene que trabajar con otras medidas de asociación, debido a que se tiene una tabla con dos variables ordinales.
 Para esto usaremos la librería `DescTools` y los comandos `GoodmanKrustalGamma`, `KendallTauB` y `StuartTauC`.
 
 ```{r asoc ordinal, message=FALSE, warning=FALSE}
 library(DescTools)
-#tabla2 <- table(lapop18$satis, lapop18$educ)
-#GoodmanKruskalGamma(tabla2)
-#KendallTauB(tabla2)
-#StuartTauC(tabla2)
+tabla2 <- table(peru$satis, peru$educ)
+GoodmanKruskalGamma(tabla2)
+KendallTauB(tabla2)
+StuartTauC(tabla2)
 ```
 
 Otra forma es usando la librería `oii` y el comando `association.measures`.
 
 ```{r ordinal}
 library(oii)
-#association.measures(lapop18$satis, lapop18$educ)
+association.measures(peru$satis, peru$educ)
 ```
 
 En este caso se observan las medidas de asociación para variables ordinales.
@@ -418,8 +391,8 @@ En esta sección se ha procedido de esa manera para llamar la atención a que la
 Para crear un gráfico se tiene que guardar la tabla como un dataframe.
 Se usa el comando `as.data.frame` para salvar los porcentajes y poder usarlos con el comando `ggplot`.
 
-```{r tabla5}
-tabla3 <- as.data.frame(prop.table(table(lapop18$satis, lapop18$educ), 2)*100)
+```{r tabla3}
+tabla3 = as.data.frame(prop.table(table(peru$satis, peru$educ), 2)*100)
 tabla3
 ```
 
@@ -431,7 +404,7 @@ library(ggplot2)
 ggplot(data=tabla3, aes(x=Var2, y=Freq, fill=Var1, ymax=100))+
   geom_bar(position="stack", stat="identity")+
   geom_text(aes(label=paste(round(Freq, 1), "%", sep="")),
-            position=position_stack(), vjust=2)+
+            position=position_stack(), vjust=1.5)+
   labs(fill="Satisfacción con la democracia")+
   ylab("Porcentaje")+
   xlab("Nivel educativo")

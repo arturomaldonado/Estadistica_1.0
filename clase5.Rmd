@@ -183,7 +183,7 @@ Entre los mujeres se tiene 7140 intentos de un total de 12779 intentos (55.9%).
 Estos datos son los que requiere el comando `prop.table` para evaluar la diferencia de proporciones (9.7-6.4= 3.3%).
 
 ```{r prop test 0}
-prop.test(x=c(3303, 7140), n=c(6170, 12779), conf.level=0.95)
+prop.test(x=c(3303, 7140), n=c(6171, 12779), conf.level=0.95)
 ```
 
 Como se observa de los resultados, el estadístico de la prueba "X-squared" se llama chi-cuadrado y no es el mismo que el estadístico t.

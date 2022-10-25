@@ -1,7 +1,7 @@
 ---
 title: "Clase 9"
 author: "Arturo Maldonado"
-date: "24/05/2022"
+date: "25/10/2022"
 output:
   html_document:
     toc: true
@@ -90,6 +90,17 @@ text(data$Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
 Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
 En estos casos vemos que las variables forman un patrón ascendente positivo: a medida que los departamentos reportan un mayor porcentaje de familias con conexión a internet, también se observa un mayor porcentaje de voto a PPK en 2016.
 
+Otra opción es usar la librería `ggplot` y el comando `geom_point()` para hacer el gráfico de dispersión.
+
+```{r}
+library(ggplot2)
+ggplot(data, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
+  geom_point()+
+  geom_text(data=data, aes(label=Dpto), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de familias con conexión a internet", y="Voto a Kuczynski (1era vuelta)")+ #para etiquetar los ejes
+  theme_light()
+```
+
 # Relación lineal
 
 Esta probable relación entre estas dos variables se resumen/simplifica mediante una aproximación lineal.
@@ -118,14 +129,18 @@ Esta recta de aproximación tiene la forma $\hat{Y} = \hat{\alpha} + \hat{\beta}
 Los valores que tiene el "sombrero" son datos que se calculan con los datos observados.
 Una vez estimados estos valores (se verá la lógica en un momento), se puede estimar cualquier Y (por eso tiene también "sombrero") para cualquier valor de X.
 
-En nuestro ejemplo, se le puede pedir a R que incluya la recta de aproximación en el gráfico de dispersión mediante el comando `abline` donde se anida el comando `lm`, que se usa para calcular un modelo lineal (que veremos en un momento)
+En nuestro ejemplo, se le puede pedir a `ggplot` que incluya la recta de aproximación en el gráfico de dispersión mediante el comando `geom_smooth(method=lm, se=F)`, que se usa para calcular un modelo lineal (que veremos en un momento)
 
 ```{r recta}
-plot(data$Uso_internet, data$Voto_PPK_2016_1,
-     xlab="Porcentaje de familias con conexión a internet por departamento",
-     ylab="Voto a PPK (1era vuelta)",
-     pch=19, xlim=c(0,60), ylim=c(0, 30))
-abline(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
+ggplot(data, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  geom_text(data=data, aes(label=Dpto), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de familias con conexión a internet", 
+       y="Voto a Kuczynski (1era vuelta)")+ #para etiquetar los ejes
+  theme_light()
+
+
 ```
 
 ¿Cómo se calcula que ESA es la recta de aproximación, y no otra?
@@ -300,11 +315,13 @@ Se parte de la hipótesis que existiría una relación directa entre estas varia
 Para hacer una primera verificación de esta relación, se puede crear el diagrama de dispersión.
 
 ```{r dispersion21}
-plot(data21$Analfabetismo, data21$VotoPL_1,
-     xlab="% Analfabetismo",
-     ylab="Voto a Pedro Castillo 1era vuelta)",
-     pch=19, xlim=c(0,15), ylim=c(0, 60))
-text(data21$Analfabetismo, data21$VotoPL_1, labels=data21$Departamento, cex=0.6, pos=4)
+ggplot(data21, aes(x=Analfabetismo, y=VotoPL_1))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  geom_text(data=data21, aes(label=Departamento), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de Analfabetismo", 
+       y="Voto a Castillo (1era vuelta)")+ #para etiquetar los ejes
+  theme_light()
 ```
 
 El gráfico no nos muestra una relación clara entre las variables.

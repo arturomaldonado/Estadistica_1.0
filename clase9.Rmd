@@ -307,7 +307,7 @@ Los resultados que usaremos corresponden a los resultados publicados por la ONPE
 
 ```{r base2, message=FALSE, warning=FALSE}
 library(rio)
-data21 <- import("bases/voto2021.xlsx")
+data21 <- import("bases/voto2021_v2.xlsx")
 ```
 
 En esta oportunidad, usaremos el voto a Pedro Castillo en primera vuelta por departamento como variable dependiente y el porcentaje de personas analfabetas como variable independiente.

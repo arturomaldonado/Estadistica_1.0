@@ -48,6 +48,8 @@ La idea es:
 
 -   Evaluar si la asociación entre X - Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable.
 
+-   Para controlar por variables importantes, como las sociodemográficas.
+
 -   En un experimento se puede controlar por un gran número de variables desde el diseño.
     Por ejemplo, se puede asegurar que el sujeto experimental esté expuesto a las mismas condiciones.
     Control experimental.

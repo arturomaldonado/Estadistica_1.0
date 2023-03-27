@@ -20,19 +20,19 @@ En este documento se verán aspectos básicos del uso de R y RStudio.
 
 En la sección anterior se mencionó que el Environment muestra los objetos creados. En R se puede crear objetos y luego manipularlos. Por ejemplo, el gráfico muestra el porcentaje de personas que apoyan a la democracia en cada país. Si queremos guardar el resultados de Uruguay (UY), podemos crear un objeto.
 
-![](Figure1.1.png){width="539"}
+![](Figure1.1.png){width="491"}
 
 La siguiente línea de código crea un objeto llamado "UY" que almacena el número 80. Esto objeto se muestra en el Environment, tanto el nombre, como el valor que almacena.
 
 ```{r objeto}
 UY = 80
-
+HT = 46
 ```
 
 Si quisiéramos calcular la diferencia en porcentaje entre Uruguay, el país que muestra el mayor apoyo a la democracia, y Haití, el que muestra el menor porcentaje, se puede calcular haciendo la resta del objeto menos el valor del porcentaje en Haití. Cuando se corre este código, RStudio nos muestra el resultado.
 
 ```{r resta}
-UY - 46
+UY - HT
 ```
 
 Los objetos en R no solo almacenan números, sino que también pueden guardar letras (o cadenas de caracteres).
@@ -136,7 +136,7 @@ Por ejemplo, R tiene funciones nativas para importar bases de datos de diferente
 Para instalar un paquete se usa el comando `install.packages` con el nombre del paquete que se quiere instalar entre comillas. En este caso hemos usado un \# antes del código debido a que ya se tiene instalado el paquete. Esto sirve para mostrar que los comentarios o líneas de código que queremos mostrar, pero que no se corran, se pueden hacer con un \# antes del comentario o código.
 
 ```{r instalar paquetes}
-# install.packages("rio")
+#install.packages("rio")
 ```
 
 Una vez instalado, se tiene que activar el paquete para poder usar sus funciones. Esto se hace con el comando `library`. Una vez activado, se puede usar cualquier función de esta librería, como la función `import`. Para activar ya no se requiere comillas. Este procedimiento se puede verificar en el panel inferior derecho, en la pestaña "Packages". El paquete "rio" aparece con un check.

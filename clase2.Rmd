@@ -1,7 +1,7 @@
 ---
 title: 'Clase 2: descripción y visualización'
 author: "Arturo Maldonado"
-date: "23/8/2022"
+date: "23/3/2023"
 output:
   html_document:
     toc: true
@@ -60,11 +60,14 @@ mean(res2016$fp)
 median(res2016$fp)
 ```
 
-También se puede calcular la media para grupos de observaciones, es decir para files específicas de una base de datos.
-Por ejemplo, si quisiéramos saber si el voto en las provincias de Lima fue mayor o menos que el voto provincial general de Fuerza Popular, podríamos calcular la media del voto provincial solo en las provincias de Lima.
+También se puede calcular la media para grupos de observaciones, es decir para filas específicas de una base de datos.
+Por ejemplo, si quisiéramos saber si el voto en las provincias de Lima fue mayor o menor que el voto provincial general de Fuerza Popular, podríamos calcular la media del voto provincial solo en las provincias de Lima.
 
-Esto lo hacemos usando los [..], donde anidamos una condición, que en este caso se hace con los valores de otra variable "dpto" para seleccionar solo los datos de Lima.
-Para hacer este tipo de operaciones se tiene que usar los operadores lógicos.
+Esto se puede hacer de múltiples maneras.
+En este curso comenzaremos a usar las funciones del mundo del Tidyverse.
+
+En cualquier caso, se tiene que seleccionar algunas filas de un dataframe usando operadores lógicos.
+En R tenemos los siguientes operadores lógicos:
 
 | Operador |    Descripción     |
 |:--------:|:------------------:|
@@ -81,7 +84,13 @@ En nuestro caso vamos a seleccionar las observaciones que en el vector o variabl
 Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
 
 ```{r}
-mean(res2016$fp[res2016$dpto =="TUMBES"])
+library(dplyr)
+res2016 |> 
+  filter(dpto =="LIMA") |>
+  summarise(mean(fp))
+
+# mean(res2016$fp[res2016$dpto =="LIMA"])
+#Cómo hallarían el promedio del voto a FP en las provincias de Amazonas usando la variable "id"?
 ```
 
 Encontramos que en Lima el promedio provincial de voto a Fuerza Popular es mayor que el promedio provincial general.
@@ -89,15 +98,24 @@ Encontramos que en Lima el promedio provincial de voto a Fuerza Popular es mayor
 Para el caso de la votación al Frente Amplio, calculamos la media y la mediana, otra medida de tendencia central.
 Se observa que la media es mayor que la mediana.
 Esto indica una distribución asimétrica de los datos.
-Para ver esta asimetría se puede graficar la distribución de frecuencias de esta variable.
+Para ver esta asimetría se puede graficar la distribución de frecuencias de esta variable con un histograma (más adelante).
 
 ```{r}
-mean(res2016$fa)
-median(res2016$fa)
+library(dplyr)
+res2016 |> 
+  summarize(mean(fa), median(fa))
 ```
 
-```{r}
-mean(res2016$fa[res2016$dpto =="CUSCO"])
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyverse)
+
+res2016 |> 
+  filter(dpto =="CUSCO") |>
+  summarize(mean(fa), median(fa))
+
+# mean(res2016$fa[res2016$dpto =="CUSCO"])
+#Cómo calcularían esta media usando la variable "id"?
 ```
 
 Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
@@ -119,12 +137,14 @@ prop.table(table(res2016$gana))*100
 round(prop.table(table(res2016$gana))*100, 1)
 ```
 
+*Pregunta: ¿qué medidas de tendencia central (media, mediana, moda) aplican a qué tipo de variables?*
+
 # Visualización
 
 Una de las tareas más comunes en el manejo de datos es la visualización de los resultados.
 En R hay dos maneras de proceder.
 La primera es usar los comandos de base de R.
-La otra es usar una librería `ggplot2` que permite una mayor flexibilización en la producción y estética de los gráficos.
+La otra es usar una librería `ggplot2` que permite una mayor flexibilidad en la producción y estética de los gráficos.
 
 Para esto se carga la librería `ggplot2`.
 Esta tiene un comando `ggplot` en el que se define los aspectos del gráfico.
@@ -172,9 +192,7 @@ Los límites de la caja son el cuartil 25 y el cuartil 75.
 ```{r}
 ggplot(res2016, aes(y=fp))+
   geom_boxplot()+
-  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10))+
-  ylab("% Voto FP 2011")+
-  theme_gray()
+  ylab("% Voto FP 2011")
 ```
 
 El aspecto más útil de los gráficos de cajas es la comparación.
@@ -203,16 +221,51 @@ Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que 
 # Recodificando variables
 
 ```{r}
-library(car)
-res2016$region = car::recode(res2016$dpto, "'AMAZONAS'=3; 'ANCASH'=2; 'APURIMAC'=2;
-                                            'AREQUIPA'=2; 'AYACUCHO'=2; 'CAJAMARCA'=2;
-                                            'CUSCO'=2; 'CALLAO'=1; 'HUANCAVELICA'=2;
-                                            'HUANUCO'=3; 'ICA'=1; 'JUNIN'=2;
-                                            'LA LIBERTAD'=1; 'LAMBAYEQUE'=1;
-                                            'LIMA'=1; 'LORETO'=3; 'MADRE DE DIOS'=3;
-                                            'MOQUEGUA'=1; 'PASCO'=2; 'PIURA'=1;
-                                            'PUNO'=2; 'SAN MARTIN'=3; 'TACNA'=1;
-                                            'TUMBES'=1; 'UCAYALI'=3")
+res2016 = res2016 |>
+  mutate(region = case_when(
+    dpto=="AMAZONAS"~3,
+    dpto=="ANCASH"~2,
+    dpto=="APURIMAC"~2,
+    dpto=="AREQUIPA"~2,
+    dpto=="AYACUCHO"~2,
+    dpto=="CAJAMARCA"~2,
+    dpto=="CUSCO"~2,
+    dpto=="CALLAO"~1,
+    dpto=="HUANCAVELICA"~2,
+    dpto=="HUANUCO"~3,
+    dpto=="ICA"~1,
+    dpto=="JUNIN"~2,
+    dpto=="LA LIBERTAD"~1,
+    dpto=="LAMBAYEQUE"~1,
+    dpto=="LIMA"~1,
+    dpto=="LORETO"~3,
+    dpto=="MADRE DE DIOS"~3,
+    dpto=="MOQUEGUA"~1,
+    dpto=="PASCO"~2,
+    dpto=="PIURA"~1,
+    dpto=="PUNO"~2,
+    dpto=="SAN MARTIN"~3,
+    dpto=="TACNA"~1,
+    dpto=="TUMBES"~1,
+    dpto=="UCAYALI"~3
+  ))
+
+
+#library(car)
+#res2016$region = car::recode(res2016$dpto, "'AMAZONAS'=3; 'ANCASH'=2; 
+#                                            'APURIMAC'=2;'AREQUIPA'=2;
+#                                            'AYACUCHO'=2; 'CAJAMARCA'=2;
+#                                            'CUSCO'=2; 'CALLAO'=1;
+#                                            'HUANCAVELICA'=2;'HUANUCO'=3; 
+#                                            'ICA'=1; 'JUNIN'=2;
+#                                            'LA LIBERTAD'=1; 'LAMBAYEQUE'=1;
+#                                            'LIMA'=1; 'LORETO'=3; 
+#                                            'MADRE DE DIOS'=3;
+#                                            'MOQUEGUA'=1; 'PASCO'=2; 'PIURA'=1;
+#                                            'PUNO'=2; 'SAN MARTIN'=3; 
+#                                            'TACNA'=1;'TUMBES'=1; 
+#                                           'UCAYALI'=3")
+
 table(res2016$region)
 ```
 
@@ -221,7 +274,11 @@ En R existe otro tipo de variable llamado "factor".
 Podemos convertir esta variable numérica a una de factor y etiquetar cada valor.
 
 ```{r}
-res2016$region2 = as.factor(res2016$region)
+res2016 = res2016 |>
+  mutate(region2 = factor(region))
+
+#res2016$region2 = as.factor(res2016$region)
+
 levels(res2016$region2) = c("Costa", "Sierra", "Selva")
 table(res2016$region2)
 ```
@@ -232,7 +289,7 @@ Ahora, procedemos a producir el gráfico de cajas de porcentaje de voto a Fuerza
 ggplot(res2016, aes(y=fp, x=region2))+
   geom_boxplot()+
   scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10))+
-  ylab("% Voto FP 2011")+
+  ylab("% Voto FP 2016")+
   xlab("Región")+
   theme_get()
 ```
@@ -241,25 +298,59 @@ Se observa en este gráfico que el voto mediano a Fuerza Popular fue mayor entre
 Este mismo patrón se observa si calculáramos la media del porcentaje de voto provincial a Fuerza Popular por región.
 
 ```{r}
-mean(res2016$fp2011[res2016$region==1])
-mean(res2016$fp2011[res2016$region==2])
-mean(res2016$fp2011[res2016$region==3])
+res2016 |> 
+  group_by(region2) |>
+  summarise(mean(fp))
+
+#mean(res2016$fp2011[res2016$region==1])
+#mean(res2016$fp2011[res2016$region==2])
+#mean(res2016$fp2011[res2016$region==3])
+```
+
+# Medidas de posición
+
+La mediana es un caso particular de las medidas de posición.
+Este estadístico divide una distribución ordenada de datos en dos mitades y la mediana es el punto limítrofe entre estos dos grupos.
+
+De la misma manera, los cuartiles dividen una distribución ordenada en 4 partes iguales, y los cuartiles son los valores de los puntos limítrofes.
+El gráfico de cajas muestra estos cuartiles, que incluye la mediana.
+
+Para calcular los cuartiles de la distribución general del voto a Fuerza Popular en 2016, se puede usar el comando `summarise` y el estadístico `quantile` del Tidyverse.
+Estos comandos también nos retornan el mínimo y máximo.
+
+```{r}
+res2016 |> 
+  summarise(Cuartiles = quantile(fp))
+```
+
+Para calcular los cuartiles del voto a Fuerza Popular en el 2011 por regiones.
+
+```{r}
+cuartilesxregion = res2016 |> 
+  group_by(region2) |>
+  summarise(c = list(quantile(fp))) |>
+  unnest_wider(c)
+
+#IQR(res2016$fp2011[res2016$region==1])
+#IQR(res2016$fp2011[res2016$region==2])
+#IQR(res2016$fp2011[res2016$region==3])
 ```
 
 # Describiendo la heterogeneidad
 
-El gráfico de cajas también muestra una medida de hetorogeneidad: la amplitud de la caja o llamado rango intercuartil.
+El gráfico de cajas también muestra una medida de heterogeneidad: la amplitud de la caja o llamado rango intercuartil.
 Mientras más amplia la caja, mayor será la heterogeneidad de los datos, es decir, habrá mayor diferencias entre ellos.
 Mientras más estrecha la caja, más homogeneidad, es decir, los datos se parecerán más entre ellos.
 Si la caja no tiene amplitud (es decir, es una línea), los datos son completamente homogéneos, es decir, todos iguales.
 
 Formalmente, la amplitud de la caja es la diferencia entre el cuartil 75 y el cuartil 25.
-En R se puede calcular con el comando `IQR`.
+Se puede crear una variable en el objeto "cuartilesxregion" con este cálculo.
 
 ```{r}
-IQR(res2016$fp2011[res2016$region==1])
-IQR(res2016$fp2011[res2016$region==2])
-IQR(res2016$fp2011[res2016$region==3])
+cuartilesxregion = cuartilesxregion |>
+  mutate(ric = `75%` - `25%`)
+
+#Ojo con las `` cuando tenemos que trabajar con variables que empiezan con números
 ```
 
 En el gráfico de cajas anterior, se puede decir que el porcentaje de voto provincial a Fuerza Popular es más homogéneo en la selva y más heterogéneo en la sierra.
@@ -269,9 +360,14 @@ Se puede calcular la desviación estándar de un conjunto de datos numéricos co
 Por ejemplo, para calcular la desviación estándar del voto provincial a Fuerza Popular por región.
 
 ```{r}
-sd(res2016$fp2011[res2016$region==1])
-sd(res2016$fp2011[res2016$region==2])
-sd(res2016$fp2011[res2016$region==3])
+res2016 |> 
+  group_by(region2) |>
+  summarise(sd(fp))
+
+
+#sd(res2016$fp[res2016$region==1])
+#sd(res2016$fp[res2016$region==2])
+#sd(res2016$fp[res2016$region==3])
 ```
 
 Encontramos que la región con menor heterogeneidad es la costa, aunque, según esta medida, la región más heterogénea es la selva.

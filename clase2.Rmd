@@ -37,7 +37,7 @@ Se sugiere siempre trabajar con nombres cortos de bases de datos y de variables.
 
 Van a poder escribir
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(rio)
 res2016 = import("resultados2016.xlsx")
 ```
@@ -56,8 +56,13 @@ También se puede calcular la mediana, con el comando `median`.
 Se observa que ambas medidas son aproximadamente iguales, indicando una distribución simétrica de datos.
 
 ```{r}
-mean(res2016$fp)
-median(res2016$fp)
+library(dplyr)
+library(tidyverse)
+res2016 |>
+  summarise(mean(fp))
+
+#mean(res2016$fp)
+#median(res2016$fp)
 ```
 
 También se puede calcular la media para grupos de observaciones, es decir para filas específicas de una base de datos.
@@ -84,7 +89,6 @@ En nuestro caso vamos a seleccionar las observaciones que en el vector o variabl
 Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
 
 ```{r}
-library(dplyr)
 res2016 |> 
   filter(dpto =="LIMA") |>
   summarise(mean(fp))
@@ -101,15 +105,11 @@ Esto indica una distribución asimétrica de los datos.
 Para ver esta asimetría se puede graficar la distribución de frecuencias de esta variable con un histograma (más adelante).
 
 ```{r}
-library(dplyr)
 res2016 |> 
   summarize(mean(fa), median(fa))
 ```
 
 ```{r message=FALSE, warning=FALSE}
-library(dplyr)
-library(tidyverse)
-
 res2016 |> 
   filter(dpto =="CUSCO") |>
   summarize(mean(fa), median(fa))
@@ -121,20 +121,30 @@ res2016 |>
 Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
 Por ejemplo, la base de datos incluye una variable de qué partido ganó la mayoría de votos en una provincia.
 La variable "gana" de la base de datos recoge este dato.
-Podemos usar el comando `table` para calcular la tabla de distribución de frecuencias de esta variable.
+Podemos usar el comando `count` para calcular la tabla de distribución de frecuencias de esta variable.
+Se guarda esta tabla en un objeto "tabla".
+
 Se encuentra que del total de provincias, Fuerza Popular ganó en la mayoría de ellas.
 
 ```{r}
-table(res2016$gana)
+tabla = res2016 |>
+  count(Ganador = gana, name="Frecuencia")
+
+tabla
+#table(res2016$gana)
 ```
 
-Para calcular los porcentajes, se puede anidar el comando anterior en otro comando `prop.table()` que nos calcula las proporciones (entre 0 y 1).
-Para calcular los porcentajes se multiplica este comando por 100.
+Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcentaje" con el cálculo de la "Frecuencia" (columna existente) ente la suma total de las frecuencias.
 Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
 
 ```{r}
-prop.table(table(res2016$gana))*100
-round(prop.table(table(res2016$gana))*100, 1)
+tabla = tabla |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+
+tabla
+
+#prop.table(table(res2016$gana))*100
+#round(prop.table(table(res2016$gana))*100, 1)
 ```
 
 *Pregunta: ¿qué medidas de tendencia central (media, mediana, moda) aplican a qué tipo de variables?*
@@ -158,18 +168,17 @@ Luego se define las etiquetas de ejes y el tema del gráfico.
 
 Se observa que el gráfico de porcentaje de votos a Fuerza Popular es aproximadamente simétrico, tal como indicaban la similitud entre media y mediana.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(ggplot2)
 ggplot(res2016, aes(x=fp))+
   geom_histogram(binwidth = 5)+
-  xlab("% Voto FP 2011")+
+  xlab("% Voto FP 2016")+
   ylab("Frecuencia")+
-  ylim(0, 30)
   theme_bw()
 ```
 
 Habíamos encontrado que la media y la mediana del porcentaje de voto al Frente Amplio diferían.
-Esto lo comprobamos produciendo el histrograma de esta variable.
+Esto lo comprobamos produciendo el histograma de esta variable.
 
 ```{r}
 ggplot(res2016, aes(x=fa))+
@@ -223,33 +232,32 @@ Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que 
 ```{r}
 res2016 = res2016 |>
   mutate(region = case_when(
-    dpto=="AMAZONAS"~3,
-    dpto=="ANCASH"~2,
-    dpto=="APURIMAC"~2,
-    dpto=="AREQUIPA"~2,
-    dpto=="AYACUCHO"~2,
-    dpto=="CAJAMARCA"~2,
-    dpto=="CUSCO"~2,
-    dpto=="CALLAO"~1,
-    dpto=="HUANCAVELICA"~2,
-    dpto=="HUANUCO"~3,
-    dpto=="ICA"~1,
-    dpto=="JUNIN"~2,
-    dpto=="LA LIBERTAD"~1,
-    dpto=="LAMBAYEQUE"~1,
-    dpto=="LIMA"~1,
-    dpto=="LORETO"~3,
-    dpto=="MADRE DE DIOS"~3,
-    dpto=="MOQUEGUA"~1,
-    dpto=="PASCO"~2,
-    dpto=="PIURA"~1,
-    dpto=="PUNO"~2,
-    dpto=="SAN MARTIN"~3,
-    dpto=="TACNA"~1,
-    dpto=="TUMBES"~1,
-    dpto=="UCAYALI"~3
-  ))
-
+    dpto=="AMAZONAS"~"Selva",
+    dpto=="ANCASH"~"Sierra",
+    dpto=="APURIMAC"~"Sierra",
+    dpto=="AREQUIPA"~"Sierra",
+    dpto=="AYACUCHO"~"Sierra",
+    dpto=="CAJAMARCA"~"Sierra",
+    dpto=="CUSCO"~"Sierra",
+    dpto=="CALLAO"~"Costa",
+    dpto=="HUANCAVELICA"~"Sierra",
+    dpto=="HUANUCO"~"Selva",
+    dpto=="ICA"~"Costa",
+    dpto=="JUNIN"~"Sierra",
+    dpto=="LA LIBERTAD"~"Costa",
+    dpto=="LAMBAYEQUE"~"Costa",
+    dpto=="LIMA"~"Costa",
+    dpto=="LORETO"~"Selva",
+    dpto=="MADRE DE DIOS"~"Selva",
+    dpto=="MOQUEGUA"~"Costa",
+    dpto=="PASCO"~"Sierra",
+    dpto=="PIURA"~"Costa",
+    dpto=="PUNO"~"Sierra",
+    dpto=="SAN MARTIN"~"Selva",
+    dpto=="TACNA"~"Costa",
+    dpto=="TUMBES"~"Costa",
+    dpto=="UCAYALI"~"Selva"
+  )) 
 
 #library(car)
 #res2016$region = car::recode(res2016$dpto, "'AMAZONAS'=3; 'ANCASH'=2; 
@@ -265,22 +273,27 @@ res2016 = res2016 |>
 #                                            'PUNO'=2; 'SAN MARTIN'=3; 
 #                                            'TACNA'=1;'TUMBES'=1; 
 #                                           'UCAYALI'=3")
-
-table(res2016$region)
+# table(res2016$region)
 ```
 
-La variable creada es una variable numérica.
+```{r}
+res2016 |>
+  count(Region = region, name="Frecuencia")
+
+```
+
+La variable creada es una variable de tipo "caracter".
 En R existe otro tipo de variable llamado "factor".
-Podemos convertir esta variable numérica a una de factor y etiquetar cada valor.
+Podemos convertir cualquier variable a una de factor y etiquetar cada valor.
 
 ```{r}
+library(forcats)
 res2016 = res2016 |>
   mutate(region2 = factor(region))
 
 #res2016$region2 = as.factor(res2016$region)
-
-levels(res2016$region2) = c("Costa", "Sierra", "Selva")
-table(res2016$region2)
+#levels(res2016$region2) = c("Costa", "Sierra", "Selva")
+#table(res2016$region2)
 ```
 
 Ahora, procedemos a producir el gráfico de cajas de porcentaje de voto a Fuerza Popular por región.
@@ -363,7 +376,6 @@ Por ejemplo, para calcular la desviación estándar del voto provincial a Fuerza
 res2016 |> 
   group_by(region2) |>
   summarise(sd(fp))
-
 
 #sd(res2016$fp[res2016$region==1])
 #sd(res2016$fp[res2016$region==2])

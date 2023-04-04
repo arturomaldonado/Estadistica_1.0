@@ -90,8 +90,8 @@ Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas po
 
 ```{r}
 res2016 |> 
-  filter(dpto =="LIMA") |>
-  summarise(mean(fp))
+  filter(dpto =="CUSCO") |>
+  summarise(mean(fa))
 
 # mean(res2016$fp[res2016$dpto =="LIMA"])
 #Cómo hallarían el promedio del voto a FP en las provincias de Amazonas usando la variable "id"?
@@ -106,7 +106,7 @@ Para ver esta asimetría se puede graficar la distribución de frecuencias de es
 
 ```{r}
 res2016 |> 
-  summarize(mean(fa), median(fa))
+  summarize(mean(fp), median(fp))
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -341,8 +341,14 @@ Para calcular los cuartiles del voto a Fuerza Popular en el 2011 por regiones.
 ```{r}
 cuartilesxregion = res2016 |> 
   group_by(region2) |>
-  summarise(c = list(quantile(fp))) |>
-  unnest_wider(c)
+  summarise(quantile(fp))
+cuartilesxregion
+
+#Para ver los cuartiles por cada región en forma horizontal
+#cuartilesxregion = res2016 |> 
+#  group_by(region2) |>
+#  summarise(c = list(quantile(fp))) |>
+#  unnest_wider(c)
 
 #IQR(res2016$fp2011[res2016$region==1])
 #IQR(res2016$fp2011[res2016$region==2])
@@ -357,13 +363,13 @@ Mientras más estrecha la caja, más homogeneidad, es decir, los datos se parece
 Si la caja no tiene amplitud (es decir, es una línea), los datos son completamente homogéneos, es decir, todos iguales.
 
 Formalmente, la amplitud de la caja es la diferencia entre el cuartil 75 y el cuartil 25.
-Se puede crear una variable en el objeto "cuartilesxregion" con este cálculo.
+Se puede crear una nueva tabla "ricxregion" con este cálculo.
 
 ```{r}
-cuartilesxregion = cuartilesxregion |>
-  mutate(ric = `75%` - `25%`)
-
-#Ojo con las `` cuando tenemos que trabajar con variables que empiezan con números
+ricxregion = res2016 |>
+  group_by(region2) |>
+  summarise(IQR(fp))
+ricxregion
 ```
 
 En el gráfico de cajas anterior, se puede decir que el porcentaje de voto provincial a Fuerza Popular es más homogéneo en la selva y más heterogéneo en la sierra.

@@ -1,7 +1,7 @@
 ---
 title: 'Clase 3: Intervalos de confianza'
 author: "Arturo Maldonado"
-date: "6/9/2022"
+date: "4/4/2023"
 output:
   html_document:
     toc: true
@@ -49,8 +49,13 @@ De esta pregunta podemos preguntarnos: ¿A cuántos alumnos en promedio acompañ
 Esta encuesta tiene una pregunta que nos permite calcular esta media y la desviación estándar.
 
 ```{r desc alumnos}
-mean(endo2020$P1_6, na.rm = T)
-sd(endo2020$P1_6, na.rm = T)
+library(dplyr)
+library(tidyverse)
+endo2020 |> 
+  summarize(mean(P1_6, na.rm = T), sd(P1_6, na.rm = T))
+
+#mean(endo2020$P1_6, na.rm = T)
+#sd(endo2020$P1_6, na.rm = T)
 ```
 
 Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula.
@@ -59,15 +64,15 @@ Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos e
 Calculamos primero los datos para el grupo de docentes hombres.
 
 ```{r docentos hombre}
-mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-sd(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-```
+alumxsexo = endo2020 |> 
+  group_by(P1_1) |>
+  summarize(mean(P1_6, na.rm = T), sd(P1_6, na.rm = T))
+alumxsexo
 
-Y luego para las mujeres.
-
-```{r docentes mujeres}
-mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
-sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+#mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
+#sd(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)#
+#mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
+#sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
 ```
 
 Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos en promedio.
@@ -129,7 +134,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
+|:----------------:|:------------------------------------:|:---------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |
@@ -256,11 +261,6 @@ Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50
 
 ¿Qué más se puede decir de esta comparación entre intervalos de confianza?
 ¿Cómo graficar estos intervalos de confianza?
-
-```{r}
-prop.table(table(endo2020$P1_7))*100
-
-```
 
 # Ejemplo LaLonde
 

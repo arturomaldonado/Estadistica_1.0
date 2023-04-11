@@ -106,7 +106,7 @@ Para ver esta asimetría se puede graficar la distribución de frecuencias de es
 
 ```{r}
 res2016 |> 
-  summarize(mean(fp), median(fp))
+  summarize(mean(ppk), median(ppk))
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -170,11 +170,11 @@ Se observa que el gráfico de porcentaje de votos a Fuerza Popular es aproximada
 
 ```{r message=FALSE, warning=FALSE}
 library(ggplot2)
-ggplot(res2016, aes(x=fp))+
+ggplot(res2016, aes(x=ppk))+
   geom_histogram(binwidth = 5)+
-  xlab("% Voto FP 2016")+
+  xlab("% Voto PPK 2016") +
   ylab("Frecuencia")+
-  theme_bw()
+  theme_minimal()
 ```
 
 Habíamos encontrado que la media y la mediana del porcentaje de voto al Frente Amplio diferían.
@@ -226,6 +226,17 @@ ggplot(res2016, aes(y=fp, x=dpto))+
 ```
 
 Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que crear esta variable, a partir de la variable "dpto".
+
+Para graficar una variable de tipo cualitativa (o de factor en el lenguaje de R), se debe usar, por ejemplo, un gráfico de barras.
+Podemos graficar el porcentaje de provincias que cada partido ganó en 2021.
+
+Para esto seguimos usando la librería `ggplot`, pero ahora no realizaremos un histograma (no usaremos `geom_histogram`), sino barras, con `geom_bar`.
+Dentro de este comando se añade `stat="identity` para indicar que R no calcule nada y solo use los datos de "tabla".
+
+```{r}
+ggplot(tabla, aes(x=Porcentaje, y=Ganador))+
+  geom_bar(stat="identity", width=0.5)
+```
 
 # Recodificando variables
 
@@ -299,9 +310,9 @@ res2016 = res2016 |>
 Ahora, procedemos a producir el gráfico de cajas de porcentaje de voto a Fuerza Popular por región.
 
 ```{r}
-ggplot(res2016, aes(y=fp, x=region2))+
+ggplot(res2016, aes(y=fp, x=region))+
   geom_boxplot()+
-  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10))+
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 20))+
   ylab("% Voto FP 2016")+
   xlab("Región")+
   theme_get()
@@ -313,7 +324,7 @@ Este mismo patrón se observa si calculáramos la media del porcentaje de voto p
 ```{r}
 res2016 |> 
   group_by(region2) |>
-  summarise(mean(fp))
+  summarise(mean(fp), sd(fp))
 
 #mean(res2016$fp2011[res2016$region==1])
 #mean(res2016$fp2011[res2016$region==2])

@@ -170,7 +170,7 @@ Se observa que el gráfico de porcentaje de votos a Fuerza Popular es aproximada
 
 ```{r message=FALSE, warning=FALSE}
 library(ggplot2)
-ggplot(res2016, aes(x=ppk))+
+ggplot(res2016, aes(x=fp))+
   geom_histogram(binwidth = 5)+
   xlab("% Voto PPK 2016") +
   ylab("Frecuencia")+
@@ -234,7 +234,7 @@ Para esto seguimos usando la librería `ggplot`, pero ahora no realizaremos un h
 Dentro de este comando se añade `stat="identity` para indicar que R no calcule nada y solo use los datos de "tabla".
 
 ```{r}
-ggplot(tabla, aes(x=Porcentaje, y=Ganador))+
+ggplot(tabla, aes(x=Porcentaje,y=Ganador))+
   geom_bar(stat="identity", width=0.5)
 ```
 

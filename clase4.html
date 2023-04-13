@@ -570,27 +570,8 @@ lograr con el comando <code>group.CI</code> que es parte de la librería
 <code>alumnos.sexo</code>, que guarda el límite superior (“upper”), la
 media (“mean”) y el límite inferior (“lower”). Estos resultados son los
 mismos encontrados más arriba.</p>
-<pre class="r"><code>library(Rmisc)</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Loading required package: plyr</code></pre>
-<pre><code>## ------------------------------------------------------------------------------</code></pre>
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)</code></pre>
-<pre><code>## ------------------------------------------------------------------------------</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:plotly&#39;:
-## 
-##     arrange, mutate, rename, summarise</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     compact</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize</code></pre>
-<pre class="r"><code>alumnos.sexo &lt;- group.CI(P1_6~sexo, endo2020)
+<pre class="r"><code>library(Rmisc)
+alumnos.sexo &lt;- group.CI(P1_6~sexo, endo2020)
 alumnos.sexo</code></pre>
 <pre><code>##     sexo P1_6.upper P1_6.mean P1_6.lower
 ## 1 Hombre   53.75471  52.24745   50.74019

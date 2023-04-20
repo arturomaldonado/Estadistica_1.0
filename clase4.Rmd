@@ -133,9 +133,9 @@ Por lo tanto, para guardar solo el mínimo se tiene que especificar `lsr::ciMean
 library(lsr)
 ci_alumxsexo = endo2020 |>
   group_by(sexo) |>
-  summarise(Media = mean(P1_6, na.rm=T),
-            min = ciMean(P1_6, na.rm=T)[1],
-            max = ciMean(P1_6, na.rm=T)[2]
+  summarise(media = mean(P1_6, na.rm=T),
+            liminf = ciMean(P1_6, na.rm=T)[1],
+            limsup = ciMean(P1_6, na.rm=T)[2]
             )
 ci_alumxsexo
 
@@ -179,10 +179,10 @@ Se agrega `geom_text` para incluir el "texto" con los valores promedio de ambos 
 
 ```{r grafico1}
 library(ggplot2)
-graf1 = ggplot(ci_alumxsexo, aes(x=sexo, y=Media))+
+graf1 = ggplot(ci_alumxsexo, aes(x=sexo, y=media))+
   geom_bar(stat="identity")+
-  geom_errorbar(aes(ymin=min, ymax=max), width=0.2)+
-  geom_text(aes(label=paste(round(Media, 1))), vjust=-2.5, size=4)+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=paste(round(media, 1))), vjust=-1, size=4)+
   xlab("Sexo del docente") + ylab("Alumnos atendidos")+
   ylim(0, 60)
 graf1
@@ -248,7 +248,8 @@ tabla2 = endo2020 |>
   filter(apoyo =="Sí" | apoyo == "No") |>
   group_by(sexo) |>
   count(Apoyo = apoyo, name="N")|>
-  mutate(total = sum(N), Por = N / total * 100)
+  mutate(total = sum(N), Por = N / total * 100, err = sqrt(Por*(100-Por)/N), 
+         liminf = Por - 1.96*err, limsup = Por + 1.96*err)
 tabla2
 ```
 
@@ -265,12 +266,35 @@ Este IC de la diferencia de proporciones varía entre -8.9% y -5.9%.
 
 Como este IC va solo entre valores negativos; es decir, como el IC no incluye al cero, se puede concluir que la diferencia de proporciones no puede ser cero, por lo tanto, que existe una diferencia estadísticamente significativa en las proporciones entre ambos grupos.
 
+La tabla 2 se puede usar para graficar.
+Como nos interesa comparar los porcentajes de docentes que reportaron haber recibido atención psicológica por sexo, se puede eliminar las filas de aquellos que no recibieron atención psicológica en la tabla 2.
+
+```{r}
+tabla2 = tabla2[-c(2,4),]
+```
+
+Luego, con esta tabla podemos seguir el mismo procedimiento que con el cálculo de las barras de error para la media, pero esta vez para los porcentajes.
+
+```{r}
+graf2 = ggplot(tabla2, aes(x=sexo, y=Por))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=4)+
+  xlab("Sexo del docente") + ylab("Porcentaje que recibió atención psicológica")+
+  ylim(0, 60)
+graf2
+```
+
+De este gráfico se puede concluir que existen diferencias estadísticamente significativas en el porcentaje de docentes que buscaron atención psicológica entre hombres y mujeres, debido a que los intervalos de confianza no se traslapan.
+
+De manera más específica, se puede afirmar que las docentes peruanas reciben más atención psicológica que los docentes hombres.
+
 # Nota final
 
 La comparación de IC, ya sea calculando los valores para cada grupo o ya sea de manera gráfica, es una primera manera de analizar si las diferencias entre grupos se pueden extrapolar a la población.
 
 Pero esta es una manera "informal" de hacer esta comparación.
-Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias, que se verá en la siguiente sesión.
+Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias o la prueba de proporciones, que se verán en la siguiente sesión.
 
 # Ejemplo LaLonde
 

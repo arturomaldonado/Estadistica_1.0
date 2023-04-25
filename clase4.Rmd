@@ -226,7 +226,8 @@ Luego de las frecuencias, incluimos el porcentaje con `mutate`.
 tabla = endo2020 |>
   filter(apoyo =="Sí" | apoyo == "No") |>
   count(Apoyo = apoyo, name="N")|>
-  mutate(total = sum(N), Por = N / total * 100)
+  mutate(total = sum(N), 
+         Por = N / total * 100)
 tabla
 ```
 
@@ -248,8 +249,11 @@ tabla2 = endo2020 |>
   filter(apoyo =="Sí" | apoyo == "No") |>
   group_by(sexo) |>
   count(Apoyo = apoyo, name="N")|>
-  mutate(total = sum(N), Por = N / total * 100, err = sqrt(Por*(100-Por)/N), 
-         liminf = Por - 1.96*err, limsup = Por + 1.96*err)
+  mutate(total = sum(N), 
+         Por = N / total * 100, 
+         err = sqrt(Por*(100-Por)/N), 
+         liminf = Por - 1.96*err, 
+         limsup = Por + 1.96*err)
 tabla2
 ```
 

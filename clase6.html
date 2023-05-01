@@ -558,34 +558,13 @@ endo2020 = endo2020 |&gt;
   group_by(tipo) |&gt;
   summarize(media = mean(P1_6, na.rm = T))
 alumxtipo</code></pre>
-<pre><code>## # A tibble: 4 × 2
-##   tipo                          media
-##   &lt;fct&gt;                         &lt;dbl&gt;
-## 1 Nombrado                       36.9
-## 2 Contratado por concurso        43.7
-## 3 Contratado por otra modalidad  50.6
-## 4 &lt;NA&gt;                          NaN</code></pre>
+<pre><code>##      media
+## 1 39.98644</code></pre>
 <pre class="r"><code>alumxtipo = alumxtipo[-4, ]</code></pre>
 <p>Para tener una descripción completa entre los 3 grupos, también se
 puede usar:</p>
-<pre class="r"><code>library(Rmisc)</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Loading required package: plyr</code></pre>
-<pre><code>## ------------------------------------------------------------------------------</code></pre>
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)</code></pre>
-<pre><code>## ------------------------------------------------------------------------------</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plyr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     compact</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize</code></pre>
-<pre class="r"><code>alumnos.tipo = group.CI(P1_6~tipo, endo2020)
+<pre class="r"><code>library(Rmisc)
+alumnos.tipo = group.CI(P1_6~tipo, endo2020)
 alumnos.tipo</code></pre>
 <pre><code>##                            tipo P1_6.upper P1_6.mean P1_6.lower
 ## 1                      Nombrado   37.84264  36.92272   36.00281
@@ -776,19 +755,8 @@ tabla1</code></pre>
 ## X1    16.85 284.08</code></pre>
 <p>O también se puede hacer una inspección visual. A primera vista, no
 parece haber diferencias entre ningún grupo, en cuanto a ingresos.</p>
-<pre class="r"><code>library(gplots)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;gplots&#39;:
-##   method         from     
-##   reorder.factor DescTools</code></pre>
-<pre><code>## 
-## Attaching package: &#39;gplots&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:DescTools&#39;:
-## 
-##     reorder.factor</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     lowess</code></pre>
-<pre class="r"><code>plotmeans(LL$re78~LL$axd, connect=F, barwidth=3, xlab=&quot;Grupos&quot;, ylab=&quot;Ingresos 1978&quot;,
+<pre class="r"><code>library(gplots)
+plotmeans(LL$re78~LL$axd, connect=F, barwidth=3, xlab=&quot;Grupos&quot;, ylab=&quot;Ingresos 1978&quot;,
           main=&quot;Ingresos por grupos&quot;)</code></pre>
 <p><img src="clase6_files/figure-html/medias%20afro%20x%20grado-1.png" width="672" /></p>
 <p>Esta observación visual se tiene que confirmar con la prueba de

@@ -1,7 +1,7 @@
 ---
-title: "Clase 6-7"
+title: "Clase 7"
 author: "Arturo Maldonado"
-date: "27/09/2022"
+date: "2/05/2023"
 output:
   html_document:
     toc: true
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-Hasta el momento se ha visto una prueba, la prueba t, para comparar medias de solo 2 grupos.
+Hasta el momento se ha visto la prueba t para comparar medias de solo 2 grupos.
 En esta sección veremos cómo expandir la comparación para varias medias usando otra prueba de inferencia.
 Es decir, se busca analizar la relación entre una variable dependiente cuantitativa (o numérica) y una variable independiente categórica (o de factor).
 
@@ -106,70 +106,114 @@ Es decir, reporta todos los emparejamientos posibles entre grupos y en cada pare
 
 # Ejemplo para una variable numérica entre 2+ grupos
 
-```{r base endo}
+```{r base endo, message=FALSE, warning=FALSE}
 library(rio)
 endo2020 = import("bases/ENDO_REMOTO_2020.dta")
 ```
 
 Si queremos evaluar si existen diferencias entre el número promedio de alumnos con los que trabaja un profesor entre tipos de profesores (nombrados, contratados con concurso o nombrados con otra modalidad), se puede usar ANOVA.
 
-```{r}
-mean(endo2020$P1_6[endo2020$P1_7==1], na.rm = T)
-mean(endo2020$P1_6[endo2020$P1_7==2], na.rm = T)
-mean(endo2020$P1_6[endo2020$P1_7==3], na.rm = T)
+Primero se tiene que factorizar la variable tipo de profesor (P1_7).
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidyverse)
+endo2020 = endo2020 |>
+  mutate(tipo = factor(P1_7, labels=c("Nombrado", "Contratado por concurso",
+                                      "Contratado por otra modalidad")))
 ```
 
-Para tener una descripción completa entre los 3 grupos, se puede usar:
-
 ```{r}
-library(psych)
-tabla1 <- describeBy(endo2020$P1_6, group=endo2020$P1_7)
-tabla1
+alumxtipo = endo2020 |> 
+  group_by(tipo) |>
+  summarize(media = mean(P1_6, na.rm = T))
+alumxtipo
 ```
 
-O también se puede hacer una inspección visual.
+```{r}
+alumxtipo = alumxtipo[-4, ]
+```
+
+Para tener una descripción completa entre los 3 grupos, también se puede usar:
 
 ```{r}
 library(Rmisc)
-alumnos.tipo <- group.CI(P1_6~P1_7, endo2020)
+alumnos.tipo = group.CI(P1_6~tipo, endo2020)
 alumnos.tipo
 ```
 
-¿Qué conclusiones iniciales se pueden sacar del gráfico?
+¿Qué conclusiones "informales" se pueden sacar del gráfico?
 
 ```{r}
 library(ggplot2)
-graf1 <- ggplot(alumnos.tipo, aes(x=P1_7, y=P1_6.mean))+
+graf1 = ggplot(alumnos.tipo, aes(x=tipo, y=P1_6.mean))+
   geom_bar(stat="identity")+
   geom_errorbar(aes(ymin=P1_6.lower, ymax=P1_6.upper), width=0.2)+
-  geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-2.5, size=4)+
+  geom_text(aes(label=paste(round(P1_6.mean, 1))), vjust=-1, size=3)+
   xlab("Tipo del contrato") + ylab("Alumnos atendidos")+
   ylim(0, 80)
 graf1
 ```
 
 Esta observación visual se tiene que confirmar con la prueba de ANOVA.
+Para esto se usa el comando `aov` para crear un objeto "anova1" que luego se describe con `summary`.
 
 ```{r anova alumnos x tipo}
-anova1 <- aov(endo2020$P1_6~as.factor(endo2020$P1_7))
+anova1 = aov(endo2020$P1_6~endo2020$tipo)
 summary(anova1)
 ```
 
-Con la prueba de ANOVA y el p-value correspondiente se puede rechazar la H0.
-Para confirmar las diferencias, se evalúa la prueba de Tukey para analizar cada emparejamiento.
+Con la prueba de ANOVA y dado que el p-value es menor a 0.05, se puede rechazar la H0.
+Es decir, se afirma la Ha de que al menos una de las diferencias es significativa.
+ANOVA no nos indica cuál es la(s) diferencia(s) significativa(s).
+
+Para evaluar las diferencias, se corre la prueba de Tukey para analizar cada emparejamiento.
+Esto se hace con el comando `TukeyHSD` en el que se inserta el objeto "anova1" y con el cual se crea un objeto "compara".
 
 ```{r Tukey alumnos x tipo}
-TukeyHSD(anova1)
+compara = TukeyHSD(anova1)
+compara
 ```
 
 Se observa que los resultados comprueban las observaciones del gráfico.
-Estos emparejamientos se pueden graficar.
+Cada emparejamiento tiene un valor de la diferencia de medias "diff", un límite inferior "lwr" y límite superior "upr" del intervalo de confianza de esa diferencia y un p-value "p adj".
+Este último valor es el que se evalúa para saber si el emparejamiento tiene una diferencia estadísticamente significativa.
+Se observa que el emparejamiento "Contratado por concurso-Nombrado" tiene un p-value muy pequeño (no es cero, solo faltan decimales), por lo que podemos rechazar la Ho y afirmar que sí existen diferencias en el número de alumnos con los que trabajan estos tipo de profesores.
+
+El emparejamiento entre "Contratado por otra modalidad-Nombrado" tiene un p-value de 0.02, que es menor que 0.05, por lo que concluimos que también existen diferencias en el número de alumnos promedio con el que trabajan estos tipos de profesores.
+
+El emparejamiento "Contratado por otra modalidad-Contratado por concurso" tiene un p-value = 0.36 que es mayor que 0.05, por lo que no se puede concluir que haya diferencias en el promedio de alumnos con los que trabajan estos tipos de profesores.
+
+Estos emparejamientos se pueden graficar con el comando `plot`, donde se inserta el código de Tukey.
 
 ```{r}
 plot(TukeyHSD(anova1))
 ```
 
 Aquellos emparejamientos cuyas líneas no crucen la línea vertical del cero, se puede decir que hay diferencias estadísticamente significativas.
+
+Este gráfico también se puede reproducir con la librería `ggplot`.
+Para esto, primero, se tiene que transformar el objeto "compara" (que es una lista) en un dataframe, con el comando `as.data.frame` y se crea un nuevo objeto "compara.df", que tiene los valores que requerimos para graficar, excepto que el nombre de las comparaciones esta como nombre de las filas y no como variable.
+Para incluir las comparaciones como una variable se usa el comando `rownames` y se crea una nueva columna `compara.df$compara`.
+
+```{r}
+compara.df = as.data.frame(compara[1])
+compara.df$compara = rownames(compara.df)
+```
+
+Con este dataframe, podemos usar la librería `ggplot` para graficar los intervalos de confianza de las diferencias de medias.
+
+```{r}
+graf2 = ggplot(compara.df, aes(x=compara, y=diff))+
+  geom_errorbar(aes(ymin=lwr, ymax=upr), width=0.2)+
+  geom_text(aes(label=paste(round(diff, 1))), vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  ylim(-10, 40) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+graf2
+```
 
 # Otro ejemplo
 
@@ -178,7 +222,7 @@ En la sección anterior se encontró que había una diferencia estadísticamente
 
 ```{r base LL}
 library(rio)
-LL <- import("bases/LL.csv")
+LL = import("bases/LL.csv")
 ```
 
 Adicionalmente, se puede evaluar si existen diferencias extrapolables entre aquellos con un grado académico y aquellos que no.

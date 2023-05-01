@@ -204,9 +204,9 @@ compara.df$compara = rownames(compara.df)
 Con este dataframe, podemos usar la librería `ggplot` para graficar los intervalos de confianza de las diferencias de medias.
 
 ```{r}
-graf2 = ggplot(compara.df, aes(x=compara, y=diff))+
-  geom_errorbar(aes(ymin=lwr, ymax=upr), width=0.2)+
-  geom_text(aes(label=paste(round(diff, 1))), vjust=-1, size=3)+
+graf2 = ggplot(compara.df, aes(x=compara, y=endo2020.tipo.diff))+
+  geom_errorbar(aes(ymin=endo2020.tipo.lwr, ymax=endo2020.tipo.upr), width=0.2)+
+  geom_text(aes(label=paste(round(endo2020.tipo.diff, 1))), vjust=-1, size=3)+
   xlab("Comparación") + ylab("Diferencia")+
   ylim(-10, 40) +
   coord_flip() +

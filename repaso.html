@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Repaso</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.2.1/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.2.1/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3 y 4</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 6</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="repaso.html">Repaso</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 7</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 9</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Repaso</h1>
+
+</div>
+
+
+<div id="introducción" class="section level1">
+<h1>Introducción</h1>
+<p>En este documento se repasará los principales conceptos y
+procedimientos vistos en la primera mitad del curso.</p>
+</div>
+<div id="base-de-datos" class="section level1">
+<h1>Base de datos</h1>
+<p>En esta base usaremos una base de datos de hogares afiliados y
+abonados al programa Juntos. Como se indica en la página de <a
+href="https://www.datosabiertos.gob.pe/dataset/resumen-de-hogares-afiliados-y-abonados-por-ubigeo-2023-programa-juntos">Datos
+Abiertos</a>, “Esta información del Programa Juntos, es generada de
+manera bimestral a nivel de distrito, considerando datos sobre la
+cantidad de hogares afiliados, cantidad de hogares abonados, número de
+miembros objetivos y los montos transferidos por los conceptos de
+afiliación y cumplimiento de corresponsabilidad base en el periodo”.</p>
+<pre class="r"><code>library(rio)
+juntos = import(&quot;juntos2023-1.xlsx&quot;)</code></pre>
+</div>
+<div id="describir-una-variable" class="section level1">
+<h1>Describir una variable</h1>
+<p>Esta base de datos incluye la variable acerca del número de población
+objetivo por distrito (variable “miembros”). Queremos tener una idea
+acerca de la magnitud de este programa. Para esto describimos la
+variable.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.1     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>tabla1 = juntos |&gt;
+  summarise(minimo = min(miembros), media = mean(miembros), 
+            mediana = median(miembros),
+            maximo = max(miembros), desviacion = sd(miembros), IQR(miembros))
+tabla1</code></pre>
+<pre><code>##   minimo    media mediana maximo desviacion IQR(miembros)
+## 1      1 801.1761   339.5  17518   1349.603        808.75</code></pre>
+</div>
+<div id="graficando-una-variable" class="section level1">
+<h1>Graficando una variable</h1>
+<pre class="r"><code>library(ggplot2)
+graf1 = ggplot(juntos, aes(x=miembros))+
+  geom_histogram(binwidth = 100)+
+  geom_vline(xintercept = 801.2, color = &quot;red&quot;)+
+  geom_vline(xintercept = 339.5, color = &quot;green&quot;)+
+  xlab(&quot;Número de miembros programa Juntos&quot;) +
+  ylab(&quot;Frecuencia&quot;)+
+  theme_minimal()
+graf1</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>graf2 = ggplot(juntos, aes(y=miembros))+
+  geom_boxplot()+
+  ylab(&quot;Número de miembros de programa Junto&quot;)+
+  scale_y_continuous(limits = c(0, 2000), breaks = seq(0, 2000, 500))
+graf2</code></pre>
+<pre><code>## Warning: Removed 195 rows containing non-finite values (`stat_boxplot()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="comparando-descriptivos" class="section level1">
+<h1>Comparando descriptivos</h1>
+<pre class="r"><code>juntos = juntos |&gt;
+  mutate(departa = fct_reorder(dpto, miembros))</code></pre>
+<pre class="r"><code>tabla2 = juntos |&gt; 
+  group_by(departa) |&gt;
+  summarise(media = mean(miembros), desviacion = sd(miembros))
+tabla2</code></pre>
+<pre><code>## # A tibble: 25 × 3
+##    departa       media desviacion
+##    &lt;fct&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+##  1 MOQUEGUA       56.6       112.
+##  2 TACNA         152.        243.
+##  3 LIMA          194.        381.
+##  4 AREQUIPA      107.        151.
+##  5 ICA           143.        126.
+##  6 JUNÍN         439.       1064.
+##  7 MADRE DE DIOS 284.        411.
+##  8 AMAZONAS      838.       1700.
+##  9 CALLAO        635.        840.
+## 10 ÁNCASH        439.        555.
+## # ℹ 15 more rows</code></pre>
+</div>
+<div id="comparando-descriptivos-gráficamente" class="section level1">
+<h1>Comparando descriptivos gráficamente</h1>
+<pre class="r"><code>graf3 = ggplot(tabla2, aes(x=media, y=departa))+
+  geom_bar(stat=&quot;identity&quot;, width=0.5)
+graf3</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>graf4 = ggplot(juntos, aes(y=miembros, x=departa))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 8000), breaks = seq(0, 8000, 1000))+
+  ylab(&quot;Número de miembros en Programa Juntos&quot;)+
+  xlab(&quot;Departamento&quot;)+
+  theme_minimal()+
+  coord_flip()
+graf4</code></pre>
+<pre><code>## Warning: Removed 12 rows containing non-finite values (`stat_boxplot()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>juntos = juntos |&gt;
+  mutate(region = case_when(
+    dpto==&quot;AMAZONAS&quot;~&quot;Selva&quot;,
+    dpto==&quot;ÁNCASH&quot;~&quot;Sierra&quot;,
+    dpto==&quot;APURÍMAC&quot;~&quot;Sierra&quot;,
+    dpto==&quot;AREQUIPA&quot;~&quot;Sierra&quot;,
+    dpto==&quot;AYACUCHO&quot;~&quot;Sierra&quot;,
+    dpto==&quot;CAJAMARCA&quot;~&quot;Sierra&quot;,
+    dpto==&quot;CUSCO&quot;~&quot;Sierra&quot;,
+    dpto==&quot;CALLAO&quot;~&quot;Costa&quot;,
+    dpto==&quot;HUANCAVELICA&quot;~&quot;Sierra&quot;,
+    dpto==&quot;HUÁNUCO&quot;~&quot;Selva&quot;,
+    dpto==&quot;ICA&quot;~&quot;Costa&quot;,
+    dpto==&quot;JUNÍN&quot;~&quot;Sierra&quot;,
+    dpto==&quot;LA LIBERTAD&quot;~&quot;Costa&quot;,
+    dpto==&quot;LAMBAYEQUE&quot;~&quot;Costa&quot;,
+    dpto==&quot;LIMA&quot;~&quot;Costa&quot;,
+    dpto==&quot;LORETO&quot;~&quot;Selva&quot;,
+    dpto==&quot;MADRE DE DIOS&quot;~&quot;Selva&quot;,
+    dpto==&quot;MOQUEGUA&quot;~&quot;Costa&quot;,
+    dpto==&quot;PASCO&quot;~&quot;Sierra&quot;,
+    dpto==&quot;PIURA&quot;~&quot;Costa&quot;,
+    dpto==&quot;PUNO&quot;~&quot;Sierra&quot;,
+    dpto==&quot;SAN MARTÍN&quot;~&quot;Selva&quot;,
+    dpto==&quot;TACNA&quot;~&quot;Costa&quot;,
+    dpto==&quot;TUMBES&quot;~&quot;Costa&quot;,
+    dpto==&quot;UCAYALI&quot;~&quot;Selva&quot;
+  )) </code></pre>
+<pre class="r"><code>tabla3 =juntos |&gt; 
+  group_by(region) |&gt;
+  summarise(media = mean(miembros), desviacion = sd(miembros))
+tabla3</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   region media desviacion
+##   &lt;chr&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Costa   859.      1802.
+## 2 Selva  1235.      1624.
+## 3 Sierra  646.       951.</code></pre>
+<pre class="r"><code>graf5 = ggplot(juntos, aes(y=miembros, x=region))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 4000), breaks = seq(0, 4000, 500))+
+  ylab(&quot;Número de miembros en Programa Juntos&quot;)+
+  xlab(&quot;Departamento&quot;)+
+  theme_minimal()
+graf5</code></pre>
+<pre><code>## Warning: Removed 53 rows containing non-finite values (`stat_boxplot()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="comparando-grupos-mediante-intervalos-de-confianza"
+class="section level1">
+<h1>Comparando grupos mediante intervalos de confianza</h1>
+<pre class="r"><code>library(lsr)
+ciMean(juntos$miembros)</code></pre>
+<pre><code>##          2.5%    97.5%
+## [1,] 739.9344 862.4178</code></pre>
+<pre class="r"><code>miembrosxreg = juntos |&gt;
+  group_by(region) |&gt;
+  summarise(Media = mean(miembros, na.rm=T),
+            min = ciMean(miembros, na.rm=T)[1],
+            max = ciMean(miembros, na.rm=T)[2]
+            )
+miembrosxreg</code></pre>
+<pre><code>## # A tibble: 3 × 4
+##   region Media   min   max
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Costa   859.  693. 1026.
+## 2 Selva  1235. 1059. 1411.
+## 3 Sierra  646.  589.  702.</code></pre>
+<pre class="r"><code>graf6 = ggplot(miembrosxreg, aes(x=region, y=Media))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=min, ymax=max), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-3.5, size=4)+
+  xlab(&quot;Region&quot;) + ylab(&quot;Miembros de Programa Juntos&quot;)+
+  ylim(0, 1500)
+graf6</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="pruebas-de-significancia" class="section level1">
+<h1>Pruebas de significancia</h1>
+<pre class="r"><code>anova1 = aov(juntos$miembros~juntos$region)
+summary(anova1)</code></pre>
+<pre><code>##                 Df    Sum Sq  Mean Sq F value   Pr(&gt;F)    
+## juntos$region    2 8.972e+07 44859505   25.27 1.49e-11 ***
+## Residuals     1865 3.311e+09  1775275                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>compara = TukeyHSD(anova1)
+compara</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = juntos$miembros ~ juntos$region)
+## 
+## $`juntos$region`
+##                   diff       lwr        upr     p adj
+## Selva-Costa   375.4815  148.9958  601.96726 0.0003072
+## Sierra-Costa -213.7764 -388.6877  -38.86515 0.0116757
+## Sierra-Selva -589.2580 -785.9113 -392.60459 0.0000000</code></pre>
+<pre class="r"><code>compara.df = as.data.frame(compara[1])
+compara.df$compara = rownames(compara.df)</code></pre>
+<pre class="r"><code>graf7 = ggplot(compara.df, aes(x=compara, y=juntos.region.diff))+
+  geom_errorbar(aes(ymin=juntos.region.lwr, ymax=juntos.region.upr), width=0.2)+
+  geom_text(aes(label=paste(round(juntos.region.diff, 1))), vjust=-1, size=3)+
+  xlab(&quot;Comparación&quot;) + ylab(&quot;Diferencia&quot;)+
+  ylim(-800, 700) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
+  theme_classic()
+graf7</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="resumen" class="section level1">
+<h1>Resumen</h1>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUmVwYXNvIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjb2xsYXBzZWQ6IGZhbHNlCiAgICBudW1iZXJfc2VjdGlvbnM6IGZhbHNlCiAgICB0b2NfZGVwdGg6IDEKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjb3NtbwogICAgaGlnaGxpZ2h0OiB0ZXh0bWF0ZQotLS0KCiMgSW50cm9kdWNjacOzbgoKRW4gZXN0ZSBkb2N1bWVudG8gc2UgcmVwYXNhcsOhIGxvcyBwcmluY2lwYWxlcyBjb25jZXB0b3MgeSBwcm9jZWRpbWllbnRvcyB2aXN0b3MgZW4gbGEgcHJpbWVyYSBtaXRhZCBkZWwgY3Vyc28uCgojIEJhc2UgZGUgZGF0b3MKCkVuIGVzdGEgYmFzZSB1c2FyZW1vcyB1bmEgYmFzZSBkZSBkYXRvcyBkZSBob2dhcmVzIGFmaWxpYWRvcyB5IGFib25hZG9zIGFsIHByb2dyYW1hIEp1bnRvcy4gQ29tbyBzZSBpbmRpY2EgZW4gbGEgcMOhZ2luYSBkZSBbRGF0b3MgQWJpZXJ0b3NdKGh0dHBzOi8vd3d3LmRhdG9zYWJpZXJ0b3MuZ29iLnBlL2RhdGFzZXQvcmVzdW1lbi1kZS1ob2dhcmVzLWFmaWxpYWRvcy15LWFib25hZG9zLXBvci11YmlnZW8tMjAyMy1wcm9ncmFtYS1qdW50b3MpLCAiRXN0YSBpbmZvcm1hY2nDs24gZGVsIFByb2dyYW1hIEp1bnRvcywgZXMgZ2VuZXJhZGEgZGUgbWFuZXJhIGJpbWVzdHJhbCBhIG5pdmVsIGRlIGRpc3RyaXRvLCBjb25zaWRlcmFuZG8gZGF0b3Mgc29icmUgbGEgY2FudGlkYWQgZGUgaG9nYXJlcyBhZmlsaWFkb3MsIGNhbnRpZGFkIGRlIGhvZ2FyZXMgYWJvbmFkb3MsIG7Dum1lcm8gZGUgbWllbWJyb3Mgb2JqZXRpdm9zIHkgbG9zIG1vbnRvcyB0cmFuc2Zlcmlkb3MgcG9yIGxvcyBjb25jZXB0b3MgZGUgYWZpbGlhY2nDs24geSBjdW1wbGltaWVudG8gZGUgY29ycmVzcG9uc2FiaWxpZGFkIGJhc2UgZW4gZWwgcGVyaW9kbyIuCgpgYGB7ciBiYXNlLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHJpbykKanVudG9zID0gaW1wb3J0KCJqdW50b3MyMDIzLTEueGxzeCIpCmBgYAoKIyBEZXNjcmliaXIgdW5hIHZhcmlhYmxlCgpFc3RhIGJhc2UgZGUgZGF0b3MgaW5jbHV5ZSBsYSB2YXJpYWJsZSBhY2VyY2EgZGVsIG7Dum1lcm8gZGUgcG9ibGFjacOzbiBvYmpldGl2byBwb3IgZGlzdHJpdG8gKHZhcmlhYmxlICJtaWVtYnJvcyIpLiBRdWVyZW1vcyB0ZW5lciB1bmEgaWRlYSBhY2VyY2EgZGUgbGEgbWFnbml0dWQgZGUgZXN0ZSBwcm9ncmFtYS4gUGFyYSBlc3RvIGRlc2NyaWJpbW9zIGxhIHZhcmlhYmxlLgoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQp0YWJsYTEgPSBqdW50b3MgfD4KICBzdW1tYXJpc2UobWluaW1vID0gbWluKG1pZW1icm9zKSwgbWVkaWEgPSBtZWFuKG1pZW1icm9zKSwgCiAgICAgICAgICAgIG1lZGlhbmEgPSBtZWRpYW4obWllbWJyb3MpLAogICAgICAgICAgICBtYXhpbW8gPSBtYXgobWllbWJyb3MpLCBkZXN2aWFjaW9uID0gc2QobWllbWJyb3MpLCBJUVIobWllbWJyb3MpKQp0YWJsYTEKYGBgCgojIEdyYWZpY2FuZG8gdW5hIHZhcmlhYmxlCgpgYGB7cn0KbGlicmFyeShnZ3Bsb3QyKQpncmFmMSA9IGdncGxvdChqdW50b3MsIGFlcyh4PW1pZW1icm9zKSkrCiAgZ2VvbV9oaXN0b2dyYW0oYmlud2lkdGggPSAxMDApKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IDgwMS4yLCBjb2xvciA9ICJyZWQiKSsKICBnZW9tX3ZsaW5lKHhpbnRlcmNlcHQgPSAzMzkuNSwgY29sb3IgPSAiZ3JlZW4iKSsKICB4bGFiKCJOw7ptZXJvIGRlIG1pZW1icm9zIHByb2dyYW1hIEp1bnRvcyIpICsKICB5bGFiKCJGcmVjdWVuY2lhIikrCiAgdGhlbWVfbWluaW1hbCgpCmdyYWYxCmBgYAoKYGBge3J9CmdyYWYyID0gZ2dwbG90KGp1bnRvcywgYWVzKHk9bWllbWJyb3MpKSsKICBnZW9tX2JveHBsb3QoKSsKICB5bGFiKCJOw7ptZXJvIGRlIG1pZW1icm9zIGRlIHByb2dyYW1hIEp1bnRvIikrCiAgc2NhbGVfeV9jb250aW51b3VzKGxpbWl0cyA9IGMoMCwgMjAwMCksIGJyZWFrcyA9IHNlcSgwLCAyMDAwLCA1MDApKQpncmFmMgpgYGAKCiMgQ29tcGFyYW5kbyBkZXNjcmlwdGl2b3MKCmBgYHtyfQpqdW50b3MgPSBqdW50b3MgfD4KICBtdXRhdGUoZGVwYXJ0YSA9IGZjdF9yZW9yZGVyKGRwdG8sIG1pZW1icm9zKSkKYGBgCgpgYGB7cn0KdGFibGEyID0ganVudG9zIHw+IAogIGdyb3VwX2J5KGRlcGFydGEpIHw+CiAgc3VtbWFyaXNlKG1lZGlhID0gbWVhbihtaWVtYnJvcyksIGRlc3ZpYWNpb24gPSBzZChtaWVtYnJvcykpCnRhYmxhMgpgYGAKCiMgQ29tcGFyYW5kbyBkZXNjcmlwdGl2b3MgZ3LDoWZpY2FtZW50ZQoKYGBge3J9CmdyYWYzID0gZ2dwbG90KHRhYmxhMiwgYWVzKHg9bWVkaWEsIHk9ZGVwYXJ0YSkpKwogIGdlb21fYmFyKHN0YXQ9ImlkZW50aXR5Iiwgd2lkdGg9MC41KQpncmFmMwpgYGAKCmBgYHtyfQpncmFmNCA9IGdncGxvdChqdW50b3MsIGFlcyh5PW1pZW1icm9zLCB4PWRlcGFydGEpKSsKICBnZW9tX2JveHBsb3QoKSsKICBzY2FsZV95X2NvbnRpbnVvdXMobGltaXRzID0gYygwLCA4MDAwKSwgYnJlYWtzID0gc2VxKDAsIDgwMDAsIDEwMDApKSsKICB5bGFiKCJOw7ptZXJvIGRlIG1pZW1icm9zIGVuIFByb2dyYW1hIEp1bnRvcyIpKwogIHhsYWIoIkRlcGFydGFtZW50byIpKwogIHRoZW1lX21pbmltYWwoKSsKICBjb29yZF9mbGlwKCkKZ3JhZjQKYGBgCgpgYGB7cn0KanVudG9zID0ganVudG9zIHw+CiAgbXV0YXRlKHJlZ2lvbiA9IGNhc2Vfd2hlbigKICAgIGRwdG89PSJBTUFaT05BUyJ+IlNlbHZhIiwKICAgIGRwdG89PSLDgU5DQVNIIn4iU2llcnJhIiwKICAgIGRwdG89PSJBUFVSw41NQUMifiJTaWVycmEiLAogICAgZHB0bz09IkFSRVFVSVBBIn4iU2llcnJhIiwKICAgIGRwdG89PSJBWUFDVUNITyJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iQ0FKQU1BUkNBIn4iU2llcnJhIiwKICAgIGRwdG89PSJDVVNDTyJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iQ0FMTEFPIn4iQ29zdGEiLAogICAgZHB0bz09IkhVQU5DQVZFTElDQSJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iSFXDgU5VQ08ifiJTZWx2YSIsCiAgICBkcHRvPT0iSUNBIn4iQ29zdGEiLAogICAgZHB0bz09IkpVTsONTiJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iTEEgTElCRVJUQUQifiJDb3N0YSIsCiAgICBkcHRvPT0iTEFNQkFZRVFVRSJ+IkNvc3RhIiwKICAgIGRwdG89PSJMSU1BIn4iQ29zdGEiLAogICAgZHB0bz09IkxPUkVUTyJ+IlNlbHZhIiwKICAgIGRwdG89PSJNQURSRSBERSBESU9TIn4iU2VsdmEiLAogICAgZHB0bz09Ik1PUVVFR1VBIn4iQ29zdGEiLAogICAgZHB0bz09IlBBU0NPIn4iU2llcnJhIiwKICAgIGRwdG89PSJQSVVSQSJ+IkNvc3RhIiwKICAgIGRwdG89PSJQVU5PIn4iU2llcnJhIiwKICAgIGRwdG89PSJTQU4gTUFSVMONTiJ+IlNlbHZhIiwKICAgIGRwdG89PSJUQUNOQSJ+IkNvc3RhIiwKICAgIGRwdG89PSJUVU1CRVMifiJDb3N0YSIsCiAgICBkcHRvPT0iVUNBWUFMSSJ+IlNlbHZhIgogICkpIApgYGAKCmBgYHtyfQp0YWJsYTMgPWp1bnRvcyB8PiAKICBncm91cF9ieShyZWdpb24pIHw+CiAgc3VtbWFyaXNlKG1lZGlhID0gbWVhbihtaWVtYnJvcyksIGRlc3ZpYWNpb24gPSBzZChtaWVtYnJvcykpCnRhYmxhMwpgYGAKCmBgYHtyfQpncmFmNSA9IGdncGxvdChqdW50b3MsIGFlcyh5PW1pZW1icm9zLCB4PXJlZ2lvbikpKwogIGdlb21fYm94cGxvdCgpKwogIHNjYWxlX3lfY29udGludW91cyhsaW1pdHMgPSBjKDAsIDQwMDApLCBicmVha3MgPSBzZXEoMCwgNDAwMCwgNTAwKSkrCiAgeWxhYigiTsO6bWVybyBkZSBtaWVtYnJvcyBlbiBQcm9ncmFtYSBKdW50b3MiKSsKICB4bGFiKCJEZXBhcnRhbWVudG8iKSsKICB0aGVtZV9taW5pbWFsKCkKZ3JhZjUKYGBgCgojIENvbXBhcmFuZG8gZ3J1cG9zIG1lZGlhbnRlIGludGVydmFsb3MgZGUgY29uZmlhbnphCgpgYGB7cn0KbGlicmFyeShsc3IpCmNpTWVhbihqdW50b3MkbWllbWJyb3MpCmBgYAoKYGBge3J9Cm1pZW1icm9zeHJlZyA9IGp1bnRvcyB8PgogIGdyb3VwX2J5KHJlZ2lvbikgfD4KICBzdW1tYXJpc2UoTWVkaWEgPSBtZWFuKG1pZW1icm9zLCBuYS5ybT1UKSwKICAgICAgICAgICAgbWluID0gY2lNZWFuKG1pZW1icm9zLCBuYS5ybT1UKVsxXSwKICAgICAgICAgICAgbWF4ID0gY2lNZWFuKG1pZW1icm9zLCBuYS5ybT1UKVsyXQogICAgICAgICAgICApCm1pZW1icm9zeHJlZwpgYGAKCmBgYHtyfQpncmFmNiA9IGdncGxvdChtaWVtYnJvc3hyZWcsIGFlcyh4PXJlZ2lvbiwgeT1NZWRpYSkpKwogIGdlb21fYmFyKHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbj1taW4sIHltYXg9bWF4KSwgd2lkdGg9MC4yKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKE1lZGlhLCAxKSkpLCB2anVzdD0tMy41LCBzaXplPTQpKwogIHhsYWIoIlJlZ2lvbiIpICsgeWxhYigiTWllbWJyb3MgZGUgUHJvZ3JhbWEgSnVudG9zIikrCiAgeWxpbSgwLCAxNTAwKQpncmFmNgpgYGAKCiMgUHJ1ZWJhcyBkZSBzaWduaWZpY2FuY2lhCgpgYGB7cn0KYW5vdmExID0gYW92KGp1bnRvcyRtaWVtYnJvc35qdW50b3MkcmVnaW9uKQpzdW1tYXJ5KGFub3ZhMSkKYGBgCgpgYGB7cn0KY29tcGFyYSA9IFR1a2V5SFNEKGFub3ZhMSkKY29tcGFyYQpgYGAKCmBgYHtyfQpjb21wYXJhLmRmID0gYXMuZGF0YS5mcmFtZShjb21wYXJhWzFdKQpjb21wYXJhLmRmJGNvbXBhcmEgPSByb3duYW1lcyhjb21wYXJhLmRmKQpgYGAKCmBgYHtyfQpncmFmNyA9IGdncGxvdChjb21wYXJhLmRmLCBhZXMoeD1jb21wYXJhLCB5PWp1bnRvcy5yZWdpb24uZGlmZikpKwogIGdlb21fZXJyb3JiYXIoYWVzKHltaW49anVudG9zLnJlZ2lvbi5sd3IsIHltYXg9anVudG9zLnJlZ2lvbi51cHIpLCB3aWR0aD0wLjIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocm91bmQoanVudG9zLnJlZ2lvbi5kaWZmLCAxKSkpLCB2anVzdD0tMSwgc2l6ZT0zKSsKICB4bGFiKCJDb21wYXJhY2nDs24iKSArIHlsYWIoIkRpZmVyZW5jaWEiKSsKICB5bGltKC04MDAsIDcwMCkgKwogIGNvb3JkX2ZsaXAoKSArCiAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCwgY29sb3IgPSAicmVkIiwgbGluZXR5cGU9ImRvdHRlZCIpICsKICB0aGVtZV9jbGFzc2ljKCkKZ3JhZjcKYGBgCgojIFJlc3VtZW4K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("repaso.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

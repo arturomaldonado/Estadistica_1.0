@@ -22,6 +22,8 @@ navbar:
       href: clase5.html
     - text: "Clase 6"
       href: clase6.html
+    - text: "Repaso"
+      href: repaso.html
     - text: "Clase 7"
       href: clase7.html
     - text: "Clase 9"

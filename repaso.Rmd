@@ -1,0 +1,200 @@
+---
+title: "Repaso"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: cosmo
+    highlight: textmate
+---
+
+# Introducción
+
+En este documento se repasará los principales conceptos y procedimientos vistos en la primera mitad del curso.
+
+# Base de datos
+
+En esta base usaremos una base de datos de hogares afiliados y abonados al programa Juntos. Como se indica en la página de [Datos Abiertos](https://www.datosabiertos.gob.pe/dataset/resumen-de-hogares-afiliados-y-abonados-por-ubigeo-2023-programa-juntos), "Esta información del Programa Juntos, es generada de manera bimestral a nivel de distrito, considerando datos sobre la cantidad de hogares afiliados, cantidad de hogares abonados, número de miembros objetivos y los montos transferidos por los conceptos de afiliación y cumplimiento de corresponsabilidad base en el periodo".
+
+```{r base, message=FALSE, warning=FALSE}
+library(rio)
+juntos = import("juntos2023-1.xlsx")
+```
+
+# Describir una variable
+
+Esta base de datos incluye la variable acerca del número de población objetivo por distrito (variable "miembros"). Queremos tener una idea acerca de la magnitud de este programa. Para esto describimos la variable.
+
+```{r}
+library(tidyverse)
+tabla1 = juntos |>
+  summarise(minimo = min(miembros), media = mean(miembros), 
+            mediana = median(miembros),
+            maximo = max(miembros), desviacion = sd(miembros), IQR(miembros))
+tabla1
+```
+
+# Graficando una variable
+
+```{r}
+library(ggplot2)
+graf1 = ggplot(juntos, aes(x=miembros))+
+  geom_histogram(binwidth = 100)+
+  geom_vline(xintercept = 801.2, color = "red")+
+  geom_vline(xintercept = 339.5, color = "green")+
+  xlab("Número de miembros programa Juntos") +
+  ylab("Frecuencia")+
+  theme_minimal()
+graf1
+```
+
+```{r}
+graf2 = ggplot(juntos, aes(y=miembros))+
+  geom_boxplot()+
+  ylab("Número de miembros de programa Junto")+
+  scale_y_continuous(limits = c(0, 2000), breaks = seq(0, 2000, 500))
+graf2
+```
+
+# Comparando descriptivos
+
+```{r}
+juntos = juntos |>
+  mutate(departa = fct_reorder(dpto, miembros))
+```
+
+```{r}
+tabla2 = juntos |> 
+  group_by(departa) |>
+  summarise(media = mean(miembros), desviacion = sd(miembros))
+tabla2
+```
+
+# Comparando descriptivos gráficamente
+
+```{r}
+graf3 = ggplot(tabla2, aes(x=media, y=departa))+
+  geom_bar(stat="identity", width=0.5)
+graf3
+```
+
+```{r}
+graf4 = ggplot(juntos, aes(y=miembros, x=departa))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 8000), breaks = seq(0, 8000, 1000))+
+  ylab("Número de miembros en Programa Juntos")+
+  xlab("Departamento")+
+  theme_minimal()+
+  coord_flip()
+graf4
+```
+
+```{r}
+juntos = juntos |>
+  mutate(region = case_when(
+    dpto=="AMAZONAS"~"Selva",
+    dpto=="ÁNCASH"~"Sierra",
+    dpto=="APURÍMAC"~"Sierra",
+    dpto=="AREQUIPA"~"Sierra",
+    dpto=="AYACUCHO"~"Sierra",
+    dpto=="CAJAMARCA"~"Sierra",
+    dpto=="CUSCO"~"Sierra",
+    dpto=="CALLAO"~"Costa",
+    dpto=="HUANCAVELICA"~"Sierra",
+    dpto=="HUÁNUCO"~"Selva",
+    dpto=="ICA"~"Costa",
+    dpto=="JUNÍN"~"Sierra",
+    dpto=="LA LIBERTAD"~"Costa",
+    dpto=="LAMBAYEQUE"~"Costa",
+    dpto=="LIMA"~"Costa",
+    dpto=="LORETO"~"Selva",
+    dpto=="MADRE DE DIOS"~"Selva",
+    dpto=="MOQUEGUA"~"Costa",
+    dpto=="PASCO"~"Sierra",
+    dpto=="PIURA"~"Costa",
+    dpto=="PUNO"~"Sierra",
+    dpto=="SAN MARTÍN"~"Selva",
+    dpto=="TACNA"~"Costa",
+    dpto=="TUMBES"~"Costa",
+    dpto=="UCAYALI"~"Selva"
+  )) 
+```
+
+```{r}
+tabla3 =juntos |> 
+  group_by(region) |>
+  summarise(media = mean(miembros), desviacion = sd(miembros))
+tabla3
+```
+
+```{r}
+graf5 = ggplot(juntos, aes(y=miembros, x=region))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 4000), breaks = seq(0, 4000, 500))+
+  ylab("Número de miembros en Programa Juntos")+
+  xlab("Departamento")+
+  theme_minimal()
+graf5
+```
+
+# Comparando grupos mediante intervalos de confianza
+
+```{r}
+library(lsr)
+ciMean(juntos$miembros)
+```
+
+```{r}
+miembrosxreg = juntos |>
+  group_by(region) |>
+  summarise(Media = mean(miembros, na.rm=T),
+            min = ciMean(miembros, na.rm=T)[1],
+            max = ciMean(miembros, na.rm=T)[2]
+            )
+miembrosxreg
+```
+
+```{r}
+graf6 = ggplot(miembrosxreg, aes(x=region, y=Media))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=min, ymax=max), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-3.5, size=4)+
+  xlab("Region") + ylab("Miembros de Programa Juntos")+
+  ylim(0, 1500)
+graf6
+```
+
+# Pruebas de significancia
+
+```{r}
+anova1 = aov(juntos$miembros~juntos$region)
+summary(anova1)
+```
+
+```{r}
+compara = TukeyHSD(anova1)
+compara
+```
+
+```{r}
+compara.df = as.data.frame(compara[1])
+compara.df$compara = rownames(compara.df)
+```
+
+```{r}
+graf7 = ggplot(compara.df, aes(x=compara, y=juntos.region.diff))+
+  geom_errorbar(aes(ymin=juntos.region.lwr, ymax=juntos.region.upr), width=0.2)+
+  geom_text(aes(label=paste(round(juntos.region.diff, 1))), vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  ylim(-800, 700) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+graf7
+```
+
+# Resumen

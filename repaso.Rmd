@@ -16,7 +16,9 @@ output:
 
 En este documento se repasará los principales conceptos y procedimientos vistos en la primera mitad del curso.
 
-# Base de datos
+# Ejemplo 1
+
+## Base de datos
 
 En esta base usaremos una base de datos de hogares afiliados y abonados al programa Juntos. Como se indica en la página de [Datos Abiertos](https://www.datosabiertos.gob.pe/dataset/resumen-de-hogares-afiliados-y-abonados-por-ubigeo-2023-programa-juntos), "Esta información del Programa Juntos, es generada de manera bimestral a nivel de distrito, considerando datos sobre la cantidad de hogares afiliados, cantidad de hogares abonados, número de miembros objetivos y los montos transferidos por los conceptos de afiliación y cumplimiento de corresponsabilidad base en el periodo".
 
@@ -25,7 +27,7 @@ library(rio)
 juntos = import("juntos2023-1.xlsx")
 ```
 
-# Describir una variable
+## Describir una variable numérica
 
 Esta base de datos incluye la variable acerca del número de población objetivo por distrito (variable "miembros"). Queremos tener una idea acerca de la magnitud de este programa. Para esto describimos la variable.
 
@@ -38,7 +40,7 @@ tabla1 = juntos |>
 tabla1
 ```
 
-# Graficando una variable
+## Graficando una variable numérica
 
 ```{r}
 library(ggplot2)
@@ -60,7 +62,7 @@ graf2 = ggplot(juntos, aes(y=miembros))+
 graf2
 ```
 
-# Comparando descriptivos
+## Comparando descriptivos
 
 ```{r}
 juntos = juntos |>
@@ -74,7 +76,7 @@ tabla2 = juntos |>
 tabla2
 ```
 
-# Comparando descriptivos gráficamente
+## Comparando descriptivos gráficamente
 
 ```{r}
 graf3 = ggplot(tabla2, aes(x=media, y=departa))+
@@ -141,7 +143,7 @@ graf5 = ggplot(juntos, aes(y=miembros, x=region))+
 graf5
 ```
 
-# Comparando grupos mediante intervalos de confianza
+## Comparando grupos mediante intervalos de confianza
 
 ```{r}
 library(lsr)
@@ -168,7 +170,7 @@ graf6 = ggplot(miembrosxreg, aes(x=region, y=Media))+
 graf6
 ```
 
-# Pruebas de significancia
+## Pruebas de significancia
 
 ```{r}
 anova1 = aov(juntos$miembros~juntos$region)
@@ -197,4 +199,97 @@ graf7 = ggplot(compara.df, aes(x=compara, y=juntos.region.diff))+
 graf7
 ```
 
-# Resumen
+# Ejemplo 2
+
+```{r}
+peru = import("PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
+```
+
+## Describir una variable categórica
+
+```{r}
+peru = peru |>
+  mutate(ing4rec=recode(ing4, '5' = '1', '6' = '1', '7' = '1',  .default = '0'))
+```
+
+```{r}
+table(peru$ing4)
+table(peru$ing4rec)
+```
+
+```{r}
+peru = peru |>
+  mutate(ing4rec = factor(ing4rec, labels=c("No", "Sí")))
+```
+
+```{r}
+tabla4 = peru |>
+  filter(ing4rec == "No" | ing4rec == "Sí") |>
+  count(apoyo = ing4rec, name="Frecuencia") |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla4
+```
+
+## Graficar una variable categórica
+
+```{r}
+graf8 = ggplot(tabla4, aes(y=Porcentaje, x=apoyo))+
+  geom_bar(stat="identity", width=0.5)
+graf8
+```
+
+## Comparando proporciones
+
+```{r}
+peru = peru |>
+  mutate(sexo=recode(q1tb, '1' = '1', '2' = '2', '3' = '2')) |>
+  mutate(sexo = factor(sexo, labels=c("Hombre", "Mujer/Otro")))
+```
+
+```{r}
+tabla5 = peru |>
+  filter(ing4rec == "No" | ing4rec == "Sí") |> 
+  group_by(sexo) |>
+  count(Apoyo = ing4rec, name="N")|>
+  mutate(total = sum(N), 
+         Por = N / total * 100, 
+         err = sqrt(Por*(100-Por)/N), 
+         liminf = Por - 1.96*err, 
+         limsup = Por + 1.96*err)
+tabla5
+```
+
+## Comparando proporciones gráficamente
+
+```{r}
+graf9 = ggplot(tabla5, aes(x=sexo, y=Por, fill=Apoyo))+
+  geom_bar(stat="identity", width=0.5)+
+  labs(x="Sexo", y="Porcentaje",
+       caption="Barómetro de las Américas por LAPOP, 2021")+
+  theme_classic()
+graf9
+```
+
+## Comparando proporciones con intervalos de confianza
+
+```{r}
+tabla5 = tabla5[-c(1,3),]
+```
+
+```{r}
+graf10 = ggplot(tabla5, aes(x=sexo, y=Por))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-1.5, size=4)+
+  labs(x="Sexo", y="Porcentaje",
+       caption="Barómetro de las Américas por LAPOP, 2021")+
+  theme_classic()
+graf10
+  
+```
+
+## Prueba de significancia para proporciones
+
+```{r}
+prop.test(c(803, 759), c(1610,1412))
+```

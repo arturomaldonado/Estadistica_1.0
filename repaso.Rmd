@@ -16,7 +16,7 @@ output:
 
 En este documento se repasará los principales conceptos y procedimientos vistos en la primera mitad del curso.
 
-# Ejemplo 1
+# Ejemplo 1: variable numérica
 
 ## Base de datos
 
@@ -36,9 +36,12 @@ library(tidyverse)
 tabla1 = juntos |>
   summarise(minimo = min(miembros), media = mean(miembros), 
             mediana = median(miembros),
-            maximo = max(miembros), desviacion = sd(miembros), IQR(miembros))
+            maximo = max(miembros), desviacion = sd(miembros), 
+            IQR(miembros))
 tabla1
 ```
+
+Se observa que la mediana es de aproximadamente 340 miembros por distrito. Esta es la magnitud de atención estándar de este programa a lo largo del Perú. Sin embargo, la media es de poco más de 800 miembros, lo que indica que existen distritos con una alta carga de miembros, que podrían considerarse atípicos, y que sesgan la media hacia los valores altos.
 
 ## Graficando una variable numérica
 
@@ -54,6 +57,8 @@ graf1 = ggplot(juntos, aes(x=miembros))+
 graf1
 ```
 
+El histograma permite distinguir esta situación más claramente. Vemos que los distritos en el Perú generalmente acumulan menos de 5000 usuarios. Son raros y puntuales los distritos con más usuarios.
+
 ```{r}
 graf2 = ggplot(juntos, aes(y=miembros))+
   geom_boxplot()+
@@ -66,13 +71,14 @@ graf2
 
 ```{r}
 juntos = juntos |>
-  mutate(departa = fct_reorder(dpto, miembros))
+  mutate(departa = as.factor(dpto))
 ```
 
 ```{r}
 tabla2 = juntos |> 
   group_by(departa) |>
-  summarise(media = mean(miembros), desviacion = sd(miembros))
+  summarise(media = mean(miembros), desviacion = sd(miembros),
+            mediana = median(miembros))
 tabla2
 ```
 
@@ -199,7 +205,7 @@ graf7 = ggplot(compara.df, aes(x=compara, y=juntos.region.diff))+
 graf7
 ```
 
-# Ejemplo 2
+# Ejemplo 2: variable categórica
 
 ```{r}
 peru = import("PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta")

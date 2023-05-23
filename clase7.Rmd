@@ -1,7 +1,7 @@
 ---
-title: "Clase 7"
+title: "Clase 10"
 author: "Arturo Maldonado"
-date: "18/10/2022"
+date: "23/05/2023"
 output:
   html_document:
     toc: true
@@ -24,28 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introducción
 
-La prueba t y la prueba de ANOVA trabajan con una variable dependiente numérica y una variable independiente de tipo factor.
-Cuando la variable de factor tiene 2 grupos, se trabaja con la prueba t.
-Cuando la variable de factor tiene más de 2 grupos, se trabaja con la prueba de ANOVA.
-
-En ambos casos se trata de evaluar una relación bivariada: analizar el impacto de una variable independiente categórica en una variable dependiente numérica.
-
--   Prueba t:
-
-    -   Variable independiente (sexo) -\> Variable dependiente (ingresos)
-
-    -   Variable independiente (afroamericanos) -\> Variable dependiente (ingresos)
-
-    -   Variable independiente (urbano/rural) -\> Variable dependiente (escala de simpatía por candidato X)
-
--   ANOVA:
-
-    -   Variable independiente (etnicidad) -\> Variable dependiente (ingresos)
-
-    -   Variable independiente (región) -\> Variable dependiente (voto en primera vuelta)
-
-    -   Variable independiente (NSE) -\> Variable dependiente (escala de conservadurismo)
-
+La prueba t y la prueba de ANOVA analiza el impacto de una variable independiente categórica en una variable dependiente numérica.
 El paso que vamos a dar en esta sección es analizar la **relación bivariada entre dos variables de factor (o categóricas)**.
 Esta evaluación se realiza mediante la prueba de chi-cuadrado.
 
@@ -57,7 +36,7 @@ Esta evaluación se realiza mediante la prueba de chi-cuadrado.
 
     -   Variable independiente(nivel educativo) -\> Variable dependiente (satisfacción con la democracia)
 
-Como dijimos en clases anteriores, la comparación de proporciones son casos especiales de lo que veremos ahora.
+Como dijimos en clases anteriores, la comparación de proporciones es un caso especial de lo que veremos ahora.
 
 # Tablas de contingencia
 
@@ -103,59 +82,100 @@ En el Gráfico 1.14 del reporte se presenta una evaluación de la satisfacción 
 Es decir, se usa la satisfacción con la democracia como variable dependiente y a cada variable demográficas y socioeconómica como variables independientes.
 
 Por ejemplo, se reporta que entre los hombres, el 42.3% están satisfechos con la democracia, mientras que entre las mujeres, este porcentaje disminuye a 36.9%.
-Aquí vamos a analizar estas mismas variables, pero usando la variable PN4 en su forma original.
 
 Antes de proceder, tenemos que recodificar las variables, ponerlas en forma de factor y etiquetar.
 
 ```{r reco0}
-peru$genero = car::recode(peru$q1tb, "1=1; 2:3=2")
-table(peru$genero)
+library(tidyverse)
+peru = peru |>
+  mutate(sexo=recode(q1tb, '1' = '1', '2' = '2', '3' = '2')) |>
+  mutate(sexo = factor(sexo, labels=c("Hombre", "Mujer/Otro")))
 ```
 
 ```{r reco1}
-peru$genero = as.factor(peru$genero)
-levels(peru$genero) = c("Hombre", "Mujer/Otro")
-table(peru$genero)
+table(peru$sexo)
 ```
 
 Lo mismo para la variable PN4 que se transforma en la variable "satis".
 
 ```{r reco2}
-peru$satis = as.factor(peru$pn4)
-levels(peru$satis) = c("Muy satisfecho", "Satisfecho", "Insatisfecho", "Muy insatisfecho")
-table(peru$satis)
+peru = peru |>
+  mutate(satis = factor(pn4, labels= c("Muy satisfecho", "Satisfecho", 
+                                       "Insatisfecho", "Muy insatisfecho")))
+tabla1 = table(peru$satis)
+tabla1
 ```
 
-Para calcular la tabla de satisfacción con la democracia, independiente del género de la persona, se puede calcular los porcentajes de esta variable.
+Para calcular la tabla de satisfacción con la democracia, independiente del género de la persona, se puede calcular los porcentajes de esta variable con el comando `prop.table`.
+Se multuplica por 100 para tener el formato de porcentaje.
 
 ```{r satisporc}
-prop.table(table(peru$satis))*100
+library(knitr)
+tabla1 |>
+  prop.table()*100
 ```
 
-Lo primero es calcular la tabla de contingencia entre satisfacción y género.
+Ahora, se puede calcular la tabla de contingencia entre satisfacción y género.
 El comando `table` nos brinda las frecuencias absolutas del cruce entre ambas variables.
-La variable dependiente "satisfacción con la democracia" se ubica en las filas y la variable independiente "género" en las columnas.
-Se verifica que las 1,727 observaciones que están muy satisfechas con la democracia, se dividen en 919 hombres, 803 mujeres y 5 NAs.
+La variable dependiente "satisfacción con la democracia" se ubica en las filas y la variable independiente "sexo" en las columnas.
+Se verifica que las 31 observaciones que están muy satisfechas con la democracia, se dividen en 19 hombres y 12 mujeres.
 
 ```{r tabla}
-table(peru$satis, peru$genero)
+tabla2 = table(peru$satis, peru$sexo)
+tabla2
 ```
 
-Para calcular las frecuencias relativas, se tiene que anidar `table` dentro del comando `prop.table`.
-Si de anida solamente, `prop.table` calcula las proporciones sobre el total.
-Se agrega la especificación `(…,2)` para indicar que se quiere las proporciones sobre las columnas.
-Se anida todo dentro del comando `addmargins` para verificar la suma de proporciones sobre las columnas y no se incluye los valores perdidos.
+Para calcular las frecuencias relativas, se tiene que usar el comando `prop.table`.
+Se agrega la especificación `(2)` para indicar que se quiere las proporciones sobre las columnas.
+Se sigue con el comando `round` para eliminar los decimales innecesarios y finalmente se usa `addmargins` para verificar la suma de proporciones sobre las columnas.
 
 ```{r tabla1}
-prop.table(table(peru$satis, peru$genero))*100
-prop.table(table(peru$satis, peru$genero), 2)*100
+tabla2 = tabla2 |>
+  prop.table(2) |>
+  round(3)*100
+tabla2
+#prop.table(table(peru$satis, peru$genero))*100
+#prop.table(table(peru$satis, peru$genero), 2)*100
 ```
 
-En la segunda tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
+En esta tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
 Por ejemplo, el 2.4% de los hombres se encuentras muy satisfechos con la democracia, un porcentaje algo similar el 1.7% de las mujeres.
 El 20.4% de los hombres se encuentran satisfechos con la democracia, 4 puntos porcentuales por encima que las mujeres.
 
 De esta manera, se pueden comparar los porcentajes por cada categoría de la variable dependiente entre grupos de la variable independiente y, además, se puede comparar con los porcentajes no condicionales de la variable satisfacción con la democracia.
+
+# Gráficos bivariados categóricos
+
+Para crear un gráfico se tiene que guardar la tabla como un dataframe.
+Se usa el comando `as.data.frame` para salvar los porcentajes y poder usarlos con el comando `ggplot`.
+Nótese que el dataframe guarda los porcentajes en otro formato.
+
+```{r tabla3}
+tabla3 = as.data.frame(tabla2)
+tabla3
+```
+
+En este caso, como tenemos 4 categorías para satisfacción con la democracia y otras 2 para sexo, un gráfico de barras separadas crearía 8 barras.
+
+```{r}
+library(ggplot2)
+ggplot(data=tabla3, aes(x=Var1, y=Freq, fill=Var2))+
+  geom_bar(position = "dodge", stat="identity")+
+  geom_text(aes(label=paste(Freq, "%", sep="")), 
+            position = position_dodge(width = 0.9), vjust=0, size = 3)+
+  labs(x="Satisfacción con la democracia", y="Porcentaje", fill="Sexo")
+```
+
+Esta forma de graficar puede complicar la comparación en algunos casos.
+Por eso, en otros casos, se prefiere el tipo de barras apiladas.
+
+```{r barrapiladased}
+ggplot(data=tabla3, aes(x=Var2, y=Freq, fill=Var1))+
+  geom_bar(position="stack", stat="identity")+
+  geom_text(aes(label=paste(Freq, "%", sep="")), 
+            position = position_stack(), vjust=1, size = 3)+
+  labs(x="Sexo", y="Porcentaje", fill="Satisfacción con la democracia")
+```
 
 # Independencia y dependencia
 
@@ -188,45 +208,27 @@ En realidad, a medida que estos porcentajes difieren más de la distribución no
 Se basa en la comparación de las frecuencias observadas (las observaciones que se recoge en campo) versus las frecuencias esperadas (las observaciones que debería haber en cada celda de la tabla si las variables fueran independientes).
 En ese sentido $H_0: f_e = f_o$ o lo que es lo mismo que las variables son independientes.
 
-En nuestro ejemplo, podemos calcular las frecuencias observadas con el comando `table`.
-Se trata del número de observaciones en cada una de las 8 celdas del cruce de ambas variables.
-
-```{r tabla2}
-addmargins(table(peru$satis, peru$genero), 1)
-```
-
-Para el cálculo de las frecuencias observadas requerimos la distribución de la variables "satisfacción con la democracia".
-
-```{r fo satis}
-addmargins(table(peru$satis))
-prop.table(table(peru$satis))*100
-```
-
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------+-------------------------------------------------------------+-------------------------------------------------------------+
-| Col1 | Hombres                                                     | Mujeres                                                     |
-+======+=============================================================+=============================================================+
-| MS   | 2.1% de hombres-\> #observaciones si no hay relación        | 2.1% de mujeres                                             |
-|      |                                                             |                                                             |
-|      | cuánto es el 6.4% de 790= 50.56 #obs si NO hubiera relación | cuánto es el 6.4% de 686 = 43.9 #obs si NO hubiera relación |
-|      |                                                             |                                                             |
-|      | Pero, 19 es lo realmente observado                          | Pero, 12 es lo realmente observado                          |
-|      |                                                             |                                                             |
-|      | (919-50.56)\^2                                              | (12-43.9)\^2                                                |
-+------+-------------------------------------------------------------+-------------------------------------------------------------+
-| S    | 18.6%                                                       | 18.6%                                                       |
-+------+-------------------------------------------------------------+-------------------------------------------------------------+
-| I    | 61.3%                                                       | 61.3%                                                       |
-+------+-------------------------------------------------------------+-------------------------------------------------------------+
-| MI   | 18%                                                         | 18%                                                         |
-+------+-------------------------------------------------------------+-------------------------------------------------------------+
-|      | 13608                                                       |                                                             |
-+------+-------------------------------------------------------------+-------------------------------------------------------------+
-
-|     |     |     |     |     |     |     |     |
-|-----|:---:|:---:|:---:|-----|-----|-----|-----|
-|     |     |     |     |     |     |     |     |
++-------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| Col1        | Hombres                                                        | Mujeres                                                          |
++=============+================================================================+==================================================================+
+| MS          | 2.1% de hombres -\> #observaciones si no hay relación          | 2.1% de mujeres -\> #observaciones si no hay relación            |
+|             |                                                                |                                                                  |
+|             | cuánto es el 2.1% de 1617 = 34 -\> #obs si NO hubiera relación | cuánto es el 2.1% de 1421 = 29.8 -\> #obs si NO hubiera relación |
+|             |                                                                |                                                                  |
+|             | Pero, 19 es lo realmente observado                             | Pero, 12 es lo realmente observado                               |
+|             |                                                                |                                                                  |
+|             | (19-34)\^2                                                     | (12-29.8)\^2                                                     |
++-------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| S           | 18.6%                                                          | 18.6%                                                            |
++-------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| I           | 61.3%                                                          | 61.3%                                                            |
++-------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| MI          | 18%                                                            | 18%                                                              |
++-------------+----------------------------------------------------------------+------------------------------------------------------------------+
+|             | 100%                                                           | 100%                                                             |
++-------------+----------------------------------------------------------------+------------------------------------------------------------------+
 
 # Prueba estadística
 
@@ -240,13 +242,7 @@ $$
 
 -   Si fo=fe en cada celda, entonces χ\^2 = 0
 
--   La distribución de chi-cuadrado depende de los grados de libertad (gl).
-
--   gl = (filas -1)\*(columnas -1)
-
--   La distribución está concentrada en los valores pequeños (sesgo hacia la derecha)
-
--   Con el valor de $\chi^2$ y con los gl, se calcula un p-value, que tiene que ser menor de 0.05 para rechazar la Ho.
+-   Con el valor de $\chi^2$ se calcula un p-value, que tiene que ser menor de 0.05 para rechazar la Ho.
 
 -   Se requiere que haya al menos 5 observaciones en cada celda
 
@@ -254,7 +250,7 @@ En R se usa el comando `chisq.test` para calcular el estadístico y el p-value.
 Esta prueba es mejor guardarla en un objeto nuevo
 
 ```{r prueba}
-prueba = chisq.test(peru$satis, peru$genero)
+prueba = chisq.test(peru$satis, peru$sexo)
 prueba$observed
 prueba$expected
 ```
@@ -271,141 +267,81 @@ prueba
 
 La prueba nos da como resultado un p-value \< 0.15, por lo que NO se puede rechazar la hipótesis nula y se concluye que no sabemos si existe asociación/relación/dependencia entre las variables.
 
-# Medidas de asociación
-
-La prueba de $\chi^2$ nos indica si hay relación o si no se puede decir que haya una relación entre las variables, pero no nos dice nada sobre la **fuerza de la relación**.
-Se requiere otra prueba para indicar la magnitud de la relación.
-Es decir:
-
--   Primera pregunta: ¿hay asociación?
-    La prueba de $\chi^2$ nos da una respuesta.
-    Mientras más pequeño el p-value, mayor la evidencia de asociación.
-
--   Segunda pregunta: ¿qué tan fuerte es la asociación?
-
-Puede darse el caso de $\chi^2$ grandes con asociaciones débiles, generalmente cuando el N de la muestra es grande.
-En nuestro caso, por ejemplo, las diferencias entre los porcentajes de satisfacción con la democracia entre hombres y mujeres no son muy grandes y sin embargo el p-value nos lleva a concluir que existe asociación.
-Es probable que este sea un caso de una asociación (de acuerdo al p-value) pero con una fuerza débil.
-
-Una medida de asociación es un estadístico que resume la fuerza de la dependencia entre dos variables.
-El rango varía desde asociaciones débiles, generalmente cercanas a 0, hasta asociaciones fuertes, más cercanas a 1.
-
-Para variables nominales, las medidas de asociación varían entre 0 y 1.
-
-Para variables ordinales, las medidas de asociación también indican la dirección de la relación, por lo que varían entre -1 a +1.
-Los valores negativos indican una relación inversa entre las variables (a un mayor valor de la VI, un menor valor de la VD) y los positivos una relación directa entre las variables (a un mayor valor de la VI, un mayor valor de la VD).
-
-En nuestro ejemplo tenemos una variable ordinal -satisfacción con la democracia- y una variable nominal -género-, por lo que se tiene que asumir que se está trabajando con variables nominales.
-En el caso de variables nominales tenemos varias alternativas, como el coeficiente de contingencia o la V de Cramer, ambas variando entre 0 y 1.
-
-Para hacer esta evaluación, se guarda la tabla de contingencia en un objeto y se usa el comando `assocstats` de la librería `vcd`.
-
-```{r asoc}
-library(vcd)
-tabla = table(peru$satis, peru$genero)
-assocstats(tabla)
-```
-
-Ambas medidas de asociación tienen un valor de 0.056.
-Este resultado está mucho más cerca de 0 que de 1, por lo que podemos concluir que estamos ante una relación débil.
-Para poner unos límites arbitrarios, podemos indicar que:
-
--   Medidas de asociación entre 0 y 0.3 son relaciones débiles.
-
--   Medidas de asociación entre 0.3 y 0.6 son relaciones moderadas.
-
--   Medidas de asociación entre 0.6 y 1 son relaciones fuertes.
-
 # Tabla cruzada de satisfacción con la democracia según nivel educativo
 
-El Gráfico 1.14 del reporte muestra los datos de satisfacción con la democracia (según la variable recodificada dummy) por niveles educativo.
-Como segundo ejemplo, aquí vamos a replicar esa relación usando la variable original de tipo factor.
+```{r}
+lapop = import("lapop21.RData")
+```
 
-Lo primero es recodificar la variable educación.
+El Gráfico 1.14 del reporte muestra los datos de satisfacción con la democracia (según la variable recodificada dummy) por niveles educativo.
+Como segundo ejemplo, aquí vamos a replicar esa relación usando la variable original de tipo factor pero ahora usando la base de datos de todos los países.
+
+```{r}
+lapop = lapop |>
+  mutate(satis = factor(pn4, labels= c("Muy satisfecho", "Satisfecho", 
+                                       "Insatisfecho", "Muy insatisfecho")))
+table(peru$satis)
+```
+
+Vamos a recodificar la variable educación.
 La variable original "edr" separa a los analfabetos de los que tienen primaria.
 Los analfabetos son un grupo muy pequeño y podrían causar problemas.
 
-```{r analfabeto}
-peru$educ = car::recode(peru$edr, "0:1=1; 2=2; 3=3")
-table(peru$educ)
+Primero, creamos una variable "educ", como el factor de "edr".
+
+```{r}
+lapop = lapop |>
+  mutate(educ = factor(edr))
 ```
 
-```{r reco ed}
-peru$educ = as.factor(peru$educ)
-levels(peru$educ) = c("Hasta primaria", "Secundaria", "Superior")
-table(peru$educ)
+Finalmente, se etiqueta.
+
+```{r}
+lapop = lapop |>
+  mutate(educ = factor(educ, labels=c("Analfabeto", "Primaria",
+                                      "Secundaria", "Superior")))
+table(lapop$educ)
 ```
 
 Con la variable recodificada se puede calcular la tabla cruzada de satisfacción con la democracia según niveles educativos.
 
 ```{r tabla ed}
-addmargins(prop.table(table(peru$satis, peru$educ), 2)*100, 1)
+tabla4 = table(lapop$satis, lapop$educ)
+tabla4
 ```
+
+```{r}
+tabla4 = tabla4 |>
+  prop.table(2) |>
+  round(3)*100
+tabla4
+```
+
+# Gráfico bivariado de satisfacción con la democracia según educación
+
+```{r}
+tabla5 = as.data.frame(tabla4)
+tabla5
+```
+
+```{r}
+ggplot(data=tabla5, aes(x=Var2, y=Freq, fill=Var1))+
+  geom_bar(position="stack", stat="identity")+
+  geom_text(aes(label=paste(Freq, "%", sep="")), 
+            position = position_stack(), vjust=1, size = 3)+
+  labs(x="Nivel educativo", y="Porcentaje", 
+       fill="Satisfacción con la democracia")
+```
+
+# Prueba estadística entre satisfacción con la democracia según educación
 
 Para comprobar la relación entre estas variables, también se puede usar la prueba de independencia de $\chi^2$.
 Esta evaluación se guarda en un objeto "prueba2".
 
 ```{r chi ed}
-prueba2 <- chisq.test(peru$satis, peru$educ)
+prueba2 <- chisq.test(lapop$satis, lapop$educ)
 prueba2
 ```
 
-Con el valor de estadístico se obtiene un p-value mayor a 0.05, con lo que NO se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que no sabemos si existiría una relación de dependencia entre las variables.
-
-Para evaluar la fuerza de la relación, se tiene que trabajar con otras medidas de asociación, debido a que se tiene una tabla con dos variables ordinales.
-Para esto usaremos la librería `DescTools` y los comandos `GoodmanKrustalGamma`, `KendallTauB` y `StuartTauC`.
-
-```{r asoc ordinal, message=FALSE, warning=FALSE}
-library(DescTools)
-tabla2 <- table(peru$satis, peru$educ)
-GoodmanKruskalGamma(tabla2)
-KendallTauB(tabla2)
-StuartTauC(tabla2)
-```
-
-Otra forma es usando la librería `oii` y el comando `association.measures`.
-
-```{r ordinal}
-library(oii)
-association.measures(peru$satis, peru$educ)
-```
-
-En este caso se observan las medidas de asociación para variables ordinales.
-Este comando reporta 4 se estas medidas, todas ellas varían entre -1 a +1.
-En nuestro ejemplo, todas tiene signo positivo, lo que indica una relación directa entre ambas variables.
-Esto parecería ir contra lo que se reporta en el Gráfico 1.14 del reporte donde se observa claramente que la satisfacción con la democracia disminuye a niveles educativos más altos, lo que se expresaría en un signo negativo.
-Finalmente, el valor de las medidas de asociación son menores a 0.3, con lo que se indica que la relación entre las variables es débil.
-
-En el Gráfico 1.14 se observa que se tiene un mayor porcentaje de satisfacción con la democracia entre los menos educados.
-Esta relación también puede observarse en este gráfico.
-Los sectores "muy satisfechos" (en rosado) y "satisfechos" (en verde) disminuyen a medida que se pasa de ninguna a primaria, secundaria y superior.
-Esta aparente contradicción es debido a la forma como se ha codificado la satisfacción con la democracia (variable "satis" que se crea desde "pn4").
-La variable original tiene valores entre 1 a 4, donde 1 significa "muy satisfecho" y 4 "muy insatisfecho".
-Es decir, esta variable tiene una codificación donde valores altos indican "menos" de la variable.
-Es por ese motivo que la prueba de asociación resulta con un signo positivo, que en este caso indicaría que un valor mayor de la variable de educación significa "más" de la variable satisfacción con la democracia (que en realidad es menos).
-Para evitar esta confusión se debió cambiar la monotonía de la variable satisfacción con la democracia para que valores más altos indiquen una mayor satisfacción y, con esto, se obtenga un signo negativo en las medidas de asociación.
-En esta sección se ha procedido de esa manera para llamar la atención a que la codificación tiene consecuencias en los resultados y puede llevar a confusión si no se presta atención.
-
-# Gráficos bivariados categóricos
-
-Para crear un gráfico se tiene que guardar la tabla como un dataframe.
-Se usa el comando `as.data.frame` para salvar los porcentajes y poder usarlos con el comando `ggplot`.
-
-```{r tabla3}
-tabla3 = as.data.frame(prop.table(table(peru$satis, peru$educ), 2)*100)
-tabla3
-```
-
-En este caso, como tenemos 4 categorías para satisfacción con la democracia y otras 4 para nivel educativo, un gráfico de barras separadas crearía 16 barras, lo que complicaría la comparación.
-Por eso, en este caso, se prefiere el tipo de barras apiladas.
-
-```{r barapiladased}
-library(ggplot2)
-ggplot(data=tabla3, aes(x=Var2, y=Freq, fill=Var1, ymax=100))+
-  geom_bar(position="stack", stat="identity")+
-  geom_text(aes(label=paste(round(Freq, 1), "%", sep="")),
-            position=position_stack(), vjust=1.5)+
-  labs(fill="Satisfacción con la democracia")+
-  ylab("Porcentaje")+
-  xlab("Nivel educativo")
-```
+Con el valor de estadístico se obtiene un p-value menor a 0.05, con lo que se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que sí existe una relación de dependencia entre las variables.
+Esto quiere decir que en la región de América Latina existen diferencias en la satisfacción con la democracia entre diferentes grupos por nivel educativo.

@@ -1,7 +1,7 @@
 ---
-title: "Clase 9"
+title: "Clase 11"
 author: "Arturo Maldonado"
-date: "25/10/2022"
+date: "30/05/2023"
 output:
   html_document:
     toc: true
@@ -68,38 +68,28 @@ Esta base incluye información a nivel departamental, sociodemográfica y electo
 
 ```{r base, message=FALSE, warning=FALSE}
 library(rio)
-data <- import("bases/datos2016_v3.sav")
+data = import("bases/voto2021_v2.xlsx")
 ```
 
 Para empezar usaremos dos variables para general el gráfico de dispersión:
 
--   En el eje X se mapeará el porcentaje de hogares con acceso a internet (variable: Porc_Uso_internet).
+-   En el eje X se mapeará el porcentaje de analfabetismo (variable: Analfabetismo).
 
--   En el eje Y se mapeará el porcentaje de voto a PPK en primera vuelta de 2016 (variable: Voto_PPK_2016_1).
-
-Para construir el gráfico de dispersión usaremos el comando `plot` que permite incluir ambas variables.
-
-```{r dispersion}
-plot(data$Uso_internet, data$Voto_PPK_2016_1,
-     xlab="Porcentaje de familias con conexión a internet por departamento",
-     ylab="Voto a PPK (1era vuelta)",
-     pch=15, xlim=c(0,60), ylim=c(0, 30))
-text(data$Uso_internet, data$Voto_PPK_2016_1, labels=data$Dpto, cex=0.6, pos=4)
-```
-
-Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
-En estos casos vemos que las variables forman un patrón ascendente positivo: a medida que los departamentos reportan un mayor porcentaje de familias con conexión a internet, también se observa un mayor porcentaje de voto a PPK en 2016.
-
-Otra opción es usar la librería `ggplot` y el comando `geom_point()` para hacer el gráfico de dispersión.
+-   En el eje Y se mapeará el porcentaje de voto a Perú Libre en primera vuelta de 2021 (variable: VotoPL_1).
 
 ```{r}
 library(ggplot2)
-ggplot(data, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
+ggplot(data, aes(x=Analfabetismo, y=VotoPL_1))+
   geom_point()+
-  geom_text(data=data, aes(label=Dpto), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
-  labs(x="Porcentaje de familias con conexión a internet", y="Voto a Kuczynski (1era vuelta)")+ #para etiquetar los ejes
+  geom_text(data=data, aes(label=Departamento), 
+            cex=2, nudge_y = 1.1, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamaño, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de analfabetismo", 
+       y="Voto a Perú Libre (1era vuelta)")+ #para etiquetar los ejes
   theme_light()
 ```
+
+Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
+En estos casos vemos que las variables forman un patrón ascendente positivo: a medida que los departamentos reportan un mayor tasa de analfabetismo, también se observa un mayor porcentaje de voto a PL en 2021.
 
 # Relación lineal
 
@@ -127,20 +117,19 @@ Como dijimos, la "nube" de puntos se modela mediante una recta.
 Esta recta de aproximación tiene la forma $\hat{Y} = \hat{\alpha} + \hat{\beta}*X$
 
 Los valores que tiene el "sombrero" son datos que se calculan con los datos observados.
-Una vez estimados estos valores (se verá la lógica en un momento), se puede estimar cualquier Y (por eso tiene también "sombrero") para cualquier valor de X.
+Una vez estimados estos valores (se verá la lógica en un momento), se puede estimar un Y (por eso tiene también "sombrero") para cualquier valor de X.
 
 En nuestro ejemplo, se le puede pedir a `ggplot` que incluya la recta de aproximación en el gráfico de dispersión mediante el comando `geom_smooth(method=lm, se=F)`, que se usa para calcular un modelo lineal (que veremos en un momento)
 
 ```{r recta}
-ggplot(data, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
+ggplot(data, aes(x=Analfabetismo, y=VotoPL_1))+
   geom_point()+
   geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
-  geom_text(data=data, aes(label=Dpto), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
-  labs(x="Porcentaje de familias con conexión a internet", 
-       y="Voto a Kuczynski (1era vuelta)")+ #para etiquetar los ejes
+  geom_text(data=data, aes(label=Departamento), 
+            cex=2, nudge_y = 1.1, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamaño, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de analfabetismo", 
+       y="Voto a Perú Libre (1era vuelta)")+ #para etiquetar los ejes
   theme_light()
-
-
 ```
 
 ¿Cómo se calcula que ESA es la recta de aproximación, y no otra?
@@ -153,15 +142,15 @@ Se trata de la diferencia entre el valor observado y el valor calculado por la r
 Es decir, cada observación tiene un residuo, que sería visualmente, la distancia vertical del punto a la recta de aproximación.
 
 ```{r residuos}
-plot(data$Uso_internet, data$Voto_PPK_2016_1,
-     xlab="Porcentaje de familias con conexión a internet por departamento",
-     ylab="Voto a PPK (1era vuelta)",
-     pch=19, xlim=c(0,60), ylim=c(0, 30))
-abline(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
 #Este código de abajo no se evaluará
-fitted <- predict(lm(data$Voto_PPK_2016_1 ~ data$Uso_internet))
+plot(data$Analfabetismo, data$VotoPL_1,
+     xlab="Porcentaje de analfabetismo por departamento",
+     ylab="Voto a PL (1era vuelta)",
+     pch=19, xlim=c(0,15), ylim=c(0, 55))
+abline(lm(data$VotoPL_1 ~ data$Analfabetismo))
+fitted = predict(lm(data$VotoPL_1 ~ data$Analfabetismo))
 for (i in 1:25) {
-  lines( c(data$Uso_internet[i], data$Uso_internet[i]), c(data$Voto_PPK_2016_1[i], fitted[i]), col="blue")
+  lines( c(data$Analfabetismo[i], data$Analfabetismo[i]), c(data$VotoPL_1[i], fitted[i]), col="blue")
 }
 ```
 
@@ -176,12 +165,12 @@ De manera formal la suma se hace de los residuos al cuadrado para evitar los val
 Para esto se tiene que calcular el modelo lineal con el comando `lm`, y esto modelo se guarda en un objeto "modelo1".
 
 ```{r modelo}
-modelo1 <- lm(data$Voto_PPK_2016_1 ~ data$Uso_internet)
+modelo1 = lm(data$VotoPL_1 ~ data$Analfabetismo)
 ```
 
 Se pueden usar con la función `resid` para calcular los residuos de un modelo lineal.
 Estos residuos se elevan al cuadrado y se suman.
-Se obtiene que la suma total de residuos al cuadrado es 733.9.
+Se obtiene que la suma total de residuos al cuadrado es 3231.8.
 Este residuo se calcula sobre la base de la mejor recta de aproximación.
 Cualquier otra recta debería tener una suma total de residuos al cuadrado mayor a este valor.
 
@@ -190,35 +179,26 @@ sum(resid(modelo1)^2)
 ```
 
 Se puede comparar esta suma de residuos al cuadrado con los residuos que generan otra recta.
-Una forma de "predecir" el voto a PPK si no se tuviera información sería solo mediante el promedio del voto a PPK.
-El voto promedio a PPK es 15.7%.
+Una forma de "predecir" el voto a PL si no se tuviera información sería solo mediante el promedio del voto a PL.
+El voto promedio a PL es 27.3%.
 Sin otra información esta sería la mejor aproximación.
 
 ```{r media}
-mean(data$Voto_PPK_2016_1, na.rm=T)
+mean(data$VotoPL_1, na.rm=T)
 ```
 
-Esta aproximación se puede graficar con una recta horizontal Y=15.7.
+Esta aproximación se puede graficar con una recta horizontal Y=27.3.
 Esta recta genera otros residuos que se calculan como la resta entre el valor observado y la media.
-
-```{r}
-plot(data$Uso_internet, data$Voto_PPK_2016_1,
-     xlab="Porcentaje de familias con conexión a internet por departamento",
-     ylab="Voto a PPK (1era vuelta)",
-     pch=19, xlim=c(0,60), ylim=c(0, 30))
-abline(h=15.7412)
-
-```
 
 Se calcula el residuo con respecto a esta recta horizontal y luego se suman estos residuos al cuadrado.
 
 ```{r}
-data$res2 <- data$Voto_PPK_2016_1-15.7412
+data$res2 = data$VotoPL_1-27.28
 sum(data$res2^2, na.rm=T)
 ```
 
-Se observa que la suma de residuos de la recta calculada por R tiene una suma de residuos al cuadrado (733.9) menor que la suma de residuos al cuadrado con respecto a la recta horizontal (1251.6).
-En realidad, se podría hacer este ejercicio con cualquier recta y se obtendría una suma de residuos al cuadrado mayor de 733.9.
+Se observa que la suma de residuos de la recta calculada por R tiene una suma de residuos al cuadrado (3231.8) menor que la suma de residuos al cuadrado con respecto a la recta horizontal (6086.4).
+En realidad, se podría hacer este ejercicio con cualquier recta y se obtendría una suma de residuos al cuadrado mayor de 3231.8.
 
 # Recta de aproximación
 
@@ -231,23 +211,23 @@ summary(modelo1)
 
 Los primeros datos a analizar están en la columna "Estimate".
 Estos datos definen la ecuación de la recta.
-Según estos datos se tendría $$\hat{Y} = 3.52 + 0.37*X$$
+Según estos datos se tendría $$\hat{Y} = 6.57 + 3.03*X$$
 
-Con esta ecuación se puede **estimar** el valor de Y (es decir, el voto a PPK) para cualquier valor de X (de acceso a internet).
+Con esta ecuación se puede **estimar** el valor de Y (es decir, el voto a PL) para cualquier valor de X (de analfabetismo).
 
-Por ejemplo, en Amazonas se tiene 16.6% de acceso a internet, según la base de datos.
-De acuerdo a la ecuación, el voto estimado a PPK sería 3.52 + 0.37\*16.6 = 9.66%.
+Por ejemplo, en Amazonas se tiene 8.03% de tasa de analfabetismo, según la base de datos.
+De acuerdo a la ecuación, el voto estimado a PL sería 6.57 + 3.03\*8.03 = 30.9%.
 
-El voto observado a PPK en Amazonas fue 11.89%.
-Por lo tanto, el residuo de esta observación es 11.89-9.66 = 2.23.
-Las últimas columnas de la base de datos muestra el voto predicho a PPK para cada departamento y el residuo de cada observación.
+El voto observado a PL en Amazonas fue 26.1%.
+Por lo tanto, el residuo de esta observación es 26.1-30.9 = -4.8.
+Este es el error de predicción.
 
-El voto predicho a PPK no solo se puede calcular para los valores observados de acceso a internet, sino también para cualquier valor de X.
+El voto predicho a PL no solo se puede calcular para los valores observados de acceso a internet, sino también para cualquier valor de X.
 
-¿Cuánto sería el voto predicho a PPK en un departamento con acceso total a internet?
-¿cuánto sería el voto predicho a PPK en un departamento aislado del acceso a internet?
+¿Cuánto sería el voto predicho a PL en un departamento con cero analfabetismo?
+¿cuánto sería el voto predicho a PL en un departamento con total analfabetismo?
 
-Estas dos preguntas implican el cálculo de $\hat{Y}$ para cuando X=100 (en la primera pregunta) y para cuando X=0 (en la segunda pregunta).
+Estas dos preguntas implican el cálculo de $\hat{Y}$ para cuando X=0 (en la primera pregunta) y para cuando X=100 (en la segunda pregunta).
 En la realidad no tenemos dos departamentos con estos valores de X, pero estos se pueden **predecir** a partir del modelo generado.
 
 # Correlación no es causalidad
@@ -266,7 +246,7 @@ Para establecer una relación de causalidad hace falta:
 
 -   Temporalidad: que la causa preceda al efecto.
     Es decir que la medición del X sea anterior a la del Y.
-    En nuestro ejemplo, no se podría hablar de causalidad si el X hubiera sido medido en 2017.
+    En nuestro ejemplo, no se podría hablar de causalidad si el X hubiera sido medido antes de 2021.
 
 Un ejemplo que cumple estas condiciones es la relación entre consumo de tabaco y desarrollo de cáncer de pulmón.
 
@@ -292,7 +272,7 @@ De manera más gráfica:
 # Modelo lineal
 
 Como indicamos, la relación entre dos variables cuantitativas se modela mediante una recta de aproximación.
-Para evaluar una relación entre dos variables numéricas, tenemos que responder las siguientes preguntas
+Para evaluar una relación entre dos variables numéricas, tenemos que responder las siguientes preguntas:
 
 -   ¿Existe asociación?
 
@@ -302,42 +282,33 @@ Para evaluar una relación entre dos variables numéricas, tenemos que responder
 
 -   Predecir para valores significativos
 
-En esta sección vamos a trabajar con la información de las elecciones 2021.
-Los resultados que usaremos corresponden a los resultados publicados por la ONPE y a datos sociodemográficos, disponibles en la web del [INEI](https://www.inei.gob.pe/).
-
-```{r base2, message=FALSE, warning=FALSE}
-library(rio)
-data21 <- import("bases/voto2021_v2.xlsx")
-```
-
-En esta oportunidad, usaremos el voto a Pedro Castillo en primera vuelta por departamento como variable dependiente y el porcentaje de personas analfabetas como variable independiente.
+Hemos usado el voto a Pedro Castillo en primera vuelta por departamento como variable dependiente y el porcentaje de personas analfabetas como variable independiente.
 Se parte de la hipótesis que existiría una relación directa entre estas variables.
 Para hacer una primera verificación de esta relación, se puede crear el diagrama de dispersión.
 
 ```{r dispersion21}
-ggplot(data21, aes(x=Analfabetismo, y=VotoPL_1))+
+ggplot(data, aes(x=Analfabetismo, y=VotoPL_1))+
   geom_point()+
   geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
-  geom_text(data=data21, aes(label=Departamento), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
+  geom_text(data=data, aes(label=Departamento), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
   labs(x="Porcentaje de Analfabetismo", 
        y="Voto a Castillo (1era vuelta)")+ #para etiquetar los ejes
   theme_light()
 ```
 
-El gráfico no nos muestra una relación clara entre las variables.
+El gráfico nos muestra una relación clara entre las variables.
 Para analizar en más detalle, más allá de la relación visual, analizaremos el modelo de regresión lineal.
 Como indicamos antes, el modelo se calcula con el comando `lm` donde se indica la variable Y y luego la X.
-Este modelo de guarda en un objeto "modelo2" el que se puede describir con el comando `summary`.
+Este modelo de guardó en un objeto "modelo1" el que se puede describir con el comando `summary`.
 
 ```{r modelo2}
-modelo2 <- lm(data21$VotoPL_1 ~ data21$Analfabetismo)
-summary(modelo2)
+summary(modelo1)
 ```
 
 # ¿Existe una asociación o relación entre las variables?
 
 Según estos resultados la ecuación de la recta es:\
-$$\hat{Y} = 6.6 + 3.03*X$$
+$$\hat{Y} = 6.57 + 3.03*X$$
 
 En esta ecuación, el dato que marca la relación entre ambas variables es la pendiente.
 El $\hat{\beta} = +3.03$.
@@ -392,7 +363,7 @@ En nuestro ejemplo r=0.685.
 Es decir, por cada unidad de desviación estándar de cambio en X, Y cambia 0.685 desviaciones estándar.
 
 ```{r correlacion}
-cor.test(x=data21$Analfabetismo, y=data21$VotoPL_1, method="pearson")
+cor.test(x=data$Analfabetismo, y=data$VotoPL_1, method="pearson")
 ```
 
 Para tener una idea acerca de cómo interpretar este valor, la siguiente imagen muestra ejemplos de distribuciones de puntos a diferentes valores de r.

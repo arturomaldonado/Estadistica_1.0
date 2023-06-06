@@ -1,5 +1,5 @@
 ---
-title: "Clase 11"
+title: "Clase 11 y 12"
 author: "Arturo Maldonado"
 date: "30/05/2023"
 output:
@@ -343,7 +343,7 @@ Eso quiere decir que departamentos que presentan mayores tasas de analfabetismo,
 El valor de $\hat{\beta}$ indica la tasa de cambio, es decir, por cada unidad de cambio en X, Y cambia $\hat{\beta}$ unidades.
 En nuestro ejemplo, por cada 1% de aumento en la tasa de analfabetismo, el voto a Pedro Castillo cambia 3%.
 
-Pero la pendiente no es un buen indicador de la fuerza de la relación entre las variables, pues depende de las unidades de medida de las variables.
+Pero la pendiente no es un buen indicador de la relación entre las variables, pues depende de las unidades de medida de las variables.
 Para poder evaluar la relación entre las variables, requerimos una versión estandarizada de la pendiente, que mida el cambio en unidades de desviación estándar.
 
 Esta medida es el coeficiente de correlación de Pearson.
@@ -379,8 +379,8 @@ Para tener una idea más lúdica de la distribución de puntos a diferentes valo
 
 # Coeficiente de determinación $R^2$
 
-En el contexto del análisis de regresión lineal, la fuerza de la relación entre dos variables se interpreta como qué tan bien X predice Y.
-Esta capacidad de X de predecir la variable Y se mida mediante el coeficiente de determinación $R^2$.
+En el contexto del análisis de regresión lineal, el ajuste del modelo se interpreta como qué tan bien X predice Y.
+Esta capacidad de X de predecir la variable Y se mide mediante el coeficiente de determinación $R^2$.
 Este valor no es otro que el cuadrado del coeficiente de Pearson.
 
 Pero, se interpreta como la reducción proporcional en el error al usar la recta de predicción, en lugar de sólo usar $\bar{Y}$ (el promedio de Y) para predecir Y.
@@ -411,7 +411,6 @@ Por lo tanto:
 En nuestro ejemplo, $R^2=0.47$.
 Este valor se encuentra en la penúltima fila del `summary` del modelo, con el nombre "Multiple R-squared".
 Es decir, el modelo reduce un 47% el error de usar solamente el promedio para estimar Y.
-Es decir, en el rango entre 0 y 1, el valor de 0.47 corresponde a una fuerza moderada entre las variables.
 
 # Validez del modelo
 

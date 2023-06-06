@@ -69,17 +69,40 @@ Con esta variable se ha creado otra variable agrupando el PBI en 3 grupos: alto,
 
 ```{r base}
 library(rio)
-data <- import("bases/datos2016_v3.sav")
+data16 = import("bases/datos2016_v3.sav")
 ```
 
 En primer lugar, haremos una inspección visual de la relación entre el acceso a internet y el voto a PPK, mediante un gráfico de dispersión.
 Esta gráfico incluirá una tercera variable, PBI per cápita, que se visualizará como un color de cada observación.
 
-```{r dispersion}
-plot(data$Uso_internet, data$Voto_PPK_2016_1, 
-     xlab="Porcentaje de familias con conexión a internet",
-     ylab= "Voto a PPK (1era vuelta)", pch=19, xlim=c(0, 60), ylim=c(0,40),
-     col=data$pbipc_grupos)
+```{r dispersion1}
+library(ggplot2)
+ggplot(data16, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
+  geom_point(aes(color=pbipc_grupos))+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  geom_text(data=data16, aes(label=Dpto), 
+            cex=2, nudge_y = 1.1, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamaño, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de uso de internet", 
+       y="Voto a PPK (1era vuelta 2016)")+ #para etiquetar los ejes
+  theme_light()
+```
+
+```{r}
+library(tidyverse)
+data16 = data16 |>
+  mutate(pbigrupo = factor(pbipc_grupos, labels=c("Bajo", "Medio", 
+                                                  "Alto")))
+```
+
+```{r dispersion2}
+ggplot(data16, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
+  geom_point(aes(color=pbigrupo))+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  geom_text(data=data16, aes(label=Dpto), 
+            cex=2, nudge_y = 1.1, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamaño, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de uso de internet", 
+       y="Voto a PPK (1era vuelta 2016)")+ #para etiquetar los ejes
+  theme_light()
 ```
 
 El color de cada punto representa un nivel de PBI per cápita: negro significa PBI per cápita departamental bajo, rojo significa PBI per cápita departamental medio y verde significa PBI per cápita departamental alto.
@@ -87,13 +110,13 @@ El color de cada punto representa un nivel de PBI per cápita: negro significa P
 Para analizar visualmente la relación entre acceso a internet y voto a PPK, controlando por el PBI per cápita, se puede analizar evaluar la relación entre X - Y para grupos de Z.
 Es decir, se puede evaluar visualmente la relación entre acceso a internet - voto a PPK, en cada grupo de color.
 
-¿Cuál es la relación entre X - Y para el grupo de observaciones en negro (PBI per cápita departamental bajo)?
+¿Cuál es la relación entre X - Y para el grupo de observaciones en rojo (PBI per cápita departamental bajo)?
 Se observa una relación positiva, aunque tenue.
 
-¿Cuál es la relación entre X - Y para el grupo de observaciones en rojo (PBI per cápita departamental medio)?
+¿Cuál es la relación entre X - Y para el grupo de observaciones en verde (PBI per cápita departamental medio)?
 Se observa una relación negativa, contrario a la hipótesis planteada.
 
-¿Cuál es la relación entre X - Y para el grupo de observaciones en verde (PBI per cápita departamental alto)?
+¿Cuál es la relación entre X - Y para el grupo de observaciones en azul (PBI per cápita departamental alto)?
 Se observa una relación positiva.
 
 Pregunta final: ¿se mantiene la relación entre acceso a internet y voto a PPK en cada grupo de PBI per cápita?
@@ -118,9 +141,10 @@ Si la relación bivariada se evalúa en un plano cartesiano, cuando se incluye u
 Para fines explicativos, esto se puede graficar en un diagrama de dispersión en tres dimensiones.
 
 ```{r 3d}
+#Este código NO se evaluará
 library(scatterplot3d)
-scatterplot3d(x=data$Uso_internet, y=data$Voto_PPK_2016_1, z=data$pbipc_2014)
-pairs(data$Uso_internet ~ data$Uso_internet+data$pbipc_2014)
+scatterplot3d(x=data16$Uso_internet, y=data16$Voto_PPK_2016_1, z=data16$pbipc_2014)
+pairs(data16$Uso_internet ~ data16$Uso_internet+data16$pbipc_2014)
 ```
 
 En este caso, cada punto estaría ubicado de acuerdo a los valores en las 3 variables.
@@ -132,24 +156,24 @@ Si lo hacemos, tendríamos dos modelos simples.
 Para la relación original entre acceso a internet y voto a PPK, se tiene.
 
 ```{r ols simple}
-modelo1 <- lm(data$Voto_PPK_2016_1 ~ data$Uso_internet)
+modelo1 = lm(data16$Voto_PPK_2016_1 ~ data16$Uso_internet)
 summary(modelo1)
 ```
 
 Y para la segunda variable, se tiene.
 
 ```{r ols simple 2}
-modelo2 <- lm(data$Voto_PPK_2016_1 ~ data$pbipc_2014)
+modelo2 = lm(data16$Voto_PPK_2016_1 ~ data16$pbipc_2014)
 summary(modelo2)
 ```
 
 Mirando los resultados de ambos modelos lineales simples, se tiene que ambas variables, tanto acceso a internet como PBI, son significativas.
-Ambas tienen un efecto directo, es decir, a mayor acceso, mayor voto a PPK en promedio, y a mayor PBI per cápita, mayor voto a PPK en promedio.
+Ambas tienen un efecto directo, es decir, a mayor acceso a internet, mayor voto a PPK en promedio, y a mayor PBI per cápita, mayor voto a PPK en promedio.
 
 Estos modelos, sin embargo, analizan el impacto individual de cada variable, sin ningún tipo de control estadístico.
 Los modelos lineales simple, en ese sentido, están más cerca de un análisis de correlación, que de uno de causalidad.
 
-Para tratar de acercarnos a la idea de causalidad, se tiene que controlar por posibles explicaciones alternativas.
+Para tratar de acercarnos al ideal de causalidad, se tiene que controlar por posibles explicaciones alternativas.
 La discusión con respecto a la elección 2016 planteaba que el voto a PPK también tenía un componente económico.
 Se especulaba que los sectores más beneficiados del boom económico podían votar en mayor medida a favor de PPK.
 Si esto es así, la variable de PBI per cápita puede recoger este fenómeno.
@@ -159,7 +183,7 @@ Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como varia
 El comando `lm` permite incluir varios predictores independientes en un mismo modelo con el símbolo +.
 
 ```{r ols multiple}
-modelo3 <- lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014 + Analfabetismo_2014, data=data)
+modelo3 = lm(Voto_PPK_2016_1 ~ Uso_internet + pbipc_2014, data=data16)
 summary(modelo3)
 ```
 
@@ -188,10 +212,10 @@ Esta pruebas tiene las siguientes hipótesis:
 
 $H0: \beta_1 = 0$ y $H0: \beta_2 = 0$
 
-Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de 0.18.
-Para esta variable el estadístico de la prueba t tiene un valor de 1.37, con un p-value de 0.186.
+Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de 0.185.
+Para esta variable el estadístico de la prueba t tiene un valor de 1.367, con un p-value de 0.186.
 Este p-value es mayor de 0.05, por lo que fallamos en rechazar la H0.
-Es decir, se tiene 18.6% de probabilidades de tener un coeficiente de 1.37, si el verdadero valor del parámetro es 0.
+Es decir, se tiene 18.6% de probabilidades de tener un coeficiente de -0.06, si el verdadero valor del parámetro es 0.
 En resumen, con estos valores, no encontramos una relación entre acceso a internet y voto a PPK.
 
 Para la variable, PBI per cápita, tenemos un coeficiente de 0.0003, con un estadístico de la prueba t de 1.74 y un p-value de 0.096.
@@ -209,14 +233,13 @@ De la misma manera que en análisis bivariado, la dirección de la relación ent
 En este caso, solo se analiza el signo del coeficiente de la variable PBI, pues es la única significativa al 0.10.
 El signo del coeficiente es positivo (+), lo que indica que departamentos con un mayor PBI per cápita tendrían un mayor porcentaje de voto a PPK en promedio.
 
-## Fuerza del modelo
+## Ajuste del modelo
 
-De la misma manera que en el análisis bivariado, la fuerza del modelo se entiende como el porcentaje de la variación total de la variable dependiente explicada por las variables independientes.
+De la misma manera que en el análisis bivariado, el ajuste del modelo se entiende como el porcentaje de la variación total de la variable dependiente explicada por las variables independientes.
 Este dato se obtiene con el $R^2$.
 
 En nuestro ejemplo se tiene un $R^2=0.37$.
 Esta dato indicaría que el modelo que incluye las variables acceso a internet y PBI per cápita explican el 37% de la variación total del voto a PPK.
-Esto según nuestra escala equivale a una relación de fuerza moderada.
 
 Los resultados también muestran un $R^2$ ajustado.
 Este estadístico se usa cuando se quiere comparar entre diferentes modelos, ya sea porque se usan diferentes variables o diferente número de variables.
@@ -237,8 +260,8 @@ Para hallar el voto estimado a PPK, se tiene que agregar valores de las dos vari
 Para poder aproximar valores estándar de estas variables, estas se pueden describir.
 
 ```{r describir}
-summary(data$Uso_internet)
-summary(data$pbipc_2014)
+summary(data16$Uso_internet)
+summary(data16$pbipc_2014)
 ```
 
 Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8 y X2=14946.
@@ -278,7 +301,3 @@ Cada variable independiente tiene un signo que indica la dirección teórica que
 Los datos sirven para verificar empíricamente estas hipótesis.
 
 ![](images/paste-D0061731.png){width="521"}
-
-De acuerdo a estos resultados, se puede concluir:
-
--   

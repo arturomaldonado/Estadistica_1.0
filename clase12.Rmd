@@ -90,7 +90,8 @@ ggplot(data16, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
 ```{r}
 library(tidyverse)
 data16 = data16 |>
-  mutate(pbigrupo = factor(pbipc_grupos, labels=c("Bajo", "Medio", 
+  mutate(pbigrupo = factor(pbipc_grupos, labels=c("Bajo",
+                                                  "Medio", 
                                                   "Alto")))
 ```
 
@@ -200,7 +201,7 @@ $H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$
 La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
 
 Para evaluar esta hipótesis se analiza los resultados de la prueba F (en la última línea de resultados del modelo).
-El estadístico F = 7.71 tiene un p-value asociado de 0.0012.
+El estadístico F = 7.74 tiene un p-value asociado de 0.0030.
 Este p-value es menor de 0.05, por lo que podemos rechazar la H0 y afirmar que al menos un coeficiente debe ser diferente de cero.
 
 ## Test de inferencia: ¿hay relación entre las VIs y la VD?
@@ -212,16 +213,18 @@ Esta pruebas tiene las siguientes hipótesis:
 
 $H0: \beta_1 = 0$ y $H0: \beta_2 = 0$
 
-Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de 0.185.
+Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de 0.186.
 Para esta variable el estadístico de la prueba t tiene un valor de 1.367, con un p-value de 0.186.
 Este p-value es mayor de 0.05, por lo que fallamos en rechazar la H0.
-Es decir, se tiene 18.6% de probabilidades de tener un coeficiente de -0.06, si el verdadero valor del parámetro es 0.
+Es decir, se tiene 18.6% de probabilidades de tener un coeficiente de 0.18, si el verdadero valor del parámetro es 0.
 En resumen, con estos valores, no encontramos una relación entre acceso a internet y voto a PPK.
 
 Para la variable, PBI per cápita, tenemos un coeficiente de 0.0003, con un estadístico de la prueba t de 1.74 y un p-value de 0.096.
 Con este p-value no podemos rechazar la H0 a un valor crítico de 0.05).
-Este p-value sería significativo a un valor crítico de 0.10.
-Si flexibilizamos el valor crítico al 0.10, podemos concluir que sí existe una relación entre PBI y voto a PPK.
+Este p-value no es menos a 0.05, por lo que no sería significativo.
+Pero, si se relaja el criterio, este p-value es menor a 0.10.
+Es decir, se tiene 9.6% de probabilidades de observar una pendiente de 0.0003 si la verdadera pendiente fuera 0.
+Podemos asumir que esta probabilidad es baja, por lo que podemos concluir que sí existe una relación entre PBI y voto a PPK al 0.1 de valor crítico.
 
 En conclusión, la relación entre acceso a internet y voto a PPK, que se había encontrado en el análisis bivariado, no se mantiene en un análisis multivariado, cuando se controla por la variable PBI.
 Muy probablemente estemos hablando de una relación espúrea, pues PBI podría tener un efecto tanto en el acceso a internet (departamentos más ricos, tienen familias que pueden pagar por el servicio de internet), como en el voto a PPK (departamentos más ricos, votan en mayor medida a PPK).
@@ -238,11 +241,10 @@ El signo del coeficiente es positivo (+), lo que indica que departamentos con un
 De la misma manera que en el análisis bivariado, el ajuste del modelo se entiende como el porcentaje de la variación total de la variable dependiente explicada por las variables independientes.
 Este dato se obtiene con el $R^2$.
 
-En nuestro ejemplo se tiene un $R^2=0.37$.
+En nuestro ejemplo se tiene un $R^2 ajustado = 0.37$.
 Esta dato indicaría que el modelo que incluye las variables acceso a internet y PBI per cápita explican el 37% de la variación total del voto a PPK.
 
-Los resultados también muestran un $R^2$ ajustado.
-Este estadístico se usa cuando se quiere comparar entre diferentes modelos, ya sea porque se usan diferentes variables o diferente número de variables.
+El $R^2$ ajustado se usa cuando se quiere comparar entre diferentes modelos, ya sea porque se usan diferentes variables o diferente número de variables.
 Esto es importante cuando se comparar modelos con diferente número de variables independientes, porque el $R^2$ tiene la característica de aumentar cuando se incluyen más variables independientes.
 El $R^2$ ajustado controla por esta inflación artificial.
 
@@ -266,7 +268,7 @@ summary(data16$pbipc_2014)
 
 Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8 y X2=14946.
 
-$$\hat{Y} = 4.71 + 0.18*32.8+0.0003*14946 = 15.1 $$
+$$\hat{Y} = 4.71 + 0.18*32.8+0.0003*14946 = 15.1 % $$
 
 En conclusión, para valores promedio de las variables independientes, el voto estimado a PPK, según el modelo, sería de 15.1%.
 Este mismo ejercicio se puede hacer para los valores mínimos, máximos, para algunos percentiles particulares, etc.
@@ -287,7 +289,7 @@ summ(modelo3, scale=T)
 ```
 
 De acuerdo a estos resultados, la variable independiente que tiene un efecto mayor sobre la variable dependiente es el PBI per cápita.
-Este análisis es mucho más útil cuando tenemos una mayor cantidad de variables independientes en diferentes unidades de medición.
+Este análisis es mucho más útil cuando tenemos una mayor cantidad de variables independientes y de variables significativas en diferentes unidades de medición.
 
 # Leyendo resultados académicos
 

@@ -379,7 +379,7 @@ Para tener una idea más lúdica de la distribución de puntos a diferentes valo
 
 # Coeficiente de determinación $R^2$
 
-En el contexto del análisis de regresión lineal, el ajuste del modelo se interpreta como qué tan bien X predice Y.
+En el contexto del análisis de regresión lineal, también se analiza qué tan bien X predice Y.
 Esta capacidad de X de predecir la variable Y se mide mediante el coeficiente de determinación $R^2$.
 Este valor no es otro que el cuadrado del coeficiente de Pearson.
 

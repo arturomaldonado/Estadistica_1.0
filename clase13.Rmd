@@ -57,7 +57,7 @@ Para analizar si la diferencia entre 19.1 y 13.9 es significativa, se puede corr
 
 ```{r levene}
 library(DescTools)
-LeveneTest(data$Voto_PPK_2016_1, data$costa)
+LeveneTest(data16$Voto_PPK_2016_1, data16$costa)
 ```
 
 Luego del test de igualdad de varianzas, se puede correr la prueba t.
@@ -76,11 +76,11 @@ En esta sección, se produce un gráfico de dispersión entre la variable "costa
 Debido a que la variable "costa" es dicotómica, solo tiene valores 0 y 1, por lo que los puntos, que representan a cada departamento, se agrupan en dos líneas verticales.
 
 ```{r grafico}
-plot(data$costa, data$Voto_PPK_2016_1,
+plot(data16$costa, data16$Voto_PPK_2016_1,
      xlab="Departamento de la costa",
      ylab="Voto a PPK (1era vuelta)",
      pch=15, ylim=c(0, 30))
-abline(lm(data$Voto_PPK_2016_1 ~ data$costa))
+abline(lm(data16$Voto_PPK_2016_1 ~ data16$costa))
 ```
 
 En este gráfico también se puede pensar en una mejor recta de predicción, que reduce la distancia de los puntos a la recta.
@@ -114,15 +114,15 @@ Se tiene una variable dependiente numérica y una variable independiente nominal
 Lo primero es ver las medias del voto a Fujimori para cada grupo.
 
 ```{r medias2}
-mean(data$Voto_KF_2016_1[data$region==1], na.rm=T)
-mean(data$Voto_KF_2016_1[data$region==2], na.rm=T)
-mean(data$Voto_KF_2016_1[data$region==3], na.rm=T)
+mean(data16$Voto_KF_2016_1[data16$region==1], na.rm=T)
+mean(data16$Voto_KF_2016_1[data16$region==2], na.rm=T)
+mean(data16$Voto_KF_2016_1[data16$region==3], na.rm=T)
 ```
 
 Luego, se puede evaluar si alguna de las diferencias entre estas medias es significativa mediante ANOVA.
 
 ```{r anova}
-anova <- aov(data$Voto_KF_2016_1 ~ as.factor(data$region))
+anova <- aov(data16$Voto_KF_2016_1 ~ as.factor(data16$region))
 summary(anova)
 TukeyHSD(anova)
 ```
@@ -135,7 +135,7 @@ Para replicar estos resultados mediante el análisis de regresión, se tiene que
 Es decir, 3 variables: "costa", "sierra" y "selva", En el modelo de regresión, sin embargo, solo se debe incluir 2 de esas variables dummy (por qué?).
 
 ```{r modelo aov}
-modelo2 <- lm(data$Voto_KF_2016_1 ~  data$costa + data$sierra)
+modelo2 <- lm(data16$Voto_KF_2016_1 ~  data16$costa + data16$sierra)
 summary(modelo2)
 ```
 

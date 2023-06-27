@@ -1,7 +1,7 @@
 ---
 title: "Clase 13"
 author: "Arturo Maldonado"
-date: "21/6/2022"
+date: "27/6/2023"
 output:
   html_document:
     toc: true
@@ -40,7 +40,7 @@ Siguiendo con los datos de la elección presidencial de 2016, cargamos la base d
 
 ```{r base}
 library(rio)
-data <- import("bases/datos2016_v3.sav")
+data16 = import("bases/datos2016_v3.sav")
 ```
 
 Entonces, si queremos saber si existen diferencias estadísticas de la votación a Keiko Fujimori entre los departamentos de la costa y los departamentos que no están en la costa, se puede usar la prueba t de diferencia de medias.
@@ -49,8 +49,8 @@ Es decir, se quiere comparar la media de votación a Fujimori, una variable cuan
 Lo primero es ver las medias de cada grupo.
 
 ```{r medias}
-mean(data$Voto_PPK_2016_1[data$costa==0], na.rm=T)
-mean(data$Voto_PPK_2016_1[data$costa==1], na.rm=T)
+mean(data16$Voto_KF_2016_1[data16$costa==0], na.rm=T)
+mean(data16$Voto_KF_2016_1[data16$costa==1], na.rm=T)
 ```
 
 Para analizar si la diferencia entre 19.1 y 13.9 es significativa, se puede correr una prueba t de diferencias de medias.
@@ -63,7 +63,7 @@ LeveneTest(data$Voto_PPK_2016_1, data$costa)
 Luego del test de igualdad de varianzas, se puede correr la prueba t.
 
 ```{r prueba t}
-t.test(Voto_KF_2016_1 ~ sierra, data=data, var.equal=T)
+t.test(Voto_KF_2016_1 ~ costa, data=data16, var.equal=T)
 ```
 
 De estos resultados, vemos que se obtiene un p-value de 0.08, que es menor a 0.1.
@@ -89,7 +89,7 @@ Esta recta atraviesa por la media de cada grupo.
 Por lo tanto, un modelo de regresión que use el voto a PPK en primera vuelta en 2016 como variable dependiente y la variable dicotómica "costa" como variable independiente nos daría los datos para la construcción de esta recta de aproximación.
 
 ```{r modelo1}
-modelo1 <- lm(data$Voto_KF_2016_1 ~ data$sierra)
+modelo1 = lm(data16$Voto_KF_2016_1 ~ data16$sierra)
 summary(modelo1)
 ```
 

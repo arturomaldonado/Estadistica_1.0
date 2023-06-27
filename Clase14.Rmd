@@ -1,7 +1,7 @@
 ---
 title: "Clase 14"
 author: "Arturo Maldonado"
-date: "28/6/2022"
+date: "26/6/2023"
 output:
   html_document:
     toc: true
@@ -38,7 +38,7 @@ Este nuevo archivo Excel cárguenlo en RStudio.
 
 ```{r base}
 library(rio)
-data <- import("bases/voto2021_v2.xlsx")
+data = import("bases/voto2021_v2.xlsx")
 ```
 
 ## Manipulando datos
@@ -46,28 +46,57 @@ data <- import("bases/voto2021_v2.xlsx")
 -   Calcular el porcentaje total de personas que se autoidentifican con algún grupo étnico (suma de % de población indígena u originaria + % de personas afro)
 
 ```{r suma}
-
+library(dplyr)
+library(tidyverse)
+data = data |>
+  mutate(etnico = afro + indigena)
 ```
 
 ## Descriptivos
 
+```{r}
+tabla1 = data |>
+  summarise(minimo = min(etnico), media = mean(etnico), 
+            mediana = median(etnico),
+            maximo = max(etnico), desviacion = sd(etnico))
+tabla1
+```
+
 Comparar los descriptivos de las variables del voto a los(as) 3 candidatos(as).
 
-```{r descriptivos}
-summary(data$VotoPL_1)
-summary(data$VotoFP_1)
-summary(data$VotoVM_1)
-sd(data$VotoPL_1)
-sd(data$VotoFP_1)
-sd(data$VotoVM_1)
+```{r}
+tabla2 = data |> 
+  summarise(media = mean(VotoPL_1), mediana = median(VotoPL_1),desviacion = sd(VotoPL_1))
+tabla2
+```
+
+```{r}
+tabla3 = data |> 
+  summarise(media = mean(VotoFP_1), mediana = median(VotoFP_1),desviacion = sd(VotoFP_1))
+tabla3
+```
+
+```{r}
+tabla4 = data |> 
+  summarise(media = mean(VotoVM_1), mediana = median(VotoVM_1),desviacion = sd(VotoVM_1))
+tabla4
 ```
 
 Graficar descriptivamente mediante un gráfico de cajas.
 
-```{r boxplot}
-boxplot(data$VotoPL_1, ylim=c(0, 60))
-boxplot(data$VotoFP_1, ylim=c(0, 60))
-boxplot(data$VotoVM_1, ylim=c(0, 60))
+```{r}
+data2 = dplyr::select(data, 2:4)
+data_larga = gather(data2, variable, valor)
+```
+
+```{r}
+graf1 = ggplot(data_larga, aes(x=variable, y=valor))+
+  geom_boxplot()+
+  ylab("Votos")+
+  xlab("Candidato")+
+  scale_x_discrete(labels = c("Keiko Fujimori", "Pedro Castillo", "Verónika Mendoza"))+
+  theme_bw()
+graf1
 ```
 
 ## Inferencia
@@ -76,25 +105,36 @@ Comparar IC entre grupos:
 
 -   Voto a un candidato entre 2 grupos de pobreza
 
-```{r pobre}
-data$pobre = ifelse(data$Pobreza2020>34.6, 1, 0)
+```{r}
+data = data |>
+  mutate(pobre = ifelse(Pobreza2020 > 34.6, 1, 0))
 ```
 
 -   Voto a PC entre grupos de etnicidad
 
 -   Comparar gráficamente IC de un candidato versus el otro
 
-```{r inferencia}
+```{r}
 library(lsr)
-ciMean(data$VotoPL_1[data$pobre==0])
-ciMean(data$VotoPL_1[data$pobre==1])
+PLxpobre = data |>
+  group_by(pobre) |>
+  summarise(Media = mean(VotoPL_1, na.rm=T),
+            lim.inf = ciMean(VotoPL_1, na.rm=T)[1],
+            lim.sup = ciMean(VotoPL_1, na.rm=T)[2]
+            )
+PLxpobre
 ```
 
 -   Graficar alguna de estas comparaciones
 
-```{r grafico ic}
-library(gplots)
-plotmeans(data$VotoPL_1~data$pobre)
+```{r}
+graf2 = ggplot(PLxpobre, aes(x=pobre, y=Media))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=lim.inf, ymax=lim.sup), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-3.5, size=4)+
+  xlab("Pobre") + ylab("Votos Perú Libre")+
+  ylim(0, 60)
+graf2
 ```
 
 ## Pruebas de significancia
@@ -119,19 +159,23 @@ t.test(data$VotoPL_1~data$pobre, var.equal=T)
 
 ## Correlación
 
+![](twitter_3e92b475993838b817babac6914e555d.png){width="556"}
+
 -   Presentar gráfico de dispersión del voto a candidato PC por etnicidad
 
--   Presentar gráfico de dispersión del voto a PC por otraa variable
+-   Presentar gráfico de dispersión del voto a PC por otra variable
 
 -   Presentar gráfico de dispersión del voto a otro candidato(a) por variable de interés
 
-```{r var etnicidad}
-data$etni=data$indigena+data$afro
-```
-
-```{r dispersion}
-plot(data$indigena, data$VotoPL_1)
-abline(lm(data$VotoPL_1 ~ data$indigena))
+```{r}
+ggplot(data, aes(x=indigena, y=VotoPL_1))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  geom_text(data=data, aes(label=Departamento), 
+            cex=2, nudge_y = 1.1, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamaño, ubicación y prevenir que se sobrepongan
+  labs(x="Porcentaje de personas que se autoidentifican como indígena", 
+       y="Voto a PL (1era vuelta 2021)")+ #para etiquetar los ejes
+  theme_light()
 ```
 
 ## Regresión lineal simple
@@ -140,6 +184,7 @@ abline(lm(data$VotoPL_1 ~ data$indigena))
 
 ```{r ols}
 modelo1 = lm(data$VotoPL_1 ~ data$indigena)
+summary(modelo1)
 ```
 
 ## Regresión lineal múltiple

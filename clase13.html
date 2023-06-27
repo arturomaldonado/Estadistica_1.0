@@ -452,8 +452,13 @@ a Fujimori, una variable cuantitativas, entre grupos de la variable
 <pre><code>## [1] 42.8</code></pre>
 <p>Para analizar si la diferencia entre 19.1 y 13.9 es significativa, se
 puede correr una prueba t de diferencias de medias.</p>
-<pre class="r"><code>library(DescTools)
-LeveneTest(data16$Voto_PPK_2016_1, data16$costa)</code></pre>
+<pre class="r"><code>library(DescTools)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;DescTools&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:jtools&#39;:
+## 
+##     %nin%</code></pre>
+<pre class="r"><code>LeveneTest(data16$Voto_PPK_2016_1, data16$costa)</code></pre>
 <pre><code>## Warning in LeveneTest.default(data16$Voto_PPK_2016_1, data16$costa):
 ## data16$costa coerced to factor.</code></pre>
 <pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)

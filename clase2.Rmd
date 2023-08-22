@@ -1,7 +1,7 @@
 ---
 title: 'Clase 2: descripción y visualización'
 author: "Arturo Maldonado"
-date: "23/3/2023"
+date: "22/8/2023"
 output:
   html_document:
     toc: true
@@ -24,7 +24,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
-# Leer una base de datos
+# Resultados electorales 2016
+
+## Leer una base de datos
 
 Usamos la librería `rio`.
 Activamos la librería con el comando `library` y usamos el comando `import` para leer la base de datos (un archivo Excel).
@@ -45,7 +47,7 @@ res2016 = import("resultados2016.xlsx")
 Si se hace doble click en el objeto, se abre la base de datos como una pestaña en la zona de scripts / RMarkdowns.
 Este objeto dataframe tiene vectores de datos de tipo "caracter" y otros vectores de datos de tipo "numérico".
 
-# Descripción
+## Descripción
 
 Usamos las medidas de tendencia central para describir una variable numérica.
 Podemos usar el comando `mean` para calcular el promedio de voto provincial a Fuerza Popular en 2016 (39.5%).
@@ -60,9 +62,6 @@ library(dplyr)
 library(tidyverse)
 res2016 |>
   summarise(mean(fp))
-
-#mean(res2016$fp)
-#median(res2016$fp)
 ```
 
 También se puede calcular la media para grupos de observaciones, es decir para filas específicas de una base de datos.
@@ -90,10 +89,8 @@ Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas po
 
 ```{r}
 res2016 |> 
-  filter(dpto =="CUSCO") |>
-  summarise(mean(fa))
-
-# mean(res2016$fp[res2016$dpto =="LIMA"])
+  filter(dpto =="LIMA") |>
+  summarise(mean(fp))
 #Cómo hallarían el promedio del voto a FP en las provincias de Amazonas usando la variable "id"?
 ```
 
@@ -106,15 +103,15 @@ Para ver esta asimetría se puede graficar la distribución de frecuencias de es
 
 ```{r}
 res2016 |> 
-  summarize(mean(ppk), median(ppk))
+  summarize(mean(fa), median(fa))
 ```
+
+También se puede calcular ambas medidas para el FA solo en Cusco.
 
 ```{r message=FALSE, warning=FALSE}
 res2016 |> 
   filter(dpto =="CUSCO") |>
   summarize(mean(fa), median(fa))
-
-# mean(res2016$fa[res2016$dpto =="CUSCO"])
 #Cómo calcularían esta media usando la variable "id"?
 ```
 
@@ -129,9 +126,7 @@ Se encuentra que del total de provincias, Fuerza Popular ganó en la mayoría de
 ```{r}
 tabla = res2016 |>
   count(Ganador = gana, name="Frecuencia")
-
 tabla
-#table(res2016$gana)
 ```
 
 Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcentaje" con el cálculo de la "Frecuencia" (columna existente) ente la suma total de las frecuencias.
@@ -140,16 +135,12 @@ Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
 ```{r}
 tabla = tabla |>
   mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
-
 tabla
-
-#prop.table(table(res2016$gana))*100
-#round(prop.table(table(res2016$gana))*100, 1)
 ```
 
 *Pregunta: ¿qué medidas de tendencia central (media, mediana, moda) aplican a qué tipo de variables?*
 
-# Visualización
+## Visualización
 
 Una de las tareas más comunes en el manejo de datos es la visualización de los resultados.
 En R hay dos maneras de proceder.
@@ -238,7 +229,7 @@ ggplot(tabla, aes(x=Porcentaje,y=Ganador))+
   geom_bar(stat="identity", width=0.5)
 ```
 
-# Recodificando variables
+## Recodificando variables
 
 ```{r}
 res2016 = res2016 |>
@@ -269,28 +260,11 @@ res2016 = res2016 |>
     dpto=="TUMBES"~"Costa",
     dpto=="UCAYALI"~"Selva"
   )) 
-
-#library(car)
-#res2016$region = car::recode(res2016$dpto, "'AMAZONAS'=3; 'ANCASH'=2; 
-#                                            'APURIMAC'=2;'AREQUIPA'=2;
-#                                            'AYACUCHO'=2; 'CAJAMARCA'=2;
-#                                            'CUSCO'=2; 'CALLAO'=1;
-#                                            'HUANCAVELICA'=2;'HUANUCO'=3; 
-#                                            'ICA'=1; 'JUNIN'=2;
-#                                            'LA LIBERTAD'=1; 'LAMBAYEQUE'=1;
-#                                            'LIMA'=1; 'LORETO'=3; 
-#                                            'MADRE DE DIOS'=3;
-#                                            'MOQUEGUA'=1; 'PASCO'=2; 'PIURA'=1;
-#                                            'PUNO'=2; 'SAN MARTIN'=3; 
-#                                            'TACNA'=1;'TUMBES'=1; 
-#                                           'UCAYALI'=3")
-# table(res2016$region)
 ```
 
 ```{r}
 res2016 |>
   count(Region = region, name="Frecuencia")
-
 ```
 
 La variable creada es una variable de tipo "caracter".
@@ -301,10 +275,6 @@ Podemos convertir cualquier variable a una de factor y etiquetar cada valor.
 library(forcats)
 res2016 = res2016 |>
   mutate(region2 = factor(region))
-
-#res2016$region2 = as.factor(res2016$region)
-#levels(res2016$region2) = c("Costa", "Sierra", "Selva")
-#table(res2016$region2)
 ```
 
 Ahora, procedemos a producir el gráfico de cajas de porcentaje de voto a Fuerza Popular por región.
@@ -325,13 +295,9 @@ Este mismo patrón se observa si calculáramos la media del porcentaje de voto p
 res2016 |> 
   group_by(region2) |>
   summarise(mean(fp), sd(fp))
-
-#mean(res2016$fp2011[res2016$region==1])
-#mean(res2016$fp2011[res2016$region==2])
-#mean(res2016$fp2011[res2016$region==3])
 ```
 
-# Medidas de posición
+## Medidas de posición
 
 La mediana es un caso particular de las medidas de posición.
 Este estadístico divide una distribución ordenada de datos en dos mitades y la mediana es el punto limítrofe entre estos dos grupos.
@@ -360,13 +326,9 @@ cuartilesxregion
 #  group_by(region2) |>
 #  summarise(c = list(quantile(fp))) |>
 #  unnest_wider(c)
-
-#IQR(res2016$fp2011[res2016$region==1])
-#IQR(res2016$fp2011[res2016$region==2])
-#IQR(res2016$fp2011[res2016$region==3])
 ```
 
-# Describiendo la heterogeneidad
+## Describiendo la heterogeneidad
 
 El gráfico de cajas también muestra una medida de heterogeneidad: la amplitud de la caja o llamado rango intercuartil.
 Mientras más amplia la caja, mayor será la heterogeneidad de los datos, es decir, habrá mayor diferencias entre ellos.
@@ -393,10 +355,6 @@ Por ejemplo, para calcular la desviación estándar del voto provincial a Fuerza
 res2016 |> 
   group_by(region2) |>
   summarise(sd(fp))
-
-#sd(res2016$fp[res2016$region==1])
-#sd(res2016$fp[res2016$region==2])
-#sd(res2016$fp[res2016$region==3])
 ```
 
 Encontramos que la región con menor heterogeneidad es la costa, aunque, según esta medida, la región más heterogénea es la selva.
@@ -404,7 +362,9 @@ Esto puede ser debido a la presencia de valores atípicos.
 
 ------------------------------------------------------------------------
 
-# Medidas de tendencia central
+# Comisarias en el Perú
+
+## Medidas de tendencia central
 
 -   Resumen de un conjunto de datos.
 
@@ -433,7 +393,7 @@ La base de datos o "dataframe" se vería así
 
 ------------------------------------------------------------------------
 
-Para esta clase se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](http://iinei.inei.gob.pe/microdatos/)).
+Para esta clase se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](https://proyectos.inei.gob.pe/microdatos/)).
 Esta base tiene información para 1495 comisarias y de 281 variables.
 Esta base se puede cargar también desde el repositorio Github de este curso.
 La base de datos puede ser guardada en el directorio de trabajo.
@@ -445,11 +405,28 @@ library(rio)
 comi17 = import("bases/comi2017.sav")
 ```
 
+```{r}
+str(comi17$INF109)
+class(comi17$INF109)
+```
+
+```{r}
+comi17 = comi17 |>
+  mutate(inf109 = factor(INF109, labels=c("Menos de 5000 Hab", 
+                                          "De 5000 - 10000 Hab", 
+                                          "De 10001 - 20000 Hab", 
+                                          "De 20001 - 40000 Hab",
+                                          "De 40001 a 80000", 
+                                          "De 80001 a más")))
+```
+
 Esta base de datos incluye a la variable "INF109" (ojo: R es "case sensitive", es decir, diferencia mayúsculas de minúsculas).
-La tabla de distribución de frecuencias de esa variable se puede obtener con el comando `table.`
+La tabla de distribución de frecuencias de esa variable se puede obtener con el siguiente código:
 
 ```{r tabla}
-table(comi17$INF109)
+tabla1 = comi17 |>
+  count(Tipo = inf109, name="Frecuencia")
+tabla1
 ```
 
 En este caso, la moda es el valor más frecuente, que sería el código "2", que significa "De 5,000 a 10,000 hab".
@@ -466,7 +443,8 @@ Para calcular la mediana de la variable "INF109" se puede usar el comando `media
 Este comando internamente ordena los valores de la variable "INF109" de menor a mayor y encuentra el código numérico de la observación que se encuentra en medio de la distribución ordenada.
 
 ```{r}
-median(comi17$INF109)
+comi17 |>
+  summarise(median(INF109))
 ```
 
 La mediana es el código numérico 3, que significa "De 10,001 a 20,000 hab.".
@@ -503,12 +481,11 @@ En una base de datos, se puede calcular la media sumando los valores de una vari
 
 ------------------------------------------------------------------------
 
-## Ejemplo
-
 ¿Cuál es la media (o el promedio) de policías por comisaria de acuerdo a estos datos?
 
 ```{r media}
-mean(comi17$INF110_TOT)
+comi17 |>
+  summarise(mean(INF110_TOT))
 ```
 
 ¿Es una representación adecuada de la realidad?
@@ -517,24 +494,32 @@ Podemos fijarnos en el gráfico de distribución de esta variable para ver si se
 Esto se puede hacer presentando el histograma de esta variable, que es como un gráfico de barras de una variable numérica.
 
 ```{r hist}
-hist(comi17$INF110_TOT, breaks=20)
+library(ggplot2)
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram(binwidth = 5)+
+  xlab("Número de efectivos") +
+  ylab("Frecuencia")+
+  theme_minimal()
 ```
 
 ¿Qué se puede concluir del gráfico?
 
 ```{r mediana}
-median(comi17$INF110_TOT)
+comi17 |>
+  summarise(median(INF110_TOT))
 ```
 
 ¿Qué significa esta diferencia entre la media de 31.6 y la mediana de 19?
 
 ```{r resumen}
-summary(comi17$INF110_TOT)
+comi17 |>
+  summarise(min(INF110_TOT), median(INF110_TOT), 
+            mean(INF110_TOT), max(INF110_TOT))
 ```
 
 ¿Qué se puede comentar de estos datos?
 
-# Medidas de dispersión
+## Medidas de dispersión
 
 -   Describir la centralidad no es suficiente.
     Dos distribuciones pueden tener la misma medida de tendencia central, pero diferentes realidades.
@@ -588,27 +573,26 @@ Para ver un cálculo básico de la desviación estándar en Excel, puede entrar 
 
 -   Como se observa en el gráfico anterior, la desviación estándar es más útil cuando se comparar dos distribuciones. Se compara la centralidad y la dispersión de una variable entre dos grupos (o dos distribuciones).
 
-## Ejemplo
+```{r}
+comi17 |>
+  summarise(sd(INF110_TOT))
+```
 
 Siguiendo con la base de datos de comisarías del Perú, queremos evaluar si el número de policías (INF110_TOT) aumenta a medida que la comisaría atienda a una población mayor (INF109).
 
 Como se vio antes, la variable de población a la que atiende está codificada en 6 grupos, desde 1 que significa "Menos de 5000 hab" a 6 que significa "De 80000 a más hab".
 
 ```{r tablapob}
-table(comi17$INF109)
+tabla1
 ```
 
 Lo que se quiere calcular es el promedio y la desviación estándar de policías por cada grupo de población a la que atiende.
 Esta operación se puede hacer de múltiples maneras en R.
-Aquí usaremos primero los `[…]` para indicar un subgrupo del que se quiere calcular alguna operación.
 
 ```{r mediagrupos}
-mean(comi17$INF110_TOT[comi17$INF109==1])
-mean(comi17$INF110_TOT[comi17$INF109==2])
-mean(comi17$INF110_TOT[comi17$INF109==3])
-mean(comi17$INF110_TOT[comi17$INF109==4])
-mean(comi17$INF110_TOT[comi17$INF109==5])
-mean(comi17$INF110_TOT[comi17$INF109==6])
+comi17 |>
+  group_by(INF109) |>
+  summarise(mean(INF110_TOT))
 ```
 
 Efectivamente, como se esperaba, el número promedio de policías aumenta a medida que la comisaría atiende a una población mayor.
@@ -617,12 +601,9 @@ También se puede comparar la desviación estándar en cada grupo.
 El comando para el cálculo de la desviación estándar es `sd`.
 
 ```{r desvgrupos}
-sd(comi17$INF110_TOT[comi17$INF109==1])
-sd(comi17$INF110_TOT[comi17$INF109==2])
-sd(comi17$INF110_TOT[comi17$INF109==3])
-sd(comi17$INF110_TOT[comi17$INF109==4])
-sd(comi17$INF110_TOT[comi17$INF109==5])
-sd(comi17$INF110_TOT[comi17$INF109==6])
+comi17 |>
+  group_by(INF109) |>
+  summarise(mean(INF110_TOT), sd(INF110_TOT))
 ```
 
 La desviación estándar también aumenta a medida que las comisarías atienden a una población mayor.
@@ -641,7 +622,7 @@ Aquí se presenta un ejemplo que produce el histograma del número de policías 
 ```{r histgrupos}
 library(ggplot2)
 library(dplyr)
-comi17 %>%
+comi17 |>
   ggplot(aes(x=INF110_TOT))+
   geom_histogram()+
   facet_wrap(~INF109)+
@@ -650,327 +631,6 @@ comi17 %>%
 ```
 
 ¿Qué otras preguntas se pueden responder con los datos de comisarías?
-
-------------------------------------------------------------------------
-
-# Paper práctico
-
-"Evaluating the Econometric Evaluations of Training Programs with Experimental Data" [@lalondeEvaluatingEconometricEvaluations1986]
-
-Pregunta: ¿tiene un efecto los programas de entrenamiento en la empleabilidad?
-
-Supuesto: entrenando a trabajadores que no tienen las habilidades básicas hará que se muevan en el mercado laboral, dándoles experiencia laboral y consejería.
-Se trata de un programa estatal que garantiza un trabajo entre 9 a 18 meses.
-Luego de este periodo eran forzados a encontrar un trabajo regular.
-
-Metodología: evaluación experimental.
-Un grupo fue parte del programa.
-Otro grupo comparable no fue parte del programa.
-Se recolectó una línea de base con información de ingresos y datos sociodemográficos.
-Luego se hizo recojo de información de seguimiento.
-
-Variable de éxito: cambio en los ingresos.
-
-------------------------------------------------------------------------
-
-# Leyendo la base de datos en R
-
-```{r base2}
-library(rio)
-LL <- import("bases/LL.csv")
-```
-
-------------------------------------------------------------------------
-
-# Variables en la base de datos
-
--   treated: variable dummy si el participante recibió el tratamiento (1) o no (0)
--   age: edad
--   education: años de educación
--   black: variable dummy si el participante es Afroamericano
--   married: variable dummy si el participante es casado
--   nodegree: variable dummy de no tener estudios secundarios completos (high school)
--   re74: ingresos reales en 1974
--   re75: ingresos reales en 1975
--   re78: ingresos reales en 1978
--   hispanic: variable dummy si el participantes es hispano
--   u74: variable dummy si era desempleado en 1974
--   u75: variable dummy si era desempleado en 1975
-
-------------------------------------------------------------------------
-
-# Medidas de tendencia central
-
-## Media
-
-¿Cual es la media de ingresos de los participantes antes de entrar al estudio?
-Ojo que algunos de ellos pueden haber entrado al programa y otros ser parte del grupo de comparación.
-
-```{r ingresos74}
-mean(LL$re74)
-```
-
-Aparentemente, el ingreso de los participantes del estudio en la línea de base es bastante bueno.
-Pero, es necesario hacer ver si ese dato refleja la "realidad" de los ingresos del conjunto de participantes del estudio.
-Una manera de analizar eso, es ver la distribución de respuestas de forma gráfica, por ejemplo, usando un histograma.
-En este gráfico, además, se puede incluir una línea que marque el punto de la media.
-
-```{r hist74}
-hist(LL$re74)
-abline(v=mean(LL$re74), col="red")
-```
-
-Como se observa, la distribución de esta variable está sesgada hacia los valores altos de la variable.
-¿Qué pasa con la media en estas situaciones?
-
-## Mediana
-
-Para estos casos, se tiene otra medida de tendencia central, la mediana.
-La mediana es el punto medio de un conjunto de datos ordenados.
-Por ejemplo, si tengo 5 personas con los siguientes ingresos ordenados: 800, 1200, 1500, 3000, 5000.
-La mediana es el ingreso de la persona que está al medio de la fila ordenada, es decir, la persona en la posición 3.
-La mediana sería 1500 soles.
-La media de estas 5 observaciones sería 2300 soles.
-Si se quisiera "encontrar" la mediana en la base de datos, ¿qué se debería hacer?
-¿Si son 722 observaciones, cuál es el punto medio?
-
-La fila sería de observación 1.....411 / 412......822 La mediana sería el promedio simple del valor del ingreso que tiene la persona ubicada en la posición 411 (823.2544) y del de la posición 412 (824.3886).
-
-Para calcular la mediana del grupo del estudio, se usa.
-
-```{r mediana74}
-median(LL$re74)
-```
-
-Como se observa la mediana es mucho menor que la media y, en este caso, es un mejor resumen de la "realidad" del conjunto de ingresos de los participantes en este estudio.
-
-¿Qué pasa si en mi ejemplo de la fila, la última persona que gana 5000 recibe un super aumento y pasa a ganar 15000 soles.
-¿Cambia la media?
-¿Cambia la mediana?
-
-## Resumen de una variable
-
-Si se quisiera ver la media y la mediana con un solo comando, se puede usar `summary`.
-
-```{r resumen74}
-summary(LL$re74)
-```
-
-Se observa claramente que la media es mucho mayor que la mediana.
-¿Qué significa que el Min=0?
-¿Qué significa 1st Qu = 0?
-¿Median a qué porcentaje corresponde?
-¿3rd Qu a qué porcentaje corresponde?
-¿Qué significa Max?
-¿Máximo observado puede ser atípico?
-
-Para observar la posición relativa de media y mediana, se puede graficar el histograma marcando ambas medidas.
-
-```{r hist74_2}
-hist(LL$re74, breaks = 15)
-abline(v=mean(LL$re74), col="red")
-abline(v=median(LL$re74), col="blue")
-```
-
-Con el comando `summary` se puede ver que la mediana aparece como un caso particular de los cuartiles, una medida de posición.
-
-------------------------------------------------------------------------
-
-## Medidas de posición
-
-Los cuartiles dividen a la distribución en cuatro grupos de igual tamaño.
-Así como la mediana divide a la "fila ordenada" en 2 grupos, cada uno con 411 observaciones, los cuartiles dividen la distribución en 4 grupos, cada uno con el 25% del total de observaciones (180.5 observaciones).
-
-Los cuartiles son las medidas de posición más usadas, pues tienen una expresión gráfica en el "boxplot".
-Sin embargo, una distribución ordenada se puede dividir en tres grupos iguales, los "terciles".
-Por ejemplo, en la universidad, a los alumnos se los clasifica en tercio superior, tercio medio y tercio inferior.
-
-Una distribución ordenada también puede ser dividida en cinco grupos, los "quintiles" o en diez grupos iguales, los "deciles".
-
-```{r cuartiles}
-quantile(LL$re74)
-quantile(LL$re74, c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1))
-```
-
-## Gráfico de cajas
-
-Una forma de graficar los cuartiles es mediante el gráfico de cajas o boxplot (ver ppt).
-Este gráfico muestra una caja central y dos bigotes.
-El gráfico para la variable ingresos de la línea de base es:
-
-```{r caja}
-boxplot(LL$re74)
-```
-
-¿Por qué no se muestra el bigote inferior?
-¿Qué significan los puntos superiores?
-
-------------------------------------------------------------------------
-
-## Tablas de frecuencias
-
-El ingreso descrito anteriormente es para toda la muestra.
-El estudio, sin embargo, dividió a los participantes en 2 grupos: tratados y control.
-¿Cuántos hay en cada grupo?
-
-```{r tablatrat}
-table(LL$treated)
-```
-
-La línea de base también recogió información sociodemográfica de los participantes.
-En particular, nos interesa saber cuántos afroamericanos hay en el grupo.
-
-```{r tablaafro}
-table(LL$black)
-barplot(table(LL$black))
-```
-
-Y sobre todo saber qué nivel educativo tienen.
-
-```{r tablaeduc}
-table(LL$education)
-```
-
-Las frecuencias absolutas no nos ayudan mucho, es mejor tener las frecuencias relativas.
-
-```{r propeduc}
-table(LL$education)/sum(table(LL$education))*100
-```
-
-O, se puede usar el comando `prop.table` que nos da la proporción (en escala 0-1).
-Para reportar el porcentaje se multiplica por 100.
-
-```{r propeduc_2}
-prop.table(table(LL$education))*100
-```
-
-Esta variable se podría considerar como numérica, por lo que se podría describir.
-
-```{r resumeneduc}
-summary(LL$education)
-```
-
-Y se podría graficar
-
-```{r cajaeduc}
-boxplot(LL$education)
-```
-
-O con un histograma (un gráfico de barras de una variable numérica).
-
-```{r histeduc}
-hist(LL$education)
-```
-
-O mediante
-
-```{r histeduc_2}
-barplot(table(LL$education),xlab="Años de educación",ylab="Frecuencia",cex.axis=1,cex.names=0.8,ylim=c(0,200))
-abline(h=0,col='gray60')
-box()
-```
-
-------------------------------------------------------------------------
-
-# Medidas de dispersión
-
-## Rango intercuartil
-
-Distancia entre Q3 y Q1, que acumula el 50% de los datos centrales.
-
-```{r iqr74}
-IQR(LL$re74)
-```
-
-Para una variable numérica, la medida más usada es la desviación estándar.
-
-```{r desv74}
-sd(LL$re74)
-```
-
-RETO: Calcule una medida de dispersión basada en la mediana
-
-------------------------------------------------------------------------
-
-# Inspeccionando la hipótesis de LaLonde
-
-Hasta ahora se ha calculado la media de ingresos para el total de los participantes del estudio en 1974.
-La idea es analizar cómo cambiaron estos ingresos entre 1974 y 1978 para cada grupo.
-Para empezar, ¿cómo eran los ingresos de los participantes que fueron tratados y que fueron al grupo control al inicio del estudio?
-Para esto se tiene que calcular la media para cada uno de estos grupos.
-Hay varias maneras de hacer esto.
-Una es usando los []
-
-```{r ll}
-mean(LL$re74[LL$treated==0])
-sd(LL$re74[LL$treated==0])
-
-mean(LL$re74[LL$treated==1])
-sd(LL$re74[LL$treated==1])
-```
-
-Otra opción es creando otros "dataframes" para cada grupo con el comando `subset`.
-
-```{r llsubset}
-trata <- subset(LL, LL$treated==1)
-control <- subset(LL, LL$treated==0)
-```
-
-Y en cada subgrupo calcular la media.
-En este caso calcularemos la media en 1978 para ver si se generaron diferencias.
-
-```{r mediall}
-mean(control$re78)
-sd(control$re78)
-
-mean(trata$re78)
-sd(trata$re78)
-```
-
-A simple vista, ¿se cumple la hipótesis de LaLonde?
-¿Cuánto aumentaron los ingresos de los que no formaron parte del programa y cuánto aumentaron los ingresos de los que sí formaron parte del programa?
-
-¿Con esta información es suficiente para concluir que se cumple la hipótesis de LaLonde?
-
-Es posible que la media sea mayor en el grupo de tratamiento debido a los valores extremos o "outliers".
-Para verificar que el grupo de tratamiento reporta un ingreso mayor que el grupo control, se puede verificar mediante la mediana.
-
-Para comparar visualmente, los ingresos en 1978 entre los participantes en el grupo control y en el de tratamiento, se puede hacer un gráfico de cajas comparada, que incluye la mediana.
-
-Este gráfico se puede hacer con el comando `boxplot`, incluyendo ambas variables en la definición.
-
-```{r cajacomp}
-boxplot(LL$re78 ~ LL$treated, ylim=c(0, 24000))
-
-```
-
-Este gráfico no se muestra claramente las diferencias entre los valores de la mediana.
-Cuando se calculan, se observa que el grupo de tratamiento tiene una mediana de ingresos más alta que el grupo control.
-
-```{r mediana comparacion}
-median(control$re78)
-median(trata$re78)
-```
-
-Esta diferencia a a favor de aquellos que pasaron el programa de capacitación en sus ingresos posteriores puede deberse a múltiples factores.
-Sin embargo, es apresurado sacar una conclusión de las diferencias puntuales en las medias o las medianas.
-Al final, no se tiene información de toda la población, sino simplemente de una muestra de 722 personas.
-
-La pregunta es: ¿se puede extraer conclusiones acerca de la población de trabajadores que no tienen las habilidades básicas sobre la base de estas 722 observaciones?
-
-Para una opción más interactiva se puede usar el paquete `plotly` para graficar ambas cajas y que se muestren los valores.
-
-```{r message=FALSE, warning=FALSE}
-library(plotly)
-plot <- plot_ly(LL, y=~re78, color=~as.factor(treated), type="box", boxpoints = "all", 
-                jitter = 0.4, pointpos = -1.8) %>% layout(title ="Ingresos 1978 por Grupo",
-                                                          xaxis = list(title = "Grupos",
-                                                                      showgrid = F),
-                                                          yaxis = list(title ="Ingresos 1978",
-                                                                       showgrid = F))
-                                    
-plot
-```
 
 ------------------------------------------------------------------------
 

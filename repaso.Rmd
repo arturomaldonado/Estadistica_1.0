@@ -208,12 +208,14 @@ graf7
 # Ejemplo 2: variable categórica
 
 ```{r}
+library(rio)
 peru = import("PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
 ```
 
 ## Describir una variable categórica
 
 ```{r}
+library(tidyverse)
 peru = peru |>
   mutate(ing4rec=recode(ing4, '5' = '1', '6' = '1', '7' = '1',  .default = '0'))
 ```

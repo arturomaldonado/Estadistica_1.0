@@ -53,15 +53,17 @@ library(dplyr)
 library(tidyverse)
 endo2020 |> 
   summarize(Media = mean(P1_6, na.rm = T), Desv.Std = sd(P1_6, na.rm = T))
-
-#mean(endo2020$P1_6, na.rm = T)
-#sd(endo2020$P1_6, na.rm = T)
 ```
 
 Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula.
 ¿Existen diferencias en el número promedio de alumnos que acompañan docentes hombres y docentes mujeres?
 
 Cuando se importa la base de datos, la variable sexo, P1_1, es definida como numérica.
+
+```{r}
+str(endo2020$P1_1)
+```
+
 La podemos transformar a una variable de tipo factor.
 
 ```{r}
@@ -77,16 +79,34 @@ alumxsexo = endo2020 |>
   summarize(Media = mean(P1_6, na.rm = T), 
             Desv.Std = sd(P1_6, na.rm = T))
 alumxsexo
-
-#mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-#sd(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)#
-#mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
-#sd(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
 ```
 
 Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos en promedio.
 
 Todos estos resultados son puntuales y aplican para la muestra de 28,216 profesores.
+
+Para una comparación gráfica, se puede usar boxplot.
+
+```{r}
+ggplot(endo2020, aes(y=P1_6, x=sexo))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 400), breaks = seq(0, 400, 50))+
+  ylab("Número de alumnos")+
+  xlab("Sexo del docente")+
+  theme_get()
+```
+
+Si se quiere hacer un gráfico de barras simples para mostrar la media del número de alumnos por sexo del profesor, se puede usar:
+
+```{r}
+ggplot(alumxsexo, aes(x=sexo, y=Media)) + 
+  geom_bar(stat = "identity") +
+  ggtitle("Número de alumnos promedio por sexo del docente") +
+  xlab("Sexo del docente") +
+  geom_text(aes(label=round(Media,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
+```
+
 ¿Cómo se pueden extrapolar estos resultados al universo de profesores peruanos?
 
 # Estimación por intervalos
@@ -143,7 +163,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
+|:----------------:|:-----------------------------------:|:-----------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

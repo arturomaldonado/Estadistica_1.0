@@ -320,12 +320,6 @@ cuartilesxregion = res2016 |>
   group_by(region2) |>
   summarise(quantile(fp))
 cuartilesxregion
-
-#Para ver los cuartiles por cada región en forma horizontal
-#cuartilesxregion = res2016 |> 
-#  group_by(region2) |>
-#  summarise(c = list(quantile(fp))) |>
-#  unnest_wider(c)
 ```
 
 ## Describiendo la heterogeneidad
@@ -411,13 +405,15 @@ class(comi17$INF109)
 ```
 
 ```{r}
+library(tidyverse)
+library(dplyr)
 comi17 = comi17 |>
-  mutate(inf109 = factor(INF109, labels=c("Menos de 5000 Hab", 
-                                          "De 5000 - 10000 Hab", 
-                                          "De 10001 - 20000 Hab", 
-                                          "De 20001 - 40000 Hab",
-                                          "De 40001 a 80000", 
-                                          "De 80001 a más")))
+  mutate(tipo = factor(INF109, labels=c("Menos de 5000 Hab", 
+                                        "De 5000 - 10000 Hab", 
+                                        "De 10001 - 20000 Hab", 
+                                        "De 20001 - 40000 Hab",
+                                        "De 40001 a 80000", 
+                                        "De 80001 a más")))
 ```
 
 Esta base de datos incluye a la variable "INF109" (ojo: R es "case sensitive", es decir, diferencia mayúsculas de minúsculas).
@@ -425,11 +421,18 @@ La tabla de distribución de frecuencias de esa variable se puede obtener con el
 
 ```{r tabla}
 tabla1 = comi17 |>
-  count(Tipo = inf109, name="Frecuencia")
+  count(Tipo = tipo, name="Frecuencia")
 tabla1
 ```
 
 En este caso, la moda es el valor más frecuente, que sería el código "2", que significa "De 5,000 a 10,000 hab".
+
+```{r}
+tabla1 = comi17 |>
+  count(Tipo = tipo, name="Frecuencia") |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla1
+```
 
 ## Mediana
 
@@ -496,10 +499,10 @@ Esto se puede hacer presentando el histograma de esta variable, que es como un g
 ```{r hist}
 library(ggplot2)
 ggplot(comi17, aes(x=INF110_TOT))+
-  geom_histogram(binwidth = 5)+
+  geom_histogram()+
   xlab("Número de efectivos") +
   ylab("Frecuencia")+
-  theme_minimal()
+  theme_light()
 ```
 
 ¿Qué se puede concluir del gráfico?
@@ -515,6 +518,16 @@ comi17 |>
 comi17 |>
   summarise(min(INF110_TOT), median(INF110_TOT), 
             mean(INF110_TOT), max(INF110_TOT))
+```
+
+```{r}
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  geom_vline(xintercept = 19, color = "red")+
+  geom_vline(xintercept = 31.6, color = "green")+
+  xlab("Número de efectivos") +
+  ylab("Frecuencia")+
+  theme_light()
 ```
 
 ¿Qué se puede comentar de estos datos?
@@ -591,7 +604,7 @@ Esta operación se puede hacer de múltiples maneras en R.
 
 ```{r mediagrupos}
 comi17 |>
-  group_by(INF109) |>
+  group_by(tipo) |>
   summarise(mean(INF110_TOT))
 ```
 
@@ -601,9 +614,10 @@ También se puede comparar la desviación estándar en cada grupo.
 El comando para el cálculo de la desviación estándar es `sd`.
 
 ```{r desvgrupos}
-comi17 |>
-  group_by(INF109) |>
-  summarise(mean(INF110_TOT), sd(INF110_TOT))
+mediaxtipo = comi17 |>
+  group_by(Tipo = tipo) |>
+  summarise(Media = mean(INF110_TOT), Desv = sd(INF110_TOT))
+mediaxtipo
 ```
 
 La desviación estándar también aumenta a medida que las comisarías atienden a una población mayor.
@@ -625,13 +639,122 @@ library(dplyr)
 comi17 |>
   ggplot(aes(x=INF110_TOT))+
   geom_histogram()+
-  facet_wrap(~INF109)+
+  facet_wrap(~tipo)+
   xlab("Número de policías")+
   ylab("Frecuencia")
 ```
 
 ¿Qué otras preguntas se pueden responder con los datos de comisarías?
 
+```{r}
+ggplot(mediaxtipo, aes(x=Tipo, y=Media)) + 
+  geom_bar(stat = "identity") +
+  ggtitle("Número de efectivos promedio por tipo de comisaría") +
+  xlab("Tipo de comisaría") +
+  geom_text(aes(label=round(Media,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
+```
+
+Otra forma de describir descriptivamente esta variable mediante un gráfico es mediante el gráfico de cajas o "boxplot".
+Este gráfico muestra el mínimo, los cuartiles y el máximo.
+Los cuartiles dividen el número de observaciones en cuatro grupos de igual tamaño, aunque sus límites difieren.
+El segundo cuartil es la mediana.
+
+```{r}
+ggplot(comi17, aes(y=INF110_TOT, x=tipo))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 300), breaks = seq(0, 300, 50))+
+  ylab("Número de efectivos")+
+  xlab("Tipo de comisaría")+
+  theme_get()
+```
+
 ------------------------------------------------------------------------
+
+Se pueden calcular los cuartiles para toda la distribución con el comando `quantile`.
+Estos datos muestran que entre el 25% de todas las comisarías tienen entre 3 y 11 efectivos.
+El segundo 25% de comisarías tiene entre 11 y 19 efectivos.
+El tercer 25% tiene entre 19 7 37 efectivos, y el último 25% tiene entre 37 y 259 efectivos.
+
+```{r}
+comi17 |> 
+  summarise(Cuartiles = quantile(INF110_TOT))
+```
+
+Los cuartiles también se pueden calcular por tipo de comisaría.
+Este código nos muestra los cuartiles por tipo de comisaría en cada fila.
+
+```{r}
+cuartilesxtipo = comi17 |> 
+  group_by(tipo) |>
+  summarise(quantile(INF110_TOT))
+cuartilesxtipo
+```
+
+El ancho de cada caja es un estadístico de dispersión.
+Este estadístico se llama rango intercuartil y formalmente es la resta del cuartil 75 menos el cuartil 25.
+
+La tabla nos muestra los dos estadísticos de dispersión, el rango intercuartil y la desviación estándar.
+Para comparar entre grupos se puede comparar medianas contra medianas y rangos intercuartiles.
+Esto se puede hacer en un gráfico de cajas.
+Otra forma de comparar es medias contra medias y desviaciones estándar por grupo.
+
+```{r}
+ricxtipo = comi17 |>
+  group_by(tipo) |>
+  summarise(Media= mean(INF110_TOT), Desv.Estd = sd(INF110_TOT), 
+            Mediana = median(INF110_TOT), RIC= IQR(INF110_TOT))
+ricxtipo
+```
+
+Regularmente ambas comparaciones son consistentes.
+
+## Descripción de variable de tipo factor
+
+```{r}
+library(rio) 
+comi17_2 = import("bases/comi2017_2.sav")
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(agua = recode(INF264_A, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(luz = recode(INF264_B, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(telefono = recode(INF264_C, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(internet = recode(INF264_E, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(internet = factor(internet, labels=c("No", "Sí")))
+```
+
+```{r}
+tabla2 = comi17_2 |>
+  count(Tiene = internet, name="Frecuencia") |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla2
+```
+
+```{r}
+ggplot(tabla2, aes(x=Tiene, y=Porcentaje)) + 
+  geom_bar(stat = "identity") +
+  ggtitle("Comisaría tiene internet") +
+  xlab("Cuenta con servicio de internet") +
+  geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
+```
 
 # Bibliografía

@@ -412,8 +412,7 @@ comi17 = comi17 |>
                                         "De 5000 - 10000 Hab", 
                                         "De 10001 - 20000 Hab", 
                                         "De 20001 - 40000 Hab",
-                                        "De 40001 a 80000", 
-                                        "De 80001 a más")))
+                                        "De 40001 a 80000", "De 80001 a más")))
 ```
 
 Esta base de datos incluye a la variable "INF109" (ojo: R es "case sensitive", es decir, diferencia mayúsculas de minúsculas).
@@ -430,8 +429,18 @@ En este caso, la moda es el valor más frecuente, que sería el código "2", que
 ```{r}
 tabla1 = comi17 |>
   count(Tipo = tipo, name="Frecuencia") |>
-  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+  mutate(Porc = (Frecuencia / sum(Frecuencia)*100 ))
 tabla1
+```
+
+```{r}
+library(ggplot2)
+ggplot(tabla1, aes(x=Tipo, y=Porc)) + 
+  geom_bar(stat = "identity") +
+  xlab("Población a la que atiende la comisaria") +
+  ylab("Porcentaje") +
+  geom_text(aes(label=round(Porc,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
 ```
 
 ## Mediana

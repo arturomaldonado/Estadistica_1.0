@@ -52,7 +52,7 @@ Esta encuesta tiene una pregunta que nos permite calcular esta media y la desvia
 library(dplyr)
 library(tidyverse)
 endo2020 |> 
-  summarize(Media = mean(P1_6, na.rm = T), Desv.Std = sd(P1_6, na.rm = T))
+  summarize(Media =mean(P1_6, na.rm = T), Desv.Std = sd(P1_6, na.rm = T))
 ```
 
 Es decir, un profesor promedio en Perú acompaña aproximadamente a 40 alumnos en aula.
@@ -73,12 +73,13 @@ endo2020 = endo2020 |>
 
 Calculamos los datos para hombres y mujeres.
 
-```{r docentos hombre}
-alumxsexo = endo2020 |> 
+```{r docentes hombre}
+tabla1 = endo2020 |> 
   group_by(sexo) |>
   summarize(Media = mean(P1_6, na.rm = T), 
-            Desv.Std = sd(P1_6, na.rm = T))
-alumxsexo
+            Desv.Std = sd(P1_6, na.rm = T),
+            Mediana = median(P1_6, na.rm = T))
+tabla1
 ```
 
 Se encuentra que los docentes hombres acompañan, en promedio, a 52 alumnos, mientras que las docentes mujeres acompañan a 34 alumnos, una diferencia de 18 alumnos en promedio.
@@ -88,12 +89,37 @@ Todos estos resultados son puntuales y aplican para la muestra de 28,216 profeso
 Para una comparación gráfica, se puede usar boxplot.
 
 ```{r}
+library(ggplot2)
 ggplot(endo2020, aes(y=P1_6, x=sexo))+
-  geom_boxplot()+
-  scale_y_continuous(limits = c(0, 400), breaks = seq(0, 400, 50))+
-  ylab("Número de alumnos")+
-  xlab("Sexo del docente")+
-  theme_get()
+  geom_boxplot()
+```
+
+```{r}
+endo2020 = endo2020 |>
+  mutate(condicion = factor(P1_7, labels=c("Nombrado", "Contratado x concurso", "Contratado otro")))
+```
+
+```{r}
+tabla2 = endo2020 |> 
+  group_by(condicion) |>
+  summarize(Media = mean(P1_6, na.rm = T), 
+            Desv.Std = sd(P1_6, na.rm = T),
+            Mediana = median(P1_6, na.rm = T))
+tabla2
+```
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+endo2020 |>
+  drop_na(P1_6) |>
+  ggplot(aes(y=P1_6, x=condicion))+
+  geom_boxplot()
+```
+
+```{r}
+ggplot(subset(endo2020, !is.na(P1_6)), aes(y=P1_6, x=condicion))+
+  geom_boxplot()
 ```
 
 Si se quiere hacer un gráfico de barras simples para mostrar la media del número de alumnos por sexo del profesor, se puede usar:

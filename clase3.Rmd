@@ -1,5 +1,5 @@
 ---
-title: 'Clase 3 y 4: Intervalos de confianza'
+title: 'Clase 3 y 4: Estimación puntual y por intervalos de confianza'
 author: "Arturo Maldonado"
 date: "4-11/4/2023"
 output:
@@ -125,7 +125,7 @@ ggplot(subset(endo2020, !is.na(P1_6)), aes(y=P1_6, x=condicion))+
 Si se quiere hacer un gráfico de barras simples para mostrar la media del número de alumnos por sexo del profesor, se puede usar:
 
 ```{r}
-ggplot(alumxsexo, aes(x=sexo, y=Media)) + 
+ggplot(tabla1, aes(x=sexo, y=Media)) + 
   geom_bar(stat = "identity") +
   ggtitle("Número de alumnos promedio por sexo del docente") +
   xlab("Sexo del docente") +
@@ -143,7 +143,7 @@ Sin embargo, esta muestra forma parte de un universo o población (el conjunto d
 
 El mismo razonamiento aplica a una encuesta de opinión convencional.
 La ficha técnica de una encuesta menciona, generalmente, el tamaño de muestra y la población a la que se busca representar.
-También se puede encontrar el margen de error (+/- 2.8%) y el nivel de confianza (generalmente de 95%).(Ver, por ejemplo, la [encuesta de opinión de abril 2022 de Ipsos](https://www.ipsos.com/sites/default/files/ct/news/documents/2022-04/Ipsos%208%20de%20abril%20América%20-%20Primera%20Parte_0.pdf).
+También se puede encontrar el margen de error (+/- 2.8%) y el nivel de confianza (generalmente de 95%).(Ver, por ejemplo, la [encuesta de opinión de agosto 2023 de Ipsos](https://www.ipsos.com/sites/default/files/ct/news/documents/2023-08/Informe%20Encuesta%20Nacional%20Urbano%20Rural%20-%20America%20Televisión%20al%2011%20de%20agosto%202023%20Estudio%20de%20Opinión.pdf).
 
 El proceso mediante el cual se parte de una muestra para decir algo de un universo o población es un proceso de inferencia y es parte de la estadística inferencial.
 La estadística inferencial introduce la **incertidumbre** en los estimados, debido al hecho de estar trabajando con una muestra y no con el total de observaciones del universo.
@@ -189,7 +189,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:----------------:|:-----------------------------------:|:-----------------|
+|:----------------:|:----------------------------------:|:-----------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |
@@ -213,6 +213,8 @@ Los estadísticos de todas estas casi infinitas muestras se pueden tabular y gra
 ## Teorema del límite central
 
 Este teorema muestra que la **distribución de muestreo se aproxima a una distribución normal**, con centro en el parámetro, en la medida que el tamaño de muestra aumenta.
+
+Esto se puede mostrar gráficamente en el Tablero de Galton, ver [aquí](https://youtu.be/AwEaHCjgeXk?si=a0-wfG-fng4HYsRQ)
 
 Por lo tanto, la distribución de muestreo de N grandes para cualquier variable seguirá las características de cualquier curva normal.
 Toda curva normal es simétrica y sabemos que si desde el centro se desplaza 1 desviación estándar en ambas direcciones, entre esos límites estarán el 68.3% de todas las observaciones.
@@ -315,13 +317,6 @@ ci_alumxsexo = endo2020 |>
             max = ciMean(P1_6, na.rm=T)[2]
             )
 ci_alumxsexo
-
-#library(Rmisc)
-#ic_grupo = group.CI(P1_6~sexo, endo2020)
-#ic_grupo
-
-#ciMean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T)
-#ciMean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
 ```
 
 Se encuentra que la media de alumnos que atiende un docente hombre esta entre 50.7 y 53.8 alumnos, mientras que en el caso de las docentes mujeres está entre 33.3 y 34.8 alumnos en aula.

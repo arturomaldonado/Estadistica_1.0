@@ -1,7 +1,7 @@
 ---
 title: 'Clase 3 y 4: Estimación puntual y por intervalos de confianza'
 author: "Arturo Maldonado"
-date: "4-11/4/2023"
+date: "5/9/2023"
 output:
   html_document:
     toc: true
@@ -189,7 +189,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:----------------:|:----------------------------------:|:-----------------|
+|:----------------:|:------------------------------------:|:---------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

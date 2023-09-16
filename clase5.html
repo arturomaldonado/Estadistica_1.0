@@ -592,12 +592,17 @@ calculamos la media de alumnos para cada grupo.</p>
   group_by(sexo) |&gt;
   summarize(Media = mean(P1_6, na.rm = T))
 alumxsexo</code></pre>
-<pre><code>##      Media
-## 1 39.98644</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   sexo   Media
+##   &lt;fct&gt;  &lt;dbl&gt;
+## 1 Hombre  52.2
+## 2 Mujer   34.1
+## 3 &lt;NA&gt;   NaN</code></pre>
 <p>Con esta tabla, calculamos la diferencia entre las medias de los
 grupos.</p>
 <pre class="r"><code>alumxsexo[1,2] - alumxsexo[2,2]</code></pre>
-<pre><code>## integer(0)</code></pre>
+<pre><code>##      Media
+## 1 18.18187</code></pre>
 <pre class="r"><code>#mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T) - mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)</code></pre>
 <p>La diferencia es de 18.2 alumnos. Esta diferencia es para el grupo de
 28 mil profesores encuestados. La pregunta es: ¿Se puede afirmar que
@@ -669,10 +674,10 @@ tabla1</code></pre>
 ## # Groups:   sexo [2]
 ##   sexo   apoyo     N total
 ##   &lt;fct&gt;  &lt;fct&gt; &lt;int&gt; &lt;int&gt;
-## 1 Hombre Sí     2777 18930
-## 2 Hombre No     3386 18930
-## 3 Mujer  Sí     6699 18930
-## 4 Mujer  No     6068 18930</code></pre>
+## 1 Hombre Sí     2777  6163
+## 2 Hombre No     3386  6163
+## 3 Mujer  Sí     6699 12767
+## 4 Mujer  No     6068 12767</code></pre>
 <p>Con estos datos, corremos el comando <code>prop.test</code>.</p>
 <pre class="r"><code>prop.test(c(2777, 6699), c(6163,12767))</code></pre>
 <pre><code>## 
@@ -712,12 +717,12 @@ tabla2</code></pre>
 ## # Groups:   sexo [2]
 ##   sexo   condicion                         N total
 ##   &lt;fct&gt;  &lt;fct&gt;                         &lt;int&gt; &lt;int&gt;
-## 1 Hombre Nombrado                       3303 18950
-## 2 Hombre Contratado por concurso        2830 18950
-## 3 Hombre Contratado con otra modalidad    38 18950
-## 4 Mujer  Nombrado                       7140 18950
-## 5 Mujer  Contratado por concurso        5578 18950
-## 6 Mujer  Contratado con otra modalidad    61 18950</code></pre>
+## 1 Hombre Nombrado                       3303  6171
+## 2 Hombre Contratado por concurso        2830  6171
+## 3 Hombre Contratado con otra modalidad    38  6171
+## 4 Mujer  Nombrado                       7140 12779
+## 5 Mujer  Contratado por concurso        5578 12779
+## 6 Mujer  Contratado con otra modalidad    61 12779</code></pre>
 <p>Con esta tabla se encuentra que entre los hombres se tiene 3303
 éxitos y para las mujeres un total de 7140 éxitos. Lo que no se
 encuentra directamente es el total, que se tiene que calcular sobre cada
@@ -744,37 +749,37 @@ kable(head(tabla2), format=&quot;markdown&quot;, digits=1)</code></pre>
 <td align="left">Hombre</td>
 <td align="left">Nombrado</td>
 <td align="right">3303</td>
-<td align="right">18950</td>
+<td align="right">6171</td>
 </tr>
 <tr class="even">
 <td align="left">Hombre</td>
 <td align="left">Contratado por concurso</td>
 <td align="right">2830</td>
-<td align="right">18950</td>
+<td align="right">6171</td>
 </tr>
 <tr class="odd">
 <td align="left">Hombre</td>
 <td align="left">Contratado con otra modalidad</td>
 <td align="right">38</td>
-<td align="right">18950</td>
+<td align="right">6171</td>
 </tr>
 <tr class="even">
 <td align="left">Mujer</td>
 <td align="left">Nombrado</td>
 <td align="right">7140</td>
-<td align="right">18950</td>
+<td align="right">12779</td>
 </tr>
 <tr class="odd">
 <td align="left">Mujer</td>
 <td align="left">Contratado por concurso</td>
 <td align="right">5578</td>
-<td align="right">18950</td>
+<td align="right">12779</td>
 </tr>
 <tr class="even">
 <td align="left">Mujer</td>
 <td align="left">Contratado con otra modalidad</td>
 <td align="right">61</td>
-<td align="right">18950</td>
+<td align="right">12779</td>
 </tr>
 </tbody>
 </table>

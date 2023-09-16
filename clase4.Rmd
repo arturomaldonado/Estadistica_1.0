@@ -283,29 +283,99 @@ De este gráfico se puede concluir que existen diferencias estadísticamente sig
 
 De manera más específica, se puede afirmar que las docentes peruanas reciben más atención psicológica que los docentes hombres.
 
-# Nota final
-
-La comparación de IC, ya sea calculando los valores para cada grupo o ya sea de manera gráfica, es una primera manera de analizar si las diferencias entre grupos se pueden extrapolar a la población.
-
-Pero esta es una manera "informal" de hacer esta comparación.
-Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias o la prueba de proporciones, que se verán en la siguiente sesión.
-
 # Ejemplo LAPOP
 
 ```{r}
+library(rio)
 lapop = import("bases/PER_2006-2021.dta")
 ```
 
+## Ejemplo para variable numérica con índice aditivo
+
+El cuestionario de LAPOP incluye dos preguntas sobre las fuerzas del orden.
+B12.
+¿Hasta qué punto tiene usted confianza en las Fuerzas Armadas?
+y B18.
+¿Hasta qué punto tiene usted confianza en la policía nacional?
+
+Ambas preguntas están medidas en una escala de 1 a 7, donde 1 significa "Nada" y 7 significa "Mucho".
+Una persona que tenga desconfianza de las fuerzas del orden en general, seguramente reportará puntajes bajos en ambas preguntas.
+Por el contrario, una persona que tenga alta confianza en las fuerzas del orden en general, puede reportar puntajes altos en ambas preguntas.
+
+Se pueden combinar ambas preguntas para generar un índice aditivo de confianza general en las fuerzas del orden, como la suma de ambas.
+Como cada pregunta puede ser respondida entre 1 y 7, la suma puede variar entre 2 y 14.
+Un puntaje de 2 expresará la más baja confianza en las fuerzas del orden.
+Un puntaje de 14, la más alta confianza en las fuerzas del orden.
+Cualquier puntaje intermedio, expresará una confianza intermedia.
+
+Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar dos a la suma para que el índice varíe entre 0 y 12.
+Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
+
+|                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
+|---------------------------------------------------------|:-----------------:|:--------------------:|:-----------------:|:---------------------:|:----------------------------:|:---------------------------------:|
+| Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
+| Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
+| Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |
+| Persona con confianza media en las fuerzas del orden    |         6         |          4           |        10         |           8           |             0.66             |                66                 |
+
+De esta manera cada persona tiene un puntaje que puede variar entre 0 y 1, dependiendo de las respuestas que dio a cada una de las preguntas individuales.
+
+Esto se puede calcular en R.
+
+```{r}
+library(dplyr)
+lapop = lapop |>
+  mutate(indice = (b12+b18-2)/12*100)
+```
+
+Podemos asumir que este índice es una variable cuantitativa, por lo que podemos calcular la media y el intervalo de confianza de la media.
+
+```{r}
+library(lsr)
+lapop |>
+  summarise(media = mean(indice, na.rm=T),
+            liminf = ciMean(indice, na.rm=T)[1],
+            limsup = ciMean(indice, na.rm=T)[2]
+            )
+```
+
+Mejor aún, podemos calcular el índice de confianza en las fuerzas del orden por año de la encuesta.
+
+```{r}
+indicexwave = lapop |>
+  group_by(wave) |>
+  summarise(media = mean(indice, na.rm=T),
+            liminf = ciMean(indice, na.rm=T)[1],
+            limsup = ciMean(indice, na.rm=T)[2]
+            )
+indicexwave
+```
+
+Con lo que podemos comparar el índice de apoyo a las fuerzas del orden por año para sacar conclusiones acerca de diferencias.
+
+```{r}
+library(ggplot2)
+graf3 = ggplot(indicexwave, aes(x=wave, y=media))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=paste(round(media, 1))), vjust=-1, size=4)+
+  xlab("Año de encuestas") + ylab("Índice de confianza en las fuerzas del orden")+
+  ylim(0, 60)
+graf3
+```
+
+## Ejemplo para variable categórica
+
 En la página 21 del reporte *Cultura política de la democracia en Perú y en las Américas 2021: Tomándole el pulso a la democracia* se presenta el gráfico que muestra el porcentaje de apoyo a la democracia en Perú (línea magenta) a lo largo del tiempo, en comparación con América Latina (línea morada).
 
-El apoyo a la democracia, variable \"ING4\", está medida en una escala del 1 al 7, donde 1 significa \"muy en desacuerdo\" y 7 significa \"muy de acuerdo\".
+El apoyo a la democracia, variable "ING4", está medida en una escala del 1 al 7, donde 1 significa "muy en desacuerdo" y 7 significa "muy de acuerdo".
 Esta variable se tiene que recodificar.
-De acuerdo al reporte \"Las respuestas van de 1 (muy en desacuerdo) a 7 (muy de acuerdo).
-Para este análisis, se codificaron las respuestas en el extremo "de acuerdo" de la escala (valores que van de 5 a 7) como apoyo a la democracia.\" (p.7).
+De acuerdo al reporte "Las respuestas van de 1 (muy en desacuerdo) a 7 (muy de acuerdo). Para este análisis, se codificaron las respuestas en el extremo"de acuerdo" de la escala (valores que van de 5 a 7) como apoyo a la democracia." (p.7).
 
 ![](apoyo_peru.png)
 
-Para recodificar la variable.
+Para recodificar la variable se usa el siguiente código.
+El resultado es una variable dicotómica (0=No, 1=Sí), que es una variable categórica, aunque incluye un grupo que no tiene respuesta en esta variable y está como NAs.
 
 ```{r}
 lapop = lapop |>
@@ -319,10 +389,17 @@ lapop |>
   count(ing4, name="Frecuencia")
 ```
 
+Lo que queremos es encontrar el intervalo de confianza de la proporción (o porcentaje) de aquellos que responden "Sí" (las 7754 personas con un 1).
+Ojo que la tabla muestra a 393 personas con NAs.
+
 ```{r}
 lapop |>
   count(ing4rec, name="Frecuencia")
 ```
+
+Y queremos calcular el porcentaje de aquellos que responden "Sí" por año de la encuesta.
+La variable que registra el año de la encuesta es "wave".
+Esta variable se carga como una numérica (por este motivo, en el gráfico anterior el eje X del gráfico aparece como una variable continua) y se tiene que transformar a una de factor llamada "ronda".
 
 ```{r}
 lapop = lapop |>
@@ -330,6 +407,13 @@ lapop = lapop |>
 ```
 
 Se calcula el apoyo a la democracia por años.
+Para el cálculo de esta tabla queremos excluir a aquellos que no tienen respuesta en la variable apoyo a la democracia (los 393 NAs anteriores).
+Esto lo podemos hacer con el comando `filter`, donde especificamos que solo queremos calcular los porcentajes de aquellos que respondieron No (o 0 en la variable) y aquellos que respondieron Sí (o 1 en la variable).
+
+En cada grupo se quiere calcular el intervalo de confianza de la proporción.
+Recuerden que la fórmula que se tiene que usar es la de intervalos de confianza de la proporción.
+
+Dentro del comando `mutate` calculamos el total en cada grupo (total), la proporción (Por), el error estándar (err que es igual a la raíz cuadrada del porcentaje por 100-porcentaje entre N) y el límite inferior y superior del intervalo de confianza.
 
 ```{r}
 tabla3 = lapop |>
@@ -344,24 +428,32 @@ tabla3 = lapop |>
 tabla3
 ```
 
-La tabla muestra los datos de los que no apoyan a la democracia (filas donde Apoyo=0) y de los que sí apoyan a la democracia (filas donde Apoyo=1).
+La tabla muestra los datos de los que no apoyan a la democracia (filas donde Apoyo=0) y de los que sí apoyan a la democracia (filas donde Apoyo=1) por cada ronda.
 
 Como solo se quiere graficar a los que sí apoyan a la democracia, se deben eliminar todas las filas impares.
 
 ```{r}
 tabla3 = tabla3[-c(1,3,5,7,9,11,13,15),]
+tabla3
 ```
 
 Ahora, tenemos los datos para graficar.
 
 ```{r}
-graf2 = ggplot(tabla3, aes(x=ronda, y=Por))+
+graf4 = ggplot(tabla3, aes(x=ronda, y=Por))+
   geom_bar(stat="identity")+
   geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
   geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=4)+
   xlab("Ronda") + ylab("Porcentaje que apoya a la democracia")+
   ylim(0, 70)
-graf2
+graf4
 ```
+
+# Nota final
+
+La comparación de IC, ya sea calculando los valores para cada grupo o ya sea de manera gráfica, es una primera manera de analizar si las diferencias entre grupos se pueden extrapolar a la población.
+
+Pero esta es una manera "informal" de hacer esta comparación.
+Para formalizar esta comparación existe una prueba estadística llamada prueba t de diferencias de medias o la prueba de proporciones, que se verán en la siguiente sesión.
 
 # Bibliografía

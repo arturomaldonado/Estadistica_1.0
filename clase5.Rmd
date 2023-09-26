@@ -1,7 +1,7 @@
 ---
 title: "Clase 6"
 author: "Arturo Maldonado"
-date: "25/04/2023"
+date: "26/09/2023"
 output:
   html_document:
     toc: true
@@ -157,7 +157,6 @@ Con esta tabla, calculamos la diferencia entre las medias de los grupos.
 
 ```{r}
 alumxsexo[1,2] - alumxsexo[2,2]
-#mean(endo2020$P1_6[endo2020$P1_1==1], na.rm = T) - mean(endo2020$P1_6[endo2020$P1_1==2], na.rm = T)
 ```
 
 La diferencia es de 18.2 alumnos.
@@ -206,7 +205,7 @@ Esto nos dará los éxitos que requerimos.
 tabla1 = endo2020 |>
   filter(apoyo =="Sí" | apoyo == "No") |>
   group_by(sexo) |>
-  dplyr::count(apoyo = apoyo, name="N")|>
+  count(apoyo = apoyo, name="N")|>
   mutate(total = sum(N))
 tabla1
 ```
@@ -228,7 +227,8 @@ Lo primero es factorizar la variable.
 
 ```{r}
 endo2020 = endo2020 |>
-  mutate(condicion = factor(P1_7, labels=c("Nombrado", "Contratado por concurso", 
+  mutate(condicion = factor(P1_7, labels=c("Nombrado", 
+                                           "Contratado por concurso", 
                                            "Contratado con otra modalidad")))
 ```
 
@@ -239,7 +239,7 @@ tabla2 = endo2020 |>
   filter(condicion =="Nombrado" | condicion == "Contratado por concurso"
   | condicion == "Contratado con otra modalidad") |>
   group_by(sexo) |>
-  dplyr::count(condicion = condicion, name="N")|>
+  count(condicion = condicion, name="N")|>
   mutate(total = sum(N))
 tabla2
 ```

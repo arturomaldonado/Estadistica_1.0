@@ -80,7 +80,7 @@ La regla de decisión "informal" es:
 
 -   Si los IC de ambos grupos NO se cruzan, entonces se puede afirmar, al 95% de confianza, que el parámetro de un grupo es mayor/menor al parámetro del otro grupo.
 
-# Ejemplo para una variable numérica
+# Ejemplo 1 para una variable numérica: ENDO
 
 Siguiendo con el ejemplo de la ENDO 2020, la hipótesis que se puede evaluar es si los profesores atienden a diferente número de alumnos de acuerdo a su sexo.
 Como vimos antes, las comparaciones puntuales sugieren diferencias, donde los docentes hombres atienden a más alumnos que las docentes mujeres.
@@ -194,7 +194,90 @@ OJO: no se debe confundir este gráfico con un gráfico de cajas.
 
 TAREA: Analizar si existen diferencias en el número de alumnos entre docentes con diferentes condiciones laborales (P1_7).
 
-# Ejemplo para una variable categórica
+# Ejemplo 2 para una variable numérica: LAPOP
+
+```{r}
+library(rio)
+lapop = import("bases/PER_2006-2021.dta")
+```
+
+## Ejemplo para variable numérica con índice aditivo
+
+El cuestionario de LAPOP incluye dos preguntas sobre las fuerzas del orden.
+B12.
+¿Hasta qué punto tiene usted confianza en las Fuerzas Armadas?
+y B18.
+¿Hasta qué punto tiene usted confianza en la policía nacional?
+
+Ambas preguntas están medidas en una escala de 1 a 7, donde 1 significa "Nada" y 7 significa "Mucho".
+Una persona que tenga desconfianza de las fuerzas del orden en general, seguramente reportará puntajes bajos en ambas preguntas.
+Por el contrario, una persona que tenga alta confianza en las fuerzas del orden en general, puede reportar puntajes altos en ambas preguntas.
+
+Se pueden combinar ambas preguntas para generar un índice aditivo de confianza general en las fuerzas del orden, como la suma de ambas.
+Como cada pregunta puede ser respondida entre 1 y 7, la suma puede variar entre 2 y 14.
+Un puntaje de 2 expresará la más baja confianza en las fuerzas del orden.
+Un puntaje de 14, la más alta confianza en las fuerzas del orden.
+Cualquier puntaje intermedio, expresará una confianza intermedia.
+
+Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar dos a la suma para que el índice varíe entre 0 y 12.
+Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
+
+|                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
+|-----------|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+| Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
+| Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
+| Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |
+| Persona con confianza media en las fuerzas del orden    |         6         |          4           |        10         |           8           |             0.66             |                66                 |
+
+De esta manera cada persona tiene un puntaje que puede variar entre 0 y 1, dependiendo de las respuestas que dio a cada una de las preguntas individuales.
+
+Esto se puede calcular en R.
+
+```{r}
+library(dplyr)
+lapop = lapop |>
+  mutate(indice = (b12+b18-2)/12*100)
+```
+
+Podemos asumir que este índice es una variable cuantitativa, por lo que podemos calcular la media y el intervalo de confianza de la media.
+
+```{r}
+library(lsr)
+lapop |>
+  summarise(media = mean(indice, na.rm=T),
+            liminf = ciMean(indice, na.rm=T)[1],
+            limsup = ciMean(indice, na.rm=T)[2]
+            )
+```
+
+Mejor aún, podemos calcular el índice de confianza en las fuerzas del orden por año de la encuesta.
+
+```{r}
+indicexwave = lapop |>
+  group_by(wave) |>
+  summarise(media = mean(indice, na.rm=T),
+            liminf = ciMean(indice, na.rm=T)[1],
+            limsup = ciMean(indice, na.rm=T)[2]
+            )
+indicexwave
+```
+
+Con lo que podemos comparar el índice de apoyo a las fuerzas del orden por año para sacar conclusiones acerca de diferencias.
+
+```{r}
+library(ggplot2)
+graf3 = ggplot(indicexwave, aes(x=wave, y=media))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=paste(round(media, 1))), vjust=-1, size=4)+
+  xlab("Año de encuestas") + ylab("Índice de confianza en las fuerzas del orden")+
+  ylim(0, 60)
+graf3
+```
+
+## 
+
+# Ejemplo 1 para una variable categórica: ENDO
 
 Siguiendo con el ejemplo de la ENDO 2020, la hipótesis que se puede evaluar es si existen diferencias en si los docentes han recibido apoyo psicológico o emocional por sexo (P1_13).
 
@@ -282,87 +365,6 @@ graf2
 De este gráfico se puede concluir que existen diferencias estadísticamente significativas en el porcentaje de docentes que buscaron atención psicológica entre hombres y mujeres, debido a que los intervalos de confianza no se traslapan.
 
 De manera más específica, se puede afirmar que las docentes peruanas reciben más atención psicológica que los docentes hombres.
-
-# Ejemplo LAPOP
-
-```{r}
-library(rio)
-lapop = import("bases/PER_2006-2021.dta")
-```
-
-## Ejemplo para variable numérica con índice aditivo
-
-El cuestionario de LAPOP incluye dos preguntas sobre las fuerzas del orden.
-B12.
-¿Hasta qué punto tiene usted confianza en las Fuerzas Armadas?
-y B18.
-¿Hasta qué punto tiene usted confianza en la policía nacional?
-
-Ambas preguntas están medidas en una escala de 1 a 7, donde 1 significa "Nada" y 7 significa "Mucho".
-Una persona que tenga desconfianza de las fuerzas del orden en general, seguramente reportará puntajes bajos en ambas preguntas.
-Por el contrario, una persona que tenga alta confianza en las fuerzas del orden en general, puede reportar puntajes altos en ambas preguntas.
-
-Se pueden combinar ambas preguntas para generar un índice aditivo de confianza general en las fuerzas del orden, como la suma de ambas.
-Como cada pregunta puede ser respondida entre 1 y 7, la suma puede variar entre 2 y 14.
-Un puntaje de 2 expresará la más baja confianza en las fuerzas del orden.
-Un puntaje de 14, la más alta confianza en las fuerzas del orden.
-Cualquier puntaje intermedio, expresará una confianza intermedia.
-
-Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar dos a la suma para que el índice varíe entre 0 y 12.
-Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
-
-|                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
-|---------------------------------------------------------|:-----------------:|:--------------------:|:-----------------:|:---------------------:|:----------------------------:|:---------------------------------:|
-| Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
-| Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
-| Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |
-| Persona con confianza media en las fuerzas del orden    |         6         |          4           |        10         |           8           |             0.66             |                66                 |
-
-De esta manera cada persona tiene un puntaje que puede variar entre 0 y 1, dependiendo de las respuestas que dio a cada una de las preguntas individuales.
-
-Esto se puede calcular en R.
-
-```{r}
-library(dplyr)
-lapop = lapop |>
-  mutate(indice = (b12+b18-2)/12*100)
-```
-
-Podemos asumir que este índice es una variable cuantitativa, por lo que podemos calcular la media y el intervalo de confianza de la media.
-
-```{r}
-library(lsr)
-lapop |>
-  summarise(media = mean(indice, na.rm=T),
-            liminf = ciMean(indice, na.rm=T)[1],
-            limsup = ciMean(indice, na.rm=T)[2]
-            )
-```
-
-Mejor aún, podemos calcular el índice de confianza en las fuerzas del orden por año de la encuesta.
-
-```{r}
-indicexwave = lapop |>
-  group_by(wave) |>
-  summarise(media = mean(indice, na.rm=T),
-            liminf = ciMean(indice, na.rm=T)[1],
-            limsup = ciMean(indice, na.rm=T)[2]
-            )
-indicexwave
-```
-
-Con lo que podemos comparar el índice de apoyo a las fuerzas del orden por año para sacar conclusiones acerca de diferencias.
-
-```{r}
-library(ggplot2)
-graf3 = ggplot(indicexwave, aes(x=wave, y=media))+
-  geom_bar(stat="identity")+
-  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
-  geom_text(aes(label=paste(round(media, 1))), vjust=-1, size=4)+
-  xlab("Año de encuestas") + ylab("Índice de confianza en las fuerzas del orden")+
-  ylim(0, 60)
-graf3
-```
 
 ## Ejemplo para variable categórica
 

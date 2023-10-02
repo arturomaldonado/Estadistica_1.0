@@ -445,26 +445,9 @@ especificación <code>, na.rm = T</code>. También se puede calcular la
 mediana, con el comando <code>median</code>.</p>
 <p>Se observa que ambas medidas son aproximadamente iguales, indicando
 una distribución simétrica de datos.</p>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ forcats   1.0.0     ✔ readr     2.1.4
-## ✔ ggplot2   3.4.2     ✔ stringr   1.5.0
-## ✔ lubridate 1.9.2     ✔ tibble    3.2.1
-## ✔ purrr     1.0.1     ✔ tidyr     1.3.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>res2016 |&gt;
+<pre class="r"><code>library(dplyr)
+library(tidyverse)
+res2016 |&gt;
   summarise(mean(fp))</code></pre>
 <pre><code>##   mean(fp)
 ## 1 39.52934</code></pre>
@@ -747,13 +730,14 @@ y el estadístico <code>quantile</code> del Tidyverse. Estos comandos
 también nos retornan el mínimo y máximo.</p>
 <pre class="r"><code>res2016 |&gt; 
   summarise(Cuartiles = quantile(fp))</code></pre>
-<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
-## dplyr 1.1.0.
+<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group
+## was deprecated in dplyr 1.1.0.
 ## ℹ Please use `reframe()` instead.
-## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
-##   always returns an ungrouped data frame and adjust accordingly.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
+## ℹ When switching from `summarise()` to `reframe()`, remember
+##   that `reframe()` always returns an ungrouped data frame
+##   and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where
+## this warning was generated.</code></pre>
 <pre><code>##   Cuartiles
 ## 1    6.5400
 ## 2   25.8475
@@ -765,15 +749,16 @@ regiones.</p>
 <pre class="r"><code>cuartilesxregion = res2016 |&gt; 
   group_by(region2) |&gt;
   summarise(quantile(fp))</code></pre>
-<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
-## dplyr 1.1.0.
+<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group
+## was deprecated in dplyr 1.1.0.
 ## ℹ Please use `reframe()` instead.
-## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
-##   always returns an ungrouped data frame and adjust accordingly.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;region2&#39;. You can override using the
-## `.groups` argument.</code></pre>
+## ℹ When switching from `summarise()` to `reframe()`, remember
+##   that `reframe()` always returns an ungrouped data frame
+##   and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where
+## this warning was generated.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;region2&#39;. You can
+## override using the `.groups` argument.</code></pre>
 <pre class="r"><code>cuartilesxregion</code></pre>
 <pre><code>## # A tibble: 15 × 2
 ## # Groups:   region2 [3]
@@ -1023,7 +1008,8 @@ ggplot(comi17, aes(x=INF110_TOT))+
   xlab(&quot;Número de efectivos&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.</code></pre>
 <p><img src="clase2_files/figure-html/hist-1.png" width="672" /></p>
 <p>¿Qué se puede concluir del gráfico?</p>
 <pre class="r"><code>comi17 |&gt;
@@ -1044,7 +1030,8 @@ ggplot(comi17, aes(x=INF110_TOT))+
   xlab(&quot;Número de efectivos&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.</code></pre>
 <p><img src="clase2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>¿Qué se puede comentar de estos datos?</p>
 </div>
@@ -1185,7 +1172,8 @@ comi17 |&gt;
   facet_wrap(~tipo)+
   xlab(&quot;Número de policías&quot;)+
   ylab(&quot;Frecuencia&quot;)</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with
+## `binwidth`.</code></pre>
 <p><img src="clase2_files/figure-html/histgrupos-1.png" width="672" /></p>
 <p>¿Qué otras preguntas se pueden responder con los datos de
 comisarías?</p>
@@ -1216,13 +1204,14 @@ comisarías tiene entre 11 y 19 efectivos. El tercer 25% tiene entre 19 7
 37 efectivos, y el último 25% tiene entre 37 y 259 efectivos.</p>
 <pre class="r"><code>comi17 |&gt; 
   summarise(Cuartiles = quantile(INF110_TOT))</code></pre>
-<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
-## dplyr 1.1.0.
+<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group
+## was deprecated in dplyr 1.1.0.
 ## ℹ Please use `reframe()` instead.
-## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
-##   always returns an ungrouped data frame and adjust accordingly.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
+## ℹ When switching from `summarise()` to `reframe()`, remember
+##   that `reframe()` always returns an ungrouped data frame
+##   and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where
+## this warning was generated.</code></pre>
 <pre><code>##   Cuartiles
 ## 1         3
 ## 2        11
@@ -1234,15 +1223,16 @@ código nos muestra los cuartiles por tipo de comisaría en cada fila.</p>
 <pre class="r"><code>cuartilesxtipo = comi17 |&gt; 
   group_by(tipo) |&gt;
   summarise(quantile(INF110_TOT))</code></pre>
-<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
-## dplyr 1.1.0.
+<pre><code>## Warning: Returning more (or less) than 1 row per `summarise()` group
+## was deprecated in dplyr 1.1.0.
 ## ℹ Please use `reframe()` instead.
-## ℹ When switching from `summarise()` to `reframe()`, remember that `reframe()`
-##   always returns an ungrouped data frame and adjust accordingly.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;tipo&#39;. You can override using the
-## `.groups` argument.</code></pre>
+## ℹ When switching from `summarise()` to `reframe()`, remember
+##   that `reframe()` always returns an ungrouped data frame
+##   and adjust accordingly.
+## Call `lifecycle::last_lifecycle_warnings()` to see where
+## this warning was generated.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;tipo&#39;. You can override
+## using the `.groups` argument.</code></pre>
 <pre class="r"><code>cuartilesxtipo</code></pre>
 <pre><code>## # A tibble: 30 × 2
 ## # Groups:   tipo [6]

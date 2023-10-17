@@ -1,7 +1,7 @@
 ---
 title: "Clase 10"
 author: "Arturo Maldonado"
-date: "23/05/2023"
+date: "17/10/2023"
 output:
   html_document:
     toc: true
@@ -134,8 +134,6 @@ tabla2 = tabla2 |>
   prop.table(2) |>
   round(3)*100
 tabla2
-#prop.table(table(peru$satis, peru$genero))*100
-#prop.table(table(peru$satis, peru$genero), 2)*100
 ```
 
 En esta tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
@@ -211,25 +209,25 @@ En ese sentido $H_0: f_e = f_o$ o lo que es lo mismo que las variables son indep
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| Col1 | Hombres                                                        | Mujeres                                                          |
-+======+================================================================+==================================================================+
-| MS   | 2.1% de hombres -\> #observaciones si no hay relación          | 2.1% de mujeres -\> #observaciones si no hay relación            |
-|      |                                                                |                                                                  |
-|      | cuánto es el 2.1% de 1617 = 34 -\> #obs si NO hubiera relación | cuánto es el 2.1% de 1421 = 29.8 -\> #obs si NO hubiera relación |
-|      |                                                                |                                                                  |
-|      | Pero, 19 es lo realmente observado                             | Pero, 12 es lo realmente observado                               |
-|      |                                                                |                                                                  |
-|      | (19-34)\^2                                                     | (12-29.8)\^2                                                     |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| S    | 18.6%                                                          | 18.6%                                                            |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| I    | 61.3%                                                          | 61.3%                                                            |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| MI   | 18%                                                            | 18%                                                              |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-|      | 100%                                                           | 100%                                                             |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| Col1       | Hombres                                                        | Mujeres                                                          |
++============+================================================================+==================================================================+
+| MS         | 2.1% de hombres -\> #observaciones si no hay relación          | 2.1% de mujeres -\> #observaciones si no hay relación            |
+|            |                                                                |                                                                  |
+|            | cuánto es el 2.1% de 1617 = 34 -\> #obs si NO hubiera relación | cuánto es el 2.1% de 1421 = 29.8 -\> #obs si NO hubiera relación |
+|            |                                                                |                                                                  |
+|            | Pero, 19 es lo realmente observado                             | Pero, 12 es lo realmente observado                               |
+|            |                                                                |                                                                  |
+|            | (19-34)\^2                                                     | (12-29.8)\^2                                                     |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| S          | 18.6%                                                          | 18.6%                                                            |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| I          | 61.3%                                                          | 61.3%                                                            |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| MI         | 18%                                                            | 18%                                                              |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+|            | 100%                                                           | 100%                                                             |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
 
 # Prueba estadística
 
@@ -266,7 +264,7 @@ El estadístico $\chi^2$ resume las diferencias entre las frecuencias observadas
 prueba
 ```
 
-La prueba nos da como resultado un p-value \< 0.15, por lo que NO se puede rechazar la hipótesis nula y se concluye que no sabemos si existe asociación/relación/dependencia entre las variables.
+La prueba nos da como resultado un p-value = 0.15, por lo que NO se puede rechazar la hipótesis nula y se concluye que no sabemos si existe asociación/relación/dependencia entre las variables.
 
 # Tabla cruzada de satisfacción con la democracia según nivel educativo
 

@@ -479,8 +479,8 @@ diferencia de 18 alumnos en promedio.</p>
 <pre class="r"><code>library(ggplot2)
 ggplot(endo2020, aes(y=P1_6, x=sexo))+
   geom_boxplot()</code></pre>
-<pre><code>## Warning: Removed 9266 rows containing non-finite values
-## (`stat_boxplot()`).</code></pre>
+<pre><code>## Warning: Removed 9266 rows containing non-finite
+## values (`stat_boxplot()`).</code></pre>
 <p><img src="clase3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>endo2020 = endo2020 |&gt;
   mutate(condicion = factor(P1_7, labels=c(&quot;Nombrado&quot;, &quot;Contratado x concurso&quot;, &quot;Contratado otro&quot;)))</code></pre>
@@ -515,9 +515,10 @@ del número de alumnos por sexo del profesor, se puede usar:</p>
   xlab(&quot;Sexo del docente&quot;) +
   geom_text(aes(label=round(Media,1)), vjust=1.30, color=&quot;white&quot;, size=3)+
   theme_minimal()</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values
-## (`position_stack()`).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values (`geom_text()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing
+## values (`position_stack()`).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing
+## values (`geom_text()`).</code></pre>
 <p><img src="clase3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>¿Cómo se pueden extrapolar estos resultados al universo de profesores
 peruanos?</p>

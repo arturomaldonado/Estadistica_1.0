@@ -111,7 +111,7 @@ library(rio)
 endo2020 = import("bases/ENDO_REMOTO_2020.dta")
 ```
 
-Si queremos evaluar si existen diferencias entre el número promedio de alumnos con los que trabaja un profesor entre tipos de profesores (nombrados, contratados con concurso o nombrados con otra modalidad), se puede usar ANOVA.
+Si queremos evaluar si existen diferencias entre el número promedio de alumnos con los que trabaja un profesor entre tipos de profesores (nombrados, contratados con concurso o contratados con otra modalidad), se puede usar ANOVA.
 
 Primero se tiene que factorizar la variable tipo de profesor (P1_7).
 
@@ -126,7 +126,7 @@ endo2020 = endo2020 |>
 ```{r}
 alumxtipo = endo2020 |> 
   group_by(tipo) |>
-  summarize(media = mean(P1_6, na.rm = T))
+  summarize(media = mean(P1_6, na.rm = T), desv = sd(P1_6, na.rm = T))
 alumxtipo
 ```
 
@@ -290,7 +290,8 @@ Este índice sintetizaría la opinión de los ciudadanos acerca de las principal
 Se quiere hacer esta evaluación para la ronda 2018
 
 ```{r}
-#Filtrar datos
+lapop18 = lapop |>
+  filter(ronda==2018)
 ```
 
 ```{r}

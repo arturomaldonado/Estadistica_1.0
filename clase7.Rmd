@@ -130,10 +130,10 @@ Se agrega la especificación `(2)` para indicar que se quiere las proporciones s
 Se sigue con el comando `round` para eliminar los decimales innecesarios y finalmente se usa `addmargins` para verificar la suma de proporciones sobre las columnas.
 
 ```{r tabla1}
-tabla2 = tabla2 |>
-  prop.table(2) |>
-  round(3)*100
-tabla2
+tabla3 = tabla2 |>
+  prop.table(2)|>
+  round(3)*100 
+tabla3
 ```
 
 En esta tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
@@ -149,15 +149,15 @@ Se usa el comando `as.data.frame` para salvar los porcentajes y poder usarlos co
 Nótese que el dataframe guarda los porcentajes en otro formato.
 
 ```{r tabla3}
-tabla3 = as.data.frame(tabla2)
-tabla3
+tabla4 = as.data.frame(tabla3)
+tabla4
 ```
 
 En este caso, como tenemos 4 categorías para satisfacción con la democracia y otras 2 para sexo, un gráfico de barras separadas crearía 8 barras.
 
 ```{r}
 library(ggplot2)
-ggplot(data=tabla3, aes(x=Var1, y=Freq, fill=Var2))+
+ggplot(data=tabla4, aes(x=Var1, y=Freq, fill=Var2))+
   geom_bar(position = "dodge", stat="identity")+
   geom_text(aes(label=paste(Freq, "%", sep="")), 
             position = position_dodge(width = 0.9), 
@@ -169,7 +169,7 @@ Esta forma de graficar puede complicar la comparación en algunos casos.
 Por eso, en otros casos, se prefiere el tipo de barras apiladas.
 
 ```{r barrapiladased}
-ggplot(data=tabla3, aes(x=Var2, y=Freq, fill=Var1))+
+ggplot(data=tabla4, aes(x=Var2, y=Freq, fill=Var1))+
   geom_bar(position="stack", stat="identity")+
   geom_text(aes(label=paste(Freq, "%", sep="")), 
             position = position_stack(), vjust=1, size = 3)+

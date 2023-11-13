@@ -187,29 +187,6 @@ Con la técnica de regresión multivariada se puede analizar:
 
 -   La predicción del modelo para diferentes valores de los predictores.
 
-# Hacia el próximo ciclo[^1]
-
-[^1]: Si aprueban
-
-El método de regresión lineal multivariado debe cumplir unos requisitos que no se verán en este curso.
-Estos requisitos son:
-
--   Linealidad: que la relación entre las variables sea lineal.
-
--   Multicolinealidad: los predictores no deben "medir" el mismo concepto.
-    Es decir, variables independientes no deben tener una alta correlación.
-
--   Heterocedasticidad: los errores deben ser aleatorios y no ser sistemáticos.
-    Si los errores tiene una relación sistemática con los valores de la variable dependiente, se habla de heterocedasticidad.
-
--   Autocorrelación: en particular cuando se trabaja con una variable temporal.
-    Se dice que hay autocorrelación cuando el valor en t+1 depende del valor de t.
-
-Estos requisitos se verán en el curso de Estadística 2.
-
-Otro tema que se verá en el siguiente curso es el modelo que se usa cuando la variable dependiente no es una numérica, sino una variable dicotómica.
-Cuando tenemos esta variable dependiente se usa un modelo de regresión logística.
-
 # Resumen
 
 En esta sección presentamos un mapa de temas que hemos visto a lo largo de todo el semestre.

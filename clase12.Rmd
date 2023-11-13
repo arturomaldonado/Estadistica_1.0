@@ -168,6 +168,11 @@ modelo2 = lm(data16$Voto_PPK_2016_1 ~ data16$pbipc_2014)
 summary(modelo2)
 ```
 
+```{r}
+modelo3 = lm(data16$Voto_PPK_2016_1 ~ data16$Analfabetismo_2014)
+summary(modelo3)
+```
+
 Mirando los resultados de ambos modelos lineales simples, se tiene que ambas variables, tanto acceso a internet como PBI, son significativas.
 Ambas tienen un efecto directo, es decir, a mayor acceso a internet, mayor voto a PPK en promedio, y a mayor PBI per cápita, mayor voto a PPK en promedio.
 
@@ -184,8 +189,8 @@ Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como varia
 El comando `lm` permite incluir varios predictores independientes en un mismo modelo con el símbolo +.
 
 ```{r ols multiple}
-modelo3 = lm(Voto_VM_2016_1 ~ Analfabetismo_2014 + pbipc_2014 + Inversión_Mineria_2014, data=data16)
-summary(modelo3)
+modelo4 = lm(Voto_PPK_2016_1 ~ Uso_internet + Analfabetismo_2014 + pbipc_2014, data=data16)
+summary(modelo4)
 ```
 
 # Leyendo el modelo
@@ -241,8 +246,8 @@ El signo del coeficiente es positivo (+), lo que indica que departamentos con un
 De la misma manera que en el análisis bivariado, el ajuste del modelo se entiende como el porcentaje de la variación total de la variable dependiente explicada por las variables independientes.
 Este dato se obtiene con el $R^2$.
 
-En nuestro ejemplo se tiene un $R^2 ajustado = 0.37$.
-Esta dato indicaría que el modelo que incluye las variables acceso a internet y PBI per cápita explican el 37% de la variación total del voto a PPK.
+En nuestro ejemplo se tiene un $R^2 ajustado = 0.47$.
+Esta dato indicaría que el modelo que incluye las variables acceso a internet y PBI per cápita explican el 47% de la variación total del voto a PPK.
 
 El $R^2$ ajustado se usa cuando se quiere comparar entre diferentes modelos, ya sea porque se usan diferentes variables o diferente número de variables.
 Esto es importante cuando se comparar modelos con diferente número de variables independientes, porque el $R^2$ tiene la característica de aumentar cuando se incluyen más variables independientes.
@@ -285,11 +290,19 @@ Para poder calculas los coeficientes estandarizados, se puede usar la librería 
 
 ```{r estandar}
 library(jtools)
-summ(modelo3, scale=T)
+summ(modelo4, scale=T)
 ```
 
 De acuerdo a estos resultados, la variable independiente que tiene un efecto mayor sobre la variable dependiente es el PBI per cápita.
 Este análisis es mucho más útil cuando tenemos una mayor cantidad de variables independientes y de variables significativas en diferentes unidades de medición.
+
+Para graficar los coeficientes
+
+```{r}
+plot_summs(modelo4, coefs=c("% Familias con acceso a internet" = "Uso_internet", 
+                            "Tasa de analfabetismo (2014)" = "Analfabetismo_2014",
+                            "PBI per cápita (2014)" = "pbipc_2014"))
+```
 
 # Leyendo resultados académicos
 
@@ -297,9 +310,28 @@ El análisis de regresión lineal multivariado es una de las herramientas acadé
 Es muy común encontrar tablas, como la que se muestra abajo, con resultados de este tipo.
 
 Un punto importante, además de producir resultados, es saber interpretarlos.
-La tabla siguiente muestra los resultados de un análisis donde la unidad de análisis son individuos.
-La variable dependiente es una medida de apoyo intrínseco a la democracia.
-Cada variable independiente tiene un signo que indica la dirección teórica que debería tener la variable.
-Los datos sirven para verificar empíricamente estas hipótesis.
+La tabla proviene de la tesis de pregrado de Sebastián Lazo, luego reportada en su artículo "Comportamiento electoral en el Perú: Un análisis del rol de las variables sociodemográficas en las elecciones presidenciales en primera vuelta de 2006 y 2011", disponible [aquí](https://revistas.pucp.edu.pe/index.php/cienciapolitica/article/view/14520).
 
-![](images/paste-D0061731.png){width="521"}
+El artículo hace una revisión de la literatura de los estudios en Perú sobre el comportamiento electoral e identifica las principales variables que se discuten cómo explicativas del voto por ciertos candidatos.
+
+![](marco.png){width="544"}
+
+Luego identifica las variables disponibles y que están relacionadas con el marco teórico.
+La unidad de análisis son los distritos del Perú.
+Una una variable dependiente por cada candidato y un set de variables independientes, que refieren de alguna manera con la revisión de la literatura.
+En los estudios cuantitativos se tiene la restricción de la disponibilidad de la información.
+No todos los factores que se hipotetiza que tienen relación con una variable han sido medidos.
+
+![](variables.png){width="524"}
+
+Lazo obtiene los siguientes resultados.
+Se muestran los coeficientes, los signos de los coeficientes y asteriscos que indican el nivel de significancia de los resultados.
+
+![](Lazo.png){width="484"}
+
+Lazo además incluye una nota al pie con los detalles de las significancias y con la fuerza expplicativa de cada modelo mediante el R2.
+Se asume que todos los modelos son válidos.
+
+![](piepagina.png){width="473"}
+
+¿Qué conclusiones se puede tener de estos resultados acerca del perfil de los candidatos?

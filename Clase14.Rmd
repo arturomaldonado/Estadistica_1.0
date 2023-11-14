@@ -47,7 +47,6 @@ data = import("bases/voto2021_v2.xlsx")
 
 ```{r suma}
 library(dplyr)
-library(tidyverse)
 data = data |>
   mutate(etnico = afro + indigena)
 ```
@@ -85,6 +84,7 @@ tabla4
 Graficar descriptivamente mediante un gráfico de cajas.
 
 ```{r}
+library(tidyverse)
 data2 = dplyr::select(data, 2:4)
 data_larga = gather(data2, variable, valor)
 ```

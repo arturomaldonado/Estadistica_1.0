@@ -24,157 +24,255 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Repaso
 
-## Buscando y cargando datos
+# Cargando datos
 
-Abrir la base de datos de las elecciones 2021 a nivel departamental en Excel.
-
--   Buscar la información acerca de autoidentificación étnica y agregar las columnas para el porcentaje de personas que se autoidentifica como población indígena u originaria
-
--   Agregar otra columna para el porcentaje de personas que se autoidentifica como "afro".
-
--   Agregar otra columna para el porcentaje de ciudadanos que votaron por otro candidato(a) diferente a Pedro Castillo o Keiko Fujimori.
-
-Este nuevo archivo Excel cárguenlo en RStudio.
+Abrir la base de datos de los candidatos presidenciales en América Latina desde el 2000 hasta el 2018.
 
 ```{r base}
 library(rio)
-data = import("bases/voto2021_v2.xlsx")
+cand = import("Numeric_election_DATOS.xlsx")
 ```
 
-## Manipulando datos
+# Manipulando datos
 
--   Calcular el porcentaje total de personas que se autoidentifican con algún grupo étnico (suma de % de población indígena u originaria + % de personas afro)
-
-```{r suma}
-library(dplyr)
-data = data |>
-  mutate(etnico = afro + indigena)
-```
-
-## Descriptivos
+-   Factorizar la variable sexo del candidato
 
 ```{r}
-tabla1 = data |>
-  summarise(minimo = min(etnico), media = mean(etnico), 
-            mediana = median(etnico),
-            maximo = max(etnico), desviacion = sd(etnico))
+library(dplyr)
+cand = cand |>
+  mutate(sexo = factor(csex, labels=c("Hombre", "Mujer")))
+```
+
+-   Crear una variable de grupos de edad, sobre la base de la edad (variable "cage").
+
+-   Para esto es necesario revisar la distribución de la variable
+
+```{r edad}
+table(cand$cage)
+```
+
+-   Vemos que hay candidatos desde los 33 hasta los 80 años.
+    Se puede pensar en crear grupos basados en décadas.
+    El último grupo puede ser de 70 a más.
+
+-   Esto se puede hacer de múltiples maneras, usando el comando `case_when`.
+
+```{r}
+cand = cand |>
+  mutate(gedad = case_when(
+    cage == 33 ~ 1, cage == 34 ~ 1, cage == 35 ~ 1, cage == 36 ~ 1, cage == 37 ~ 1,
+    cage == 38 ~ 1, cage == 39 ~ 1))
+```
+
+```{r}
+cand = cand |>
+  mutate(gedad = case_when(
+    cage <= 39 ~ 1,
+    (cage >= 40) & (cage <=49) ~ 2,
+    (cage >= 50) & (cage <=59) ~ 3,
+    (cage >= 60) & (cage <=69) ~ 4,
+    cage >= 70 ~ 5,
+  ))
+```
+
+```{r}
+cand = cand |>
+  mutate(gedad2 = case_when(
+    cage <= 39 ~ 1,
+    cage %in% 40:49 ~ 2,
+    cage %in% 50:59 ~ 3,
+    cage %in% 60:69 ~ 4,
+    cage %in% 70:80 ~ 5
+    ))
+```
+
+-   La variable que recoge el voto en primera vuelta está en forma de proporción y no de porcentaje.
+    Vamos a transformarla en porcentaje.
+
+```{r}
+cand = cand |>
+  mutate(voto1 = v2porcvalido_1ra)
+```
+
+# Descriptivos univariados
+
+-   ¿Qué proporción de candidatos en América Latina son hombres y mujeres?
+
+```{r}
+tabla1 = cand |>
+  count(Sexo = sexo, name="Frecuencia") |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
 tabla1
 ```
 
-Comparar los descriptivos de las variables del voto a los(as) 3 candidatos(as).
+-   Visualización de una tabla de frecuencias.
 
 ```{r}
-tabla2 = data |> 
-  summarise(media = mean(VotoPL_1), mediana = median(VotoPL_1),desviacion = sd(VotoPL_1))
+library(ggplot2)
+ggplot(tabla1, aes(x=Sexo,y=Porcentaje))+
+  geom_bar(stat="identity", width=0.5)
+```
+
+-   ¿Cuál es el promedio de edad de los candidatos presidenciales en América Latina?
+
+```{r}
+tabla2 = cand |>
+  summarise(minimo = min(cage, na.rm = T), media = mean(cage, na.rm = T), 
+            mediana = median(cage, na.rm = T),maximo = max(cage, na.rm = T), 
+            desviacion = sd(cage, na.rm = T))
 tabla2
 ```
 
+-   Visualización de una variable numérica
+
 ```{r}
-tabla3 = data |> 
-  summarise(media = mean(VotoFP_1), mediana = median(VotoFP_1),desviacion = sd(VotoFP_1))
+ggplot(cand, aes(x=cage))+
+  geom_histogram(binwidth = 2)+
+  geom_vline(xintercept = 55.6, color = "red")+
+  xlab("Edad de los candidatos")+
+  ylab("Frecuencia")+
+  theme_classic()
+```
+
+-   ¿Cuál es el promedio de votos obtenidos por candidatos presidenciales en América Latina?
+
+```{r}
+tabla3 = cand |>
+  summarise(minimo = min(voto1, na.rm = T), media = mean(voto1, na.rm = T), 
+            mediana = median(voto1, na.rm = T),maximo = max(voto1, na.rm = T), 
+            desviacion = sd(voto1, na.rm = T))
 tabla3
 ```
 
 ```{r}
-tabla4 = data |> 
-  summarise(media = mean(VotoVM_1), mediana = median(VotoVM_1),desviacion = sd(VotoVM_1))
-tabla4
+ggplot(cand, aes(x=voto1))+
+  geom_histogram(binwidth = 5)+
+  geom_vline(xintercept = 15.4, color = "red")+
+  geom_vline(xintercept = 6.6, color = "green")+
+  xlab("Voto de los candidatos")+
+  ylab("Frecuencia")+
+  theme_classic()
 ```
 
-Graficar descriptivamente mediante un gráfico de cajas.
+# Comparación entre grupos
 
-```{r}
-library(tidyverse)
-data2 = dplyr::select(data, 2:4)
-data_larga = gather(data2, variable, valor)
-```
-
-```{r}
-graf1 = ggplot(data_larga, aes(x=variable, y=valor))+
-  geom_boxplot()+
-  ylab("Votos")+
-  xlab("Candidato")+
-  scale_x_discrete(labels = c("Keiko Fujimori", "Pedro Castillo", "Verónika Mendoza"))+
-  theme_bw()
-graf1
-```
-
-## Inferencia
-
-Comparar IC entre grupos:
-
--   Voto a un candidato entre 2 grupos de pobreza
-
-```{r}
-data = data |>
-  mutate(pobre = ifelse(Pobreza2020 > 34.6, 1, 0))
-```
-
--   Voto a PC entre grupos de etnicidad
-
--   Comparar gráficamente IC de un candidato versus el otro
+-   ¿Los candidatos hombres logran más votos que las candidatas mujeres en las primeras vueltas en América Latina?
 
 ```{r}
 library(lsr)
-PLxpobre = data |>
-  group_by(pobre) |>
-  summarise(Media = mean(VotoPL_1, na.rm=T),
-            lim.inf = ciMean(VotoPL_1, na.rm=T)[1],
-            lim.sup = ciMean(VotoPL_1, na.rm=T)[2]
-            )
-PLxpobre
+votoxsexo = cand |> 
+  group_by(Sexo = sexo) |>
+  summarize(Minimo = min(voto1, na.rm = T),
+            Media = mean(voto1, na.rm = T),
+            Maximo = max(voto1, na.rm = T),
+            Desv.Std = sd(voto1, na.rm = T),
+            Limite.inf = ciMean(voto1, na.rm=T)[1],
+            Limite.sup = ciMean(voto1, na.rm=T)[2])
+votoxsexo
 ```
 
--   Graficar alguna de estas comparaciones
+-   Graficar la comparación
 
 ```{r}
-graf2 = ggplot(PLxpobre, aes(x=pobre, y=Media))+
+library(ggplot2)
+graf1 = ggplot(votoxsexo, aes(x=Sexo, y=Media))+
   geom_bar(stat="identity")+
-  geom_errorbar(aes(ymin=lim.inf, ymax=lim.sup), width=0.2)+
-  geom_text(aes(label=paste(round(Media, 1))), vjust=-3.5, size=4)+
-  xlab("Pobre") + ylab("Votos Perú Libre")+
-  ylim(0, 60)
-graf2
+  geom_errorbar(aes(ymin=Limite.inf, ymax=Limite.sup), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=4)+
+  xlab("Sexo del candidato") + ylab("Votos obtenidos")+
+  ylim(0, 20)
+graf1
 ```
 
-## Pruebas de significancia
+-   ¿Quiénes obtienen más votos en promedio, los candidatos jóvenes o los mayores?
 
-Correr pruebas:
+```{r}
+votoxedad = cand |> 
+  group_by(Edad = gedad) |>
+  summarize(Minimo = min(voto1, na.rm = T),
+            Media = mean(voto1, na.rm = T),
+            Maximo = max(voto1, na.rm = T),
+            Desv.Std = sd(voto1, na.rm = T),
+            Limite.inf = ciMean(voto1, na.rm=T)[1],
+            Limite.sup = ciMean(voto1, na.rm=T)[2])
+votoxedad
+```
+
+La fila de NA se puede eliminar en la table o se puede filtrar en el código con `filter`.
+
+-   Graficar comparación entre varios grupos
+
+```{r}
+graf1 = ggplot(votoxedad, aes(x=Edad, y=Media))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=Limite.inf, ymax=Limite.sup), width=0.2)+
+  geom_text(aes(label=paste(round(Media, 1))), vjust=-1, size=4)+
+  xlab("Edad del candidato") + ylab("Votos obtenidos")+
+  ylim(0, 30)
+graf1
+```
+
+-   Y qué pasa en las segundas vueltas?
+    Cuántas mujeres llegan?
+
+```{r}
+cand = cand |>
+  mutate(voto2 = v2porcval_2da)
+```
+
+```{r}
+tabla4 = cand |>
+  filter(v2candseg==1) |> 
+  count(Sexo = sexo, name="Frecuencia") |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla4
+```
+
+-   Qué porcentaje de votos obtienen?
+
+```{r}
+voto2daxsexo = cand |> 
+  filter(v2candseg==1) |> 
+  group_by(Sexo = sexo) |>
+  summarize(Minimo = min(voto2, na.rm = T),
+            Media = mean(voto2, na.rm = T),
+            Maximo = max(voto2, na.rm = T),
+            Desv.Std = sd(voto2, na.rm = T),
+            Limite.inf = ciMean(voto2, na.rm=T)[1],
+            Limite.sup = ciMean(voto2, na.rm=T)[2])
+voto2daxsexo
+```
+
+# Inferencia
+
+## Pruebas de significancia
 
 -   Realizar una prueba para poner a prueba la comparación entre grupos
 
 ```{r significancia}
 library(DescTools)
-LeveneTest(data$VotoPL_1, data$pobre)
+LeveneTest(cand$voto1, cand$sexo)
 ```
 
 ```{r t}
-t.test(data$VotoPL_1~data$pobre, var.equal=T)
+t.test(cand$voto1 ~ cand$sexo, var.equal=T)
 ```
 
 ```{r anova}
-#anova = aov()
-#summary(anova)
+anova = aov(cand$voto1 ~ cand$gedad)
+summary(anova)
 ```
 
 ## Correlación
 
-![](twitter_3e92b475993838b817babac6914e555d.png){width="556"}
-
--   Presentar gráfico de dispersión del voto a candidato PC por etnicidad
-
--   Presentar gráfico de dispersión del voto a PC por otra variable
-
--   Presentar gráfico de dispersión del voto a otro candidato(a) por variable de interés
+-   Presentar gráfico de dispersión del voto a candidato por edad
 
 ```{r}
-ggplot(data, aes(x=indigena, y=VotoPL_1))+
+ggplot(cand, aes(x=cage, y=voto1))+
   geom_point()+
   geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
-  geom_text(data=data, aes(label=Departamento), 
-            cex=2, nudge_y = 1.1, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamaño, ubicación y prevenir que se sobrepongan
-  labs(x="Porcentaje de personas que se autoidentifican como indígena", 
-       y="Voto a PL (1era vuelta 2021)")+ #para etiquetar los ejes
+  labs(x="Edad", 
+       y="Voto en 1era vuelta")+ #para etiquetar los ejes
   theme_light()
 ```
 
@@ -183,8 +281,23 @@ ggplot(data, aes(x=indigena, y=VotoPL_1))+
 -   Realizar un modelo de alguno de los gráficos de dispersión
 
 ```{r ols}
-modelo1 = lm(data$VotoPL_1 ~ data$indigena)
+modelo1 = lm(cand$voto1 ~ cand$cage)
 summary(modelo1)
+```
+
+```{r}
+modelo2 = lm(cand$voto2 ~ cand$cage)
+summary(modelo2)
+```
+
+```{r}
+cand = cand |>
+  mutate(mujer = ifelse(csex==2, 1, 0))
+```
+
+```{r}
+modelo3 = lm(cand$voto1 ~ cand$mujer)
+summary(modelo3)
 ```
 
 ## Regresión lineal múltiple
@@ -192,8 +305,23 @@ summary(modelo1)
 -   Seguir con el modelo simple, ahora introduciendo controles
 
 ```{r ols multiple}
-modelo2 = lm(data$VotoPL_1 ~ data$indigena + data$Pobreza2020 + data$Analfabetismo)
-summary(modelo2)
+modelo4 = lm(cand$voto1 ~ cand$cage + cand$mujer)
+summary(modelo4)
+```
+
+```{r}
+ggplot(cand, aes(x=cage, y=voto1))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  labs(x="Edad", 
+       y="Voto en 1era vuelta")+ #para etiquetar los ejes
+  facet_wrap(~ mujer) 
+  theme_light()
+```
+
+```{r}
+modelo5 = lm(cand$voto2 ~ cand$cage + cand$mujer)
+summary(modelo5)
 ```
 
 # Hacia el próximo ciclo[^1]

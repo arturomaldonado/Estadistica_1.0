@@ -189,7 +189,7 @@ Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como varia
 El comando `lm` permite incluir varios predictores independientes en un mismo modelo con el símbolo +.
 
 ```{r ols multiple}
-modelo4 = lm(Voto_PPK_2016_1 ~ Uso_internet + Analfabetismo_2014 + pbipc_2014, data=data16)
+modelo4 = lm(Voto_VM_2016_1 ~ Uso_internet + Analfabetismo_2014 + pbipc_2014, data=data16)
 summary(modelo4)
 ```
 
@@ -261,19 +261,20 @@ A esto de se agrega el valor de la constante.
 
 En nuestro ejemplo se tiene la siguiente ecuación, siendo Y el voto a PPK, X1 el acceso a internet y X2 en PBi per cápita:
 
-$$\hat{Y} = 4.71 + 0.18*X_1+0.0003*X_2$$
+$$\hat{Y} = 19.2 - 0.06*X_1 - 0.85*X_2 + 0.0003*X_3$$
 
 Para hallar el voto estimado a PPK, se tiene que agregar valores de las dos variables independientes.
 Para poder aproximar valores estándar de estas variables, estas se pueden describir.
 
 ```{r describir}
 summary(data16$Uso_internet)
+summary(data16$Analfabetismo_2014)
 summary(data16$pbipc_2014)
 ```
 
-Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8 y X2=14946.
+Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8, X2=7.8 y X3=14946.
 
-$$\hat{Y} = 4.71 + 0.18*32.8+0.0003*14946 = 15.1 % $$
+$$\hat{Y} = 19.2 - 0.06*32.8 - 0.85*7.8 + 0.0003*14946 = 15.1 % $$
 
 En conclusión, para valores promedio de las variables independientes, el voto estimado a PPK, según el modelo, sería de 15.1%.
 Este mismo ejercicio se puede hacer para los valores mínimos, máximos, para algunos percentiles particulares, etc.
@@ -299,9 +300,7 @@ Este análisis es mucho más útil cuando tenemos una mayor cantidad de variable
 Para graficar los coeficientes
 
 ```{r}
-plot_summs(modelo4, coefs=c("% Familias con acceso a internet" = "Uso_internet", 
-                            "Tasa de analfabetismo (2014)" = "Analfabetismo_2014",
-                            "PBI per cápita (2014)" = "pbipc_2014"))
+plot_summs(modelo4)
 ```
 
 # Leyendo resultados académicos

@@ -22,7 +22,7 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Repaso
+# **Repaso**
 
 # Cargando datos
 
@@ -86,8 +86,12 @@ cand = cand |>
     ))
 ```
 
--   La variable que recoge el voto en primera vuelta está en forma de proporción y no de porcentaje.
-    Vamos a transformarla en porcentaje.
+```{r}
+cand = cand |>
+  mutate(gedad2 = factor(gedad2, labels=c("30-39", "40-49", "50-59", "60-69", "70+")))
+```
+
+-   La variable que recoge el voto en primera vuelta está en forma de proporción y no de porcentaje. Vamos a transformarla en porcentaje.
 
 ```{r}
 cand = cand |>
@@ -154,6 +158,29 @@ ggplot(cand, aes(x=voto1))+
   theme_classic()
 ```
 
+-   Cuál es la ideología promedio de los candidatos presidenciales en América Latina?
+
+```{r}
+tabla.ideo = cand |>
+  summarise(minimo = min(v2ideology_core, na.rm = T), 
+            media = mean(v2ideology_core, na.rm = T), 
+            mediana = median(v2ideology_core, na.rm = T),
+            maximo = max(v2ideology_core, na.rm = T), 
+            desviacion = sd(v2ideology_core, na.rm = T))
+tabla.ideo
+```
+
+-   Graficar
+
+```{r}
+ggplot(cand, aes(x=v2ideology_core))+
+  geom_histogram(binwidth = 2)+
+  geom_vline(xintercept = 11.2, color = "red")+
+  xlab("Ideología de los candidatos")+
+  ylab("Frecuencia")+
+  theme_classic()
+```
+
 # Comparación entre grupos
 
 -   ¿Los candidatos hombres logran más votos que las candidatas mujeres en las primeras vueltas en América Latina?
@@ -188,7 +215,7 @@ graf1
 
 ```{r}
 votoxedad = cand |> 
-  group_by(Edad = gedad) |>
+  group_by(Edad = gedad2) |>
   summarize(Minimo = min(voto1, na.rm = T),
             Media = mean(voto1, na.rm = T),
             Maximo = max(voto1, na.rm = T),
@@ -212,8 +239,7 @@ graf1 = ggplot(votoxedad, aes(x=Edad, y=Media))+
 graf1
 ```
 
--   Y qué pasa en las segundas vueltas?
-    Cuántas mujeres llegan?
+-   Y qué pasa en las segundas vueltas? Cuántas mujeres llegan?
 
 ```{r}
 cand = cand |>
@@ -259,7 +285,7 @@ t.test(cand$voto1 ~ cand$sexo, var.equal=T)
 ```
 
 ```{r anova}
-anova = aov(cand$voto1 ~ cand$gedad)
+anova = aov(cand$voto1 ~ cand$gedad2)
 summary(anova)
 ```
 
@@ -305,7 +331,7 @@ summary(modelo3)
 -   Seguir con el modelo simple, ahora introduciendo controles
 
 ```{r ols multiple}
-modelo4 = lm(cand$voto1 ~ cand$cage + cand$mujer)
+modelo4 = lm(cand$voto1 ~ cand$cage + cand$mujer + cand$v2ideology_core)
 summary(modelo4)
 ```
 

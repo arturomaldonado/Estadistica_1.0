@@ -94,7 +94,7 @@ Hay otras funciones que resultan más útiles para nuestros objetivos porque tra
 mean(apoyo)
 ```
 
-Esta función recibe todos los valores de un vector, los suma y los divide entre el número de observaciones, mostrando la media.
+Esta función recibe todos los valores de un vector, los suma y los divide entre el número de observaciones, mostrando la media (o promedio).
 
 Otra funciones muy usadas en estadística son la mediana, la desviación estándar, el mínimo, el máximo y la suma.
 
@@ -115,7 +115,7 @@ apoyo2
 
 En el procedimiento que hemos realizado hemos usado el mismo nombre "apoyo2", por lo que hemos sobreescrito el vector con estos nuevos resultados. La cadena de número ahora incluye un valor final NA.
 
-Algunas funciones no pueden calcular directamente su procedimiento en vectores que contienen valores NA. Por ejemplo, la función `mean`.
+Algunas funciones NO pueden calcular directamente su procedimiento en vectores que contienen valores NA. Por ejemplo, la función `mean`.
 
 ```{r media apoyo2}
 mean(apoyo2)
@@ -156,7 +156,7 @@ apoyoAL = data.frame(pais, apoyo)
 apoyoAL
 ```
 
-Vemos que el objeto "apoyoAL" se ha guardado en una sección aparte del Envorinment que se llama "Data". Este objeto tiene 20 observaciones (es decir, 20 filas o países) y dos variables (es decir, dos vectores o dos columnas). Se puede hacer click en este objeto y se puede ver la plancha de datos en una pestaña aparte.
+Vemos que el objeto "apoyoAL" se ha guardado en una sección aparte del Environment que se llama "Data". Este objeto tiene 20 observaciones (es decir, 20 filas o países) y dos variables (es decir, dos vectores o dos columnas). Se puede hacer click en este objeto y se puede ver la plancha de datos en una pestaña aparte.
 
 Si se quisiera hacer un dataframe con los vectores "pais" y "apoyo2", R nos daría un mensaje de error debido a que estos vectores tienen diferentes dimensiones.
 
@@ -179,3 +179,15 @@ En la siguiente sección sobre importación de los datos del Barómetro de las A
 # Resumen
 
 En este documento se han revisado los elementos básico de R, como objetos y vectores, y las funciones básicas que se pueden aplicar a estos objetos. También se ha revisado la manera de instalar librerías y de activarlas para poder usar sus funciones. Finalmente, se ha explicado la idea de un dataframe.
+
+# Tarea
+
+El proyecto del Barómetro de las Américas ha presentado sus resultados para el 2023. El siguiente gráfico muestra los resultados para el apoyo a la democracia en 2023.
+
+![](apoyo2023.png){width="617"}
+
+Incluya estos resultados en el dataframe "apoyoAL" como un nuevo vector/columna "apoyo2023". Tome en cuenta:
+
+-   Los resultados para el 2023 incluyen más países.
+
+-   Puede sobreescribir el dataframe "apoyoAL" de ser necesario.

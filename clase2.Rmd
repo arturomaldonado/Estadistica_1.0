@@ -1,7 +1,7 @@
 ---
 title: 'Clase 2: descripción y visualización'
 author: "Arturo Maldonado"
-date: "22/8/2023"
+date: "26/03/2024"
 output:
   html_document:
     toc: true
@@ -24,7 +24,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
-# Resultados electorales 2016
+# Caso 1: Apoyo a la democracia en América Latina
+
+*Pregunta: ¿existe una erosión del apoyo a la democracia entre los ciudadanos en América Latina?*
 
 ## Leer una base de datos
 
@@ -34,10 +36,163 @@ Ojo: el nombre del archivo tiene que estar entre comillas.
 En este caso, el archivo está dentro de mi directorio de trabajo, por lo que se le llama con el nombre.
 Si no estuviera en el directorio de trabajo se tendría que especificar la ruta del archivo.
 
-Guardamos esta base de datos en un nuevo objeto (dataframe) llamado res2016.
+Guardamos esta base de datos en un nuevo objeto (dataframe) llamado apoyoAL.
 Se sugiere siempre trabajar con nombres cortos de bases de datos y de variables.
 
-Van a poder escribir
+```{r}
+library(rio)
+apoyoAL = import("apoyoAL.xlsx")
+```
+
+## Descripción para variables numéricas
+
+Usamos las medidas de tendencia central para describir una variable numérica.
+Podemos usar el comando `mean` para calcular el promedio de apoyo a la democracia en 2023.
+Este comando asume que se tienen datos completos.
+Como existe un dato perdido, el comando no corre, y se tiene que añadir la especificación `, na.rm = T`.
+
+```{r}
+library(tidyverse)
+apoyoAL |>
+  summarise(Apoyo2023=mean(apoyo2023, na.rm=T))
+```
+
+También se puede calcular la mediana, con el comando `median` y presentar ambas medidas juntas.
+
+```{r}
+apoyoAL |>
+  summarise(PromedioApoyo2023=mean(apoyo2023, na.rm=T), 
+            MedianaApoyo2023=median(apoyo2023, na.rm=T))
+```
+
+Ahora lo que queremos averiguar es si el apoyo a la democracia ha disminuido, aumentado o permanecido igual entre 2021 y 2023.
+Para esto, podemos comparar la media del apoyo a la democracia en 2021 con la media en 2023.
+
+```{r}
+apoyoAL |>
+  summarise(PromedioApoyo2021=mean(apoyo2021, na.rm=T), 
+            PromedioApoyo2023=mean(apoyo2023, na.rm=T))
+```
+
+Según estos resultados, el apoyo a la democracia ha disminuido de 61.2% a 58.6%; es decir, una disminución de 2.6 puntos porcentuales.
+
+Los datos de 2023 incluyen países caribeños (Bahamas, Granada, TyT y Surinám) que no estaban en el gráfico de 2021.
+Es posible que el menor promedio de apoyo a la democracia en 2023 sea por la incorporación de estos países.
+Se podría argumentar que si se tuviera los datos de estos países para 2021, quizá no existiría una erosión del apoyo a la democracia.
+
+Una forma de lidiar con esta observación es comparar los resultados 2023 y 2021 solo de los países que tienen datos en ambos años.
+
+## Dataframes
+
+Antes de ver cómo eliminar los países, una nota sobre la estructura de una base de datos.
+El dataframe apoyoAL tiene 24 observaciones (24 filas, en cada una, un país) y 4 variables (4 columnas, en cada una, una variable).
+Por lo tanto, este dataframe tiene una dimensión [24, 4].
+En general, un dataframe tiene dimensión [#filas, #columnas].
+
+Por lo tanto, se puede llamar a los elementos de un dataframe indicando la fila y la columna.
+Por ejemplo, para llamar al elemento de la primera fila y segunda columna.
+
+```{r}
+apoyoAL[1,2]
+```
+
+También se puede llamar toda una fila.
+En este caso, la primera fila.
+
+```{r}
+apoyoAL[1,]
+```
+
+O la segunda columna
+
+```{r}
+apoyoAL[,2]
+```
+
+Esto nos permite seleccionar filas (países) o columnas (variables) bajo ciertas condiciones.
+En general, nos interesa más seleccionar filas.
+
+Por ejemplo, si queremos seleccionar los países por encima de la media de apoyo 2023, podemos decir
+
+```{r}
+apoyoAL[apoyoAL$apoyo2023>mean(apoyoAL$apoyo2023, na.rm = T), c(1,4)]
+```
+
+En R existe un comando para seleccionar observaciones.
+Se puede usar `subset` para hacer este filtro.
+Este filtro se puede almacenar en otro dataframe.
+
+```{r}
+apoyo_mayor_media = subset(apoyoAL, apoyo2023 > mean(apoyo2023, na.rm=T))
+```
+
+## Lidiando con valores perdidos
+
+Volviendo al ejemplo y a la respuesta a la observación de comparar países con mediciones en ambos años.
+Si se abre la base de datos "apoyoAL", se observa que apoyo2021 tiene 4 NAs y apoyo2023 tiene 1 NA.
+
+Se puede eliminar los países que tienen NAs en la variable "apoyo2021".
+
+```{r}
+apoyoSinNA2021 = apoyoAL[!(is.na(apoyoAL$apoyo2021)),]
+```
+
+Se puede eliminar los países que tienen NAs en la variable "apoyo2023".
+
+```{r}
+apoyoSinNA2023 = apoyoAL[!(is.na(apoyoAL$apoyo2023)),]
+```
+
+Pero, queremos eliminar ambos; es decir, tanto los países con NAs en 2023 Y los países con NAs en 2021.
+Para esto usamos el operador lógico "&".
+
+En R tenemos los siguientes operadores lógicos:
+
+| Operador |    Descripción     |
+|:--------:|:------------------:|
+|    ==    |     es igual a     |
+|    !=    |  es diferente de   |
+|    \>    |    es mayor de     |
+|    \<    |    es menor de     |
+|   \>=    | es mayor o igual a |
+|   \<=    | es menor o igual a |
+|    &     |  intersección (Y)  |
+|    \|    |     unión (O)      |
+
+```{r}
+apoyoSinNA = apoyoAL[!(is.na(apoyoAL$apoyo2021)) & !(is.na(apoyoAL$apoyo2023)),]
+```
+
+Esto mismo se puede lograr con el comando `subset`.
+
+```{r}
+apoyoSinNA2 = subset(apoyoAL, 
+                     !(is.na(apoyoAL$apoyo2021)) & !(is.na(apoyoAL$apoyo2023)))
+```
+
+Y también se puede hacer, usando el tidyverse.
+En este curso tenemos una preferencia por este estilo de código.
+Pero, como pueden ver se puede lograr los mismos resultados de muchas maneras en R.
+
+```{r}
+apoyoSinNa3 = apoyoAL |> 
+  filter(!(is.na(apoyoAL$apoyo2021)) & !(is.na(apoyoAL$apoyo2023))) 
+```
+
+Con este nuevo dataframe, que contiene solo los países que tienen el dato de apoyo a la democracia tanto en 2021 como en 2023, se puede responder a la observación.
+Podemos comparar la media de ambos añós usando este nuevo dataframe.
+
+```{r}
+apoyoSinNa3 |>
+  summarise(PromedioApoyo2021=mean(apoyo2021, na.rm=T), 
+            PromedioApoyo2023=mean(apoyo2023, na.rm=T))
+```
+
+Los resultados indican que hay una disminución de 2.1 puntos porcentuales, resultados un poco menor que el anterior (2.6 pp), pero que va en la misma dirección de decir que hay una erosión del apoyo ciudadanos a la democracia.
+
+# Caso 2: Resultados electorales 2016
+
+## Leer una base de datos
 
 ```{r message=FALSE, warning=FALSE}
 library(rio)
@@ -71,19 +226,6 @@ Esto se puede hacer de múltiples maneras.
 En este curso comenzaremos a usar las funciones del mundo del Tidyverse.
 
 En cualquier caso, se tiene que seleccionar algunas filas de un dataframe usando operadores lógicos.
-En R tenemos los siguientes operadores lógicos:
-
-| Operador |    Descripción     |
-|:--------:|:------------------:|
-|    ==    |     es igual a     |
-|    !=    |  es diferente de   |
-|    \>    |    es mayor de     |
-|    \<    |    es menor de     |
-|   \>=    | es mayor o igual a |
-|   \<=    | es menor o igual a |
-|    &     |  intersección (Y)  |
-|    \|    |     unión (O)      |
-
 En nuestro caso vamos a seleccionar las observaciones que en el vector o variable "dpto" sean igual a "LIMA".
 Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
 
@@ -297,31 +439,6 @@ res2016 |>
   summarise(mean(fp), sd(fp))
 ```
 
-## Medidas de posición
-
-La mediana es un caso particular de las medidas de posición.
-Este estadístico divide una distribución ordenada de datos en dos mitades y la mediana es el punto limítrofe entre estos dos grupos.
-
-De la misma manera, los cuartiles dividen una distribución ordenada en 4 partes iguales, y los cuartiles son los valores de los puntos limítrofes.
-El gráfico de cajas muestra estos cuartiles, que incluye la mediana.
-
-Para calcular los cuartiles de la distribución general del voto a Fuerza Popular en 2016, se puede usar el comando `summarise` y el estadístico `quantile` del Tidyverse.
-Estos comandos también nos retornan el mínimo y máximo.
-
-```{r}
-res2016 |> 
-  summarise(Cuartiles = quantile(fp))
-```
-
-Para calcular los cuartiles del voto a Fuerza Popular en el 2011 por regiones.
-
-```{r}
-cuartilesxregion = res2016 |> 
-  group_by(region2) |>
-  summarise(quantile(fp))
-cuartilesxregion
-```
-
 ## Describiendo la heterogeneidad
 
 El gráfico de cajas también muestra una medida de heterogeneidad: la amplitud de la caja o llamado rango intercuartil.
@@ -356,7 +473,7 @@ Esto puede ser debido a la presencia de valores atípicos.
 
 ------------------------------------------------------------------------
 
-# Comisarias en el Perú
+# Caso 3: Comisarias en el Perú
 
 ## Medidas de tendencia central
 

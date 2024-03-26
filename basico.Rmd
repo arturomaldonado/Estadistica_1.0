@@ -68,8 +68,8 @@ No es necesario seguir el mismo orden del gráfico; sin embargo, es recomendable
 Se puede seleccionar elementos particulares de un vector usando `[…]`. Por ejemplo, si queremos seleccionar el país de Argentina, tanto su nombre, como su porcentaje, se tiene que colocar entre corchetes la posición en la que se encuentra.
 
 ```{r seleccionar vector}
-pais[4]
-apoyo[4]
+pais[11]
+apoyo[11]
 ```
 
 # Funciones
@@ -77,7 +77,7 @@ apoyo[4]
 Una función es un procedimiento que recibe un input y produce un output. Por ejemplo, la función Y = X\^2, recibe un valor X cualquiera, por ejemplo 2, y devuelve un valor Y, en este caso 4. En R se tienen las funciones algebraicas, como raíz cuadrada o logaritmo. Por ejemplo, la función `log(…)` recibe un valor X y devuelve un valor Y igual al logaritmo de X.
 
 ```{r raiz}
-sqrt(36) #por squared root
+sqrt(81) #por squared root
 log(20)
 ```
 
@@ -124,7 +124,7 @@ mean(apoyo2)
 El cálculo directo de la media del vector "apoyo2" nos devuelve un resultado NA. Para poder hacer el cálculo, indicándole a la función que no tome en cuenta este valor NA, se tiene que usar la especificación `na.rm=True`.
 
 ```{r media apoyo na.rm}
-mean(apoyo2, na.rm=T)
+mean(apoyo2, na.rm=TRUE)
 ```
 
 # Paquetes

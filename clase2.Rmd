@@ -61,8 +61,8 @@ También se puede calcular la mediana, con el comando `median` y presentar ambas
 
 ```{r}
 apoyoAL |>
-  summarise(PromedioApoyo2023=mean(apoyo2023, na.rm=T), 
-            MedianaApoyo2023=median(apoyo2023, na.rm=T))
+  summarise(Promedio_Apoyo2023=mean(apoyo2023, na.rm=T), 
+            Mediana_Apoyo2023=median(apoyo2023, na.rm=T))
 ```
 
 Ahora lo que queremos averiguar es si el apoyo a la democracia ha disminuido, aumentado o permanecido igual entre 2021 y 2023.
@@ -70,8 +70,8 @@ Para esto, podemos comparar la media del apoyo a la democracia en 2021 con la me
 
 ```{r}
 apoyoAL |>
-  summarise(PromedioApoyo2021=mean(apoyo2021, na.rm=T), 
-            PromedioApoyo2023=mean(apoyo2023, na.rm=T))
+  summarise(Promedio_Apoyo2021=mean(apoyo2021, na.rm=T), 
+            Promedio_Apoyo2023=mean(apoyo2023, na.rm=T))
 ```
 
 Según estos resultados, el apoyo a la democracia ha disminuido de 61.2% a 58.6%; es decir, una disminución de 2.6 puntos porcentuales.
@@ -93,7 +93,7 @@ Por lo tanto, se puede llamar a los elementos de un dataframe indicando la fila 
 Por ejemplo, para llamar al elemento de la primera fila y segunda columna.
 
 ```{r}
-apoyoAL[1,2]
+apoyoAL[4,2]
 ```
 
 También se puede llamar toda una fila.
@@ -192,6 +192,10 @@ Los resultados indican que hay una disminución de 2.1 puntos porcentuales, resu
 
 # Caso 2: Resultados electorales 2016
 
+*Pregunta: Algunos politólogos consideran que un partido más institucionalizado es el que es capaz de tener un mayor enraizamiento territorial y, por lo tanto, tener un apoyo electoral relativamente constante a lo largo del territorio. Por el contrario, un partido menos institucionalizado, solo lograría apoyos electorales diferenciados, mayores en algunos territorios y menores en otros.*
+
+*Siguiendo esta idea, ¿cuál fue el partido mas o menos institucionalizado de acuerdo a los resultados electorales de 2016?*
+
 ## Leer una base de datos
 
 ```{r message=FALSE, warning=FALSE}
@@ -202,87 +206,60 @@ res2016 = import("resultados2016.xlsx")
 Si se hace doble click en el objeto, se abre la base de datos como una pestaña en la zona de scripts / RMarkdowns.
 Este objeto dataframe tiene vectores de datos de tipo "caracter" y otros vectores de datos de tipo "numérico".
 
-## Descripción
+## Descripción de la heterogeneidad
 
-Usamos las medidas de tendencia central para describir una variable numérica.
-Podemos usar el comando `mean` para calcular el promedio de voto provincial a Fuerza Popular en 2016 (39.5%).
+Usamos las medidas de dispersión para describir una variable numérica.
+Podemos usar el comando `sd` para calcular la desviación estándar del voto provincial a Fuerza Popular, a Peruanos por el Kambio y al Frente Amplio en 2016.
 Este comando asume que se tienen datos completos.
 Si existiera un dato perdido, el comando no correría, y se tendría que añadir la especificación `, na.rm = T`.
-También se puede calcular la mediana, con el comando `median`.
-
-Se observa que ambas medidas son aproximadamente iguales, indicando una distribución simétrica de datos.
 
 ```{r}
 library(dplyr)
 library(tidyverse)
 res2016 |>
-  summarise(mean(fp))
+  summarise(sd(fp), sd(ppk), sd(fa))
 ```
 
 También se puede calcular la media para grupos de observaciones, es decir para filas específicas de una base de datos.
-Por ejemplo, si quisiéramos saber si el voto en las provincias de Lima fue mayor o menor que el voto provincial general de Fuerza Popular, podríamos calcular la media del voto provincial solo en las provincias de Lima.
+Una opción sería agregar un nuevo dataframe con el filtrado de las observaciones.
+Si no queremos llenarnos de bases de datos parciales, tenemos otras opciones.
+
+Por ejemplo, si quisiéramos saber si la heterogeneidad del voto fue mayor o menor que aquella del voto provincial general de Fuerza Popular, podríamos calcular la desviación estándar del voto provincial solo en las provincias de Lima.
 
 Esto se puede hacer de múltiples maneras.
 En este curso comenzaremos a usar las funciones del mundo del Tidyverse.
 
 En cualquier caso, se tiene que seleccionar algunas filas de un dataframe usando operadores lógicos.
-En nuestro caso vamos a seleccionar las observaciones que en el vector o variable "dpto" sean igual a "LIMA".
+En nuestro caso vamos a seleccionar las observaciones, con el comando `filter` y con la condición que en el vector o variable "dpto" sean igual a "LIMA".
 Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
 
 ```{r}
 res2016 |> 
   filter(dpto =="LIMA") |>
-  summarise(mean(fp))
-#Cómo hallarían el promedio del voto a FP en las provincias de Amazonas usando la variable "id"?
+  summarise(sd(fp), sd(ppk), sd(fa))
 ```
 
-Encontramos que en Lima el promedio provincial de voto a Fuerza Popular es mayor que el promedio provincial general.
-
-Para el caso de la votación al Frente Amplio, calculamos la media y la mediana, otra medida de tendencia central.
-Se observa que la media es mayor que la mediana.
-Esto indica una distribución asimétrica de los datos.
-Para ver esta asimetría se puede graficar la distribución de frecuencias de esta variable con un histograma (más adelante).
-
-```{r}
-res2016 |> 
-  summarize(mean(fa), median(fa))
-```
-
-También se puede calcular ambas medidas para el FA solo en Cusco.
+Encontramos que en Lima la desviación estándar del voto provincial a Fuerza Popular es mayor que la de otros partidos.
+También se puede calcular los mismo para el caso de Cusco.
 
 ```{r message=FALSE, warning=FALSE}
 res2016 |> 
   filter(dpto =="CUSCO") |>
-  summarize(mean(fa), median(fa))
+  summarize(sd(fp), sd(ppk), sd(fa))
 #Cómo calcularían esta media usando la variable "id"?
 ```
 
-Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
-Por ejemplo, la base de datos incluye una variable de qué partido ganó la mayoría de votos en una provincia.
-La variable "gana" de la base de datos recoge este dato.
-Podemos usar el comando `count` para calcular la tabla de distribución de frecuencias de esta variable.
-Se guarda esta tabla en un objeto "tabla".
+## Tarea
 
-Se encuentra que del total de provincias, Fuerza Popular ganó en la mayoría de ellas.
+La base de datos también incluye el voto provincial a Fuerza Popular en la elección de 2021.
 
-```{r}
-tabla = res2016 |>
-  count(Ganador = gana, name="Frecuencia")
-tabla
-```
+¿Calcule si el voto promedio de Fuerza Popular ha aumentado o disminuido entre 2011 y 2016?
 
-Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcentaje" con el cálculo de la "Frecuencia" (columna existente) ente la suma total de las frecuencias.
-Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
+¿Calcule lo mismo para el departamento de Tumbes?
 
-```{r}
-tabla = tabla |>
-  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
-tabla
-```
+¿Calcule si Fuerza Popular ha aumento o disminuido su nivel de institucionalización?
 
-*Pregunta: ¿qué medidas de tendencia central (media, mediana, moda) aplican a qué tipo de variables?*
-
-## Visualización
+# Visualización
 
 Una de las tareas más comunes en el manejo de datos es la visualización de los resultados.
 En R hay dos maneras de proceder.
@@ -360,17 +337,6 @@ ggplot(res2016, aes(y=fp, x=dpto))+
 
 Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que crear esta variable, a partir de la variable "dpto".
 
-Para graficar una variable de tipo cualitativa (o de factor en el lenguaje de R), se debe usar, por ejemplo, un gráfico de barras.
-Podemos graficar el porcentaje de provincias que cada partido ganó en 2021.
-
-Para esto seguimos usando la librería `ggplot`, pero ahora no realizaremos un histograma (no usaremos `geom_histogram`), sino barras, con `geom_bar`.
-Dentro de este comando se añade `stat="identity` para indicar que R no calcule nada y solo use los datos de "tabla".
-
-```{r}
-ggplot(tabla, aes(x=Porcentaje,y=Ganador))+
-  geom_bar(stat="identity", width=0.5)
-```
-
 ## Recodificando variables
 
 ```{r}
@@ -439,39 +405,41 @@ res2016 |>
   summarise(mean(fp), sd(fp))
 ```
 
-## Describiendo la heterogeneidad
+## Descripción de variables de factor
 
-El gráfico de cajas también muestra una medida de heterogeneidad: la amplitud de la caja o llamado rango intercuartil.
-Mientras más amplia la caja, mayor será la heterogeneidad de los datos, es decir, habrá mayor diferencias entre ellos.
-Mientras más estrecha la caja, más homogeneidad, es decir, los datos se parecerán más entre ellos.
-Si la caja no tiene amplitud (es decir, es una línea), los datos son completamente homogéneos, es decir, todos iguales.
+Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
+Por ejemplo, la base de datos incluye una variable de qué partido ganó la mayoría de votos en una provincia.
+La variable "gana" de la base de datos recoge este dato.
+Podemos usar el comando `count` para calcular la tabla de distribución de frecuencias de esta variable.
+Se guarda esta tabla en un objeto "tabla".
 
-Formalmente, la amplitud de la caja es la diferencia entre el cuartil 75 y el cuartil 25.
-Se puede crear una nueva tabla "ricxregion" con este cálculo.
-
-```{r}
-ricxregion = res2016 |>
-  group_by(region2) |>
-  summarise(IQR(fp))
-ricxregion
-```
-
-En el gráfico de cajas anterior, se puede decir que el porcentaje de voto provincial a Fuerza Popular es más homogéneo en la selva y más heterogéneo en la sierra.
-
-Otra forma de medir la homogeneidad o heterogeneidad de los datos para una variable numérica es mediante la desviación estándar.
-Se puede calcular la desviación estándar de un conjunto de datos numéricos con la función `sd`.
-Por ejemplo, para calcular la desviación estándar del voto provincial a Fuerza Popular por región.
+Se encuentra que del total de provincias, Fuerza Popular ganó en la mayoría de ellas.
 
 ```{r}
-res2016 |> 
-  group_by(region2) |>
-  summarise(sd(fp))
+tabla = res2016 |>
+  count(Ganador = gana, name="Frecuencia")
+tabla
 ```
 
-Encontramos que la región con menor heterogeneidad es la costa, aunque, según esta medida, la región más heterogénea es la selva.
-Esto puede ser debido a la presencia de valores atípicos.
+Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcentaje" con el cálculo de la "Frecuencia" (columna existente) ente la suma total de las frecuencias.
+Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
 
-------------------------------------------------------------------------
+```{r}
+tabla = tabla |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla
+```
+
+Para graficar una variable de tipo cualitativa (o de factor en el lenguaje de R), se debe usar, por ejemplo, un gráfico de barras.
+Podemos graficar el porcentaje de provincias que cada partido ganó en 2021.
+
+Para esto seguimos usando la librería `ggplot`, pero ahora no realizaremos un histograma (no usaremos `geom_histogram`), sino barras, con `geom_bar`.
+Dentro de este comando se añade `stat="identity` para indicar que R no calcule nada y solo use los datos de "tabla".
+
+```{r}
+ggplot(tabla, aes(x=Porcentaje,y=Ganador))+
+  geom_bar(stat="identity", width=0.5)
+```
 
 # Caso 3: Comisarias en el Perú
 

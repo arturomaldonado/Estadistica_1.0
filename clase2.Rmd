@@ -184,8 +184,8 @@ Podemos comparar la media de ambos añós usando este nuevo dataframe.
 
 ```{r}
 apoyoSinNa3 |>
-  summarise(PromedioApoyo2021=mean(apoyo2021, na.rm=T), 
-            PromedioApoyo2023=mean(apoyo2023, na.rm=T))
+  summarise(PromedioApoyo2021=mean(apoyo2021), 
+            PromedioApoyo2023=mean(apoyo2023))
 ```
 
 Los resultados indican que hay una disminución de 2.1 puntos porcentuales, resultados un poco menor que el anterior (2.6 pp), pero que va en la misma dirección de decir que hay una erosión del apoyo ciudadanos a la democracia.
@@ -244,8 +244,9 @@ También se puede calcular los mismo para el caso de Cusco.
 
 ```{r message=FALSE, warning=FALSE}
 res2016 |> 
-  filter(dpto =="CUSCO") |>
-  summarize(sd(fp), sd(ppk), sd(fa))
+  filter(dpto =="LIMA") |>
+  summarize(mean(fp, na.rm=T), mean(ppk, na.rm=T), mean(fa, na.rm=T), 
+    sd(fp), sd(ppk), sd(fa))
 #Cómo calcularían esta media usando la variable "id"?
 ```
 
@@ -258,188 +259,6 @@ La base de datos también incluye el voto provincial a Fuerza Popular en la elec
 ¿Calcule lo mismo para el departamento de Tumbes?
 
 ¿Calcule si Fuerza Popular ha aumento o disminuido su nivel de institucionalización?
-
-# Visualización
-
-Una de las tareas más comunes en el manejo de datos es la visualización de los resultados.
-En R hay dos maneras de proceder.
-La primera es usar los comandos de base de R.
-La otra es usar una librería `ggplot2` que permite una mayor flexibilidad en la producción y estética de los gráficos.
-
-Para esto se carga la librería `ggplot2`.
-Esta tiene un comando `ggplot` en el que se define los aspectos del gráfico.
-Por ejemplo, para graficar una variable numérica, como el porcentaje de voto a FP por provincia, se puede producir un histograma.
-
-Dentro de este comando se define la base de datos y la variable que se va a graficar.
-Luego se van agregando capas.
-La primera define el tipo de gráfico.
-Usamos `geom_histogram` para producir el histograma y se especifica el ancho de columna.
-Luego se define las etiquetas de ejes y el tema del gráfico.
-
-Se observa que el gráfico de porcentaje de votos a Fuerza Popular es aproximadamente simétrico, tal como indicaban la similitud entre media y mediana.
-
-```{r message=FALSE, warning=FALSE}
-library(ggplot2)
-ggplot(res2016, aes(x=fp))+
-  geom_histogram(binwidth = 5)+
-  xlab("% Voto PPK 2016") +
-  ylab("Frecuencia")+
-  theme_minimal()
-```
-
-Habíamos encontrado que la media y la mediana del porcentaje de voto al Frente Amplio diferían.
-Esto lo comprobamos produciendo el histograma de esta variable.
-
-```{r}
-ggplot(res2016, aes(x=fa))+
-  geom_histogram(binwidth = 5)+
-  geom_vline(xintercept = 29.3, color = "red")+
-  geom_vline(xintercept = 24.5, color = "green")+
-  xlab("% Voto FA 2011")+
-  ylab("Frecuencia")+
-  theme_classic()
-```
-
-Otro gráfico útil en la visualización es el llamado "boxplot" o "gráfico de cajas".
-Este tipo de gráficos sirve bastante para comparar entre grupos de otra variable.
-
-Para producir un gráfico de cajas usamos la especificación `geom_bloxplot()` y podemos definir los límites y saltos del eje Y.
-Este gráfico nos muestra que el distrito con el menor porcentaje de voto a FP tuvo un poco más de 5% y que el máximo fue de casi 80%.
-También muestra que la votación mediana fue de 40%.
-Los límites de la caja son el cuartil 25 y el cuartil 75.
-
-```{r}
-ggplot(res2016, aes(y=fp))+
-  geom_boxplot()+
-  ylab("% Voto FP 2011")
-```
-
-El aspecto más útil de los gráficos de cajas es la comparación.
-Por ejemplo, si se quisiera comparar el voto a Fuerza Popular entre departamentos del país.
-Para hacer esto se debe definir que la variable en el eje Y sea el porcentaje de votos a Fuerza Popular "fp" y en el eje X la variable que define los departamentos "dpto".
-Incluimos la especificación `coord_flip()` para voltear los ejes y que las etiquetas de los departamentos se lean más claramente.
-
-En el gráfico se pueden hacer varias comparaciones.
-Lo más importante es comparar medianas y anchos de cajas entre departamentos.
-Los puntos aislados son "outliers" o valores extremos, que se calculan automáticamente y se grafican.
-
-Este gráfico, sin embargo, es muy desagragado.
-
-```{r}
-ggplot(res2016, aes(y=fp, x=dpto))+
-  geom_boxplot()+
-  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10))+
-  ylab("% Voto FP 2011")+
-  xlab("Departamento")+
-  theme_minimal()+
-  coord_flip()
-```
-
-Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que crear esta variable, a partir de la variable "dpto".
-
-## Recodificando variables
-
-```{r}
-res2016 = res2016 |>
-  mutate(region = case_when(
-    dpto=="AMAZONAS"~"Selva",
-    dpto=="ANCASH"~"Sierra",
-    dpto=="APURIMAC"~"Sierra",
-    dpto=="AREQUIPA"~"Sierra",
-    dpto=="AYACUCHO"~"Sierra",
-    dpto=="CAJAMARCA"~"Sierra",
-    dpto=="CUSCO"~"Sierra",
-    dpto=="CALLAO"~"Costa",
-    dpto=="HUANCAVELICA"~"Sierra",
-    dpto=="HUANUCO"~"Selva",
-    dpto=="ICA"~"Costa",
-    dpto=="JUNIN"~"Sierra",
-    dpto=="LA LIBERTAD"~"Costa",
-    dpto=="LAMBAYEQUE"~"Costa",
-    dpto=="LIMA"~"Costa",
-    dpto=="LORETO"~"Selva",
-    dpto=="MADRE DE DIOS"~"Selva",
-    dpto=="MOQUEGUA"~"Costa",
-    dpto=="PASCO"~"Sierra",
-    dpto=="PIURA"~"Costa",
-    dpto=="PUNO"~"Sierra",
-    dpto=="SAN MARTIN"~"Selva",
-    dpto=="TACNA"~"Costa",
-    dpto=="TUMBES"~"Costa",
-    dpto=="UCAYALI"~"Selva"
-  )) 
-```
-
-```{r}
-res2016 |>
-  count(Region = region, name="Frecuencia")
-```
-
-La variable creada es una variable de tipo "caracter".
-En R existe otro tipo de variable llamado "factor".
-Podemos convertir cualquier variable a una de factor y etiquetar cada valor.
-
-```{r}
-library(forcats)
-res2016 = res2016 |>
-  mutate(region2 = factor(region))
-```
-
-Ahora, procedemos a producir el gráfico de cajas de porcentaje de voto a Fuerza Popular por región.
-
-```{r}
-ggplot(res2016, aes(y=fp, x=region))+
-  geom_boxplot()+
-  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 20))+
-  ylab("% Voto FP 2016")+
-  xlab("Región")+
-  theme_get()
-```
-
-Se observa en este gráfico que el voto mediano a Fuerza Popular fue mayor entre provincias de la costa, seguido por la selva y luego la sierra.
-Este mismo patrón se observa si calculáramos la media del porcentaje de voto provincial a Fuerza Popular por región.
-
-```{r}
-res2016 |> 
-  group_by(region2) |>
-  summarise(mean(fp), sd(fp))
-```
-
-## Descripción de variables de factor
-
-Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
-Por ejemplo, la base de datos incluye una variable de qué partido ganó la mayoría de votos en una provincia.
-La variable "gana" de la base de datos recoge este dato.
-Podemos usar el comando `count` para calcular la tabla de distribución de frecuencias de esta variable.
-Se guarda esta tabla en un objeto "tabla".
-
-Se encuentra que del total de provincias, Fuerza Popular ganó en la mayoría de ellas.
-
-```{r}
-tabla = res2016 |>
-  count(Ganador = gana, name="Frecuencia")
-tabla
-```
-
-Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcentaje" con el cálculo de la "Frecuencia" (columna existente) ente la suma total de las frecuencias.
-Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
-
-```{r}
-tabla = tabla |>
-  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
-tabla
-```
-
-Para graficar una variable de tipo cualitativa (o de factor en el lenguaje de R), se debe usar, por ejemplo, un gráfico de barras.
-Podemos graficar el porcentaje de provincias que cada partido ganó en 2021.
-
-Para esto seguimos usando la librería `ggplot`, pero ahora no realizaremos un histograma (no usaremos `geom_histogram`), sino barras, con `geom_bar`.
-Dentro de este comando se añade `stat="identity` para indicar que R no calcule nada y solo use los datos de "tabla".
-
-```{r}
-ggplot(tabla, aes(x=Porcentaje,y=Ganador))+
-  geom_bar(stat="identity", width=0.5)
-```
 
 # Caso 3: Comisarias en el Perú
 

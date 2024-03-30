@@ -1,7 +1,7 @@
 ---
-title: 'Clase 3 y 4: Estimación puntual y por intervalos de confianza'
+title: 'Clase 3: Visualización'
 author: "Arturo Maldonado"
-date: "5/9/2023"
+date: "2/4/2023"
 output:
   html_document:
     toc: true
@@ -24,7 +24,300 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
-# Encuesta Nacional Docente 2020
+# Visualización
+
+```{r}
+library(rio)
+res2016 = import("resultados2016.xlsx")
+```
+
+Una de las tareas más comunes en el manejo de datos es la visualización de los resultados.
+En R hay dos maneras de proceder.
+La primera es usar los comandos de base de R.
+La otra es usar una librería `ggplot2` que permite una mayor flexibilidad en la producción y estética de los gráficos.
+
+Para esto se carga la librería `ggplot2`.
+Esta tiene un comando `ggplot` en el que se define los aspectos del gráfico.
+Por ejemplo, para graficar una variable numérica, como el porcentaje de voto a FP por provincia, se puede producir un histograma.
+
+Dentro de este comando se define la base de datos y la variable que se va a graficar.
+Luego se van agregando capas.
+La primera define el tipo de gráfico.
+Usamos `geom_histogram` para producir el histograma y se especifica el ancho de columna.
+Luego se define las etiquetas de ejes y el tema del gráfico.
+
+Se observa que el gráfico de porcentaje de votos a Fuerza Popular es aproximadamente simétrico, tal como indicaban la similitud entre media y mediana.
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+ggplot(res2016, aes(x=fp))+
+  geom_histogram(binwidth = 5)+
+  xlab("% Voto PPK 2016") +
+  ylab("Frecuencia")+
+  theme_minimal()
+```
+
+Habíamos encontrado que la media y la mediana del porcentaje de voto al Frente Amplio diferían.
+Esto lo comprobamos produciendo el histograma de esta variable.
+
+```{r}
+ggplot(res2016, aes(x=fa))+
+  geom_histogram(binwidth = 5)+
+  geom_vline(xintercept = 29.3, color = "red")+
+  geom_vline(xintercept = 24.5, color = "green")+
+  xlab("% Voto FA 2011")+
+  ylab("Frecuencia")+
+  theme_classic()
+```
+
+Otro gráfico útil en la visualización es el llamado "boxplot" o "gráfico de cajas".
+Este tipo de gráficos sirve bastante para comparar entre grupos de otra variable.
+
+Para producir un gráfico de cajas usamos la especificación `geom_bloxplot()` y podemos definir los límites y saltos del eje Y.
+Este gráfico nos muestra que el distrito con el menor porcentaje de voto a FP tuvo un poco más de 5% y que el máximo fue de casi 80%.
+También muestra que la votación mediana fue de 40%.
+Los límites de la caja son el cuartil 25 y el cuartil 75.
+
+```{r}
+ggplot(res2016, aes(y=fp))+
+  geom_boxplot()+
+  ylab("% Voto FP 2011")
+```
+
+El aspecto más útil de los gráficos de cajas es la comparación.
+Por ejemplo, si se quisiera comparar el voto a Fuerza Popular entre departamentos del país.
+Para hacer esto se debe definir que la variable en el eje Y sea el porcentaje de votos a Fuerza Popular "fp" y en el eje X la variable que define los departamentos "dpto".
+Incluimos la especificación `coord_flip()` para voltear los ejes y que las etiquetas de los departamentos se lean más claramente.
+
+En el gráfico se pueden hacer varias comparaciones.
+Lo más importante es comparar medianas y anchos de cajas entre departamentos.
+Los puntos aislados son "outliers" o valores extremos, que se calculan automáticamente y se grafican.
+
+Este gráfico, sin embargo, es muy desagragado.
+
+```{r}
+ggplot(res2016, aes(y=fp, x=dpto))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10))+
+  ylab("% Voto FP 2011")+
+  xlab("Departamento")+
+  theme_minimal()+
+  coord_flip()
+```
+
+Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que crear esta variable, a partir de la variable "dpto".
+
+## Recodificando variables
+
+```{r}
+library(tidyverse)
+res2016 = res2016 |>
+  mutate(region = case_when(
+    dpto=="AMAZONAS"~3,
+    dpto=="ANCASH"~2,
+    dpto=="APURIMAC"~2,
+    dpto=="AREQUIPA"~2,
+    dpto=="AYACUCHO"~2,
+    dpto=="CAJAMARCA"~2,
+    dpto=="CUSCO"~2,
+    dpto=="CALLAO"~1,
+    dpto=="HUANCAVELICA"~2,
+    dpto=="HUANUCO"~3,
+    dpto=="ICA"~1,
+    dpto=="JUNIN"~2,
+    dpto=="LA LIBERTAD"~1,
+    dpto=="LAMBAYEQUE"~1,
+    dpto=="LIMA"~1,
+    dpto=="LORETO"~3,
+    dpto=="MADRE DE DIOS"~3,
+    dpto=="MOQUEGUA"~1,
+    dpto=="PASCO"~2,
+    dpto=="PIURA"~1,
+    dpto=="PUNO"~2,
+    dpto=="SAN MARTIN"~3,
+    dpto=="TACNA"~1,
+    dpto=="TUMBES"~1,
+    dpto=="UCAYALI"~3
+  )) 
+```
+
+```{r}
+res2016 |>
+  count(Region = region, name="Frecuencia")
+```
+
+La variable creada es una variable de tipo "numérico".
+En R existe otro tipo de variable llamado "factor".
+Podemos convertir cualquier variable a una de factor y etiquetar cada valor.
+
+```{r}
+library(forcats)
+res2016 = res2016 |>
+  mutate(region2 = factor(region, labels=c("Costa", "Sierra", "Selva")))
+```
+
+Ahora, procedemos a producir el gráfico de cajas de porcentaje de voto a Fuerza Popular por región.
+
+```{r}
+ggplot(res2016, aes(y=fp, x=region2))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 20))+
+  ylab("% Voto FP 2016")+
+  xlab("Región")+
+  theme_get()
+```
+
+Se observa en este gráfico que el voto mediano a Fuerza Popular fue mayor entre provincias de la costa, seguido por la selva y luego la sierra.
+Este mismo patrón se observa si calculáramos la media del porcentaje de voto provincial a Fuerza Popular por región.
+
+```{r}
+res2016 |> 
+  group_by(region2) |>
+  summarise(mean(fp), sd(fp))
+```
+
+# Caso 1:
+
+*Pregunta: Existe un sentido común que indica que los peruanos no leen. ¿Es aquello cierto? ¿Existen diferencias de género o socioeconómicas en los niveles de lectura?*
+
+Para responder a esta pregunta, usaremos la Encuesta Nacional de Lectura de 2022.
+
+```{r}
+library(rio)
+enl = import("~/Library/CloudStorage/GoogleDrive-arturo.maldonado@pucp.pe/Mi unidad/A Cursos/Estadistica_1/Data/ENL2022/ENL2022.sav")
+```
+
+Esta encuesta tiene una pregunta que indaga directamente (P408).
+Cuando se importa los datos a R, esta variable se importa como una variable numérica, cuando en realidad, es una variable de tipo factor.
+
+Se usa el comando `mutate` para crear una nueva variable y el comando `factor` para transformar la variable numérica a una de factor con sus respectivos `labels`.
+
+```{r}
+library(tidyverse)
+enl = enl |>
+  mutate(lee = factor(P408, labels=c("Sí", "No")))
+```
+
+## Descripción de variables de factor
+
+Para describir variables que no son numéricas, podemos producir tablas de distribución de frecuencias.
+Por ejemplo, podemos describir la variable "lee" de la base de datos.
+Podemos usar el comando `count` para calcular la tabla de distribución de frecuencias de esta variable.
+Se guarda esta tabla en un objeto "tabla1".
+
+```{r}
+tabla1 = enl |>
+  filter(lee == "Sí" | lee == "No") |>
+  count(Lee = lee, name="Frecuencia")
+tabla1
+```
+
+Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcentaje" con el cálculo de la "Frecuencia" (columna existente) ente la suma total de las frecuencias.
+Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
+
+```{r}
+tabla1 = tabla1 |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla1
+```
+
+Para graficar una variable de tipo cualitativa (o de factor en el lenguaje de R), se debe usar, por ejemplo, un gráfico de barras.
+Podemos graficar estos porcentajes.
+
+Para esto usamos la librería `ggplot2`, pero ahora no realizaremos un histograma (no usaremos `geom_histogram`), sino barras, con `geom_bar`.
+Dentro de este comando se añade `stat="identity` para indicar que R no calcule nada y solo use los datos de "tabla".
+
+```{r}
+library(ggplot2)
+graf1 = ggplot(tabla1, aes(x=Lee,y=Porcentaje))+
+  geom_bar(stat="identity", width=0.5)
+graf1
+```
+
+La encuesta también incluye la pregunta P209 sobre género.
+Esta variable se importa como una numérica, por lo que nuevamente la transformamos en una variable de tipo factor "sexo" con sus etiquetas.
+
+```{r}
+enl = enl |>
+  mutate(sexo = factor(P209, labels=c("Hombre", "Mujer")))
+```
+
+Ahora usamos esta variable para calcular las frecuencias y porcentajes por grupos de sexo.
+
+```{r}
+tabla2 = enl |>
+  filter(lee == "Sí" | lee == "No") |> 
+  group_by(sexo) |>
+  count(Lee = lee, name="N")|>
+  mutate(total = sum(N), 
+         Por = N / total * 100)
+tabla2
+```
+
+La tabla nos indica los porcentajes de los que sí leen y los que no leen por sexo.
+Como solo queremos graficar los porcentajes de los que sí leen, podemos eliminar las filas de los que no leen.
+
+```{r}
+tabla2 = tabla2[-c(2,4),]
+```
+
+Con esta tabla reducida, podemos graficas usando `ggplot`.
+Ahora agregamos la capa `geom_text` para incluir el dato del porcentaje dentro del gráfico.
+
+```{r}
+graf2 = ggplot(tabla2, aes(x=sexo, y=Por))+
+  geom_bar(stat="identity")+
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=3)+
+  labs(x="Sexo", y="Porcentaje")+
+  theme_classic()
+graf2
+```
+
+La base de datos incluye una variable "nse", que refiere al nivel socioeconómico de la persona que responde.
+Este nivel socioeconómico está categorizado en 4 niveles.
+
+```{r}
+enl = enl |>
+  mutate(nse = factor(nse, labels=c("Rural", "Bajo", "Medio", "Alto")))
+```
+
+Pasamos a calcular los porcentajes de lectura por los 4 niveles socioeconómicos.
+
+```{r}
+tabla3 = enl |>
+  filter(lee == "Sí" | lee == "No") |> 
+  group_by(nse) |>
+  count(Lee = lee, name="N")|>
+  mutate(total = sum(N), 
+         Por = N / total * 100)
+tabla3
+```
+
+Nuevamente eliminamos las filas de los porcentajes de aquellos que no leen.
+
+```{r}
+tabla3 = tabla3[-c(2,4,6,8),]
+```
+
+Y graficamos los porcentajes de los que sí leen por niveles socioeconómicos.
+
+```{r}
+graf3 = ggplot(tabla3, aes(x=nse, y=Por))+
+  geom_bar(stat="identity")+
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=3)+
+  labs(x="NSE", y="Porcentaje")+
+  theme_classic()
+graf3
+```
+
+## Tarea
+
+Se encontró que una mayor proporción de mujeres que hombres lee.
+¿Cuántos libros impresos y digitales lee el peruano promedio?
+¿Existen diferencias entre hombres y mujeres entre el promedio de libros impresos y digitales que leen?
+¿Entre niveles socioeconómicos?
+
+# Caso 2: Encuesta Nacional Docente 2020
 
 Cada dos años, el Ministerio de Educación realiza una encuesta a una muestra de docentes de educación básica en el Perú.
 La última disponible fue hecha en 2020, en medio de la pandemia del COVID-19.
@@ -189,7 +482,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:---------------------:|:----------------------------------------------:|:-----------|
+|:----------------:|:-----------------------------------:|:-----------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

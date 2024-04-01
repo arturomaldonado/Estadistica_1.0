@@ -14,13 +14,13 @@ navbar:
       href: clase1.html
     - text: "Clase 2"
       href: clase2.html
-    - text: "Clase 3 y 4"
+    - text: "Clase 3"
       href: clase3.html
-    - text: "Clase 5"
+    - text: "Clase 4"
       href: clase4.html
-    - text: "Clase 6"
+    - text: "Clase 5"
       href: clase5.html
-    - text: "Clase 7"
+    - text: "Clase 6"
       href: clase6.html
     - text: "Repaso"
       href: repaso.html

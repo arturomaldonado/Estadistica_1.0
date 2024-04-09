@@ -470,8 +470,9 @@ usuarios. Son raros y puntuales los distritos con más usuarios.</p>
   ylab(&quot;Número de miembros de programa Junto&quot;)+
   scale_y_continuous(limits = c(0, 2000), breaks = seq(0, 2000, 500))
 graf2</code></pre>
-<pre><code>## Warning: Removed 195 rows containing non-finite
-## values (`stat_boxplot()`).</code></pre>
+<pre><code>## Warning: Removed 195 rows containing
+## non-finite values
+## (`stat_boxplot()`).</code></pre>
 <p><img src="repaso_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="comparando-descriptivos" class="section level2">
@@ -512,8 +513,9 @@ graf3</code></pre>
   theme_minimal()+
   coord_flip()
 graf4</code></pre>
-<pre><code>## Warning: Removed 12 rows containing non-finite
-## values (`stat_boxplot()`).</code></pre>
+<pre><code>## Warning: Removed 12 rows containing
+## non-finite values
+## (`stat_boxplot()`).</code></pre>
 <p><img src="repaso_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>juntos = juntos |&gt;
   mutate(region = case_when(
@@ -560,8 +562,9 @@ tabla3</code></pre>
   xlab(&quot;Departamento&quot;)+
   theme_minimal()
 graf5</code></pre>
-<pre><code>## Warning: Removed 53 rows containing non-finite
-## values (`stat_boxplot()`).</code></pre>
+<pre><code>## Warning: Removed 53 rows containing
+## non-finite values
+## (`stat_boxplot()`).</code></pre>
 <p><img src="repaso_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="comparando-grupos-mediante-intervalos-de-confianza"

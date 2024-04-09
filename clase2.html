@@ -868,8 +868,9 @@ ggplot(comi17, aes(x=INF110_TOT))+
   xlab(&quot;Número de efectivos&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick
-## better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`.
+## Pick better value with
+## `binwidth`.</code></pre>
 <p><img src="clase2_files/figure-html/hist-1.png" width="672" /></p>
 <p>¿Qué se puede concluir del gráfico?</p>
 <pre class="r"><code>comi17 |&gt;
@@ -890,8 +891,9 @@ ggplot(comi17, aes(x=INF110_TOT))+
   xlab(&quot;Número de efectivos&quot;) +
   ylab(&quot;Frecuencia&quot;)+
   theme_light()</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick
-## better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`.
+## Pick better value with
+## `binwidth`.</code></pre>
 <p><img src="clase2_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>¿Qué se puede comentar de estos datos?</p>
 </div>
@@ -1032,8 +1034,9 @@ comi17 |&gt;
   facet_wrap(~tipo)+
   xlab(&quot;Número de policías&quot;)+
   ylab(&quot;Frecuencia&quot;)</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick
-## better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`.
+## Pick better value with
+## `binwidth`.</code></pre>
 <p><img src="clase2_files/figure-html/histgrupos-1.png" width="672" /></p>
 <p>¿Qué otras preguntas se pueden responder con los datos de
 comisarías?</p>
@@ -1064,14 +1067,16 @@ comisarías tiene entre 11 y 19 efectivos. El tercer 25% tiene entre 19 7
 37 efectivos, y el último 25% tiene entre 37 y 259 efectivos.</p>
 <pre class="r"><code>comi17 |&gt; 
   summarise(Cuartiles = quantile(INF110_TOT))</code></pre>
-<pre><code>## Warning: Returning more (or less) than 1 row
-## per `summarise()` group was deprecated
-## in dplyr 1.1.0.
-## ℹ Please use `reframe()` instead.
-## ℹ When switching from `summarise()` to
-##   `reframe()`, remember that
-##   `reframe()` always returns an
-##   ungrouped data frame and adjust
+<pre><code>## Warning: Returning more (or less) than 1
+## row per `summarise()` group was
+## deprecated in dplyr 1.1.0.
+## ℹ Please use `reframe()`
+##   instead.
+## ℹ When switching from
+##   `summarise()` to `reframe()`,
+##   remember that `reframe()`
+##   always returns an ungrouped
+##   data frame and adjust
 ##   accordingly.
 ## Call
 ## `lifecycle::last_lifecycle_warnings()`
@@ -1088,22 +1093,24 @@ código nos muestra los cuartiles por tipo de comisaría en cada fila.</p>
 <pre class="r"><code>cuartilesxtipo = comi17 |&gt; 
   group_by(tipo) |&gt;
   summarise(quantile(INF110_TOT))</code></pre>
-<pre><code>## Warning: Returning more (or less) than 1 row
-## per `summarise()` group was deprecated
-## in dplyr 1.1.0.
-## ℹ Please use `reframe()` instead.
-## ℹ When switching from `summarise()` to
-##   `reframe()`, remember that
-##   `reframe()` always returns an
-##   ungrouped data frame and adjust
+<pre><code>## Warning: Returning more (or less) than 1
+## row per `summarise()` group was
+## deprecated in dplyr 1.1.0.
+## ℹ Please use `reframe()`
+##   instead.
+## ℹ When switching from
+##   `summarise()` to `reframe()`,
+##   remember that `reframe()`
+##   always returns an ungrouped
+##   data frame and adjust
 ##   accordingly.
 ## Call
 ## `lifecycle::last_lifecycle_warnings()`
 ## to see where this warning was
 ## generated.</code></pre>
-<pre><code>## `summarise()` has grouped output by
-## &#39;tipo&#39;. You can override using the
-## `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output
+## by &#39;tipo&#39;. You can override
+## using the `.groups` argument.</code></pre>
 <pre class="r"><code>cuartilesxtipo</code></pre>
 <pre><code>## # A tibble: 30 × 2
 ## # Groups:   tipo [6]

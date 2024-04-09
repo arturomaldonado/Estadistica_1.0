@@ -52,7 +52,7 @@ Se observa que el gráfico de porcentaje de votos a Fuerza Popular es aproximada
 library(ggplot2)
 ggplot(res2016, aes(x=fp))+
   geom_histogram(binwidth = 5)+
-  xlab("% Voto PPK 2016") +
+  xlab("% Voto FP 2016") +
   ylab("Frecuencia")+
   theme_minimal()
 ```
@@ -101,8 +101,7 @@ ggplot(res2016, aes(y=fp, x=dpto))+
   scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10))+
   ylab("% Voto FP 2011")+
   xlab("Departamento")+
-  theme_minimal()+
-  coord_flip()
+  theme_minimal()
 ```
 
 Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que crear esta variable, a partir de la variable "dpto".
@@ -278,7 +277,7 @@ Este nivel socioeconómico está categorizado en 4 niveles.
 
 ```{r}
 enl = enl |>
-  mutate(nse = factor(nse, labels=c("Rural", "Bajo", "Medio", "Alto")))
+  mutate(nse1 = factor(nse, labels=c("Rural", "Bajo", "Medio", "Alto")))
 ```
 
 Pasamos a calcular los porcentajes de lectura por los 4 niveles socioeconómicos.
@@ -286,7 +285,7 @@ Pasamos a calcular los porcentajes de lectura por los 4 niveles socioeconómicos
 ```{r}
 tabla3 = enl |>
   filter(lee == "Sí" | lee == "No") |> 
-  group_by(nse) |>
+  group_by(nse1) |>
   count(Lee = lee, name="N")|>
   mutate(total = sum(N), 
          Por = N / total * 100)
@@ -302,7 +301,7 @@ tabla3 = tabla3[-c(2,4,6,8),]
 Y graficamos los porcentajes de los que sí leen por niveles socioeconómicos.
 
 ```{r}
-graf3 = ggplot(tabla3, aes(x=nse, y=Por))+
+graf3 = ggplot(tabla3, aes(x=nse1, y=Por))+
   geom_bar(stat="identity")+
   geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=3)+
   labs(x="NSE", y="Porcentaje")+
@@ -482,7 +481,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:----------------:|:----------------------------------:|:-----------------|
+|:-----------------:|:----------------------------------:|:------------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

@@ -1,7 +1,7 @@
 ---
-title: "Clase 5"
+title: "Clase 4: Recapitulación e Intervalos de Confianza"
 author: "Arturo Maldonado"
-date: "12/09/2023"
+date: "9/04/2024"
 output:
   html_document:
     toc: true
@@ -22,6 +22,290 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Caso 1: Efectivos en las Comisarias del Perú
+
+*Pregunta: ¿los policías en el Perú están distribuidos equitativamente entre las comisarías del Perú?*
+
+*¿Cómo cree que es esta distribución de datos?*
+
+Para responder a esta pregunta se usa la base de datos de comisarías del Perú de 2017.
+Esta base de datos está disponible en la sección [Microdatos](https://proyectos.inei.gob.pe/microdatos/) del INEI.
+
+```{r}
+library(rio) 
+comi17 = import("bases/comi2017.sav")
+```
+
+Esta base de datos incluye la pregunta sobre el número total de efectivos en cada comisaría.
+Esta variable se importa en R como una variable numérica, y efectivamente es el tipo de variable correcto.
+
+```{r}
+class(comi17$INF110_TOT)
+```
+
+Como esta es una variable numérica, se puede describir mediante la media y la mediana.
+
+¿Qué nos indican estos resultados?
+
+```{r}
+library(tidyverse)
+comi17 |>
+  summarise(Mínimo = min(INF110_TOT), 
+            Mediana = median(INF110_TOT), 
+            Promedio = mean(INF110_TOT),
+            Máximo = max(INF110_TOT))
+```
+
+Se puede graficar la distribución del número de efectivos por comisarias mediante un histograma.
+¿Qué nos indica el gráfico?
+
+```{r}
+library(ggplot2)
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  xlab("Número de efectivos") +
+  ylab("Frecuencia")+
+  theme_light()
+```
+
+Se puede incluir el dato de la media y la mediana en este gráfico.
+¿Cómo se interpreta la posición relativa de ambas medidas?
+
+```{r}
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  geom_vline(xintercept = 19, color = "red")+
+  geom_vline(xintercept = 31.6, color = "green")+
+  xlab("Número de efectivos") +
+  ylab("Frecuencia")+
+  theme_light()
+```
+
+Ahora se quiere ver si existen diferencias en el número promedio de efectivos policiales en las comisarías del Perú entre departamentos o entre regiones.
+A pesar que en formulario se recoge el dato de Departamento, Provincia y Distrito, en la base de datos no se cuenta con esa información.
+Lo que se tiene es una variable llamada "ubigeo".
+Esta variable está estandarizada de tal manera que los dos primeros dígitos corresponden al departamento, los segundos dos dígitos a las provincias y los últimos dos dígitos al distrito.
+Por lo tanto, para saber en qué departamento está la comisaría se requiere separar los primeros dos dígitos y guardarlos en una nueva variable.
+
+```{r}
+comi17 <- comi17 %>%
+  mutate(dpto = str_sub(UBIGEO, 1, 2))
+```
+
+Copiamos el código usado para el voto 2016 y lo adaptamos a las necesidades de esta base de datos.
+La variable "dpto" es una variable de tipo "character" y sabemos que va desde el "01" al "25", representando cada "número" un departamento del Perú, que hemos asociado a Costa = 1, Sierra = 2 o Selva = 3.
+
+Entonces lo que tenemos que hallar es el código ubigeo de cada departamento y reemplazarlo por el nombre del departamento en el código original.
+La clasificación la guardamos en otra variable "region".
+
+```{r}
+comi17 = comi17 %>%
+  mutate(region = case_when(
+    dpto=="01"~3,
+    dpto=="02"~2,
+    dpto=="03"~2,
+    dpto=="04"~2,
+    dpto=="05"~2,
+    dpto=="06"~2,
+    dpto=="08"~2,
+    dpto=="07"~1,
+    dpto=="09"~2,
+    dpto=="10"~3,
+    dpto=="11"~1,
+    dpto=="12"~2,
+    dpto=="13"~1,
+    dpto=="14"~1,
+    dpto=="15"~1,
+    dpto=="16"~3,
+    dpto=="17"~3,
+    dpto=="18"~1,
+    dpto=="19"~2,
+    dpto=="20"~1,
+    dpto=="21"~2,
+    dpto=="22"~3,
+    dpto=="23"~1,
+    dpto=="24"~1,
+    dpto=="25"~3
+  )) 
+```
+
+Esta variable "region" es de tipo numérico, pero los códigos (1, 2 y 3) no son números, sino códigos para Costa, Sierra y Selva, por lo que tenemos que crear otra variable, "region2" que sea de tipo "factor" con las etiquetas correspondientes.
+
+```{r}
+library(forcats)
+comi17 = comi17 %>%
+  mutate(region2 = factor(region, labels=c("Costa", "Sierra", "Selva")))
+```
+
+Podemos usar esta variable para calcular los descriptivos del número de efectivos por región.
+¿Qué conclusión saca de la tabla?
+
+```{r}
+tabla1 = comi17 %>%
+  group_by(region2) %>%
+  summarise(Mínimo = min(INF110_TOT), 
+            Mediana = median(INF110_TOT), 
+            Promedio = mean(INF110_TOT),
+            Desv = sd(INF110_TOT),
+            Máximo = max(INF110_TOT))
+tabla1
+```
+
+Esta tabla sirve para comparar los datos descriptivos por grupos de otra variable.
+Algo similar se puede hacer con el gráfico de cajas, pero comparando medianas y rangos intercuartiles.
+
+```{r}
+ggplot(comi17, aes(y=INF110_TOT, x=region2))+
+  geom_boxplot()+
+  ylab("Número de efectivos")+
+  xlab("Región")+
+  theme_get()
+```
+
+# Caso 2: Servicios básicos en las comisarías del Perú
+
+*Pregunta: ¿Las comisarías del Perú cuentan con los servicios básicos? ¿Cuentan con internet?*
+
+Para responder estas preguntas, la Encuesta Nacional de Comisarías de 2017 tiene otro módulo sobre infraestructura.
+Cargamos esa base de datos.
+
+```{r}
+comi17_2 = import("bases/comi2017_2.sav")
+```
+
+Esta base incluye la pregunta INF216 sobre luz eléctrica, la pregunta INF225 sobre agua potable, la pregunta INF230 sobre desagüe y la pregunta INF264_E sobre el servicio de internet.
+
+En primer lugar verificamos cómo se importan las variables.
+Vemos que se importan como variables numéricas.
+La variable sobre luz tiene opciones Si = 1 y No = 2.
+Esta variable es en realidad una de tipo factor.
+
+```{r}
+class(comi17_2$INF216)
+table(comi17_2$INF216)
+```
+
+Se procede a crear otra variable "luz", como la factorización de INF216 con etiquetas Sí y No.
+
+```{r}
+comi17_2 = comi17_2 %>%
+  mutate(luz = factor(INF216, labels=c("Sí", "No")))
+```
+
+Esta variable incluye algunas comisarías donde no se tiene el dato, por lo que cuando se calcula la tabla, se filtra solo las respuestas Sí y No.
+Se guarda los resultados en un objeto "tabla2".
+
+```{r}
+tabla2 = comi17_2 %>%
+  filter(luz == "Sí" | luz == "No") %>%
+  count(Luz = luz, name="Frecuencia")
+tabla2
+```
+
+Se añade a este mismo objeto los porcentajes.
+¿Qué conclusiones saca de estos resultados?
+
+```{r}
+tabla2 = tabla2 %>%
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla2
+```
+
+Se hace el mismo procedimiento con la variable sobre agua potable.
+En este caso, la variable tiene cinco valores.
+
+```{r}
+class(comi17_2$INF225)
+table(comi17_2$INF225)
+```
+
+```{r}
+comi17_2 = comi17_2 %>%
+  mutate(agua = factor(INF225, labels=c("Red pública dentro del local", 
+                                        "Camión cisterna",
+                                        "Pozo",
+                                        "Río, acequia o manantial",
+                                        "Otro")))
+table(comi17_2$agua)
+```
+
+Se calcula la tabla de distribución de frecuencias, con el cálculo de los porcentajes en el mismo código.
+¿Qué conclusiones saca de estos resultados?
+
+```{r}
+tabla3 = comi17_2 %>%
+  count(Agua = agua, name="Frecuencia") %>%
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla3
+```
+
+Se hace el mismo procedimiento con la variable sobre desagüe.
+
+```{r}
+class(comi17_2$INF230)
+table(comi17_2$INF230)
+```
+
+```{r}
+comi17_2 = comi17_2 %>%
+  mutate(desague = factor(INF230, labels=c("Red pública dentro del local", 
+                                        "Pozo séptico",
+                                        "Letrina",
+                                        "Otro",
+                                        "No tiene baño")))
+table(comi17_2$desague)
+```
+
+¿Qué conclusiones saca de estos resultados?
+
+```{r}
+tabla4 = comi17_2 %>%
+  count(Desague = desague, name="Frecuencia") %>%
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla4
+```
+
+Finalmente, se hace lo mismo para la pregunta sobre internet.
+
+```{r}
+class(comi17_2$INF264_E)
+table(comi17_2$INF264_E)
+```
+
+```{r}
+comi17_2 = comi17_2 %>%
+  mutate(internet = factor(INF264_E, labels=c("Sí, pago pendiente", 
+                                        "Sí, pago al día",
+                                        "Sí, no sabe del pago",
+                                        "No cuenta con el servicio")))
+table(comi17_2$internet)
+```
+
+¿Qué conclusiones saca sobre estos resultados?
+
+```{r}
+tabla5 = comi17_2 %>%
+  count(Internet = internet, name="Frecuencia") %>%
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla5
+```
+
+Este tipo de variables, de tipo factor, se puede visualizar con gráficos de barras.
+
+```{r}
+graf1 = ggplot(tabla5, aes(x=Internet, y=Porcentaje))+
+  geom_bar(stat="identity")+
+  geom_text(aes(label=paste(round(Porcentaje, 1))), vjust=-1, size=3)+
+  labs(x="Internet", y="Porcentaje")+
+  theme_classic()
+graf1
+```
+
+## Tarea
+
+Calcule las tablas de distribución de frecuencias de luz y de internet por regiones.
+Grafique.
+
 # Pruebas de significancia
 
 Es una de las técnicas más usadas para el análisis en ciencias sociales.
@@ -29,7 +313,7 @@ Sirve, por ejemplo, para comparar entre grupos:
 
 -   Comparar la media de ingresos de hombres y mujeres
 
--   Comparar la proporción de personas que votarán a candidato X por Lima y en Regiones
+-   Comparar la proporción de personas que votarán a candidato X en Lima y en Regiones
 
 -   Comparar los ingresos de profesores en la gestión pública y en la gestión privada
 
@@ -82,7 +366,9 @@ La regla de decisión "informal" es:
 
 # Ejemplo 1 para una variable numérica: ENDO
 
-Siguiendo con el ejemplo de la ENDO 2020, la hipótesis que se puede evaluar es si los profesores atienden a diferente número de alumnos de acuerdo a su sexo.
+*Pregunta: ¿a cuántos alumnos en promedio atiende un profesor peruano? ¿Existen diferencias de género?*
+
+Usando el ejemplo de la ENDO 2020, la hipótesis que se puede evaluar es si los profesores atienden a diferente número de alumnos de acuerdo a su sexo.
 Como vimos antes, las comparaciones puntuales sugieren diferencias, donde los docentes hombres atienden a más alumnos que las docentes mujeres.
 
 La hipótesis cero sería:
@@ -187,7 +473,8 @@ Estos gráficos son construidos de la misma manera que se ha construido el gráf
 
 ![](graf6.6.png){width="635"}
 
-¿Por qué?...
+¿Por qué?.
+..
 Aquí viene la interpretación del politólogo .
 
 OJO: no se debe confundir este gráfico con un gráfico de cajas.
@@ -223,7 +510,7 @@ Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar d
 Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
 
 |                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
-|---------------------------------------------------------|:-----------------:|:--------------------:|:-----------------:|:---------------------:|:----------------------------:|:---------------------------------:|
+|------------|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
 | Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
 | Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
 | Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |

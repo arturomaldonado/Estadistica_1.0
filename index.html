@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Estadística para el Análisis Político 1</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="repaso.html">Repaso</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 10</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 11</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Estadística para el Análisis Político
+1</h1>
+
+</div>
+
+
+<div id="sumilla" class="section level1">
+<h1>Sumilla</h1>
+<p>Introducción al análisis cuantitativo en ciencia política. Definición
+de variables, indicadores y escalas de medición. Uso de bases de datos
+para el estudio de casos en ciencia política. Herramientas de
+estadística descriptiva para la exploración de casos: métodos tabulares
+y gráficos; estadísticos descriptivos univariables. De la descripción al
+planteamiento y comprobación de hipótesis. Estrategias para analizar la
+relación entre dos variables: construcción y lecturas de tablas de
+contingencia, y coeficientes de asociación. Pruebas de significancia
+estadística. Análisis de tres variables. Correlación e introducción al
+análisis de regresión.</p>
+</div>
+<div id="presentación" class="section level1">
+<h1>Presentación</h1>
+<p>La ciencia política tiene como una de sus tareas el análisis de datos
+empíricos con el objetivo de analizar y comprender una realidad. Una
+herramienta científica para lograr este objetivo es la estadística. A
+través de ella se describe, se ponen a prueba hipótesis, y se modela la
+realidad social, económica y política de nuestro entorno. En ese
+sentido, este curso apoya no sólo el perfil académico del estudiante
+sino su perfil profesional, potenciando sus habilidades para el análisis
+político y social, y proporcionándole las bases cuantitativas para el
+desarrollo de su tesis de pregrado.</p>
+<p>El curso de Estadística para el Análisis Político 1 introduce al
+estudiante en aspectos esenciales del análisis cuantitativo en ciencia
+política. Se prestará atención especial en la interpretación y
+presentación de resultados estadísticos. Si bien una parte del curso
+involucra el manejo de un software estadístico, la parte más importante
+es la lectura de los resultados, sobre la base de la teoría y de la
+realidad.</p>
+</div>
+<div id="resultados-del-aprendizaje" class="section level1">
+<h1>Resultados del aprendizaje</h1>
+<ul>
+<li><p>Familiarizar a los estudiantes con los conceptos centrales de la
+estadística y el contexto en el que fueron desarrollados.</p></li>
+<li><p>Introducir al estudiante al uso de software especializado para
+analizar información.</p></li>
+<li><p>Aplicar técnicas estadísticas a fenómenos políticos.</p></li>
+<li><p>Comprender las técnicas estadísticas aplicadas en el trabajo
+académico y profesional.</p></li>
+</ul>
+</div>
+<div id="temas" class="section level1">
+<h1>Temas</h1>
+<ol style="list-style-type: decimal">
+<li>Instalando R y RStudio</li>
+<li>Lectura de bases de datos</li>
+<li>Manejo de datos</li>
+<li>Estadística descriptiva</li>
+<li>Estadística inferencial</li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXN0YWTDrXN0aWNhIHBhcmEgZWwgQW7DoWxpc2lzIFBvbMOtdGljbyAxIgpvdXRwdXQ6IAogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogY29zbW8KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUKLS0tCgojIFN1bWlsbGEKCkludHJvZHVjY2nDs24gYWwgYW7DoWxpc2lzIGN1YW50aXRhdGl2byBlbiBjaWVuY2lhIHBvbMOtdGljYS4gRGVmaW5pY2nDs24gZGUgdmFyaWFibGVzLCBpbmRpY2Fkb3JlcyB5IGVzY2FsYXMgZGUgbWVkaWNpw7NuLiBVc28gZGUgYmFzZXMgZGUgZGF0b3MgcGFyYSBlbCBlc3R1ZGlvIGRlIGNhc29zIGVuIGNpZW5jaWEgcG9sw610aWNhLiBIZXJyYW1pZW50YXMgZGUgZXN0YWTDrXN0aWNhIGRlc2NyaXB0aXZhIHBhcmEgbGEgZXhwbG9yYWNpw7NuIGRlIGNhc29zOiBtw6l0b2RvcyB0YWJ1bGFyZXMgeSBncsOhZmljb3M7IGVzdGFkw61zdGljb3MgZGVzY3JpcHRpdm9zIHVuaXZhcmlhYmxlcy4gRGUgbGEgZGVzY3JpcGNpw7NuIGFsIHBsYW50ZWFtaWVudG8geSBjb21wcm9iYWNpw7NuIGRlIGhpcMOzdGVzaXMuIEVzdHJhdGVnaWFzIHBhcmEgYW5hbGl6YXIgbGEgcmVsYWNpw7NuIGVudHJlIGRvcyB2YXJpYWJsZXM6IGNvbnN0cnVjY2nDs24geSBsZWN0dXJhcyBkZSB0YWJsYXMgZGUgY29udGluZ2VuY2lhLCB5IGNvZWZpY2llbnRlcyBkZSBhc29jaWFjacOzbi4gUHJ1ZWJhcyBkZSBzaWduaWZpY2FuY2lhIGVzdGFkw61zdGljYS4gQW7DoWxpc2lzIGRlIHRyZXMgdmFyaWFibGVzLiBDb3JyZWxhY2nDs24gZSBpbnRyb2R1Y2Npw7NuIGFsIGFuw6FsaXNpcyBkZSByZWdyZXNpw7NuLgoKIyBQcmVzZW50YWNpw7NuCgpMYSBjaWVuY2lhIHBvbMOtdGljYSB0aWVuZSBjb21vIHVuYSBkZSBzdXMgdGFyZWFzIGVsIGFuYcyBbGlzaXMgZGUgZGF0b3MgZW1wacyBcmljb3MgY29uIGVsIG9iamV0aXZvIGRlIGFuYWxpemFyIHkgY29tcHJlbmRlciB1bmEgcmVhbGlkYWQuIFVuYSBoZXJyYW1pZW50YSBjaWVudGnMgWZpY2EgcGFyYSBsb2dyYXIgZXN0ZSBvYmpldGl2byBlcyBsYSBlc3RhZGnMgXN0aWNhLiBBIHRyYXZlzIFzIGRlIGVsbGEgc2UgZGVzY3JpYmUsIHNlIHBvbmVuIGEgcHJ1ZWJhIGhpcG/MgXRlc2lzLCB5IHNlIG1vZGVsYSBsYSByZWFsaWRhZCBzb2NpYWwsIGVjb25vzIFtaWNhIHkgcG9sacyBdGljYSBkZSBudWVzdHJvIGVudG9ybm8uIEVuIGVzZSBzZW50aWRvLCBlc3RlIGN1cnNvIGFwb3lhIG5vIHNvzIFsbyBlbCBwZXJmaWwgYWNhZGXMgW1pY28gZGVsIGVzdHVkaWFudGUgc2lubyBzdSBwZXJmaWwgcHJvZmVzaW9uYWwsIHBvdGVuY2lhbmRvIHN1cyBoYWJpbGlkYWRlcyBwYXJhIGVsIGFuYcyBbGlzaXMgcG9sacyBdGljbyB5IHNvY2lhbCwgeSBwcm9wb3JjaW9uYcyBbmRvbGUgbGFzIGJhc2VzIGN1YW50aXRhdGl2YXMgcGFyYSBlbCBkZXNhcnJvbGxvIGRlIHN1IHRlc2lzIGRlIHByZWdyYWRvLgoKRWwgY3Vyc28gZGUgRXN0YWRpzIFzdGljYSBwYXJhIGVsIEFuYcyBbGlzaXMgUG9sacyBdGljbyAxIGludHJvZHVjZSBhbCBlc3R1ZGlhbnRlIGVuIGFzcGVjdG9zIGVzZW5jaWFsZXMgZGVsIGFuYcyBbGlzaXMgY3VhbnRpdGF0aXZvIGVuIGNpZW5jaWEgcG9sw610aWNhLiBTZSBwcmVzdGFyYcyBIGF0ZW5jacOzbiBlc3BlY2lhbCBlbiBsYSBpbnRlcnByZXRhY2lvzIFuIHkgcHJlc2VudGFjaW/MgW4gZGUgcmVzdWx0YWRvcyBlc3RhZMOtc3RpY29zLiBTaSBiaWVuIHVuYSBwYXJ0ZSBkZWwgY3Vyc28gaW52b2x1Y3JhIGVsIG1hbmVqbyBkZSB1biBzb2Z0d2FyZSBlc3RhZGnMgXN0aWNvLCBsYSBwYXJ0ZSBtYcyBcyBpbXBvcnRhbnRlIGVzIGxhIGxlY3R1cmEgZGUgbG9zIHJlc3VsdGFkb3MsIHNvYnJlIGxhIGJhc2UgZGUgbGEgdGVvcmnMgWEgeSBkZSBsYSByZWFsaWRhZC4KCiMgUmVzdWx0YWRvcyBkZWwgYXByZW5kaXphamUKCi0gICBGYW1pbGlhcml6YXIgYSBsb3MgZXN0dWRpYW50ZXMgY29uIGxvcyBjb25jZXB0b3MgY2VudHJhbGVzIGRlIGxhIGVzdGFkacyBc3RpY2EgeSBlbCBjb250ZXh0byBlbiBlbCBxdWUgZnVlcm9uIGRlc2Fycm9sbGFkb3MuCgotICAgSW50cm9kdWNpciBhbCBlc3R1ZGlhbnRlIGFsIHVzbyBkZSBzb2Z0d2FyZSBlc3BlY2lhbGl6YWRvIHBhcmEgYW5hbGl6YXIgaW5mb3JtYWNpb8yBbi4KCi0gICBBcGxpY2FyIHRlzIFjbmljYXMgZXN0YWTDrXN0aWNhcyBhIGZlbsOzbWVub3MgcG9sw610aWNvcy4KCi0gICBDb21wcmVuZGVyIGxhcyB0w6ljbmljYXMgZXN0YWTDrXN0aWNhcyBhcGxpY2FkYXMgZW4gZWwgdHJhYmFqbyBhY2Fkw6ltaWNvIHkgcHJvZmVzaW9uYWwuCgojIFRlbWFzCgoxLiAgSW5zdGFsYW5kbyBSIHkgUlN0dWRpbwoyLiAgTGVjdHVyYSBkZSBiYXNlcyBkZSBkYXRvcwozLiAgTWFuZWpvIGRlIGRhdG9zCjQuICBFc3RhZMOtc3RpY2EgZGVzY3JpcHRpdmEKNS4gIEVzdGFkw61zdGljYSBpbmZlcmVuY2lhbAo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("index.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

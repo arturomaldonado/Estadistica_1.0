@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase 2: descripción y visualización</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="repaso.html">Repaso</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 10</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 11</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase 2: descripción y visualización</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">26/03/2024</h4>
+
+</div>
+
+
+<hr />
+<div id="caso-1-apoyo-a-la-democracia-en-américa-latina"
+class="section level1">
+<h1>Caso 1: Apoyo a la democracia en América Latina</h1>
+<p><em>Pregunta: ¿existe una erosión del apoyo a la democracia entre los
+ciudadanos en América Latina?</em></p>
+<div id="leer-una-base-de-datos" class="section level2">
+<h2>Leer una base de datos</h2>
+<p>Usamos la librería <code>rio</code>. Activamos la librería con el
+comando <code>library</code> y usamos el comando <code>import</code>
+para leer la base de datos (un archivo Excel). Ojo: el nombre del
+archivo tiene que estar entre comillas. En este caso, el archivo está
+dentro de mi directorio de trabajo, por lo que se le llama con el
+nombre. Si no estuviera en el directorio de trabajo se tendría que
+especificar la ruta del archivo.</p>
+<p>Guardamos esta base de datos en un nuevo objeto (dataframe) llamado
+apoyoAL. Se sugiere siempre trabajar con nombres cortos de bases de
+datos y de variables.</p>
+<pre class="r"><code>library(rio)
+apoyoAL = import(&quot;apoyoAL.xlsx&quot;)</code></pre>
+</div>
+<div id="descripción-para-variables-numéricas" class="section level2">
+<h2>Descripción para variables numéricas</h2>
+<p>Usamos las medidas de tendencia central para describir una variable
+numérica. Podemos usar el comando <code>mean</code> para calcular el
+promedio de apoyo a la democracia en 2023. Este comando asume que se
+tienen datos completos. Como existe un dato perdido, el comando no
+corre, y se tiene que añadir la especificación
+<code>, na.rm = T</code>.</p>
+<pre class="r"><code>library(tidyverse)
+apoyoAL |&gt;
+  summarise(Apoyo2023=mean(apoyo2023, na.rm=T))</code></pre>
+<pre><code>##   Apoyo2023
+## 1  58.56522</code></pre>
+<p>También se puede calcular la mediana, con el comando
+<code>median</code> y presentar ambas medidas juntas.</p>
+<pre class="r"><code>apoyoAL |&gt;
+  summarise(Promedio_Apoyo2023=mean(apoyo2023, na.rm=T), 
+            Mediana_Apoyo2023=median(apoyo2023, na.rm=T))</code></pre>
+<pre><code>##   Promedio_Apoyo2023 Mediana_Apoyo2023
+## 1           58.56522                57</code></pre>
+<p>Ahora lo que queremos averiguar es si el apoyo a la democracia ha
+disminuido, aumentado o permanecido igual entre 2021 y 2023. Para esto,
+podemos comparar la media del apoyo a la democracia en 2021 con la media
+en 2023.</p>
+<pre class="r"><code>apoyoAL |&gt;
+  summarise(Promedio_Apoyo2021=mean(apoyo2021, na.rm=T), 
+            Promedio_Apoyo2023=mean(apoyo2023, na.rm=T))</code></pre>
+<pre><code>##   Promedio_Apoyo2021 Promedio_Apoyo2023
+## 1               61.2           58.56522</code></pre>
+<p>Según estos resultados, el apoyo a la democracia ha disminuido de
+61.2% a 58.6%; es decir, una disminución de 2.6 puntos porcentuales.</p>
+<p>Los datos de 2023 incluyen países caribeños (Bahamas, Granada, TyT y
+Surinám) que no estaban en el gráfico de 2021. Es posible que el menor
+promedio de apoyo a la democracia en 2023 sea por la incorporación de
+estos países. Se podría argumentar que si se tuviera los datos de estos
+países para 2021, quizá no existiría una erosión del apoyo a la
+democracia.</p>
+<p>Una forma de lidiar con esta observación es comparar los resultados
+2023 y 2021 solo de los países que tienen datos en ambos años.</p>
+</div>
+<div id="dataframes" class="section level2">
+<h2>Dataframes</h2>
+<p>Antes de ver cómo eliminar los países, una nota sobre la estructura
+de una base de datos. El dataframe apoyoAL tiene 24 observaciones (24
+filas, en cada una, un país) y 4 variables (4 columnas, en cada una, una
+variable). Por lo tanto, este dataframe tiene una dimensión [24, 4]. En
+general, un dataframe tiene dimensión [#filas, #columnas].</p>
+<p>Por lo tanto, se puede llamar a los elementos de un dataframe
+indicando la fila y la columna. Por ejemplo, para llamar al elemento de
+la primera fila y segunda columna.</p>
+<pre class="r"><code>apoyoAL[4,2]</code></pre>
+<pre><code>## [1] &quot;Argentina&quot;</code></pre>
+<p>También se puede llamar toda una fila. En este caso, la primera
+fila.</p>
+<pre class="r"><code>apoyoAL[1,]</code></pre>
+<pre><code>##   pais country apoyo2021 apoyo2023
+## 1   UY Uruguay        80        75</code></pre>
+<p>O la segunda columna</p>
+<pre class="r"><code>apoyoAL[,2]</code></pre>
+<pre><code>##  [1] &quot;Uruguay&quot;              &quot;El Salvador&quot;          &quot;Costa Rica&quot;          
+##  [4] &quot;Argentina&quot;            &quot;Chile&quot;                &quot;Brasil&quot;              
+##  [7] &quot;Guyana&quot;               &quot;México&quot;               &quot;Ecuador&quot;             
+## [10] &quot;Nicaragua&quot;            &quot;República Dominicana&quot; &quot;Panamá&quot;              
+## [13] &quot;Bolivia&quot;              &quot;Jamaica&quot;              &quot;Colombia&quot;            
+## [16] &quot;Guatemala&quot;            &quot;Paraguay&quot;             &quot;Perú&quot;                
+## [19] &quot;Honduras&quot;             &quot;Haití&quot;                &quot;Bahamas&quot;             
+## [22] &quot;Granada&quot;              &quot;Trinidad y Tobago&quot;    &quot;Surinám&quot;</code></pre>
+<p>Esto nos permite seleccionar filas (países) o columnas (variables)
+bajo ciertas condiciones. En general, nos interesa más seleccionar
+filas.</p>
+<p>Por ejemplo, si queremos seleccionar los países por encima de la
+media de apoyo 2023, podemos decir</p>
+<pre class="r"><code>apoyoAL[apoyoAL$apoyo2023&gt;mean(apoyoAL$apoyo2023, na.rm = T), c(1,4)]</code></pre>
+<pre><code>##    pais apoyo2023
+## 1    UY        75
+## 2    SV        67
+## 3    CR        72
+## 4    AR        68
+## 5    CL        70
+## 6    BR        64
+## NA &lt;NA&gt;        NA
+## 8    MX        62
+## 11   DO        64
+## 12   PN        62
+## 21   BS        65
+## 22   GD        59</code></pre>
+<p>En R existe un comando para seleccionar observaciones. Se puede usar
+<code>subset</code> para hacer este filtro. Este filtro se puede
+almacenar en otro dataframe.</p>
+<pre class="r"><code>apoyo_mayor_media = subset(apoyoAL, apoyo2023 &gt; mean(apoyo2023, na.rm=T))</code></pre>
+</div>
+<div id="lidiando-con-valores-perdidos" class="section level2">
+<h2>Lidiando con valores perdidos</h2>
+<p>Volviendo al ejemplo y a la respuesta a la observación de comparar
+países con mediciones en ambos años. Si se abre la base de datos
+“apoyoAL”, se observa que apoyo2021 tiene 4 NAs y apoyo2023 tiene 1
+NA.</p>
+<p>Se puede eliminar los países que tienen NAs en la variable
+“apoyo2021”.</p>
+<pre class="r"><code>apoyoSinNA2021 = apoyoAL[!(is.na(apoyoAL$apoyo2021)),]</code></pre>
+<p>Se puede eliminar los países que tienen NAs en la variable
+“apoyo2023”.</p>
+<pre class="r"><code>apoyoSinNA2023 = apoyoAL[!(is.na(apoyoAL$apoyo2023)),]</code></pre>
+<p>Pero, queremos eliminar ambos; es decir, tanto los países con NAs en
+2023 Y los países con NAs en 2021. Para esto usamos el operador lógico
+“&amp;”.</p>
+<p>En R tenemos los siguientes operadores lógicos:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Operador</th>
+<th align="center">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">==</td>
+<td align="center">es igual a</td>
+</tr>
+<tr class="even">
+<td align="center">!=</td>
+<td align="center">es diferente de</td>
+</tr>
+<tr class="odd">
+<td align="center">&gt;</td>
+<td align="center">es mayor de</td>
+</tr>
+<tr class="even">
+<td align="center">&lt;</td>
+<td align="center">es menor de</td>
+</tr>
+<tr class="odd">
+<td align="center">&gt;=</td>
+<td align="center">es mayor o igual a</td>
+</tr>
+<tr class="even">
+<td align="center">&lt;=</td>
+<td align="center">es menor o igual a</td>
+</tr>
+<tr class="odd">
+<td align="center">&amp;</td>
+<td align="center">intersección (Y)</td>
+</tr>
+<tr class="even">
+<td align="center">|</td>
+<td align="center">unión (O)</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>apoyoSinNA = apoyoAL[!(is.na(apoyoAL$apoyo2021)) &amp; !(is.na(apoyoAL$apoyo2023)),]</code></pre>
+<p>Esto mismo se puede lograr con el comando <code>subset</code>.</p>
+<pre class="r"><code>apoyoSinNA2 = subset(apoyoAL, 
+                     !(is.na(apoyoAL$apoyo2021)) &amp; !(is.na(apoyoAL$apoyo2023)))</code></pre>
+<p>Y también se puede hacer, usando el tidyverse. En este curso tenemos
+una preferencia por este estilo de código. Pero, como pueden ver se
+puede lograr los mismos resultados de muchas maneras en R.</p>
+<pre class="r"><code>apoyoSinNa3 = apoyoAL |&gt; 
+  filter(!(is.na(apoyoAL$apoyo2021)) &amp; !(is.na(apoyoAL$apoyo2023))) </code></pre>
+<p>Con este nuevo dataframe, que contiene solo los países que tienen el
+dato de apoyo a la democracia tanto en 2021 como en 2023, se puede
+responder a la observación. Podemos comparar la media de ambos añós
+usando este nuevo dataframe.</p>
+<pre class="r"><code>apoyoSinNa3 |&gt;
+  summarise(PromedioApoyo2021=mean(apoyo2021), 
+            PromedioApoyo2023=mean(apoyo2023))</code></pre>
+<pre><code>##   PromedioApoyo2021 PromedioApoyo2023
+## 1          60.94737          58.84211</code></pre>
+<p>Los resultados indican que hay una disminución de 2.1 puntos
+porcentuales, resultados un poco menor que el anterior (2.6 pp), pero
+que va en la misma dirección de decir que hay una erosión del apoyo
+ciudadanos a la democracia.</p>
+</div>
+</div>
+<div id="caso-2-resultados-electorales-2016" class="section level1">
+<h1>Caso 2: Resultados electorales 2016</h1>
+<p><em>Pregunta: Algunos politólogos consideran que un partido más
+institucionalizado es el que es capaz de tener un mayor enraizamiento
+territorial y, por lo tanto, tener un apoyo electoral relativamente
+constante a lo largo del territorio. Por el contrario, un partido menos
+institucionalizado, solo lograría apoyos electorales diferenciados,
+mayores en algunos territorios y menores en otros.</em></p>
+<p><em>Siguiendo esta idea, ¿cuál fue el partido mas o menos
+institucionalizado de acuerdo a los resultados electorales de
+2016?</em></p>
+<div id="leer-una-base-de-datos-1" class="section level2">
+<h2>Leer una base de datos</h2>
+<pre class="r"><code>library(rio)
+res2016 = import(&quot;resultados2016.xlsx&quot;)</code></pre>
+<p>Si se hace doble click en el objeto, se abre la base de datos como
+una pestaña en la zona de scripts / RMarkdowns. Este objeto dataframe
+tiene vectores de datos de tipo “caracter” y otros vectores de datos de
+tipo “numérico”.</p>
+</div>
+<div id="descripción-de-la-heterogeneidad" class="section level2">
+<h2>Descripción de la heterogeneidad</h2>
+<p>Usamos las medidas de dispersión para describir una variable
+numérica. Podemos usar el comando <code>sd</code> para calcular la
+desviación estándar del voto provincial a Fuerza Popular, a Peruanos por
+el Kambio y al Frente Amplio en 2016. Este comando asume que se tienen
+datos completos. Si existiera un dato perdido, el comando no correría, y
+se tendría que añadir la especificación <code>, na.rm = T</code>.</p>
+<pre class="r"><code>library(dplyr)
+library(tidyverse)
+res2016 |&gt;
+  summarise(sd(fp), sd(ppk), sd(fa))</code></pre>
+<pre><code>##     sd(fp)  sd(ppk)   sd(fa)
+## 1 15.71665 28.89695 17.34935</code></pre>
+<p>También se puede calcular la media para grupos de observaciones, es
+decir para filas específicas de una base de datos. Una opción sería
+agregar un nuevo dataframe con el filtrado de las observaciones. Si no
+queremos llenarnos de bases de datos parciales, tenemos otras
+opciones.</p>
+<p>Por ejemplo, si quisiéramos saber si la heterogeneidad del voto fue
+mayor o menor que aquella del voto provincial general de Fuerza Popular,
+podríamos calcular la desviación estándar del voto provincial solo en
+las provincias de Lima.</p>
+<p>Esto se puede hacer de múltiples maneras. En este curso comenzaremos
+a usar las funciones del mundo del Tidyverse.</p>
+<p>En cualquier caso, se tiene que seleccionar algunas filas de un
+dataframe usando operadores lógicos. En nuestro caso vamos a seleccionar
+las observaciones, con el comando <code>filter</code> y con la condición
+que en el vector o variable “dpto” sean igual a “LIMA”. Ojo, en
+mayúsculas, dado que así está en la base de datos y entre comillas
+porque es una cadena de caracteres.</p>
+<pre class="r"><code>res2016 |&gt; 
+  filter(dpto ==&quot;LIMA&quot;) |&gt;
+  summarise(sd(fp), sd(ppk), sd(fa))</code></pre>
+<pre><code>##     sd(fp)  sd(ppk)   sd(fa)
+## 1 6.853293 6.539157 4.175478</code></pre>
+<p>Encontramos que en Lima la desviación estándar del voto provincial a
+Fuerza Popular es mayor que la de otros partidos. También se puede
+calcular los mismo para el caso de Cusco.</p>
+<pre class="r"><code>res2016 |&gt; 
+  filter(dpto ==&quot;LIMA&quot;) |&gt;
+  summarize(mean(fp, na.rm=T), mean(ppk, na.rm=T), mean(fa, na.rm=T), 
+    sd(fp), sd(ppk), sd(fa))</code></pre>
+<pre><code>##   mean(fp, na.rm = T) mean(ppk, na.rm = T) mean(fa, na.rm = T)   sd(fp)
+## 1              54.584                14.94              17.838 6.853293
+##    sd(ppk)   sd(fa)
+## 1 6.539157 4.175478</code></pre>
+<pre class="r"><code>#Cómo calcularían esta media usando la variable &quot;id&quot;?</code></pre>
+</div>
+<div id="tarea" class="section level2">
+<h2>Tarea</h2>
+<p>La base de datos también incluye el voto provincial a Fuerza Popular
+en la elección de 2021.</p>
+<p>¿Calcule si el voto promedio de Fuerza Popular ha aumentado o
+disminuido entre 2011 y 2016?</p>
+<p>¿Calcule lo mismo para el departamento de Tumbes?</p>
+<p>¿Calcule si Fuerza Popular ha aumento o disminuido su nivel de
+institucionalización?</p>
+</div>
+</div>
+<div id="caso-3-comisarias-en-el-perú" class="section level1">
+<h1>Caso 3: Comisarias en el Perú</h1>
+<div id="medidas-de-tendencia-central" class="section level2">
+<h2>Medidas de tendencia central</h2>
+<ul>
+<li><p>Resumen de un conjunto de datos.</p></li>
+<li><p>Se resume mediante un valor “representativo”.</p></li>
+<li><p>Cada observación se puede comparar con este valor de resumen. Se
+puede estar por debajo o por encima de este valor.</p></li>
+</ul>
+<hr />
+</div>
+<div id="moda" class="section level2">
+<h2>Moda</h2>
+<ul>
+<li><p>Valor mas frecuente de un conjunto de datos</p></li>
+<li><p>Es apropiada para todo tipo de datos</p></li>
+<li><p>Se puede observar directamente en una tabla de distribución de
+frecuencias.</p></li>
+</ul>
+<p>Por ejemplo si se mide en cada comisaria del Perú, a cuánta población
+atiende cada comisaria de acuerdo a la codificación.</p>
+<p><img src="comi17_pob.png" width="734" /></p>
+<p>La base de datos o “dataframe” se vería así</p>
+<p><img src="comi17_pob2.png" /></p>
+<hr />
+<p>Para esta clase se usará la base de datos de comisarias del Perú, que
+puede ser descargada de la sección microdatos de la web del INEI (ver <a
+href="https://proyectos.inei.gob.pe/microdatos/">aquí</a>). Esta base
+tiene información para 1495 comisarias y de 281 variables. Esta base se
+puede cargar también desde el repositorio Github de este curso. La base
+de datos puede ser guardada en el directorio de trabajo.</p>
+<p>En primer lugar, se llama a la librería “rio” y se usa el comando
+<code>import</code> que permite leer bases de datos en muchos
+formatos.</p>
+<pre class="r"><code>library(rio) 
+comi17 = import(&quot;bases/comi2017.sav&quot;)</code></pre>
+<pre class="r"><code>str(comi17$INF109)</code></pre>
+<pre><code>##  num [1:1495] 5 2 4 2 2 1 4 3 3 6 ...
+##  - attr(*, &quot;label&quot;)= chr &quot;¿A CUÁNTA POBLACIÓN ATIENDE LA COMISARÍA/UNIDAD ESPECIALIZADA DENTRO DE SU JURISDICCIÓN?&quot;
+##  - attr(*, &quot;format.spss&quot;)= chr &quot;F11.0&quot;
+##  - attr(*, &quot;display_width&quot;)= int 11
+##  - attr(*, &quot;labels&quot;)= Named num [1:6] 1 2 3 4 5 6
+##   ..- attr(*, &quot;names&quot;)= chr [1:6] &quot;Menos de 5000 Hab&quot; &quot;De 5000 - 10000 Hab&quot; &quot;De 10001 - 20000 Hab&quot; &quot;De 20001 - 40000 Hab&quot; ...</code></pre>
+<pre class="r"><code>class(comi17$INF109)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+comi17 = comi17 |&gt;
+  mutate(tipo = factor(INF109, labels=c(&quot;Menos de 5000 Hab&quot;, 
+                                        &quot;De 5000 - 10000 Hab&quot;, 
+                                        &quot;De 10001 - 20000 Hab&quot;, 
+                                        &quot;De 20001 - 40000 Hab&quot;,
+                                        &quot;De 40001 a 80000&quot;, &quot;De 80001 a más&quot;)))</code></pre>
+<p>Esta base de datos incluye a la variable “INF109” (ojo: R es “case
+sensitive”, es decir, diferencia mayúsculas de minúsculas). La tabla de
+distribución de frecuencias de esa variable se puede obtener con el
+siguiente código:</p>
+<pre class="r"><code>tabla1 = comi17 |&gt;
+  count(Tipo = tipo, name=&quot;Frecuencia&quot;)
+tabla1</code></pre>
+<pre><code>##                   Tipo Frecuencia
+## 1    Menos de 5000 Hab        288
+## 2  De 5000 - 10000 Hab        329
+## 3 De 10001 - 20000 Hab        290
+## 4 De 20001 - 40000 Hab        248
+## 5     De 40001 a 80000        196
+## 6       De 80001 a más        144</code></pre>
+<p>En este caso, la moda es el valor más frecuente, que sería el código
+“2”, que significa “De 5,000 a 10,000 hab”.</p>
+<pre class="r"><code>tabla1 = comi17 |&gt;
+  count(Tipo = tipo, name=&quot;Frecuencia&quot;) |&gt;
+  mutate(Porc = (Frecuencia / sum(Frecuencia)*100 ))
+tabla1</code></pre>
+<pre><code>##                   Tipo Frecuencia      Porc
+## 1    Menos de 5000 Hab        288 19.264214
+## 2  De 5000 - 10000 Hab        329 22.006689
+## 3 De 10001 - 20000 Hab        290 19.397993
+## 4 De 20001 - 40000 Hab        248 16.588629
+## 5     De 40001 a 80000        196 13.110368
+## 6       De 80001 a más        144  9.632107</code></pre>
+<pre class="r"><code>library(ggplot2)
+ggplot(tabla1, aes(x=Tipo, y=Porc)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Población a la que atiende la comisaria&quot;) +
+  ylab(&quot;Porcentaje&quot;) +
+  geom_text(aes(label=round(Porc,1)), vjust=1.30, color=&quot;white&quot;, size=3)+
+  theme_minimal()</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+<div id="mediana" class="section level2">
+<h2>Mediana</h2>
+<ul>
+<li>El valor de la observación central de un conjunto de datos ordenados
+de menor a mayor.</li>
+</ul>
+<p><img src="mediana1.png" width="497" /></p>
+<p><img src="mediana2.png" width="498" /></p>
+<p>Para calcular la mediana de la variable “INF109” se puede usar el
+comando <code>median</code>. Este comando internamente ordena los
+valores de la variable “INF109” de menor a mayor y encuentra el código
+numérico de la observación que se encuentra en medio de la distribución
+ordenada.</p>
+<pre class="r"><code>comi17 |&gt;
+  summarise(median(INF109))</code></pre>
+<pre><code>##   median(INF109)
+## 1              3</code></pre>
+<p>La mediana es el código numérico 3, que significa “De 10,001 a 20,000
+hab.”.</p>
+<hr />
+</div>
+<div id="media" class="section level2">
+<h2>Media</h2>
+<ul>
+<li><p>Medida más conocida y “útil”.</p></li>
+<li><p>Suma del valor de las observaciones dividida entre el número de
+observaciones</p></li>
+</ul>
+<p><span class="math display">\[
+\sum \frac{x_i} {n} = \frac{(x_1 + x_2 +x_3 +...+ x_n)} {n}
+\]</span></p>
+<p>En una base de datos, se puede calcular la media sumando los valores
+de una variable (columna de una base de datos) y dividiendo entre el
+número de casos (# total de filas).</p>
+<p><img src="comi17_media.png" width="258" /></p>
+<hr />
+</div>
+<div id="resumen" class="section level2">
+<h2>Resumen</h2>
+<table>
+<thead>
+<tr class="header">
+<th>TC</th>
+<th align="center">Nominales</th>
+<th align="center">Ordinales</th>
+<th align="center">Numéricas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Moda</td>
+<td align="center">Sí</td>
+<td align="center">Sí</td>
+<td align="center">Sí</td>
+</tr>
+<tr class="even">
+<td>Mediana</td>
+<td align="center">No</td>
+<td align="center">Sí</td>
+<td align="center">Sí</td>
+</tr>
+<tr class="odd">
+<td>Media</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">Sí</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Moda aplica para cualquier tipo de variable, pero menos
+útil.</p></li>
+<li><p>Media aplica solo para variables numéricas, pero más
+útil.</p></li>
+</ul>
+<hr />
+<p>¿Cuál es la media (o el promedio) de policías por comisaria de
+acuerdo a estos datos?</p>
+<pre class="r"><code>comi17 |&gt;
+  summarise(mean(INF110_TOT))</code></pre>
+<pre><code>##   mean(INF110_TOT)
+## 1         31.61538</code></pre>
+<p>¿Es una representación adecuada de la realidad? Podemos fijarnos en
+el gráfico de distribución de esta variable para ver si se tiene
+comisarias que son “atípicas” de la distribución general.</p>
+<p>Esto se puede hacer presentando el histograma de esta variable, que
+es como un gráfico de barras de una variable numérica.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  xlab(&quot;Número de efectivos&quot;) +
+  ylab(&quot;Frecuencia&quot;)+
+  theme_light()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick
+## better value with `binwidth`.</code></pre>
+<p><img src="clase2_files/figure-html/hist-1.png" width="672" /></p>
+<p>¿Qué se puede concluir del gráfico?</p>
+<pre class="r"><code>comi17 |&gt;
+  summarise(median(INF110_TOT))</code></pre>
+<pre><code>##   median(INF110_TOT)
+## 1                 19</code></pre>
+<p>¿Qué significa esta diferencia entre la media de 31.6 y la mediana de
+19?</p>
+<pre class="r"><code>comi17 |&gt;
+  summarise(min(INF110_TOT), median(INF110_TOT), 
+            mean(INF110_TOT), max(INF110_TOT))</code></pre>
+<pre><code>##   min(INF110_TOT) median(INF110_TOT) mean(INF110_TOT) max(INF110_TOT)
+## 1               3                 19         31.61538             259</code></pre>
+<pre class="r"><code>ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  geom_vline(xintercept = 19, color = &quot;red&quot;)+
+  geom_vline(xintercept = 31.6, color = &quot;green&quot;)+
+  xlab(&quot;Número de efectivos&quot;) +
+  ylab(&quot;Frecuencia&quot;)+
+  theme_light()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick
+## better value with `binwidth`.</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>¿Qué se puede comentar de estos datos?</p>
+</div>
+<div id="medidas-de-dispersión" class="section level2">
+<h2>Medidas de dispersión</h2>
+<ul>
+<li><p>Describir la centralidad no es suficiente. Dos distribuciones
+pueden tener la misma medida de tendencia central, pero diferentes
+realidades.</p></li>
+<li><p>Ejemplo: distribución de puntaje en área matemática de prueba
+PISA aplicada en 2 países pueden tener la misma media, pero diferente
+variación.</p></li>
+<li><p>¿Cómo describiría las diferencias entre en los puntajes de la
+prueba el País A y el País B?</p></li>
+</ul>
+<p><img src="distr.png" width="631" /></p>
+<hr />
+</div>
+<div id="rango" class="section level2">
+<h2>Rango</h2>
+<ul>
+<li><p>Diferencia entre el valor máximo y el mínimo. En ejemplo de
+policías: 259-3 = 256. Es la diferencia entre la comisaría con más
+efectivos y la comisaría con menor número de efectivos.</p></li>
+<li><p>No un una medida muy útil.</p></li>
+</ul>
+<hr />
+</div>
+<div id="rango-intercuartil" class="section level2">
+<h2>Rango intercuartil</h2>
+<ul>
+<li>Se verá cuando se vean percentiles.</li>
+</ul>
+<hr />
+</div>
+<div id="desviación-estándar" class="section level2">
+<h2>Desviación estándar</h2>
+<ul>
+<li><p>Cada observación está a una “distancia” de la media. Esta
+distancia se llama desviación <span
+class="math inline">\((x_i-\bar{x})\)</span></p></li>
+<li><p>Observaciones por encima de la media tendrán desviaciones
+positivas. Observaciones por debajo de la media tendrán desviaciones
+negativas.</p></li>
+<li><p>No se puede calcular un promedio de desviaciones porque valores
+positivos se cancelan con negativos.</p></li>
+<li><p>Se eleva al cuadrado las observaciones para que todas sean
+positivas. Se promedian esas desviaciones al cuadrado.</p></li>
+<li><p>La desviación estándar es la raíz cuadrada de ese promedio de
+desviaciones al cuadrado.</p></li>
+<li><p>Se divide entre n-1 por un tema técnico.</p></li>
+</ul>
+<p><span class="math display">\[
+\sum \frac{(x_i-\bar{x})^2} {n-1}
+\]</span></p>
+<p>Para ver un cálculo básico de la desviación estándar en Excel, puede
+entrar <a
+href="https://docs.google.com/spreadsheets/d/1CCzOtfXf7Igz_KcbcpItzU71fWeMtTli?rtpof=true&amp;authuser=arturo.maldonado%40pucp.pe&amp;usp=drive_fs">aquí</a>.</p>
+<ul>
+<li>Como se observa en el gráfico anterior, la desviación estándar es
+más útil cuando se comparar dos distribuciones. Se compara la
+centralidad y la dispersión de una variable entre dos grupos (o dos
+distribuciones).</li>
+</ul>
+<pre class="r"><code>comi17 |&gt;
+  summarise(sd(INF110_TOT))</code></pre>
+<pre><code>##   sd(INF110_TOT)
+## 1        32.1814</code></pre>
+<p>Siguiendo con la base de datos de comisarías del Perú, queremos
+evaluar si el número de policías (INF110_TOT) aumenta a medida que la
+comisaría atienda a una población mayor (INF109).</p>
+<p>Como se vio antes, la variable de población a la que atiende está
+codificada en 6 grupos, desde 1 que significa “Menos de 5000 hab” a 6
+que significa “De 80000 a más hab”.</p>
+<pre class="r"><code>tabla1</code></pre>
+<pre><code>##                   Tipo Frecuencia      Porc
+## 1    Menos de 5000 Hab        288 19.264214
+## 2  De 5000 - 10000 Hab        329 22.006689
+## 3 De 10001 - 20000 Hab        290 19.397993
+## 4 De 20001 - 40000 Hab        248 16.588629
+## 5     De 40001 a 80000        196 13.110368
+## 6       De 80001 a más        144  9.632107</code></pre>
+<p>Lo que se quiere calcular es el promedio y la desviación estándar de
+policías por cada grupo de población a la que atiende. Esta operación se
+puede hacer de múltiples maneras en R.</p>
+<pre class="r"><code>comi17 |&gt;
+  group_by(tipo) |&gt;
+  summarise(mean(INF110_TOT))</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   tipo                 `mean(INF110_TOT)`
+##   &lt;fct&gt;                             &lt;dbl&gt;
+## 1 Menos de 5000 Hab                  13.4
+## 2 De 5000 - 10000 Hab                16.3
+## 3 De 10001 - 20000 Hab               21.0
+## 4 De 20001 - 40000 Hab               33.2
+## 5 De 40001 a 80000                   62.8
+## 6 De 80001 a más                     79.3</code></pre>
+<p>Efectivamente, como se esperaba, el número promedio de policías
+aumenta a medida que la comisaría atiende a una población mayor.</p>
+<p>También se puede comparar la desviación estándar en cada grupo. El
+comando para el cálculo de la desviación estándar es
+<code>sd</code>.</p>
+<pre class="r"><code>mediaxtipo = comi17 |&gt;
+  group_by(Tipo = tipo) |&gt;
+  summarise(Media = mean(INF110_TOT), Desv = sd(INF110_TOT))
+mediaxtipo</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   Tipo                 Media  Desv
+##   &lt;fct&gt;                &lt;dbl&gt; &lt;dbl&gt;
+## 1 Menos de 5000 Hab     13.4  7.75
+## 2 De 5000 - 10000 Hab   16.3 10.2 
+## 3 De 10001 - 20000 Hab  21.0 16.6 
+## 4 De 20001 - 40000 Hab  33.2 22.7 
+## 5 De 40001 a 80000      62.8 38.5 
+## 6 De 80001 a más        79.3 44.0</code></pre>
+<p>La desviación estándar también aumenta a medida que las comisarías
+atienden a una población mayor. Es decir, las comisarías que atienden a
+una población pequeña son más homogéneas que las que atienden a una
+población mayor, donde hay mayores diferencias en el número de efectivos
+entre comisarías.</p>
+<p>¿A qué puede deberse este resultado? Una posible explicación es la
+complejidad de ciudades más grandes, por lo que podría requerir
+comisarias especializadas, además de las comisarias estándar. Por el
+contrario, centros urbanos más pequeños solo requerirían comisarías
+pequeñas.</p>
+<p>En R hay diferentes maneras de hacer lo mismo. Para los gráficos
+existe una librería especializada llamada <code>ggplot2</code>. Con esa
+librería se tiene más opciones gráficas que con los comandos de base.
+También existe una forma de codificación llamado <code>tidyverse</code>
+que usa el operador <code>%&gt;%</code>. Aquí se presenta un ejemplo que
+produce el histograma del número de policías por cada grupo de tamaño de
+población.</p>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)
+comi17 |&gt;
+  ggplot(aes(x=INF110_TOT))+
+  geom_histogram()+
+  facet_wrap(~tipo)+
+  xlab(&quot;Número de policías&quot;)+
+  ylab(&quot;Frecuencia&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick
+## better value with `binwidth`.</code></pre>
+<p><img src="clase2_files/figure-html/histgrupos-1.png" width="672" /></p>
+<p>¿Qué otras preguntas se pueden responder con los datos de
+comisarías?</p>
+<pre class="r"><code>ggplot(mediaxtipo, aes(x=Tipo, y=Media)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  ggtitle(&quot;Número de efectivos promedio por tipo de comisaría&quot;) +
+  xlab(&quot;Tipo de comisaría&quot;) +
+  geom_text(aes(label=round(Media,1)), vjust=1.30, color=&quot;white&quot;, size=3)+
+  theme_minimal()</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>Otra forma de describir descriptivamente esta variable mediante un
+gráfico es mediante el gráfico de cajas o “boxplot”. Este gráfico
+muestra el mínimo, los cuartiles y el máximo. Los cuartiles dividen el
+número de observaciones en cuatro grupos de igual tamaño, aunque sus
+límites difieren. El segundo cuartil es la mediana.</p>
+<pre class="r"><code>ggplot(comi17, aes(y=INF110_TOT, x=tipo))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 300), breaks = seq(0, 300, 50))+
+  ylab(&quot;Número de efectivos&quot;)+
+  xlab(&quot;Tipo de comisaría&quot;)+
+  theme_get()</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<hr />
+<p>Se pueden calcular los cuartiles para toda la distribución con el
+comando <code>quantile</code>. Estos datos muestran que entre el 25% de
+todas las comisarías tienen entre 3 y 11 efectivos. El segundo 25% de
+comisarías tiene entre 11 y 19 efectivos. El tercer 25% tiene entre 19 7
+37 efectivos, y el último 25% tiene entre 37 y 259 efectivos.</p>
+<pre class="r"><code>comi17 |&gt; 
+  summarise(Cuartiles = quantile(INF110_TOT))</code></pre>
+<pre><code>## Warning: Returning more (or less) than 1 row per
+## `summarise()` group was deprecated in
+## dplyr 1.1.0.
+## ℹ Please use `reframe()` instead.
+## ℹ When switching from `summarise()` to
+##   `reframe()`, remember that `reframe()`
+##   always returns an ungrouped data frame
+##   and adjust accordingly.
+## Call
+## `lifecycle::last_lifecycle_warnings()` to
+## see where this warning was generated.</code></pre>
+<pre><code>##   Cuartiles
+## 1         3
+## 2        11
+## 3        19
+## 4        37
+## 5       259</code></pre>
+<p>Los cuartiles también se pueden calcular por tipo de comisaría. Este
+código nos muestra los cuartiles por tipo de comisaría en cada fila.</p>
+<pre class="r"><code>cuartilesxtipo = comi17 |&gt; 
+  group_by(tipo) |&gt;
+  summarise(quantile(INF110_TOT))</code></pre>
+<pre><code>## Warning: Returning more (or less) than 1 row per
+## `summarise()` group was deprecated in
+## dplyr 1.1.0.
+## ℹ Please use `reframe()` instead.
+## ℹ When switching from `summarise()` to
+##   `reframe()`, remember that `reframe()`
+##   always returns an ungrouped data frame
+##   and adjust accordingly.
+## Call
+## `lifecycle::last_lifecycle_warnings()` to
+## see where this warning was generated.</code></pre>
+<pre><code>## `summarise()` has grouped output by
+## &#39;tipo&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>cuartilesxtipo</code></pre>
+<pre><code>## # A tibble: 30 × 2
+## # Groups:   tipo [6]
+##    tipo                `quantile(INF110_TOT)`
+##    &lt;fct&gt;                                &lt;dbl&gt;
+##  1 Menos de 5000 Hab                        4
+##  2 Menos de 5000 Hab                        9
+##  3 Menos de 5000 Hab                       11
+##  4 Menos de 5000 Hab                       15
+##  5 Menos de 5000 Hab                       43
+##  6 De 5000 - 10000 Hab                      4
+##  7 De 5000 - 10000 Hab                     10
+##  8 De 5000 - 10000 Hab                     14
+##  9 De 5000 - 10000 Hab                     18
+## 10 De 5000 - 10000 Hab                     72
+## # ℹ 20 more rows</code></pre>
+<p>El ancho de cada caja es un estadístico de dispersión. Este
+estadístico se llama rango intercuartil y formalmente es la resta del
+cuartil 75 menos el cuartil 25.</p>
+<p>La tabla nos muestra los dos estadísticos de dispersión, el rango
+intercuartil y la desviación estándar. Para comparar entre grupos se
+puede comparar medianas contra medianas y rangos intercuartiles. Esto se
+puede hacer en un gráfico de cajas. Otra forma de comparar es medias
+contra medias y desviaciones estándar por grupo.</p>
+<pre class="r"><code>ricxtipo = comi17 |&gt;
+  group_by(tipo) |&gt;
+  summarise(Media= mean(INF110_TOT), Desv.Estd = sd(INF110_TOT), 
+            Mediana = median(INF110_TOT), RIC= IQR(INF110_TOT))
+ricxtipo</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##   tipo                 Media Desv.Estd Mediana   RIC
+##   &lt;fct&gt;                &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+## 1 Menos de 5000 Hab     13.4      7.75    11     6  
+## 2 De 5000 - 10000 Hab   16.3     10.2     14     8  
+## 3 De 10001 - 20000 Hab  21.0     16.6     17    13  
+## 4 De 20001 - 40000 Hab  33.2     22.7     26    25  
+## 5 De 40001 a 80000      62.8     38.5     58.5  53.5
+## 6 De 80001 a más        79.3     44.0     80.5  67</code></pre>
+<p>Regularmente ambas comparaciones son consistentes.</p>
+</div>
+<div id="descripción-de-variable-de-tipo-factor" class="section level2">
+<h2>Descripción de variable de tipo factor</h2>
+<pre class="r"><code>library(rio) 
+comi17_2 = import(&quot;bases/comi2017_2.sav&quot;)</code></pre>
+<pre class="r"><code>comi17_2 = comi17_2 |&gt;
+  mutate(agua = recode(INF264_A, &#39;1&#39; = &#39;1&#39;, &#39;2&#39; = &#39;1&#39;, &#39;3&#39; = &#39;1&#39;, &#39;4&#39; = &#39;0&#39;))</code></pre>
+<pre class="r"><code>comi17_2 = comi17_2 |&gt;
+  mutate(luz = recode(INF264_B, &#39;1&#39; = &#39;1&#39;, &#39;2&#39; = &#39;1&#39;, &#39;3&#39; = &#39;1&#39;, &#39;4&#39; = &#39;0&#39;))</code></pre>
+<pre class="r"><code>comi17_2 = comi17_2 |&gt;
+  mutate(telefono = recode(INF264_C, &#39;1&#39; = &#39;1&#39;, &#39;2&#39; = &#39;1&#39;, &#39;3&#39; = &#39;1&#39;, &#39;4&#39; = &#39;0&#39;))</code></pre>
+<pre class="r"><code>comi17_2 = comi17_2 |&gt;
+  mutate(internet = recode(INF264_E, &#39;1&#39; = &#39;1&#39;, &#39;2&#39; = &#39;1&#39;, &#39;3&#39; = &#39;1&#39;, &#39;4&#39; = &#39;0&#39;))</code></pre>
+<pre class="r"><code>comi17_2 = comi17_2 |&gt;
+  mutate(internet = factor(internet, labels=c(&quot;No&quot;, &quot;Sí&quot;)))</code></pre>
+<pre class="r"><code>tabla2 = comi17_2 |&gt;
+  count(Tiene = internet, name=&quot;Frecuencia&quot;) |&gt;
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla2</code></pre>
+<pre><code>##   Tiene Frecuencia Porcentaje
+## 1    No        286   19.13043
+## 2    Sí       1209   80.86957</code></pre>
+<pre class="r"><code>ggplot(tabla2, aes(x=Tiene, y=Porcentaje)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  ggtitle(&quot;Comisaría tiene internet&quot;) +
+  xlab(&quot;Cuenta con servicio de internet&quot;) +
+  geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color=&quot;white&quot;, size=3)+
+  theme_minimal()</code></pre>
+<p><img src="clase2_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+</div>
+</div>
+<div id="bibliografía" class="section level1">
+<h1>Bibliografía</h1>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAnQ2xhc2UgMjogZGVzY3JpcGNpw7NuIHkgdmlzdWFsaXphY2nDs24nCmF1dGhvcjogIkFydHVybyBNYWxkb25hZG8iCmRhdGU6ICIyNi8wMy8yMDI0IgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjb2xsYXBzZWQ6IGZhbHNlCiAgICBudW1iZXJfc2VjdGlvbnM6IGZhbHNlCiAgICB0b2NfZGVwdGg6IDEKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjb3NtbwogICAgaGlnaGxpZ2h0OiB0ZXh0bWF0ZQplZGl0b3Jfb3B0aW9uczoKICBtYXJrZG93bjoKICAgIHdyYXA6IHNlbnRlbmNlCmJpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWIKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQpgYGAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyBDYXNvIDE6IEFwb3lvIGEgbGEgZGVtb2NyYWNpYSBlbiBBbcOpcmljYSBMYXRpbmEKCipQcmVndW50YTogwr9leGlzdGUgdW5hIGVyb3Npw7NuIGRlbCBhcG95byBhIGxhIGRlbW9jcmFjaWEgZW50cmUgbG9zIGNpdWRhZGFub3MgZW4gQW3DqXJpY2EgTGF0aW5hPyoKCiMjIExlZXIgdW5hIGJhc2UgZGUgZGF0b3MKClVzYW1vcyBsYSBsaWJyZXLDrWEgYHJpb2AuCkFjdGl2YW1vcyBsYSBsaWJyZXLDrWEgY29uIGVsIGNvbWFuZG8gYGxpYnJhcnlgIHkgdXNhbW9zIGVsIGNvbWFuZG8gYGltcG9ydGAgcGFyYSBsZWVyIGxhIGJhc2UgZGUgZGF0b3MgKHVuIGFyY2hpdm8gRXhjZWwpLgpPam86IGVsIG5vbWJyZSBkZWwgYXJjaGl2byB0aWVuZSBxdWUgZXN0YXIgZW50cmUgY29taWxsYXMuCkVuIGVzdGUgY2FzbywgZWwgYXJjaGl2byBlc3TDoSBkZW50cm8gZGUgbWkgZGlyZWN0b3JpbyBkZSB0cmFiYWpvLCBwb3IgbG8gcXVlIHNlIGxlIGxsYW1hIGNvbiBlbCBub21icmUuClNpIG5vIGVzdHV2aWVyYSBlbiBlbCBkaXJlY3RvcmlvIGRlIHRyYWJham8gc2UgdGVuZHLDrWEgcXVlIGVzcGVjaWZpY2FyIGxhIHJ1dGEgZGVsIGFyY2hpdm8uCgpHdWFyZGFtb3MgZXN0YSBiYXNlIGRlIGRhdG9zIGVuIHVuIG51ZXZvIG9iamV0byAoZGF0YWZyYW1lKSBsbGFtYWRvIGFwb3lvQUwuClNlIHN1Z2llcmUgc2llbXByZSB0cmFiYWphciBjb24gbm9tYnJlcyBjb3J0b3MgZGUgYmFzZXMgZGUgZGF0b3MgeSBkZSB2YXJpYWJsZXMuCgpgYGB7cn0KbGlicmFyeShyaW8pCmFwb3lvQUwgPSBpbXBvcnQoImFwb3lvQUwueGxzeCIpCmBgYAoKIyMgRGVzY3JpcGNpw7NuIHBhcmEgdmFyaWFibGVzIG51bcOpcmljYXMKClVzYW1vcyBsYXMgbWVkaWRhcyBkZSB0ZW5kZW5jaWEgY2VudHJhbCBwYXJhIGRlc2NyaWJpciB1bmEgdmFyaWFibGUgbnVtw6lyaWNhLgpQb2RlbW9zIHVzYXIgZWwgY29tYW5kbyBgbWVhbmAgcGFyYSBjYWxjdWxhciBlbCBwcm9tZWRpbyBkZSBhcG95byBhIGxhIGRlbW9jcmFjaWEgZW4gMjAyMy4KRXN0ZSBjb21hbmRvIGFzdW1lIHF1ZSBzZSB0aWVuZW4gZGF0b3MgY29tcGxldG9zLgpDb21vIGV4aXN0ZSB1biBkYXRvIHBlcmRpZG8sIGVsIGNvbWFuZG8gbm8gY29ycmUsIHkgc2UgdGllbmUgcXVlIGHDsWFkaXIgbGEgZXNwZWNpZmljYWNpw7NuIGAsIG5hLnJtID0gVGAuCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmFwb3lvQUwgfD4KICBzdW1tYXJpc2UoQXBveW8yMDIzPW1lYW4oYXBveW8yMDIzLCBuYS5ybT1UKSkKYGBgCgpUYW1iacOpbiBzZSBwdWVkZSBjYWxjdWxhciBsYSBtZWRpYW5hLCBjb24gZWwgY29tYW5kbyBgbWVkaWFuYCB5IHByZXNlbnRhciBhbWJhcyBtZWRpZGFzIGp1bnRhcy4KCmBgYHtyfQphcG95b0FMIHw+CiAgc3VtbWFyaXNlKFByb21lZGlvX0Fwb3lvMjAyMz1tZWFuKGFwb3lvMjAyMywgbmEucm09VCksIAogICAgICAgICAgICBNZWRpYW5hX0Fwb3lvMjAyMz1tZWRpYW4oYXBveW8yMDIzLCBuYS5ybT1UKSkKYGBgCgpBaG9yYSBsbyBxdWUgcXVlcmVtb3MgYXZlcmlndWFyIGVzIHNpIGVsIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSBoYSBkaXNtaW51aWRvLCBhdW1lbnRhZG8gbyBwZXJtYW5lY2lkbyBpZ3VhbCBlbnRyZSAyMDIxIHkgMjAyMy4KUGFyYSBlc3RvLCBwb2RlbW9zIGNvbXBhcmFyIGxhIG1lZGlhIGRlbCBhcG95byBhIGxhIGRlbW9jcmFjaWEgZW4gMjAyMSBjb24gbGEgbWVkaWEgZW4gMjAyMy4KCmBgYHtyfQphcG95b0FMIHw+CiAgc3VtbWFyaXNlKFByb21lZGlvX0Fwb3lvMjAyMT1tZWFuKGFwb3lvMjAyMSwgbmEucm09VCksIAogICAgICAgICAgICBQcm9tZWRpb19BcG95bzIwMjM9bWVhbihhcG95bzIwMjMsIG5hLnJtPVQpKQpgYGAKClNlZ8O6biBlc3RvcyByZXN1bHRhZG9zLCBlbCBhcG95byBhIGxhIGRlbW9jcmFjaWEgaGEgZGlzbWludWlkbyBkZSA2MS4yJSBhIDU4LjYlOyBlcyBkZWNpciwgdW5hIGRpc21pbnVjacOzbiBkZSAyLjYgcHVudG9zIHBvcmNlbnR1YWxlcy4KCkxvcyBkYXRvcyBkZSAyMDIzIGluY2x1eWVuIHBhw61zZXMgY2FyaWJlw7FvcyAoQmFoYW1hcywgR3JhbmFkYSwgVHlUIHkgU3VyaW7DoW0pIHF1ZSBubyBlc3RhYmFuIGVuIGVsIGdyw6FmaWNvIGRlIDIwMjEuCkVzIHBvc2libGUgcXVlIGVsIG1lbm9yIHByb21lZGlvIGRlIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSBlbiAyMDIzIHNlYSBwb3IgbGEgaW5jb3Jwb3JhY2nDs24gZGUgZXN0b3MgcGHDrXNlcy4KU2UgcG9kcsOtYSBhcmd1bWVudGFyIHF1ZSBzaSBzZSB0dXZpZXJhIGxvcyBkYXRvcyBkZSBlc3RvcyBwYcOtc2VzIHBhcmEgMjAyMSwgcXVpesOhIG5vIGV4aXN0aXLDrWEgdW5hIGVyb3Npw7NuIGRlbCBhcG95byBhIGxhIGRlbW9jcmFjaWEuCgpVbmEgZm9ybWEgZGUgbGlkaWFyIGNvbiBlc3RhIG9ic2VydmFjacOzbiBlcyBjb21wYXJhciBsb3MgcmVzdWx0YWRvcyAyMDIzIHkgMjAyMSBzb2xvIGRlIGxvcyBwYcOtc2VzIHF1ZSB0aWVuZW4gZGF0b3MgZW4gYW1ib3MgYcOxb3MuCgojIyBEYXRhZnJhbWVzCgpBbnRlcyBkZSB2ZXIgY8OzbW8gZWxpbWluYXIgbG9zIHBhw61zZXMsIHVuYSBub3RhIHNvYnJlIGxhIGVzdHJ1Y3R1cmEgZGUgdW5hIGJhc2UgZGUgZGF0b3MuCkVsIGRhdGFmcmFtZSBhcG95b0FMIHRpZW5lIDI0IG9ic2VydmFjaW9uZXMgKDI0IGZpbGFzLCBlbiBjYWRhIHVuYSwgdW4gcGHDrXMpIHkgNCB2YXJpYWJsZXMgKDQgY29sdW1uYXMsIGVuIGNhZGEgdW5hLCB1bmEgdmFyaWFibGUpLgpQb3IgbG8gdGFudG8sIGVzdGUgZGF0YWZyYW1lIHRpZW5lIHVuYSBkaW1lbnNpw7NuIFsyNCwgNF0uCkVuIGdlbmVyYWwsIHVuIGRhdGFmcmFtZSB0aWVuZSBkaW1lbnNpw7NuIFsjZmlsYXMsICNjb2x1bW5hc10uCgpQb3IgbG8gdGFudG8sIHNlIHB1ZWRlIGxsYW1hciBhIGxvcyBlbGVtZW50b3MgZGUgdW4gZGF0YWZyYW1lIGluZGljYW5kbyBsYSBmaWxhIHkgbGEgY29sdW1uYS4KUG9yIGVqZW1wbG8sIHBhcmEgbGxhbWFyIGFsIGVsZW1lbnRvIGRlIGxhIHByaW1lcmEgZmlsYSB5IHNlZ3VuZGEgY29sdW1uYS4KCmBgYHtyfQphcG95b0FMWzQsMl0KYGBgCgpUYW1iacOpbiBzZSBwdWVkZSBsbGFtYXIgdG9kYSB1bmEgZmlsYS4KRW4gZXN0ZSBjYXNvLCBsYSBwcmltZXJhIGZpbGEuCgpgYGB7cn0KYXBveW9BTFsxLF0KYGBgCgpPIGxhIHNlZ3VuZGEgY29sdW1uYQoKYGBge3J9CmFwb3lvQUxbLDJdCmBgYAoKRXN0byBub3MgcGVybWl0ZSBzZWxlY2Npb25hciBmaWxhcyAocGHDrXNlcykgbyBjb2x1bW5hcyAodmFyaWFibGVzKSBiYWpvIGNpZXJ0YXMgY29uZGljaW9uZXMuCkVuIGdlbmVyYWwsIG5vcyBpbnRlcmVzYSBtw6FzIHNlbGVjY2lvbmFyIGZpbGFzLgoKUG9yIGVqZW1wbG8sIHNpIHF1ZXJlbW9zIHNlbGVjY2lvbmFyIGxvcyBwYcOtc2VzIHBvciBlbmNpbWEgZGUgbGEgbWVkaWEgZGUgYXBveW8gMjAyMywgcG9kZW1vcyBkZWNpcgoKYGBge3J9CmFwb3lvQUxbYXBveW9BTCRhcG95bzIwMjM+bWVhbihhcG95b0FMJGFwb3lvMjAyMywgbmEucm0gPSBUKSwgYygxLDQpXQpgYGAKCkVuIFIgZXhpc3RlIHVuIGNvbWFuZG8gcGFyYSBzZWxlY2Npb25hciBvYnNlcnZhY2lvbmVzLgpTZSBwdWVkZSB1c2FyIGBzdWJzZXRgIHBhcmEgaGFjZXIgZXN0ZSBmaWx0cm8uCkVzdGUgZmlsdHJvIHNlIHB1ZWRlIGFsbWFjZW5hciBlbiBvdHJvIGRhdGFmcmFtZS4KCmBgYHtyfQphcG95b19tYXlvcl9tZWRpYSA9IHN1YnNldChhcG95b0FMLCBhcG95bzIwMjMgPiBtZWFuKGFwb3lvMjAyMywgbmEucm09VCkpCmBgYAoKIyMgTGlkaWFuZG8gY29uIHZhbG9yZXMgcGVyZGlkb3MKClZvbHZpZW5kbyBhbCBlamVtcGxvIHkgYSBsYSByZXNwdWVzdGEgYSBsYSBvYnNlcnZhY2nDs24gZGUgY29tcGFyYXIgcGHDrXNlcyBjb24gbWVkaWNpb25lcyBlbiBhbWJvcyBhw7Fvcy4KU2kgc2UgYWJyZSBsYSBiYXNlIGRlIGRhdG9zICJhcG95b0FMIiwgc2Ugb2JzZXJ2YSBxdWUgYXBveW8yMDIxIHRpZW5lIDQgTkFzIHkgYXBveW8yMDIzIHRpZW5lIDEgTkEuCgpTZSBwdWVkZSBlbGltaW5hciBsb3MgcGHDrXNlcyBxdWUgdGllbmVuIE5BcyBlbiBsYSB2YXJpYWJsZSAiYXBveW8yMDIxIi4KCmBgYHtyfQphcG95b1Npbk5BMjAyMSA9IGFwb3lvQUxbIShpcy5uYShhcG95b0FMJGFwb3lvMjAyMSkpLF0KYGBgCgpTZSBwdWVkZSBlbGltaW5hciBsb3MgcGHDrXNlcyBxdWUgdGllbmVuIE5BcyBlbiBsYSB2YXJpYWJsZSAiYXBveW8yMDIzIi4KCmBgYHtyfQphcG95b1Npbk5BMjAyMyA9IGFwb3lvQUxbIShpcy5uYShhcG95b0FMJGFwb3lvMjAyMykpLF0KYGBgCgpQZXJvLCBxdWVyZW1vcyBlbGltaW5hciBhbWJvczsgZXMgZGVjaXIsIHRhbnRvIGxvcyBwYcOtc2VzIGNvbiBOQXMgZW4gMjAyMyBZIGxvcyBwYcOtc2VzIGNvbiBOQXMgZW4gMjAyMS4KUGFyYSBlc3RvIHVzYW1vcyBlbCBvcGVyYWRvciBsw7NnaWNvICImIi4KCkVuIFIgdGVuZW1vcyBsb3Mgc2lndWllbnRlcyBvcGVyYWRvcmVzIGzDs2dpY29zOgoKfCBPcGVyYWRvciB8ICAgIERlc2NyaXBjacOzbiAgICAgfAp8Oi0tLS0tLS0tOnw6LS0tLS0tLS0tLS0tLS0tLS0tOnwKfCAgICA9PSAgICB8ICAgICBlcyBpZ3VhbCBhICAgICB8CnwgICAgIT0gICAgfCAgZXMgZGlmZXJlbnRlIGRlICAgfAp8ICAgIFw+ICAgIHwgICAgZXMgbWF5b3IgZGUgICAgIHwKfCAgICBcPCAgICB8ICAgIGVzIG1lbm9yIGRlICAgICB8CnwgICBcPj0gICAgfCBlcyBtYXlvciBvIGlndWFsIGEgfAp8ICAgXDw9ICAgIHwgZXMgbWVub3IgbyBpZ3VhbCBhIHwKfCAgICAmICAgICB8ICBpbnRlcnNlY2Npw7NuIChZKSAgfAp8ICAgIFx8ICAgIHwgICAgIHVuacOzbiAoTykgICAgICB8CgpgYGB7cn0KYXBveW9TaW5OQSA9IGFwb3lvQUxbIShpcy5uYShhcG95b0FMJGFwb3lvMjAyMSkpICYgIShpcy5uYShhcG95b0FMJGFwb3lvMjAyMykpLF0KYGBgCgpFc3RvIG1pc21vIHNlIHB1ZWRlIGxvZ3JhciBjb24gZWwgY29tYW5kbyBgc3Vic2V0YC4KCmBgYHtyfQphcG95b1Npbk5BMiA9IHN1YnNldChhcG95b0FMLCAKICAgICAgICAgICAgICAgICAgICAgIShpcy5uYShhcG95b0FMJGFwb3lvMjAyMSkpICYgIShpcy5uYShhcG95b0FMJGFwb3lvMjAyMykpKQpgYGAKClkgdGFtYmnDqW4gc2UgcHVlZGUgaGFjZXIsIHVzYW5kbyBlbCB0aWR5dmVyc2UuCkVuIGVzdGUgY3Vyc28gdGVuZW1vcyB1bmEgcHJlZmVyZW5jaWEgcG9yIGVzdGUgZXN0aWxvIGRlIGPDs2RpZ28uClBlcm8sIGNvbW8gcHVlZGVuIHZlciBzZSBwdWVkZSBsb2dyYXIgbG9zIG1pc21vcyByZXN1bHRhZG9zIGRlIG11Y2hhcyBtYW5lcmFzIGVuIFIuCgpgYGB7cn0KYXBveW9TaW5OYTMgPSBhcG95b0FMIHw+IAogIGZpbHRlcighKGlzLm5hKGFwb3lvQUwkYXBveW8yMDIxKSkgJiAhKGlzLm5hKGFwb3lvQUwkYXBveW8yMDIzKSkpIApgYGAKCkNvbiBlc3RlIG51ZXZvIGRhdGFmcmFtZSwgcXVlIGNvbnRpZW5lIHNvbG8gbG9zIHBhw61zZXMgcXVlIHRpZW5lbiBlbCBkYXRvIGRlIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSB0YW50byBlbiAyMDIxIGNvbW8gZW4gMjAyMywgc2UgcHVlZGUgcmVzcG9uZGVyIGEgbGEgb2JzZXJ2YWNpw7NuLgpQb2RlbW9zIGNvbXBhcmFyIGxhIG1lZGlhIGRlIGFtYm9zIGHDscOzcyB1c2FuZG8gZXN0ZSBudWV2byBkYXRhZnJhbWUuCgpgYGB7cn0KYXBveW9TaW5OYTMgfD4KICBzdW1tYXJpc2UoUHJvbWVkaW9BcG95bzIwMjE9bWVhbihhcG95bzIwMjEpLCAKICAgICAgICAgICAgUHJvbWVkaW9BcG95bzIwMjM9bWVhbihhcG95bzIwMjMpKQpgYGAKCkxvcyByZXN1bHRhZG9zIGluZGljYW4gcXVlIGhheSB1bmEgZGlzbWludWNpw7NuIGRlIDIuMSBwdW50b3MgcG9yY2VudHVhbGVzLCByZXN1bHRhZG9zIHVuIHBvY28gbWVub3IgcXVlIGVsIGFudGVyaW9yICgyLjYgcHApLCBwZXJvIHF1ZSB2YSBlbiBsYSBtaXNtYSBkaXJlY2Npw7NuIGRlIGRlY2lyIHF1ZSBoYXkgdW5hIGVyb3Npw7NuIGRlbCBhcG95byBjaXVkYWRhbm9zIGEgbGEgZGVtb2NyYWNpYS4KCiMgQ2FzbyAyOiBSZXN1bHRhZG9zIGVsZWN0b3JhbGVzIDIwMTYKCipQcmVndW50YTogQWxndW5vcyBwb2xpdMOzbG9nb3MgY29uc2lkZXJhbiBxdWUgdW4gcGFydGlkbyBtw6FzIGluc3RpdHVjaW9uYWxpemFkbyBlcyBlbCBxdWUgZXMgY2FwYXogZGUgdGVuZXIgdW4gbWF5b3IgZW5yYWl6YW1pZW50byB0ZXJyaXRvcmlhbCB5LCBwb3IgbG8gdGFudG8sIHRlbmVyIHVuIGFwb3lvIGVsZWN0b3JhbCByZWxhdGl2YW1lbnRlIGNvbnN0YW50ZSBhIGxvIGxhcmdvIGRlbCB0ZXJyaXRvcmlvLiBQb3IgZWwgY29udHJhcmlvLCB1biBwYXJ0aWRvIG1lbm9zIGluc3RpdHVjaW9uYWxpemFkbywgc29sbyBsb2dyYXLDrWEgYXBveW9zIGVsZWN0b3JhbGVzIGRpZmVyZW5jaWFkb3MsIG1heW9yZXMgZW4gYWxndW5vcyB0ZXJyaXRvcmlvcyB5IG1lbm9yZXMgZW4gb3Ryb3MuKgoKKlNpZ3VpZW5kbyBlc3RhIGlkZWEsIMK/Y3XDoWwgZnVlIGVsIHBhcnRpZG8gbWFzIG8gbWVub3MgaW5zdGl0dWNpb25hbGl6YWRvIGRlIGFjdWVyZG8gYSBsb3MgcmVzdWx0YWRvcyBlbGVjdG9yYWxlcyBkZSAyMDE2PyoKCiMjIExlZXIgdW5hIGJhc2UgZGUgZGF0b3MKCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkocmlvKQpyZXMyMDE2ID0gaW1wb3J0KCJyZXN1bHRhZG9zMjAxNi54bHN4IikKYGBgCgpTaSBzZSBoYWNlIGRvYmxlIGNsaWNrIGVuIGVsIG9iamV0bywgc2UgYWJyZSBsYSBiYXNlIGRlIGRhdG9zIGNvbW8gdW5hIHBlc3Rhw7FhIGVuIGxhIHpvbmEgZGUgc2NyaXB0cyAvIFJNYXJrZG93bnMuCkVzdGUgb2JqZXRvIGRhdGFmcmFtZSB0aWVuZSB2ZWN0b3JlcyBkZSBkYXRvcyBkZSB0aXBvICJjYXJhY3RlciIgeSBvdHJvcyB2ZWN0b3JlcyBkZSBkYXRvcyBkZSB0aXBvICJudW3DqXJpY28iLgoKIyMgRGVzY3JpcGNpw7NuIGRlIGxhIGhldGVyb2dlbmVpZGFkCgpVc2Ftb3MgbGFzIG1lZGlkYXMgZGUgZGlzcGVyc2nDs24gcGFyYSBkZXNjcmliaXIgdW5hIHZhcmlhYmxlIG51bcOpcmljYS4KUG9kZW1vcyB1c2FyIGVsIGNvbWFuZG8gYHNkYCBwYXJhIGNhbGN1bGFyIGxhIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciBkZWwgdm90byBwcm92aW5jaWFsIGEgRnVlcnphIFBvcHVsYXIsIGEgUGVydWFub3MgcG9yIGVsIEthbWJpbyB5IGFsIEZyZW50ZSBBbXBsaW8gZW4gMjAxNi4KRXN0ZSBjb21hbmRvIGFzdW1lIHF1ZSBzZSB0aWVuZW4gZGF0b3MgY29tcGxldG9zLgpTaSBleGlzdGllcmEgdW4gZGF0byBwZXJkaWRvLCBlbCBjb21hbmRvIG5vIGNvcnJlcsOtYSwgeSBzZSB0ZW5kcsOtYSBxdWUgYcOxYWRpciBsYSBlc3BlY2lmaWNhY2nDs24gYCwgbmEucm0gPSBUYC4KCmBgYHtyfQpsaWJyYXJ5KGRwbHlyKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKcmVzMjAxNiB8PgogIHN1bW1hcmlzZShzZChmcCksIHNkKHBwayksIHNkKGZhKSkKYGBgCgpUYW1iacOpbiBzZSBwdWVkZSBjYWxjdWxhciBsYSBtZWRpYSBwYXJhIGdydXBvcyBkZSBvYnNlcnZhY2lvbmVzLCBlcyBkZWNpciBwYXJhIGZpbGFzIGVzcGVjw61maWNhcyBkZSB1bmEgYmFzZSBkZSBkYXRvcy4KVW5hIG9wY2nDs24gc2Vyw61hIGFncmVnYXIgdW4gbnVldm8gZGF0YWZyYW1lIGNvbiBlbCBmaWx0cmFkbyBkZSBsYXMgb2JzZXJ2YWNpb25lcy4KU2kgbm8gcXVlcmVtb3MgbGxlbmFybm9zIGRlIGJhc2VzIGRlIGRhdG9zIHBhcmNpYWxlcywgdGVuZW1vcyBvdHJhcyBvcGNpb25lcy4KClBvciBlamVtcGxvLCBzaSBxdWlzacOpcmFtb3Mgc2FiZXIgc2kgbGEgaGV0ZXJvZ2VuZWlkYWQgZGVsIHZvdG8gZnVlIG1heW9yIG8gbWVub3IgcXVlIGFxdWVsbGEgZGVsIHZvdG8gcHJvdmluY2lhbCBnZW5lcmFsIGRlIEZ1ZXJ6YSBQb3B1bGFyLCBwb2Ryw61hbW9zIGNhbGN1bGFyIGxhIGRlc3ZpYWNpw7NuIGVzdMOhbmRhciBkZWwgdm90byBwcm92aW5jaWFsIHNvbG8gZW4gbGFzIHByb3ZpbmNpYXMgZGUgTGltYS4KCkVzdG8gc2UgcHVlZGUgaGFjZXIgZGUgbcO6bHRpcGxlcyBtYW5lcmFzLgpFbiBlc3RlIGN1cnNvIGNvbWVuemFyZW1vcyBhIHVzYXIgbGFzIGZ1bmNpb25lcyBkZWwgbXVuZG8gZGVsIFRpZHl2ZXJzZS4KCkVuIGN1YWxxdWllciBjYXNvLCBzZSB0aWVuZSBxdWUgc2VsZWNjaW9uYXIgYWxndW5hcyBmaWxhcyBkZSB1biBkYXRhZnJhbWUgdXNhbmRvIG9wZXJhZG9yZXMgbMOzZ2ljb3MuCkVuIG51ZXN0cm8gY2FzbyB2YW1vcyBhIHNlbGVjY2lvbmFyIGxhcyBvYnNlcnZhY2lvbmVzLCBjb24gZWwgY29tYW5kbyBgZmlsdGVyYCB5IGNvbiBsYSBjb25kaWNpw7NuIHF1ZSBlbiBlbCB2ZWN0b3IgbyB2YXJpYWJsZSAiZHB0byIgc2VhbiBpZ3VhbCBhICJMSU1BIi4KT2pvLCBlbiBtYXnDunNjdWxhcywgZGFkbyBxdWUgYXPDrSBlc3TDoSBlbiBsYSBiYXNlIGRlIGRhdG9zIHkgZW50cmUgY29taWxsYXMgcG9ycXVlIGVzIHVuYSBjYWRlbmEgZGUgY2FyYWN0ZXJlcy4KCmBgYHtyfQpyZXMyMDE2IHw+IAogIGZpbHRlcihkcHRvID09IkxJTUEiKSB8PgogIHN1bW1hcmlzZShzZChmcCksIHNkKHBwayksIHNkKGZhKSkKYGBgCgpFbmNvbnRyYW1vcyBxdWUgZW4gTGltYSBsYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgZGVsIHZvdG8gcHJvdmluY2lhbCBhIEZ1ZXJ6YSBQb3B1bGFyIGVzIG1heW9yIHF1ZSBsYSBkZSBvdHJvcyBwYXJ0aWRvcy4KVGFtYmnDqW4gc2UgcHVlZGUgY2FsY3VsYXIgbG9zIG1pc21vIHBhcmEgZWwgY2FzbyBkZSBDdXNjby4KCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CnJlczIwMTYgfD4gCiAgZmlsdGVyKGRwdG8gPT0iTElNQSIpIHw+CiAgc3VtbWFyaXplKG1lYW4oZnAsIG5hLnJtPVQpLCBtZWFuKHBwaywgbmEucm09VCksIG1lYW4oZmEsIG5hLnJtPVQpLCAKICAgIHNkKGZwKSwgc2QocHBrKSwgc2QoZmEpKQojQ8OzbW8gY2FsY3VsYXLDrWFuIGVzdGEgbWVkaWEgdXNhbmRvIGxhIHZhcmlhYmxlICJpZCI/CmBgYAoKIyMgVGFyZWEKCkxhIGJhc2UgZGUgZGF0b3MgdGFtYmnDqW4gaW5jbHV5ZSBlbCB2b3RvIHByb3ZpbmNpYWwgYSBGdWVyemEgUG9wdWxhciBlbiBsYSBlbGVjY2nDs24gZGUgMjAyMS4KCsK/Q2FsY3VsZSBzaSBlbCB2b3RvIHByb21lZGlvIGRlIEZ1ZXJ6YSBQb3B1bGFyIGhhIGF1bWVudGFkbyBvIGRpc21pbnVpZG8gZW50cmUgMjAxMSB5IDIwMTY/CgrCv0NhbGN1bGUgbG8gbWlzbW8gcGFyYSBlbCBkZXBhcnRhbWVudG8gZGUgVHVtYmVzPwoKwr9DYWxjdWxlIHNpIEZ1ZXJ6YSBQb3B1bGFyIGhhIGF1bWVudG8gbyBkaXNtaW51aWRvIHN1IG5pdmVsIGRlIGluc3RpdHVjaW9uYWxpemFjacOzbj8KCiMgQ2FzbyAzOiBDb21pc2FyaWFzIGVuIGVsIFBlcsO6CgojIyBNZWRpZGFzIGRlIHRlbmRlbmNpYSBjZW50cmFsCgotICAgUmVzdW1lbiBkZSB1biBjb25qdW50byBkZSBkYXRvcy4KCi0gICBTZSByZXN1bWUgbWVkaWFudGUgdW4gdmFsb3IgInJlcHJlc2VudGF0aXZvIi4KCi0gICBDYWRhIG9ic2VydmFjacOzbiBzZSBwdWVkZSBjb21wYXJhciBjb24gZXN0ZSB2YWxvciBkZSByZXN1bWVuLgogICAgU2UgcHVlZGUgZXN0YXIgcG9yIGRlYmFqbyBvIHBvciBlbmNpbWEgZGUgZXN0ZSB2YWxvci4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyMgTW9kYQoKLSAgIFZhbG9yIG1hcyBmcmVjdWVudGUgZGUgdW4gY29uanVudG8gZGUgZGF0b3MKCi0gICBFcyBhcHJvcGlhZGEgcGFyYSB0b2RvIHRpcG8gZGUgZGF0b3MKCi0gICBTZSBwdWVkZSBvYnNlcnZhciBkaXJlY3RhbWVudGUgZW4gdW5hIHRhYmxhIGRlIGRpc3RyaWJ1Y2nDs24gZGUgZnJlY3VlbmNpYXMuCgpQb3IgZWplbXBsbyBzaSBzZSBtaWRlIGVuIGNhZGEgY29taXNhcmlhIGRlbCBQZXLDuiwgYSBjdcOhbnRhIHBvYmxhY2nDs24gYXRpZW5kZSBjYWRhIGNvbWlzYXJpYSBkZSBhY3VlcmRvIGEgbGEgY29kaWZpY2FjacOzbi4KCiFbXShjb21pMTdfcG9iLnBuZyl7d2lkdGg9IjczNCJ9CgpMYSBiYXNlIGRlIGRhdG9zIG8gImRhdGFmcmFtZSIgc2UgdmVyw61hIGFzw60KCiFbXShjb21pMTdfcG9iMi5wbmcpCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KClBhcmEgZXN0YSBjbGFzZSBzZSB1c2Fyw6EgbGEgYmFzZSBkZSBkYXRvcyBkZSBjb21pc2FyaWFzIGRlbCBQZXLDuiwgcXVlIHB1ZWRlIHNlciBkZXNjYXJnYWRhIGRlIGxhIHNlY2Npw7NuIG1pY3JvZGF0b3MgZGUgbGEgd2ViIGRlbCBJTkVJICh2ZXIgW2FxdcOtXShodHRwczovL3Byb3llY3Rvcy5pbmVpLmdvYi5wZS9taWNyb2RhdG9zLykpLgpFc3RhIGJhc2UgdGllbmUgaW5mb3JtYWNpw7NuIHBhcmEgMTQ5NSBjb21pc2FyaWFzIHkgZGUgMjgxIHZhcmlhYmxlcy4KRXN0YSBiYXNlIHNlIHB1ZWRlIGNhcmdhciB0YW1iacOpbiBkZXNkZSBlbCByZXBvc2l0b3JpbyBHaXRodWIgZGUgZXN0ZSBjdXJzby4KTGEgYmFzZSBkZSBkYXRvcyBwdWVkZSBzZXIgZ3VhcmRhZGEgZW4gZWwgZGlyZWN0b3JpbyBkZSB0cmFiYWpvLgoKRW4gcHJpbWVyIGx1Z2FyLCBzZSBsbGFtYSBhIGxhIGxpYnJlcsOtYSAicmlvIiB5IHNlIHVzYSBlbCBjb21hbmRvIGBpbXBvcnRgIHF1ZSBwZXJtaXRlIGxlZXIgYmFzZXMgZGUgZGF0b3MgZW4gbXVjaG9zIGZvcm1hdG9zLgoKYGBge3IgYmFzZX0KbGlicmFyeShyaW8pIApjb21pMTcgPSBpbXBvcnQoImJhc2VzL2NvbWkyMDE3LnNhdiIpCmBgYAoKYGBge3J9CnN0cihjb21pMTckSU5GMTA5KQpjbGFzcyhjb21pMTckSU5GMTA5KQpgYGAKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShkcGx5cikKY29taTE3ID0gY29taTE3IHw+CiAgbXV0YXRlKHRpcG8gPSBmYWN0b3IoSU5GMTA5LCBsYWJlbHM9YygiTWVub3MgZGUgNTAwMCBIYWIiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJEZSA1MDAwIC0gMTAwMDAgSGFiIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiRGUgMTAwMDEgLSAyMDAwMCBIYWIiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJEZSAyMDAwMSAtIDQwMDAwIEhhYiIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiRGUgNDAwMDEgYSA4MDAwMCIsICJEZSA4MDAwMSBhIG3DoXMiKSkpCmBgYAoKRXN0YSBiYXNlIGRlIGRhdG9zIGluY2x1eWUgYSBsYSB2YXJpYWJsZSAiSU5GMTA5IiAob2pvOiBSIGVzICJjYXNlIHNlbnNpdGl2ZSIsIGVzIGRlY2lyLCBkaWZlcmVuY2lhIG1hecO6c2N1bGFzIGRlIG1pbsO6c2N1bGFzKS4KTGEgdGFibGEgZGUgZGlzdHJpYnVjacOzbiBkZSBmcmVjdWVuY2lhcyBkZSBlc2EgdmFyaWFibGUgc2UgcHVlZGUgb2J0ZW5lciBjb24gZWwgc2lndWllbnRlIGPDs2RpZ286CgpgYGB7ciB0YWJsYX0KdGFibGExID0gY29taTE3IHw+CiAgY291bnQoVGlwbyA9IHRpcG8sIG5hbWU9IkZyZWN1ZW5jaWEiKQp0YWJsYTEKYGBgCgpFbiBlc3RlIGNhc28sIGxhIG1vZGEgZXMgZWwgdmFsb3IgbcOhcyBmcmVjdWVudGUsIHF1ZSBzZXLDrWEgZWwgY8OzZGlnbyAiMiIsIHF1ZSBzaWduaWZpY2EgIkRlIDUsMDAwIGEgMTAsMDAwIGhhYiIuCgpgYGB7cn0KdGFibGExID0gY29taTE3IHw+CiAgY291bnQoVGlwbyA9IHRpcG8sIG5hbWU9IkZyZWN1ZW5jaWEiKSB8PgogIG11dGF0ZShQb3JjID0gKEZyZWN1ZW5jaWEgLyBzdW0oRnJlY3VlbmNpYSkqMTAwICkpCnRhYmxhMQpgYGAKCmBgYHtyfQpsaWJyYXJ5KGdncGxvdDIpCmdncGxvdCh0YWJsYTEsIGFlcyh4PVRpcG8sIHk9UG9yYykpICsgCiAgZ2VvbV9iYXIoc3RhdCA9ICJpZGVudGl0eSIpICsKICB4bGFiKCJQb2JsYWNpw7NuIGEgbGEgcXVlIGF0aWVuZGUgbGEgY29taXNhcmlhIikgKwogIHlsYWIoIlBvcmNlbnRhamUiKSArCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1yb3VuZChQb3JjLDEpKSwgdmp1c3Q9MS4zMCwgY29sb3I9IndoaXRlIiwgc2l6ZT0zKSsKICB0aGVtZV9taW5pbWFsKCkKYGBgCgojIyBNZWRpYW5hCgotICAgRWwgdmFsb3IgZGUgbGEgb2JzZXJ2YWNpw7NuIGNlbnRyYWwgZGUgdW4gY29uanVudG8gZGUgZGF0b3Mgb3JkZW5hZG9zIGRlIG1lbm9yIGEgbWF5b3IuCgohW10obWVkaWFuYTEucG5nKXt3aWR0aD0iNDk3In0KCiFbXShtZWRpYW5hMi5wbmcpe3dpZHRoPSI0OTgifQoKUGFyYSBjYWxjdWxhciBsYSBtZWRpYW5hIGRlIGxhIHZhcmlhYmxlICJJTkYxMDkiIHNlIHB1ZWRlIHVzYXIgZWwgY29tYW5kbyBgbWVkaWFuYC4KRXN0ZSBjb21hbmRvIGludGVybmFtZW50ZSBvcmRlbmEgbG9zIHZhbG9yZXMgZGUgbGEgdmFyaWFibGUgIklORjEwOSIgZGUgbWVub3IgYSBtYXlvciB5IGVuY3VlbnRyYSBlbCBjw7NkaWdvIG51bcOpcmljbyBkZSBsYSBvYnNlcnZhY2nDs24gcXVlIHNlIGVuY3VlbnRyYSBlbiBtZWRpbyBkZSBsYSBkaXN0cmlidWNpw7NuIG9yZGVuYWRhLgoKYGBge3J9CmNvbWkxNyB8PgogIHN1bW1hcmlzZShtZWRpYW4oSU5GMTA5KSkKYGBgCgpMYSBtZWRpYW5hIGVzIGVsIGPDs2RpZ28gbnVtw6lyaWNvIDMsIHF1ZSBzaWduaWZpY2EgIkRlIDEwLDAwMSBhIDIwLDAwMCBoYWIuIi4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyMgTWVkaWEKCi0gICBNZWRpZGEgbcOhcyBjb25vY2lkYSB5ICLDunRpbCIuCgotICAgU3VtYSBkZWwgdmFsb3IgZGUgbGFzIG9ic2VydmFjaW9uZXMgZGl2aWRpZGEgZW50cmUgZWwgbsO6bWVybyBkZSBvYnNlcnZhY2lvbmVzCgokJApcc3VtIFxmcmFje3hfaX0ge259ID0gXGZyYWN7KHhfMSArIHhfMiAreF8zICsuLi4rIHhfbil9IHtufQokJAoKRW4gdW5hIGJhc2UgZGUgZGF0b3MsIHNlIHB1ZWRlIGNhbGN1bGFyIGxhIG1lZGlhIHN1bWFuZG8gbG9zIHZhbG9yZXMgZGUgdW5hIHZhcmlhYmxlIChjb2x1bW5hIGRlIHVuYSBiYXNlIGRlIGRhdG9zKSB5IGRpdmlkaWVuZG8gZW50cmUgZWwgbsO6bWVybyBkZSBjYXNvcyAoXCMgdG90YWwgZGUgZmlsYXMpLgoKIVtdKGNvbWkxN19tZWRpYS5wbmcpe3dpZHRoPSIyNTgifQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgojIyBSZXN1bWVuCgp8IFRDICAgICAgfCBOb21pbmFsZXMgfCBPcmRpbmFsZXMgfCBOdW3DqXJpY2FzIHwKfC0tLS0tLS0tLXw6LS0tLS0tLS0tOnw6LS0tLS0tLS0tOnw6LS0tLS0tLS0tOnwKfCBNb2RhICAgIHwgICAgU8OtICAgICB8ICAgIFPDrSAgICAgfCAgICBTw60gICAgIHwKfCBNZWRpYW5hIHwgICAgTm8gICAgIHwgICAgU8OtICAgICB8ICAgIFPDrSAgICAgfAp8IE1lZGlhICAgfCAgICBObyAgICAgfCAgICBObyAgICAgfCAgICBTw60gICAgIHwKCi0gICBNb2RhIGFwbGljYSBwYXJhIGN1YWxxdWllciB0aXBvIGRlIHZhcmlhYmxlLCBwZXJvIG1lbm9zIMO6dGlsLgoKLSAgIE1lZGlhIGFwbGljYSBzb2xvIHBhcmEgdmFyaWFibGVzIG51bcOpcmljYXMsIHBlcm8gbcOhcyDDunRpbC4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKwr9DdcOhbCBlcyBsYSBtZWRpYSAobyBlbCBwcm9tZWRpbykgZGUgcG9saWPDrWFzIHBvciBjb21pc2FyaWEgZGUgYWN1ZXJkbyBhIGVzdG9zIGRhdG9zPwoKYGBge3IgbWVkaWF9CmNvbWkxNyB8PgogIHN1bW1hcmlzZShtZWFuKElORjExMF9UT1QpKQpgYGAKCsK/RXMgdW5hIHJlcHJlc2VudGFjacOzbiBhZGVjdWFkYSBkZSBsYSByZWFsaWRhZD8KUG9kZW1vcyBmaWphcm5vcyBlbiBlbCBncsOhZmljbyBkZSBkaXN0cmlidWNpw7NuIGRlIGVzdGEgdmFyaWFibGUgcGFyYSB2ZXIgc2kgc2UgdGllbmUgY29taXNhcmlhcyBxdWUgc29uICJhdMOtcGljYXMiIGRlIGxhIGRpc3RyaWJ1Y2nDs24gZ2VuZXJhbC4KCkVzdG8gc2UgcHVlZGUgaGFjZXIgcHJlc2VudGFuZG8gZWwgaGlzdG9ncmFtYSBkZSBlc3RhIHZhcmlhYmxlLCBxdWUgZXMgY29tbyB1biBncsOhZmljbyBkZSBiYXJyYXMgZGUgdW5hIHZhcmlhYmxlIG51bcOpcmljYS4KCmBgYHtyIGhpc3R9CmxpYnJhcnkoZ2dwbG90MikKZ2dwbG90KGNvbWkxNywgYWVzKHg9SU5GMTEwX1RPVCkpKwogIGdlb21faGlzdG9ncmFtKCkrCiAgeGxhYigiTsO6bWVybyBkZSBlZmVjdGl2b3MiKSArCiAgeWxhYigiRnJlY3VlbmNpYSIpKwogIHRoZW1lX2xpZ2h0KCkKYGBgCgrCv1F1w6kgc2UgcHVlZGUgY29uY2x1aXIgZGVsIGdyw6FmaWNvPwoKYGBge3IgbWVkaWFuYX0KY29taTE3IHw+CiAgc3VtbWFyaXNlKG1lZGlhbihJTkYxMTBfVE9UKSkKYGBgCgrCv1F1w6kgc2lnbmlmaWNhIGVzdGEgZGlmZXJlbmNpYSBlbnRyZSBsYSBtZWRpYSBkZSAzMS42IHkgbGEgbWVkaWFuYSBkZSAxOT8KCmBgYHtyIHJlc3VtZW59CmNvbWkxNyB8PgogIHN1bW1hcmlzZShtaW4oSU5GMTEwX1RPVCksIG1lZGlhbihJTkYxMTBfVE9UKSwgCiAgICAgICAgICAgIG1lYW4oSU5GMTEwX1RPVCksIG1heChJTkYxMTBfVE9UKSkKYGBgCgpgYGB7cn0KZ2dwbG90KGNvbWkxNywgYWVzKHg9SU5GMTEwX1RPVCkpKwogIGdlb21faGlzdG9ncmFtKCkrCiAgZ2VvbV92bGluZSh4aW50ZXJjZXB0ID0gMTksIGNvbG9yID0gInJlZCIpKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IDMxLjYsIGNvbG9yID0gImdyZWVuIikrCiAgeGxhYigiTsO6bWVybyBkZSBlZmVjdGl2b3MiKSArCiAgeWxhYigiRnJlY3VlbmNpYSIpKwogIHRoZW1lX2xpZ2h0KCkKYGBgCgrCv1F1w6kgc2UgcHVlZGUgY29tZW50YXIgZGUgZXN0b3MgZGF0b3M/CgojIyBNZWRpZGFzIGRlIGRpc3BlcnNpw7NuCgotICAgRGVzY3JpYmlyIGxhIGNlbnRyYWxpZGFkIG5vIGVzIHN1ZmljaWVudGUuCiAgICBEb3MgZGlzdHJpYnVjaW9uZXMgcHVlZGVuIHRlbmVyIGxhIG1pc21hIG1lZGlkYSBkZSB0ZW5kZW5jaWEgY2VudHJhbCwgcGVybyBkaWZlcmVudGVzIHJlYWxpZGFkZXMuCgotICAgRWplbXBsbzogZGlzdHJpYnVjacOzbiBkZSBwdW50YWplIGVuIMOhcmVhIG1hdGVtw6F0aWNhIGRlIHBydWViYSBQSVNBIGFwbGljYWRhIGVuIDIgcGHDrXNlcyBwdWVkZW4gdGVuZXIgbGEgbWlzbWEgbWVkaWEsIHBlcm8gZGlmZXJlbnRlIHZhcmlhY2nDs24uCgotICAgwr9Dw7NtbyBkZXNjcmliaXLDrWEgbGFzIGRpZmVyZW5jaWFzIGVudHJlIGVuIGxvcyBwdW50YWplcyBkZSBsYSBwcnVlYmEgZWwgUGHDrXMgQSB5IGVsIFBhw61zIEI/CgohW10oZGlzdHIucG5nKXt3aWR0aD0iNjMxIn0KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyMgUmFuZ28KCi0gICBEaWZlcmVuY2lhIGVudHJlIGVsIHZhbG9yIG3DoXhpbW8geSBlbCBtw61uaW1vLgogICAgRW4gZWplbXBsbyBkZSBwb2xpY8OtYXM6IDI1OS0zID0gMjU2LgogICAgRXMgbGEgZGlmZXJlbmNpYSBlbnRyZSBsYSBjb21pc2Fyw61hIGNvbiBtw6FzIGVmZWN0aXZvcyB5IGxhIGNvbWlzYXLDrWEgY29uIG1lbm9yIG7Dum1lcm8gZGUgZWZlY3Rpdm9zLgoKLSAgIE5vIHVuIHVuYSBtZWRpZGEgbXV5IMO6dGlsLgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgojIyBSYW5nbyBpbnRlcmN1YXJ0aWwKCi0gICBTZSB2ZXLDoSBjdWFuZG8gc2UgdmVhbiBwZXJjZW50aWxlcy4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIyMgRGVzdmlhY2nDs24gZXN0w6FuZGFyCgotICAgQ2FkYSBvYnNlcnZhY2nDs24gZXN0w6EgYSB1bmEgImRpc3RhbmNpYSIgZGUgbGEgbWVkaWEuCiAgICBFc3RhIGRpc3RhbmNpYSBzZSBsbGFtYSBkZXN2aWFjacOzbiAkKHhfaS1cYmFye3h9KSQKCi0gICBPYnNlcnZhY2lvbmVzIHBvciBlbmNpbWEgZGUgbGEgbWVkaWEgdGVuZHLDoW4gZGVzdmlhY2lvbmVzIHBvc2l0aXZhcy4KICAgIE9ic2VydmFjaW9uZXMgcG9yIGRlYmFqbyBkZSBsYSBtZWRpYSB0ZW5kcsOhbiBkZXN2aWFjaW9uZXMgbmVnYXRpdmFzLgoKLSAgIE5vIHNlIHB1ZWRlIGNhbGN1bGFyIHVuIHByb21lZGlvIGRlIGRlc3ZpYWNpb25lcyBwb3JxdWUgdmFsb3JlcyBwb3NpdGl2b3Mgc2UgY2FuY2VsYW4gY29uIG5lZ2F0aXZvcy4KCi0gICBTZSBlbGV2YSBhbCBjdWFkcmFkbyBsYXMgb2JzZXJ2YWNpb25lcyBwYXJhIHF1ZSB0b2RhcyBzZWFuIHBvc2l0aXZhcy4KICAgIFNlIHByb21lZGlhbiBlc2FzIGRlc3ZpYWNpb25lcyBhbCBjdWFkcmFkby4KCi0gICBMYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgZXMgbGEgcmHDrXogY3VhZHJhZGEgZGUgZXNlIHByb21lZGlvIGRlIGRlc3ZpYWNpb25lcyBhbCBjdWFkcmFkby4KCi0gICBTZSBkaXZpZGUgZW50cmUgbi0xIHBvciB1biB0ZW1hIHTDqWNuaWNvLgoKJCQKXHN1bSBcZnJhY3soeF9pLVxiYXJ7eH0pXjJ9IHtuLTF9IAokJAoKUGFyYSB2ZXIgdW4gY8OhbGN1bG8gYsOhc2ljbyBkZSBsYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgZW4gRXhjZWwsIHB1ZWRlIGVudHJhciBbYXF1w61dKGh0dHBzOi8vZG9jcy5nb29nbGUuY29tL3NwcmVhZHNoZWV0cy9kLzFDQ3pPdGZYZjdJZ3pfS2NiY3BJdHpVNzFmV2VNdFRsaT9ydHBvZj10cnVlJmF1dGh1c2VyPWFydHVyby5tYWxkb25hZG8lNDBwdWNwLnBlJnVzcD1kcml2ZV9mcykuCgotICAgQ29tbyBzZSBvYnNlcnZhIGVuIGVsIGdyw6FmaWNvIGFudGVyaW9yLCBsYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgZXMgbcOhcyDDunRpbCBjdWFuZG8gc2UgY29tcGFyYXIgZG9zIGRpc3RyaWJ1Y2lvbmVzLiBTZSBjb21wYXJhIGxhIGNlbnRyYWxpZGFkIHkgbGEgZGlzcGVyc2nDs24gZGUgdW5hIHZhcmlhYmxlIGVudHJlIGRvcyBncnVwb3MgKG8gZG9zIGRpc3RyaWJ1Y2lvbmVzKS4KCmBgYHtyfQpjb21pMTcgfD4KICBzdW1tYXJpc2Uoc2QoSU5GMTEwX1RPVCkpCmBgYAoKU2lndWllbmRvIGNvbiBsYSBiYXNlIGRlIGRhdG9zIGRlIGNvbWlzYXLDrWFzIGRlbCBQZXLDuiwgcXVlcmVtb3MgZXZhbHVhciBzaSBlbCBuw7ptZXJvIGRlIHBvbGljw61hcyAoSU5GMTEwX1RPVCkgYXVtZW50YSBhIG1lZGlkYSBxdWUgbGEgY29taXNhcsOtYSBhdGllbmRhIGEgdW5hIHBvYmxhY2nDs24gbWF5b3IgKElORjEwOSkuCgpDb21vIHNlIHZpbyBhbnRlcywgbGEgdmFyaWFibGUgZGUgcG9ibGFjacOzbiBhIGxhIHF1ZSBhdGllbmRlIGVzdMOhIGNvZGlmaWNhZGEgZW4gNiBncnVwb3MsIGRlc2RlIDEgcXVlIHNpZ25pZmljYSAiTWVub3MgZGUgNTAwMCBoYWIiIGEgNiBxdWUgc2lnbmlmaWNhICJEZSA4MDAwMCBhIG3DoXMgaGFiIi4KCmBgYHtyIHRhYmxhcG9ifQp0YWJsYTEKYGBgCgpMbyBxdWUgc2UgcXVpZXJlIGNhbGN1bGFyIGVzIGVsIHByb21lZGlvIHkgbGEgZGVzdmlhY2nDs24gZXN0w6FuZGFyIGRlIHBvbGljw61hcyBwb3IgY2FkYSBncnVwbyBkZSBwb2JsYWNpw7NuIGEgbGEgcXVlIGF0aWVuZGUuCkVzdGEgb3BlcmFjacOzbiBzZSBwdWVkZSBoYWNlciBkZSBtw7psdGlwbGVzIG1hbmVyYXMgZW4gUi4KCmBgYHtyIG1lZGlhZ3J1cG9zfQpjb21pMTcgfD4KICBncm91cF9ieSh0aXBvKSB8PgogIHN1bW1hcmlzZShtZWFuKElORjExMF9UT1QpKQpgYGAKCkVmZWN0aXZhbWVudGUsIGNvbW8gc2UgZXNwZXJhYmEsIGVsIG7Dum1lcm8gcHJvbWVkaW8gZGUgcG9saWPDrWFzIGF1bWVudGEgYSBtZWRpZGEgcXVlIGxhIGNvbWlzYXLDrWEgYXRpZW5kZSBhIHVuYSBwb2JsYWNpw7NuIG1heW9yLgoKVGFtYmnDqW4gc2UgcHVlZGUgY29tcGFyYXIgbGEgZGVzdmlhY2nDs24gZXN0w6FuZGFyIGVuIGNhZGEgZ3J1cG8uCkVsIGNvbWFuZG8gcGFyYSBlbCBjw6FsY3VsbyBkZSBsYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgZXMgYHNkYC4KCmBgYHtyIGRlc3ZncnVwb3N9Cm1lZGlheHRpcG8gPSBjb21pMTcgfD4KICBncm91cF9ieShUaXBvID0gdGlwbykgfD4KICBzdW1tYXJpc2UoTWVkaWEgPSBtZWFuKElORjExMF9UT1QpLCBEZXN2ID0gc2QoSU5GMTEwX1RPVCkpCm1lZGlheHRpcG8KYGBgCgpMYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIgdGFtYmnDqW4gYXVtZW50YSBhIG1lZGlkYSBxdWUgbGFzIGNvbWlzYXLDrWFzIGF0aWVuZGVuIGEgdW5hIHBvYmxhY2nDs24gbWF5b3IuCkVzIGRlY2lyLCBsYXMgY29taXNhcsOtYXMgcXVlIGF0aWVuZGVuIGEgdW5hIHBvYmxhY2nDs24gcGVxdWXDsWEgc29uIG3DoXMgaG9tb2fDqW5lYXMgcXVlIGxhcyBxdWUgYXRpZW5kZW4gYSB1bmEgcG9ibGFjacOzbiBtYXlvciwgZG9uZGUgaGF5IG1heW9yZXMgZGlmZXJlbmNpYXMgZW4gZWwgbsO6bWVybyBkZSBlZmVjdGl2b3MgZW50cmUgY29taXNhcsOtYXMuCgrCv0EgcXXDqSBwdWVkZSBkZWJlcnNlIGVzdGUgcmVzdWx0YWRvPwpVbmEgcG9zaWJsZSBleHBsaWNhY2nDs24gZXMgbGEgY29tcGxlamlkYWQgZGUgY2l1ZGFkZXMgbcOhcyBncmFuZGVzLCBwb3IgbG8gcXVlIHBvZHLDrWEgcmVxdWVyaXIgY29taXNhcmlhcyBlc3BlY2lhbGl6YWRhcywgYWRlbcOhcyBkZSBsYXMgY29taXNhcmlhcyBlc3TDoW5kYXIuClBvciBlbCBjb250cmFyaW8sIGNlbnRyb3MgdXJiYW5vcyBtw6FzIHBlcXVlw7FvcyBzb2xvIHJlcXVlcmlyw61hbiBjb21pc2Fyw61hcyBwZXF1ZcOxYXMuCgpFbiBSIGhheSBkaWZlcmVudGVzIG1hbmVyYXMgZGUgaGFjZXIgbG8gbWlzbW8uClBhcmEgbG9zIGdyw6FmaWNvcyBleGlzdGUgdW5hIGxpYnJlcsOtYSBlc3BlY2lhbGl6YWRhIGxsYW1hZGEgYGdncGxvdDJgLgpDb24gZXNhIGxpYnJlcsOtYSBzZSB0aWVuZSBtw6FzIG9wY2lvbmVzIGdyw6FmaWNhcyBxdWUgY29uIGxvcyBjb21hbmRvcyBkZSBiYXNlLgpUYW1iacOpbiBleGlzdGUgdW5hIGZvcm1hIGRlIGNvZGlmaWNhY2nDs24gbGxhbWFkbyBgdGlkeXZlcnNlYCBxdWUgdXNhIGVsIG9wZXJhZG9yIGAlPiVgLgpBcXXDrSBzZSBwcmVzZW50YSB1biBlamVtcGxvIHF1ZSBwcm9kdWNlIGVsIGhpc3RvZ3JhbWEgZGVsIG7Dum1lcm8gZGUgcG9saWPDrWFzIHBvciBjYWRhIGdydXBvIGRlIHRhbWHDsW8gZGUgcG9ibGFjacOzbi4KCmBgYHtyIGhpc3RncnVwb3N9CmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShkcGx5cikKY29taTE3IHw+CiAgZ2dwbG90KGFlcyh4PUlORjExMF9UT1QpKSsKICBnZW9tX2hpc3RvZ3JhbSgpKwogIGZhY2V0X3dyYXAofnRpcG8pKwogIHhsYWIoIk7Dum1lcm8gZGUgcG9saWPDrWFzIikrCiAgeWxhYigiRnJlY3VlbmNpYSIpCmBgYAoKwr9RdcOpIG90cmFzIHByZWd1bnRhcyBzZSBwdWVkZW4gcmVzcG9uZGVyIGNvbiBsb3MgZGF0b3MgZGUgY29taXNhcsOtYXM/CgpgYGB7cn0KZ2dwbG90KG1lZGlheHRpcG8sIGFlcyh4PVRpcG8sIHk9TWVkaWEpKSArIAogIGdlb21fYmFyKHN0YXQgPSAiaWRlbnRpdHkiKSArCiAgZ2d0aXRsZSgiTsO6bWVybyBkZSBlZmVjdGl2b3MgcHJvbWVkaW8gcG9yIHRpcG8gZGUgY29taXNhcsOtYSIpICsKICB4bGFiKCJUaXBvIGRlIGNvbWlzYXLDrWEiKSArCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1yb3VuZChNZWRpYSwxKSksIHZqdXN0PTEuMzAsIGNvbG9yPSJ3aGl0ZSIsIHNpemU9MykrCiAgdGhlbWVfbWluaW1hbCgpCmBgYAoKT3RyYSBmb3JtYSBkZSBkZXNjcmliaXIgZGVzY3JpcHRpdmFtZW50ZSBlc3RhIHZhcmlhYmxlIG1lZGlhbnRlIHVuIGdyw6FmaWNvIGVzIG1lZGlhbnRlIGVsIGdyw6FmaWNvIGRlIGNhamFzIG8gImJveHBsb3QiLgpFc3RlIGdyw6FmaWNvIG11ZXN0cmEgZWwgbcOtbmltbywgbG9zIGN1YXJ0aWxlcyB5IGVsIG3DoXhpbW8uCkxvcyBjdWFydGlsZXMgZGl2aWRlbiBlbCBuw7ptZXJvIGRlIG9ic2VydmFjaW9uZXMgZW4gY3VhdHJvIGdydXBvcyBkZSBpZ3VhbCB0YW1hw7FvLCBhdW5xdWUgc3VzIGzDrW1pdGVzIGRpZmllcmVuLgpFbCBzZWd1bmRvIGN1YXJ0aWwgZXMgbGEgbWVkaWFuYS4KCmBgYHtyfQpnZ3Bsb3QoY29taTE3LCBhZXMoeT1JTkYxMTBfVE9ULCB4PXRpcG8pKSsKICBnZW9tX2JveHBsb3QoKSsKICBzY2FsZV95X2NvbnRpbnVvdXMobGltaXRzID0gYygwLCAzMDApLCBicmVha3MgPSBzZXEoMCwgMzAwLCA1MCkpKwogIHlsYWIoIk7Dum1lcm8gZGUgZWZlY3Rpdm9zIikrCiAgeGxhYigiVGlwbyBkZSBjb21pc2Fyw61hIikrCiAgdGhlbWVfZ2V0KCkKYGBgCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KClNlIHB1ZWRlbiBjYWxjdWxhciBsb3MgY3VhcnRpbGVzIHBhcmEgdG9kYSBsYSBkaXN0cmlidWNpw7NuIGNvbiBlbCBjb21hbmRvIGBxdWFudGlsZWAuCkVzdG9zIGRhdG9zIG11ZXN0cmFuIHF1ZSBlbnRyZSBlbCAyNSUgZGUgdG9kYXMgbGFzIGNvbWlzYXLDrWFzIHRpZW5lbiBlbnRyZSAzIHkgMTEgZWZlY3Rpdm9zLgpFbCBzZWd1bmRvIDI1JSBkZSBjb21pc2Fyw61hcyB0aWVuZSBlbnRyZSAxMSB5IDE5IGVmZWN0aXZvcy4KRWwgdGVyY2VyIDI1JSB0aWVuZSBlbnRyZSAxOSA3IDM3IGVmZWN0aXZvcywgeSBlbCDDumx0aW1vIDI1JSB0aWVuZSBlbnRyZSAzNyB5IDI1OSBlZmVjdGl2b3MuCgpgYGB7cn0KY29taTE3IHw+IAogIHN1bW1hcmlzZShDdWFydGlsZXMgPSBxdWFudGlsZShJTkYxMTBfVE9UKSkKYGBgCgpMb3MgY3VhcnRpbGVzIHRhbWJpw6luIHNlIHB1ZWRlbiBjYWxjdWxhciBwb3IgdGlwbyBkZSBjb21pc2Fyw61hLgpFc3RlIGPDs2RpZ28gbm9zIG11ZXN0cmEgbG9zIGN1YXJ0aWxlcyBwb3IgdGlwbyBkZSBjb21pc2Fyw61hIGVuIGNhZGEgZmlsYS4KCmBgYHtyfQpjdWFydGlsZXN4dGlwbyA9IGNvbWkxNyB8PiAKICBncm91cF9ieSh0aXBvKSB8PgogIHN1bW1hcmlzZShxdWFudGlsZShJTkYxMTBfVE9UKSkKY3VhcnRpbGVzeHRpcG8KYGBgCgpFbCBhbmNobyBkZSBjYWRhIGNhamEgZXMgdW4gZXN0YWTDrXN0aWNvIGRlIGRpc3BlcnNpw7NuLgpFc3RlIGVzdGFkw61zdGljbyBzZSBsbGFtYSByYW5nbyBpbnRlcmN1YXJ0aWwgeSBmb3JtYWxtZW50ZSBlcyBsYSByZXN0YSBkZWwgY3VhcnRpbCA3NSBtZW5vcyBlbCBjdWFydGlsIDI1LgoKTGEgdGFibGEgbm9zIG11ZXN0cmEgbG9zIGRvcyBlc3RhZMOtc3RpY29zIGRlIGRpc3BlcnNpw7NuLCBlbCByYW5nbyBpbnRlcmN1YXJ0aWwgeSBsYSBkZXN2aWFjacOzbiBlc3TDoW5kYXIuClBhcmEgY29tcGFyYXIgZW50cmUgZ3J1cG9zIHNlIHB1ZWRlIGNvbXBhcmFyIG1lZGlhbmFzIGNvbnRyYSBtZWRpYW5hcyB5IHJhbmdvcyBpbnRlcmN1YXJ0aWxlcy4KRXN0byBzZSBwdWVkZSBoYWNlciBlbiB1biBncsOhZmljbyBkZSBjYWphcy4KT3RyYSBmb3JtYSBkZSBjb21wYXJhciBlcyBtZWRpYXMgY29udHJhIG1lZGlhcyB5IGRlc3ZpYWNpb25lcyBlc3TDoW5kYXIgcG9yIGdydXBvLgoKYGBge3J9CnJpY3h0aXBvID0gY29taTE3IHw+CiAgZ3JvdXBfYnkodGlwbykgfD4KICBzdW1tYXJpc2UoTWVkaWE9IG1lYW4oSU5GMTEwX1RPVCksIERlc3YuRXN0ZCA9IHNkKElORjExMF9UT1QpLCAKICAgICAgICAgICAgTWVkaWFuYSA9IG1lZGlhbihJTkYxMTBfVE9UKSwgUklDPSBJUVIoSU5GMTEwX1RPVCkpCnJpY3h0aXBvCmBgYAoKUmVndWxhcm1lbnRlIGFtYmFzIGNvbXBhcmFjaW9uZXMgc29uIGNvbnNpc3RlbnRlcy4KCiMjIERlc2NyaXBjacOzbiBkZSB2YXJpYWJsZSBkZSB0aXBvIGZhY3RvcgoKYGBge3J9CmxpYnJhcnkocmlvKSAKY29taTE3XzIgPSBpbXBvcnQoImJhc2VzL2NvbWkyMDE3XzIuc2F2IikKYGBgCgpgYGB7cn0KY29taTE3XzIgPSBjb21pMTdfMiB8PgogIG11dGF0ZShhZ3VhID0gcmVjb2RlKElORjI2NF9BLCAnMScgPSAnMScsICcyJyA9ICcxJywgJzMnID0gJzEnLCAnNCcgPSAnMCcpKQpgYGAKCmBgYHtyfQpjb21pMTdfMiA9IGNvbWkxN18yIHw+CiAgbXV0YXRlKGx1eiA9IHJlY29kZShJTkYyNjRfQiwgJzEnID0gJzEnLCAnMicgPSAnMScsICczJyA9ICcxJywgJzQnID0gJzAnKSkKYGBgCgpgYGB7cn0KY29taTE3XzIgPSBjb21pMTdfMiB8PgogIG11dGF0ZSh0ZWxlZm9ubyA9IHJlY29kZShJTkYyNjRfQywgJzEnID0gJzEnLCAnMicgPSAnMScsICczJyA9ICcxJywgJzQnID0gJzAnKSkKYGBgCgpgYGB7cn0KY29taTE3XzIgPSBjb21pMTdfMiB8PgogIG11dGF0ZShpbnRlcm5ldCA9IHJlY29kZShJTkYyNjRfRSwgJzEnID0gJzEnLCAnMicgPSAnMScsICczJyA9ICcxJywgJzQnID0gJzAnKSkKYGBgCgpgYGB7cn0KY29taTE3XzIgPSBjb21pMTdfMiB8PgogIG11dGF0ZShpbnRlcm5ldCA9IGZhY3RvcihpbnRlcm5ldCwgbGFiZWxzPWMoIk5vIiwgIlPDrSIpKSkKYGBgCgpgYGB7cn0KdGFibGEyID0gY29taTE3XzIgfD4KICBjb3VudChUaWVuZSA9IGludGVybmV0LCBuYW1lPSJGcmVjdWVuY2lhIikgfD4KICBtdXRhdGUoUG9yY2VudGFqZSA9IChGcmVjdWVuY2lhIC8gc3VtKEZyZWN1ZW5jaWEpKjEwMCApKQp0YWJsYTIKYGBgCgpgYGB7cn0KZ2dwbG90KHRhYmxhMiwgYWVzKHg9VGllbmUsIHk9UG9yY2VudGFqZSkpICsgCiAgZ2VvbV9iYXIoc3RhdCA9ICJpZGVudGl0eSIpICsKICBnZ3RpdGxlKCJDb21pc2Fyw61hIHRpZW5lIGludGVybmV0IikgKwogIHhsYWIoIkN1ZW50YSBjb24gc2VydmljaW8gZGUgaW50ZXJuZXQiKSArCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1yb3VuZChQb3JjZW50YWplLDEpKSwgdmp1c3Q9MS4zMCwgY29sb3I9IndoaXRlIiwgc2l6ZT0zKSsKICB0aGVtZV9taW5pbWFsKCkKYGBgCgojIEJpYmxpb2dyYWbDrWEK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase2.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

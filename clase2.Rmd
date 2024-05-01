@@ -1,0 +1,673 @@
+---
+title: 'Clase 2: descripción y visualización'
+author: "Arturo Maldonado"
+date: "26/03/2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    code_download: true
+    theme: cosmo
+    highlight: textmate
+editor_options:
+  markdown:
+    wrap: sentence
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+------------------------------------------------------------------------
+
+# Caso 1: Apoyo a la democracia en América Latina
+
+*Pregunta: ¿existe una erosión del apoyo a la democracia entre los ciudadanos en América Latina?*
+
+## Leer una base de datos
+
+Usamos la librería `rio`.
+Activamos la librería con el comando `library` y usamos el comando `import` para leer la base de datos (un archivo Excel).
+Ojo: el nombre del archivo tiene que estar entre comillas.
+En este caso, el archivo está dentro de mi directorio de trabajo, por lo que se le llama con el nombre.
+Si no estuviera en el directorio de trabajo se tendría que especificar la ruta del archivo.
+
+Guardamos esta base de datos en un nuevo objeto (dataframe) llamado apoyoAL.
+Se sugiere siempre trabajar con nombres cortos de bases de datos y de variables.
+
+```{r}
+library(rio)
+apoyoAL = import("apoyoAL.xlsx")
+```
+
+## Descripción para variables numéricas
+
+Usamos las medidas de tendencia central para describir una variable numérica.
+Podemos usar el comando `mean` para calcular el promedio de apoyo a la democracia en 2023.
+Este comando asume que se tienen datos completos.
+Como existe un dato perdido, el comando no corre, y se tiene que añadir la especificación `, na.rm = T`.
+
+```{r}
+library(tidyverse)
+apoyoAL |>
+  summarise(Apoyo2023=mean(apoyo2023, na.rm=T))
+```
+
+También se puede calcular la mediana, con el comando `median` y presentar ambas medidas juntas.
+
+```{r}
+apoyoAL |>
+  summarise(Promedio_Apoyo2023=mean(apoyo2023, na.rm=T), 
+            Mediana_Apoyo2023=median(apoyo2023, na.rm=T))
+```
+
+Ahora lo que queremos averiguar es si el apoyo a la democracia ha disminuido, aumentado o permanecido igual entre 2021 y 2023.
+Para esto, podemos comparar la media del apoyo a la democracia en 2021 con la media en 2023.
+
+```{r}
+apoyoAL |>
+  summarise(Promedio_Apoyo2021=mean(apoyo2021, na.rm=T), 
+            Promedio_Apoyo2023=mean(apoyo2023, na.rm=T))
+```
+
+Según estos resultados, el apoyo a la democracia ha disminuido de 61.2% a 58.6%; es decir, una disminución de 2.6 puntos porcentuales.
+
+Los datos de 2023 incluyen países caribeños (Bahamas, Granada, TyT y Surinám) que no estaban en el gráfico de 2021.
+Es posible que el menor promedio de apoyo a la democracia en 2023 sea por la incorporación de estos países.
+Se podría argumentar que si se tuviera los datos de estos países para 2021, quizá no existiría una erosión del apoyo a la democracia.
+
+Una forma de lidiar con esta observación es comparar los resultados 2023 y 2021 solo de los países que tienen datos en ambos años.
+
+## Dataframes
+
+Antes de ver cómo eliminar los países, una nota sobre la estructura de una base de datos.
+El dataframe apoyoAL tiene 24 observaciones (24 filas, en cada una, un país) y 4 variables (4 columnas, en cada una, una variable).
+Por lo tanto, este dataframe tiene una dimensión [24, 4].
+En general, un dataframe tiene dimensión [#filas, #columnas].
+
+Por lo tanto, se puede llamar a los elementos de un dataframe indicando la fila y la columna.
+Por ejemplo, para llamar al elemento de la primera fila y segunda columna.
+
+```{r}
+apoyoAL[4,2]
+```
+
+También se puede llamar toda una fila.
+En este caso, la primera fila.
+
+```{r}
+apoyoAL[1,]
+```
+
+O la segunda columna
+
+```{r}
+apoyoAL[,2]
+```
+
+Esto nos permite seleccionar filas (países) o columnas (variables) bajo ciertas condiciones.
+En general, nos interesa más seleccionar filas.
+
+Por ejemplo, si queremos seleccionar los países por encima de la media de apoyo 2023, podemos decir
+
+```{r}
+apoyoAL[apoyoAL$apoyo2023>mean(apoyoAL$apoyo2023, na.rm = T), c(1,4)]
+```
+
+En R existe un comando para seleccionar observaciones.
+Se puede usar `subset` para hacer este filtro.
+Este filtro se puede almacenar en otro dataframe.
+
+```{r}
+apoyo_mayor_media = subset(apoyoAL, apoyo2023 > mean(apoyo2023, na.rm=T))
+```
+
+## Lidiando con valores perdidos
+
+Volviendo al ejemplo y a la respuesta a la observación de comparar países con mediciones en ambos años.
+Si se abre la base de datos "apoyoAL", se observa que apoyo2021 tiene 4 NAs y apoyo2023 tiene 1 NA.
+
+Se puede eliminar los países que tienen NAs en la variable "apoyo2021".
+
+```{r}
+apoyoSinNA2021 = apoyoAL[!(is.na(apoyoAL$apoyo2021)),]
+```
+
+Se puede eliminar los países que tienen NAs en la variable "apoyo2023".
+
+```{r}
+apoyoSinNA2023 = apoyoAL[!(is.na(apoyoAL$apoyo2023)),]
+```
+
+Pero, queremos eliminar ambos; es decir, tanto los países con NAs en 2023 Y los países con NAs en 2021.
+Para esto usamos el operador lógico "&".
+
+En R tenemos los siguientes operadores lógicos:
+
+| Operador |    Descripción     |
+|:--------:|:------------------:|
+|    ==    |     es igual a     |
+|    !=    |  es diferente de   |
+|    \>    |    es mayor de     |
+|    \<    |    es menor de     |
+|   \>=    | es mayor o igual a |
+|   \<=    | es menor o igual a |
+|    &     |  intersección (Y)  |
+|    \|    |     unión (O)      |
+
+```{r}
+apoyoSinNA = apoyoAL[!(is.na(apoyoAL$apoyo2021)) & !(is.na(apoyoAL$apoyo2023)),]
+```
+
+Esto mismo se puede lograr con el comando `subset`.
+
+```{r}
+apoyoSinNA2 = subset(apoyoAL, 
+                     !(is.na(apoyoAL$apoyo2021)) & !(is.na(apoyoAL$apoyo2023)))
+```
+
+Y también se puede hacer, usando el tidyverse.
+En este curso tenemos una preferencia por este estilo de código.
+Pero, como pueden ver se puede lograr los mismos resultados de muchas maneras en R.
+
+```{r}
+apoyoSinNa3 = apoyoAL |> 
+  filter(!(is.na(apoyoAL$apoyo2021)) & !(is.na(apoyoAL$apoyo2023))) 
+```
+
+Con este nuevo dataframe, que contiene solo los países que tienen el dato de apoyo a la democracia tanto en 2021 como en 2023, se puede responder a la observación.
+Podemos comparar la media de ambos añós usando este nuevo dataframe.
+
+```{r}
+apoyoSinNa3 |>
+  summarise(PromedioApoyo2021=mean(apoyo2021), 
+            PromedioApoyo2023=mean(apoyo2023))
+```
+
+Los resultados indican que hay una disminución de 2.1 puntos porcentuales, resultados un poco menor que el anterior (2.6 pp), pero que va en la misma dirección de decir que hay una erosión del apoyo ciudadanos a la democracia.
+
+# Caso 2: Resultados electorales 2016
+
+*Pregunta: Algunos politólogos consideran que un partido más institucionalizado es el que es capaz de tener un mayor enraizamiento territorial y, por lo tanto, tener un apoyo electoral relativamente constante a lo largo del territorio. Por el contrario, un partido menos institucionalizado, solo lograría apoyos electorales diferenciados, mayores en algunos territorios y menores en otros.*
+
+*Siguiendo esta idea, ¿cuál fue el partido mas o menos institucionalizado de acuerdo a los resultados electorales de 2016?*
+
+## Leer una base de datos
+
+```{r message=FALSE, warning=FALSE}
+library(rio)
+res2016 = import("resultados2016.xlsx")
+```
+
+Si se hace doble click en el objeto, se abre la base de datos como una pestaña en la zona de scripts / RMarkdowns.
+Este objeto dataframe tiene vectores de datos de tipo "caracter" y otros vectores de datos de tipo "numérico".
+
+## Descripción de la heterogeneidad
+
+Usamos las medidas de dispersión para describir una variable numérica.
+Podemos usar el comando `sd` para calcular la desviación estándar del voto provincial a Fuerza Popular, a Peruanos por el Kambio y al Frente Amplio en 2016.
+Este comando asume que se tienen datos completos.
+Si existiera un dato perdido, el comando no correría, y se tendría que añadir la especificación `, na.rm = T`.
+
+```{r}
+library(dplyr)
+library(tidyverse)
+res2016 |>
+  summarise(sd(fp), sd(ppk), sd(fa))
+```
+
+También se puede calcular la media para grupos de observaciones, es decir para filas específicas de una base de datos.
+Una opción sería agregar un nuevo dataframe con el filtrado de las observaciones.
+Si no queremos llenarnos de bases de datos parciales, tenemos otras opciones.
+
+Por ejemplo, si quisiéramos saber si la heterogeneidad del voto fue mayor o menor que aquella del voto provincial general de Fuerza Popular, podríamos calcular la desviación estándar del voto provincial solo en las provincias de Lima.
+
+Esto se puede hacer de múltiples maneras.
+En este curso comenzaremos a usar las funciones del mundo del Tidyverse.
+
+En cualquier caso, se tiene que seleccionar algunas filas de un dataframe usando operadores lógicos.
+En nuestro caso vamos a seleccionar las observaciones, con el comando `filter` y con la condición que en el vector o variable "dpto" sean igual a "LIMA".
+Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
+
+```{r}
+res2016 |> 
+  filter(dpto =="LIMA") |>
+  summarise(sd(fp), sd(ppk), sd(fa))
+```
+
+Encontramos que en Lima la desviación estándar del voto provincial a Fuerza Popular es mayor que la de otros partidos.
+También se puede calcular los mismo para el caso de Cusco.
+
+```{r message=FALSE, warning=FALSE}
+res2016 |> 
+  filter(dpto =="LIMA") |>
+  summarize(mean(fp, na.rm=T), mean(ppk, na.rm=T), mean(fa, na.rm=T), 
+    sd(fp), sd(ppk), sd(fa))
+#Cómo calcularían esta media usando la variable "id"?
+```
+
+## Tarea
+
+La base de datos también incluye el voto provincial a Fuerza Popular en la elección de 2021.
+
+¿Calcule si el voto promedio de Fuerza Popular ha aumentado o disminuido entre 2011 y 2016?
+
+¿Calcule lo mismo para el departamento de Tumbes?
+
+¿Calcule si Fuerza Popular ha aumento o disminuido su nivel de institucionalización?
+
+# Caso 3: Comisarias en el Perú
+
+## Medidas de tendencia central
+
+-   Resumen de un conjunto de datos.
+
+-   Se resume mediante un valor "representativo".
+
+-   Cada observación se puede comparar con este valor de resumen.
+    Se puede estar por debajo o por encima de este valor.
+
+------------------------------------------------------------------------
+
+## Moda
+
+-   Valor mas frecuente de un conjunto de datos
+
+-   Es apropiada para todo tipo de datos
+
+-   Se puede observar directamente en una tabla de distribución de frecuencias.
+
+Por ejemplo si se mide en cada comisaria del Perú, a cuánta población atiende cada comisaria de acuerdo a la codificación.
+
+![](comi17_pob.png){width="734"}
+
+La base de datos o "dataframe" se vería así
+
+![](comi17_pob2.png)
+
+------------------------------------------------------------------------
+
+Para esta clase se usará la base de datos de comisarias del Perú, que puede ser descargada de la sección microdatos de la web del INEI (ver [aquí](https://proyectos.inei.gob.pe/microdatos/)).
+Esta base tiene información para 1495 comisarias y de 281 variables.
+Esta base se puede cargar también desde el repositorio Github de este curso.
+La base de datos puede ser guardada en el directorio de trabajo.
+
+En primer lugar, se llama a la librería "rio" y se usa el comando `import` que permite leer bases de datos en muchos formatos.
+
+```{r base}
+library(rio) 
+comi17 = import("bases/comi2017.sav")
+```
+
+```{r}
+str(comi17$INF109)
+class(comi17$INF109)
+```
+
+```{r}
+library(tidyverse)
+library(dplyr)
+comi17 = comi17 |>
+  mutate(tipo = factor(INF109, labels=c("Menos de 5000 Hab", 
+                                        "De 5000 - 10000 Hab", 
+                                        "De 10001 - 20000 Hab", 
+                                        "De 20001 - 40000 Hab",
+                                        "De 40001 a 80000", "De 80001 a más")))
+```
+
+Esta base de datos incluye a la variable "INF109" (ojo: R es "case sensitive", es decir, diferencia mayúsculas de minúsculas).
+La tabla de distribución de frecuencias de esa variable se puede obtener con el siguiente código:
+
+```{r tabla}
+tabla1 = comi17 |>
+  count(Tipo = tipo, name="Frecuencia")
+tabla1
+```
+
+En este caso, la moda es el valor más frecuente, que sería el código "2", que significa "De 5,000 a 10,000 hab".
+
+```{r}
+tabla1 = comi17 |>
+  count(Tipo = tipo, name="Frecuencia") |>
+  mutate(Porc = (Frecuencia / sum(Frecuencia)*100 ))
+tabla1
+```
+
+```{r}
+library(ggplot2)
+ggplot(tabla1, aes(x=Tipo, y=Porc)) + 
+  geom_bar(stat = "identity") +
+  xlab("Población a la que atiende la comisaria") +
+  ylab("Porcentaje") +
+  geom_text(aes(label=round(Porc,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
+```
+
+## Mediana
+
+-   El valor de la observación central de un conjunto de datos ordenados de menor a mayor.
+
+![](mediana1.png){width="497"}
+
+![](mediana2.png){width="498"}
+
+Para calcular la mediana de la variable "INF109" se puede usar el comando `median`.
+Este comando internamente ordena los valores de la variable "INF109" de menor a mayor y encuentra el código numérico de la observación que se encuentra en medio de la distribución ordenada.
+
+```{r}
+comi17 |>
+  summarise(median(INF109))
+```
+
+La mediana es el código numérico 3, que significa "De 10,001 a 20,000 hab.".
+
+------------------------------------------------------------------------
+
+## Media
+
+-   Medida más conocida y "útil".
+
+-   Suma del valor de las observaciones dividida entre el número de observaciones
+
+$$
+\sum \frac{x_i} {n} = \frac{(x_1 + x_2 +x_3 +...+ x_n)} {n}
+$$
+
+En una base de datos, se puede calcular la media sumando los valores de una variable (columna de una base de datos) y dividiendo entre el número de casos (\# total de filas).
+
+![](comi17_media.png){width="258"}
+
+------------------------------------------------------------------------
+
+## Resumen
+
+| TC      | Nominales | Ordinales | Numéricas |
+|---------|:---------:|:---------:|:---------:|
+| Moda    |    Sí     |    Sí     |    Sí     |
+| Mediana |    No     |    Sí     |    Sí     |
+| Media   |    No     |    No     |    Sí     |
+
+-   Moda aplica para cualquier tipo de variable, pero menos útil.
+
+-   Media aplica solo para variables numéricas, pero más útil.
+
+------------------------------------------------------------------------
+
+¿Cuál es la media (o el promedio) de policías por comisaria de acuerdo a estos datos?
+
+```{r media}
+comi17 |>
+  summarise(mean(INF110_TOT))
+```
+
+¿Es una representación adecuada de la realidad?
+Podemos fijarnos en el gráfico de distribución de esta variable para ver si se tiene comisarias que son "atípicas" de la distribución general.
+
+Esto se puede hacer presentando el histograma de esta variable, que es como un gráfico de barras de una variable numérica.
+
+```{r hist}
+library(ggplot2)
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  xlab("Número de efectivos") +
+  ylab("Frecuencia")+
+  theme_light()
+```
+
+¿Qué se puede concluir del gráfico?
+
+```{r mediana}
+comi17 |>
+  summarise(median(INF110_TOT))
+```
+
+¿Qué significa esta diferencia entre la media de 31.6 y la mediana de 19?
+
+```{r resumen}
+comi17 |>
+  summarise(min(INF110_TOT), median(INF110_TOT), 
+            mean(INF110_TOT), max(INF110_TOT))
+```
+
+```{r}
+ggplot(comi17, aes(x=INF110_TOT))+
+  geom_histogram()+
+  geom_vline(xintercept = 19, color = "red")+
+  geom_vline(xintercept = 31.6, color = "green")+
+  xlab("Número de efectivos") +
+  ylab("Frecuencia")+
+  theme_light()
+```
+
+¿Qué se puede comentar de estos datos?
+
+## Medidas de dispersión
+
+-   Describir la centralidad no es suficiente.
+    Dos distribuciones pueden tener la misma medida de tendencia central, pero diferentes realidades.
+
+-   Ejemplo: distribución de puntaje en área matemática de prueba PISA aplicada en 2 países pueden tener la misma media, pero diferente variación.
+
+-   ¿Cómo describiría las diferencias entre en los puntajes de la prueba el País A y el País B?
+
+![](distr.png){width="631"}
+
+------------------------------------------------------------------------
+
+## Rango
+
+-   Diferencia entre el valor máximo y el mínimo.
+    En ejemplo de policías: 259-3 = 256.
+    Es la diferencia entre la comisaría con más efectivos y la comisaría con menor número de efectivos.
+
+-   No un una medida muy útil.
+
+------------------------------------------------------------------------
+
+## Rango intercuartil
+
+-   Se verá cuando se vean percentiles.
+
+------------------------------------------------------------------------
+
+## Desviación estándar
+
+-   Cada observación está a una "distancia" de la media.
+    Esta distancia se llama desviación $(x_i-\bar{x})$
+
+-   Observaciones por encima de la media tendrán desviaciones positivas.
+    Observaciones por debajo de la media tendrán desviaciones negativas.
+
+-   No se puede calcular un promedio de desviaciones porque valores positivos se cancelan con negativos.
+
+-   Se eleva al cuadrado las observaciones para que todas sean positivas.
+    Se promedian esas desviaciones al cuadrado.
+
+-   La desviación estándar es la raíz cuadrada de ese promedio de desviaciones al cuadrado.
+
+-   Se divide entre n-1 por un tema técnico.
+
+$$
+\sum \frac{(x_i-\bar{x})^2} {n-1} 
+$$
+
+Para ver un cálculo básico de la desviación estándar en Excel, puede entrar [aquí](https://docs.google.com/spreadsheets/d/1CCzOtfXf7Igz_KcbcpItzU71fWeMtTli?rtpof=true&authuser=arturo.maldonado%40pucp.pe&usp=drive_fs).
+
+-   Como se observa en el gráfico anterior, la desviación estándar es más útil cuando se comparar dos distribuciones. Se compara la centralidad y la dispersión de una variable entre dos grupos (o dos distribuciones).
+
+```{r}
+comi17 |>
+  summarise(sd(INF110_TOT))
+```
+
+Siguiendo con la base de datos de comisarías del Perú, queremos evaluar si el número de policías (INF110_TOT) aumenta a medida que la comisaría atienda a una población mayor (INF109).
+
+Como se vio antes, la variable de población a la que atiende está codificada en 6 grupos, desde 1 que significa "Menos de 5000 hab" a 6 que significa "De 80000 a más hab".
+
+```{r tablapob}
+tabla1
+```
+
+Lo que se quiere calcular es el promedio y la desviación estándar de policías por cada grupo de población a la que atiende.
+Esta operación se puede hacer de múltiples maneras en R.
+
+```{r mediagrupos}
+comi17 |>
+  group_by(tipo) |>
+  summarise(mean(INF110_TOT))
+```
+
+Efectivamente, como se esperaba, el número promedio de policías aumenta a medida que la comisaría atiende a una población mayor.
+
+También se puede comparar la desviación estándar en cada grupo.
+El comando para el cálculo de la desviación estándar es `sd`.
+
+```{r desvgrupos}
+mediaxtipo = comi17 |>
+  group_by(Tipo = tipo) |>
+  summarise(Media = mean(INF110_TOT), Desv = sd(INF110_TOT))
+mediaxtipo
+```
+
+La desviación estándar también aumenta a medida que las comisarías atienden a una población mayor.
+Es decir, las comisarías que atienden a una población pequeña son más homogéneas que las que atienden a una población mayor, donde hay mayores diferencias en el número de efectivos entre comisarías.
+
+¿A qué puede deberse este resultado?
+Una posible explicación es la complejidad de ciudades más grandes, por lo que podría requerir comisarias especializadas, además de las comisarias estándar.
+Por el contrario, centros urbanos más pequeños solo requerirían comisarías pequeñas.
+
+En R hay diferentes maneras de hacer lo mismo.
+Para los gráficos existe una librería especializada llamada `ggplot2`.
+Con esa librería se tiene más opciones gráficas que con los comandos de base.
+También existe una forma de codificación llamado `tidyverse` que usa el operador `%>%`.
+Aquí se presenta un ejemplo que produce el histograma del número de policías por cada grupo de tamaño de población.
+
+```{r histgrupos}
+library(ggplot2)
+library(dplyr)
+comi17 |>
+  ggplot(aes(x=INF110_TOT))+
+  geom_histogram()+
+  facet_wrap(~tipo)+
+  xlab("Número de policías")+
+  ylab("Frecuencia")
+```
+
+¿Qué otras preguntas se pueden responder con los datos de comisarías?
+
+```{r}
+ggplot(mediaxtipo, aes(x=Tipo, y=Media)) + 
+  geom_bar(stat = "identity") +
+  ggtitle("Número de efectivos promedio por tipo de comisaría") +
+  xlab("Tipo de comisaría") +
+  geom_text(aes(label=round(Media,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
+```
+
+Otra forma de describir descriptivamente esta variable mediante un gráfico es mediante el gráfico de cajas o "boxplot".
+Este gráfico muestra el mínimo, los cuartiles y el máximo.
+Los cuartiles dividen el número de observaciones en cuatro grupos de igual tamaño, aunque sus límites difieren.
+El segundo cuartil es la mediana.
+
+```{r}
+ggplot(comi17, aes(y=INF110_TOT, x=tipo))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 300), breaks = seq(0, 300, 50))+
+  ylab("Número de efectivos")+
+  xlab("Tipo de comisaría")+
+  theme_get()
+```
+
+------------------------------------------------------------------------
+
+Se pueden calcular los cuartiles para toda la distribución con el comando `quantile`.
+Estos datos muestran que entre el 25% de todas las comisarías tienen entre 3 y 11 efectivos.
+El segundo 25% de comisarías tiene entre 11 y 19 efectivos.
+El tercer 25% tiene entre 19 7 37 efectivos, y el último 25% tiene entre 37 y 259 efectivos.
+
+```{r}
+comi17 |> 
+  summarise(Cuartiles = quantile(INF110_TOT))
+```
+
+Los cuartiles también se pueden calcular por tipo de comisaría.
+Este código nos muestra los cuartiles por tipo de comisaría en cada fila.
+
+```{r}
+cuartilesxtipo = comi17 |> 
+  group_by(tipo) |>
+  summarise(quantile(INF110_TOT))
+cuartilesxtipo
+```
+
+El ancho de cada caja es un estadístico de dispersión.
+Este estadístico se llama rango intercuartil y formalmente es la resta del cuartil 75 menos el cuartil 25.
+
+La tabla nos muestra los dos estadísticos de dispersión, el rango intercuartil y la desviación estándar.
+Para comparar entre grupos se puede comparar medianas contra medianas y rangos intercuartiles.
+Esto se puede hacer en un gráfico de cajas.
+Otra forma de comparar es medias contra medias y desviaciones estándar por grupo.
+
+```{r}
+ricxtipo = comi17 |>
+  group_by(tipo) |>
+  summarise(Media= mean(INF110_TOT), Desv.Estd = sd(INF110_TOT), 
+            Mediana = median(INF110_TOT), RIC= IQR(INF110_TOT))
+ricxtipo
+```
+
+Regularmente ambas comparaciones son consistentes.
+
+## Descripción de variable de tipo factor
+
+```{r}
+library(rio) 
+comi17_2 = import("bases/comi2017_2.sav")
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(agua = recode(INF264_A, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(luz = recode(INF264_B, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(telefono = recode(INF264_C, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(internet = recode(INF264_E, '1' = '1', '2' = '1', '3' = '1', '4' = '0'))
+```
+
+```{r}
+comi17_2 = comi17_2 |>
+  mutate(internet = factor(internet, labels=c("No", "Sí")))
+```
+
+```{r}
+tabla2 = comi17_2 |>
+  count(Tiene = internet, name="Frecuencia") |>
+  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
+tabla2
+```
+
+```{r}
+ggplot(tabla2, aes(x=Tiene, y=Porcentaje)) + 
+  geom_bar(stat = "identity") +
+  ggtitle("Comisaría tiene internet") +
+  xlab("Cuenta con servicio de internet") +
+  geom_text(aes(label=round(Porcentaje,1)), vjust=1.30, color="white", size=3)+
+  theme_minimal()
+```
+
+# Bibliografía

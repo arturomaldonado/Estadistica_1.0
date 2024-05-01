@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Arturo Maldonado" />
+
+
+<title>Clase 7: Pruebas de significancia</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Estadística_1</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="intro.html">Introducción</a>
+</li>
+<li>
+  <a href="basico.html">Procedimientos básicos</a>
+</li>
+<li>
+  <a href="clase1.html">Clase 1</a>
+</li>
+<li>
+  <a href="clase2.html">Clase 2</a>
+</li>
+<li>
+  <a href="clase3.html">Clase 3</a>
+</li>
+<li>
+  <a href="clase4.html">Clase 4</a>
+</li>
+<li>
+  <a href="clase5.html">Clase 5</a>
+</li>
+<li>
+  <a href="clase6.html">Clase 6</a>
+</li>
+<li>
+  <a href="repaso.html">Repaso</a>
+</li>
+<li>
+  <a href="clase7.html">Clase 10</a>
+</li>
+<li>
+  <a href="clase9.html">Clase 11</a>
+</li>
+<li>
+  <a href="clase12.html">Clase 12</a>
+</li>
+<li>
+  <a href="clase13.html">Clase 13</a>
+</li>
+<li>
+  <a href="clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="https://github.com/arturomaldonado/Estadistica_1.0">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Clase 7: Pruebas de significancia</h1>
+<h4 class="author">Arturo Maldonado</h4>
+<h4 class="date">30/04/2024</h4>
+
+</div>
+
+
+<div id="introducción" class="section level1">
+<h1>Introducción</h1>
+<p>La comparación de los intervalos de confianza de 2 grupos es un
+método “informal” para saber si las diferencias en las medias o las
+proporciones entre dos grupos se pueden extrapolar a la población. La
+idea era calcular los intervalos de confianza para cada grupo y ver si
+los intervalos se interceptan o no. La regla era que si los intervalos
+de ambos grupos no se interceptaban, podíamos extrapolar que la
+diferencia muestral existe en la población al 95% de confianza. Si los
+intervalos no se traslapan, entonces no podemos afirmar que las
+diferencias sean significativas. En esta sección se verá cómo pasar de
+la evaluación “informal” a la “formal” mediante la introducción a la
+prueba t de diferencia de medias.</p>
+</div>
+<div id="prueba-t-de-diferencia-de-medias" class="section level1">
+<h1>Prueba t de diferencia de medias</h1>
+<p>Esta prueba compara la media de una variable numérica entre dos
+grupos o categorías de una variable nominal u ordinal. Los grupos que
+forman la variable nominal/ordinal tienen que ser independientes. Es
+decir, cada observación debe pertenecer a un grupo o al otro, pero no a
+ambos.</p>
+<p>Por ejemplo, si se quisiera evaluar si existen diferencias en el
+rendimiento académico entre alumnos hombres y mujeres en la PUCP,
+teóricamente, se habría registrado el CRAEST de todos los alumnos de la
+universidad (Variable X) y por lo tanto se podría tener los parámetros
+del CRAEST para los alumnos hombres y las alumnas mujeres.</p>
+<p>Como no se tiene recursos para llegar a toda la población, se extrae
+una muestra, que incluye alumnos y alumnas. En cada grupo se puede
+calcular el promedio del CRAEST y se pueden comparar esos promedios
+muestrales.</p>
+<p><img src="5.1.png" width="386" /></p>
+<p>Es decir, esta prueba buscar dar luces si la diferencia <span
+class="math inline">\(\overline{X}_1 - \overline{X}_2\)</span> se puede
+extrapolar a la diferencia <span class="math inline">\(\mu_{x1} -
+\mu_{x2}\)</span>.</p>
+</div>
+<div id="los-6-pasos-de-la-inferencia-estadística"
+class="section level1">
+<h1>Los 6 pasos de la inferencia estadística</h1>
+<p>Estos 6 pasos básicamente se seguirán en toda prueba inferencial,
+donde se quiera extrapolar un resultado de la muestra a la
+población.</p>
+<div id="paso-1-hipótesis" class="section level2">
+<h2>Paso 1: hipótesis</h2>
+<p><em>ANALOGÍA DEL JUICIO: el acusado entra el juicio con presunción de
+inocencia.</em></p>
+<p>Formular la hipótesis nula y la hipótesis alternativa. Ambas
+hipótesis son acerca de los parámetros.</p>
+<p>H0: <span class="math inline">\(\mu_{x1} - \mu_{x2} = 0\)</span></p>
+<p>HA: <span class="math inline">\(\mu_{x1} - \mu_{x2} \ne
+0\)</span></p>
+<p>La H0 es generalmente la hipótesis de no efecto, de no diferencias.
+Se parte siempre de una hipótesis de no diferencias. Esta es la
+hipótesis que se busca negar mediante los resultados obtenidos en la
+muestra.</p>
+<p>La idea central es que si la H0 fuera cierta en la población, los
+resultados muestrales ocurrirían muy cerca a 0 en muchas muestras y
+pocas muestras tendrán valores muy diferentes de cero.</p>
+</div>
+<div id="paso-2-distribución-muestral" class="section level2">
+<h2>Paso 2: distribución muestral</h2>
+<p><em>ANALOGÍA DEL JUICIO: Si el acusado es inocente, entonces no
+debería existir tales o cuales pruebas</em></p>
+<p>Si la H0 es verdadera y se extraen muestras repetidamente, las
+diferencias muestrales se centrarán alrededor de cero como una
+distribución t aproximadamente normal. Esta distribución tendrá un error
+estándar calculado</p>
+<ul>
+<li>Si las varianzas poblacionales son iguales de:</li>
+</ul>
+<p><span class="math display">\[
+s_{\overline{x1}-\overline{x2}} =
+\sqrt{\frac{(n_1-1)s_{x1}^2+(n_2-1)s_{x2}^2}{n_1+n_2-2}}*\sqrt{\frac{n_1+n_2}{n_1n_2}}
+\]</span></p>
+<ul>
+<li>Si las varianzas poblacionales son diferentes de:</li>
+</ul>
+<p><span class="math display">\[
+s_{\overline{x1}-\overline{x2}} =
+\sqrt{\frac{s_{X1}^2}{n_1-1}+\frac{s_{X2}^2}{n_2-1}}
+\]</span></p>
+</div>
+<div id="paso-3-nivel-de-significancia" class="section level2">
+<h2>Paso 3: nivel de significancia</h2>
+<p><em>ANALOGÍA DEL JUICIO: qué tantas pruebas debe haber para
+sentenciar al acusado?</em></p>
+<p>Se trata de la probabilidad que define qué tan inusual debe ser la
+diferencia de medias muestral para rechazar la H0 (que la diferencia de
+medias poblacionales sea 0). El valor más común es de <span
+class="math inline">\(\alpha=0.05\)</span>.</p>
+<p>Es decir, qué tan diferente debe ser la diferencia de medias
+muestrales de cero para poder afirmar que este valor es muy “raro” o
+“diferente” si es que la H0 fuera cierta.</p>
+</div>
+<div id="paso-4-observación" class="section level2">
+<h2>Paso 4: observación</h2>
+<p><em>ANALOGÍA DEL JUICIO: Qué pruebas trae el fiscal y la
+policía?</em></p>
+<p>Se calcula el estadístico de la prueba. Este estadístico lo que hace
+es “medir” qué tan “raro” o “diferente” es el valor encontrado.</p>
+<p><span class="math display">\[
+t_{\overline{x1}-\overline{x2}}=\frac{\overline{X}_1-\overline{X}_2}{s_{\overline{X}_1-\overline{X}_2}}
+\]</span></p>
+<p>Este valor del estadístico de la prueba está en unidades del error
+estándar, es decir, qué tan cerca o lejos se encuentra del centro de la
+distribución (centrada en 0).</p>
+<p>Con este valor, en la distribución t se calcula la probabilidad de
+que este valor ocurra, el valor de p-value. Es decir, el p-value mide la
+probabilidad de observar en una muestra una diferencia de medias como la
+observada, si la diferencia de medias poblacional fuera cero.</p>
+<p>Se puede usar una calculadora de p-value de la distribución t
+disponible <a href="https://www.socscistatistics.com/tests/">aquí</a>.
+En la práctica, cualquier software estadístico nos brinda el resultado
+del p-value.</p>
+</div>
+<div id="paso-5-decisión" class="section level2">
+<h2>Paso 5: decisión</h2>
+<p><em>ANALOGÍA DEL JUICIO: Juez decide si las pruebas no son lo
+suficientemente sólidas para condenar al acusado. O, si son lo
+suficientemente sólidas para condenarlo.</em></p>
+<ul>
+<li>Si el p-value &gt; 0.05, entonces se falla en rechazar la Ho. Esto
+indicaría que existe más de 5% de probabilidades que una muestra
+aleatoria cualquiera encuentre una diferencia de medias como la
+observada si es que la diferencia de medias poblacional fuese 0.</li>
+</ul>
+<p><img src="5.2.png" width="112" /></p>
+<ul>
+<li>Si el p-value &lt;= 0.05 entonces se rechaza H0 y se afirma HA
+(siempre con un grado de incertidumbre). Esto indicaría que la
+probabilidad de observar una diferencia de medias como la observada en
+la muestra es baja (menor a 5%). Como sí se ha observado esa diferencia
+de medias en la muestra, entonces se concluye que lo más probable es que
+la hipótesis que indica que la diferencia de medias poblacional es 0 sea
+falsa.</li>
+</ul>
+<p><img src="5.3.png" width="150" /></p>
+</div>
+<div id="paso-6-interpretación" class="section level2">
+<h2>Paso 6: interpretación</h2>
+<p><em>ANALOGÍA DEL JUICIO: Si no hay suficientes pruebas, nunca se
+afirma que el acusado es inocente!!! Se afirma que no es culpable. Si
+hay suficientes pruebas, se afirma que el acusado es culpable.</em></p>
+<ul>
+<li><p>Si el p-value es &gt; 0.05, la conclusión es que no se puede
+rechazar la Ho. La conclusión NO es que se afirma la H0. Nunca se afirma
+que las medias sean iguales!!!</p></li>
+<li><p>Con los datos obtenidos, no se puede decir que existe una
+diferencia de medias entre ambos grupos.</p></li>
+<li><p>Si el p-value es &lt;= 0.05, se afirma que sí existe una
+diferencia de medias entre ambos grupos con un 95% de
+confianza.</p></li>
+</ul>
+</div>
+</div>
+<div id="ejemplo-1-de-variable-numérica-endo-2020"
+class="section level1">
+<h1>Ejemplo 1 de variable numérica: ENDO 2020</h1>
+<p>Importamos la base de datos</p>
+<pre class="r"><code>library(rio)
+endo2020 = import(&quot;bases/ENDO_REMOTO_2020.dta&quot;)</code></pre>
+<p>Factorizamos la variable P1_1 y creamos variable sexo con sus
+etiquetas.</p>
+<pre class="r"><code>library(dplyr)
+library(tidyverse)
+endo2020 = endo2020 |&gt;
+  mutate(sexo = factor(P1_1, labels=c(&quot;Hombre&quot;, &quot;Mujer&quot;)))</code></pre>
+<p>Queremos evaluar la diferencia de medias entre el número de alumnos
+con los que trabaja un profesor hombre y una profesora mujer. Para esto
+calculamos la media de alumnos para cada grupo.</p>
+<pre class="r"><code>alumxsexo = endo2020 |&gt; 
+  group_by(sexo) |&gt;
+  summarize(Media = mean(P1_6, na.rm = T))
+alumxsexo</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##   sexo   Media
+##   &lt;fct&gt;  &lt;dbl&gt;
+## 1 Hombre  52.2
+## 2 Mujer   34.1
+## 3 &lt;NA&gt;   NaN</code></pre>
+<p>Con esta tabla, calculamos la diferencia entre las medias de los
+grupos.</p>
+<pre class="r"><code>alumxsexo[1,2] - alumxsexo[2,2]</code></pre>
+<pre><code>##      Media
+## 1 18.18187</code></pre>
+<p>La diferencia es de 18.2 alumnos. Esta diferencia es para el grupo de
+28 mil profesores encuestados. La pregunta es: ¿Se puede afirmar que
+existe esta diferencia en la población?</p>
+<p>Para esto, lo primero es evaluar la hipótesis de la igualdad de
+varianzas mediante el test de Levene. Para esto usamos el comando
+<code>LeveneTest,</code> que es parte de la librería
+<code>DescTools</code>.</p>
+<pre class="r"><code>library(DescTools)
+LeveneTest(endo2020$P1_6, endo2020$sexo)</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##          Df F value    Pr(&gt;F)    
+## group     1  585.39 &lt; 2.2e-16 ***
+##       18948                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Como el p-value es &lt; 0.05, se rechazar la igualdad de varianzas,
+por lo que se tiene que asumir que son diferentes. Para evaluar si
+existen o no diferencias poblacionales, usamos el comando
+<code>t.test</code>. Este comando requiere de la especificación
+<code>var.equal=F</code>, de acuerdo a los resultados de la prueba de
+Levene.</p>
+<pre class="r"><code>t.test(P1_6 ~ sexo, data = endo2020, var.equal=F)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  P1_6 by sexo
+## t = 21.079, df = 9466.6, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means between group Hombre and group Mujer is not equal to 0
+## 95 percent confidence interval:
+##  16.49110 19.87264
+## sample estimates:
+## mean in group Hombre  mean in group Mujer 
+##             52.24745             34.06558</code></pre>
+<p>Como el p-value &lt; 0.05, entonces se rechaza la H0 y se puede
+afirmar que esa diferencia existe en la población a tal nivel de
+significancia.</p>
+</div>
+<div id="ejemplo-2-de-variable-numérica-lapop" class="section level1">
+<h1>Ejemplo 2 de variable numérica: LAPOP</h1>
+<pre class="r"><code>lapop = import(&quot;bases/PER_2006-2021.dta&quot;)</code></pre>
+<p>¿Existen diferencias en el apoyo a las fuerzas del orden entre
+hombres y mujeres?</p>
+<p>Se podría hipotetizar que los hokmbres tendrían un mayor apoyo a las
+fuerzas del orden. Esta pregunta se responde mediante una prueba
+estadística. Dado que podemos tratar al índice aditivo como una variable
+numérica y queremos comparar este índice entre 2 grupos, se puede usar
+la prueba t para dar evidencia sobre esta pregunta.</p>
+<pre class="r"><code>library(dplyr)
+lapop = lapop |&gt;
+  mutate(indice = (b12+b18-2)/12*100)</code></pre>
+<pre class="r"><code>library(DescTools)
+LeveneTest(lapop$indice, lapop$q1)</code></pre>
+<pre><code>## Warning in LeveneTest.default(lapop$indice, lapop$q1): lapop$q1 coerced to
+## factor.</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##          Df F value  Pr(&gt;F)  
+## group     1  3.1603 0.07548 .
+##       11504                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>t.test(indice ~ q1, data = lapop, var.equal=T)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  indice by q1
+## t = 3.6635, df = 11504, p-value = 0.0002499
+## alternative hypothesis: true difference in means between group 1 and group 2 is not equal to 0
+## 95 percent confidence interval:
+##  0.7497799 2.4754858
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        49.26729        47.65466</code></pre>
+</div>
+<div
+id="ejemplo-de-variable-categórica-para-la-diferencia-de-proporciones-endo"
+class="section level1">
+<h1>Ejemplo de variable categórica para la diferencia de proporciones:
+ENDO</h1>
+<p>Se vio en el módulo anterior que se podía evaluar si existen
+diferencias entre la proporción de profesores hombres que habían
+recibido apoyo psicológico comparado con las profesoras mujeres.</p>
+<p>La prueba adecuada para evaluar una prueba de diferencia de
+proporciones es mediante el comando <code>prop.test</code>. Este
+comando, como se puede ver en el “help”, pide como argumentos los datos
+de “éxitos” (la proporción que se quiere evaluar) y los datos de
+“intentos” (el n total). Es decir, a diferencia del comando
+<code>t.test</code> que pido como argumentos las variables, aquí se
+tiene primero que encontrar los “éxitos” e “intentos”.</p>
+<p>Primero se tiene que transformar la variable P1_13 que es importada
+como numérica, como una variable de factor y con sus etiquetas.</p>
+<pre class="r"><code>endo2020 = endo2020 |&gt;
+  mutate(apoyo = factor(P1_13, labels=c(&quot;Sí&quot;, &quot;No&quot;)))</code></pre>
+<p>Luego, para responder a la pregunta de si esta proporción varía entre
+docentes hombres y mujeres, tenemos que crear otra tabla con las
+frecuencias por cada grupo de la variable “sexo” y “apoyo”.</p>
+<p>A diferencia del módulo anterior, aquí vamos a usar
+<code>group_by</code> de ambas variables y en cada grupo calcular el N
+total. Esto nos dará los éxitos que requerimos.</p>
+<pre class="r"><code>tabla1 = endo2020 |&gt;
+  filter(apoyo ==&quot;Sí&quot; | apoyo == &quot;No&quot;) |&gt;
+  group_by(sexo) |&gt;
+  count(apoyo = apoyo, name=&quot;N&quot;)|&gt;
+  mutate(total = sum(N))
+tabla1</code></pre>
+<pre><code>## # A tibble: 4 × 4
+## # Groups:   sexo [2]
+##   sexo   apoyo     N total
+##   &lt;fct&gt;  &lt;fct&gt; &lt;int&gt; &lt;int&gt;
+## 1 Hombre Sí     2777  6163
+## 2 Hombre No     3386  6163
+## 3 Mujer  Sí     6699 12767
+## 4 Mujer  No     6068 12767</code></pre>
+<p>Con estos datos, corremos el comando <code>prop.test</code>.</p>
+<pre class="r"><code>prop.test(c(2777, 6699), c(6163,12767))</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity correction
+## 
+## data:  c(2777, 6699) out of c(6163, 12767)
+## X-squared = 91.044, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.08938432 -0.05885549
+## sample estimates:
+##    prop 1    prop 2 
+## 0.4505922 0.5247121</code></pre>
+<p>Según los resultados, se encuentra que el 52.5% de docentes mujeres
+recibieron apoyo psicológico versus el 45.1% de docentes hombres. Este
+comando nos brinda el IC de la diferencia de proporciones al 95% de
+confianza. Este IC de la diferencia de proporciones varía entre -8.9% y
+-5.9%. La diferencia de proporciones tiene un p-value &lt; 2.2e-16, que
+es menor a 0.05, por lo que se rechaza la H0 y se afirma que la
+diferencia en porcentajes entre hombres y mujeres es estadísticamente
+significativa en la población. Es decir, que las profesoras peruanas
+reciben más ayuda psicológica que los profesores peruanos.</p>
+<p>Otro ejemplo es evaluar si la condición laboral de “Nombrado” (P1_7)
+varía entre hombres y mujeres. Lo primero es factorizar la variable.</p>
+<pre class="r"><code>endo2020 = endo2020 |&gt;
+  mutate(condicion = factor(P1_7, labels=c(&quot;Nombrado&quot;, 
+                                           &quot;Contratado por concurso&quot;, 
+                                           &quot;Contratado con otra modalidad&quot;)))</code></pre>
+<p>Luego, se crea la tabla con los datos que requerimos.</p>
+<pre class="r"><code>tabla2 = endo2020 |&gt;
+  filter(condicion ==&quot;Nombrado&quot; | condicion == &quot;Contratado por concurso&quot;
+  | condicion == &quot;Contratado con otra modalidad&quot;) |&gt;
+  group_by(sexo) |&gt;
+  count(condicion = condicion, name=&quot;N&quot;)|&gt;
+  mutate(total = sum(N))
+tabla2</code></pre>
+<pre><code>## # A tibble: 6 × 4
+## # Groups:   sexo [2]
+##   sexo   condicion                         N total
+##   &lt;fct&gt;  &lt;fct&gt;                         &lt;int&gt; &lt;int&gt;
+## 1 Hombre Nombrado                       3303  6171
+## 2 Hombre Contratado por concurso        2830  6171
+## 3 Hombre Contratado con otra modalidad    38  6171
+## 4 Mujer  Nombrado                       7140 12779
+## 5 Mujer  Contratado por concurso        5578 12779
+## 6 Mujer  Contratado con otra modalidad    61 12779</code></pre>
+<p>Con esta tabla se encuentra que entre los hombres se tiene 3303
+éxitos y para las mujeres un total de 7140 éxitos. Lo que no se
+encuentra directamente es el total, que se tiene que calcular sobre cada
+grupo, sobre cada columna.</p>
+<p>De esta manera se encuentra que entre los hombres se tiene 3303
+éxitos de un total de 6171 intentos (53.5.4%). Entre los mujeres se
+tiene 7140 intentos de un total de 12779 intentos (55.9%).</p>
+<p>Para tener una mejor presentación de la tabla cuando se produce el
+html, se puede usar la librería <code>knitr</code> y el comando
+<code>kable</code>.</p>
+<pre class="r"><code>library(knitr)
+kable(head(tabla2), format=&quot;markdown&quot;, digits=1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">sexo</th>
+<th align="left">condicion</th>
+<th align="right">N</th>
+<th align="right">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Hombre</td>
+<td align="left">Nombrado</td>
+<td align="right">3303</td>
+<td align="right">6171</td>
+</tr>
+<tr class="even">
+<td align="left">Hombre</td>
+<td align="left">Contratado por concurso</td>
+<td align="right">2830</td>
+<td align="right">6171</td>
+</tr>
+<tr class="odd">
+<td align="left">Hombre</td>
+<td align="left">Contratado con otra modalidad</td>
+<td align="right">38</td>
+<td align="right">6171</td>
+</tr>
+<tr class="even">
+<td align="left">Mujer</td>
+<td align="left">Nombrado</td>
+<td align="right">7140</td>
+<td align="right">12779</td>
+</tr>
+<tr class="odd">
+<td align="left">Mujer</td>
+<td align="left">Contratado por concurso</td>
+<td align="right">5578</td>
+<td align="right">12779</td>
+</tr>
+<tr class="even">
+<td align="left">Mujer</td>
+<td align="left">Contratado con otra modalidad</td>
+<td align="right">61</td>
+<td align="right">12779</td>
+</tr>
+</tbody>
+</table>
+<p>Estos datos son los que requiere el comando <code>prop.table</code>
+para evaluar la diferencia de proporciones (9.7-6.4= 3.3%).</p>
+<pre class="r"><code>prop.test(x=c(3303, 7140), n=c(6171, 12779), conf.level=0.95)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity correction
+## 
+## data:  c(3303, 7140) out of c(6171, 12779)
+## X-squared = 9.182, df = 1, p-value = 0.002444
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.038735472 -0.008231852
+## sample estimates:
+##    prop 1    prop 2 
+## 0.5352455 0.5587292</code></pre>
+<p>Como se observa de los resultados, el estadístico de la prueba
+“X-squared” se llama chi-cuadrado y no es el mismo que el estadístico t.
+El p-value asociado es 0.0025 &lt; 0.05, por lo que lleva a la
+conclusión de rechazar la H0 de igualdad de proporciones y afirmar que
+entre ambos grupos existe una diferencia en la proporción de “nombrados”
+entre hombres y mujeres en la población.</p>
+<p>Es importante notar cuando se concluye que <em>no se puede decir</em>
+o <em>no se puede afirmar.</em> Cuando se obtiene un p-value &lt;= 0.05,
+se rechaza la H0 y se afirma la HA, que la diferencia existe en la
+población con un 95% de confianza. Pero, cuando se obtiene un p-value
+&gt; 0.05, no se afirma la HA, lo que se concluye es que no se puede
+rechazar la H0. Esto quiere decir que no afirmamos que las medias
+poblacionales sean iguales, sino que, con los datos que tenemos, no
+podemos decir que son diferentes.</p>
+<p>Para aclarar esto, vale la pena hacer una analogía jurídica.</p>
+</div>
+<div id="analogía-del-juicio" class="section level1">
+<h1>Analogía del juicio</h1>
+<p>Ya sea mediante nuestra experiencia viendo JusticiaTV o viendo series
+sobre abogados, la imagen que tenemos de un juicio es como esta
+imagen.</p>
+<p><img src="5.juicio.jpeg" width="472" /></p>
+<p>En esta imagen hay varios actores:</p>
+<ul>
+<li><p>El acusado: entre rejas y con el traje naranja.</p></li>
+<li><p>El policía que cuida al acusado, pero que también simboliza a la
+institución que se encarga del recojo de pruebas.</p></li>
+<li><p>El fiscal o parte acusadora: que se encuentra mostrando una
+imagen de un cuchillo, posiblemente tomada por un policía.</p></li>
+<li><p>Los abogados defensores: sentados.</p></li>
+<li><p>El jurado: que evalúan las pruebas y tienen la facultad de emitir
+un veredicto.</p></li>
+<li><p>El juez: que anuncia el veredicto y le da carácter
+legal.</p></li>
+</ul>
+<p>La lógica que sigue este tipo de procedimiento es similar a la que
+sigue una prueba de inferencia estadística.</p>
+<ul>
+<li><p>La H0 es la hipótesis de no efecto. En el caso del juicio es el
+supuesto de entrada de que el acusado es inocente. Se llama “presunción
+de inocencia”. La hipótesis alternativa es que es culpable, pero para
+llegar a ella se requiere negar la H0 mediante datos o
+“evidencia”.</p></li>
+<li><p>La policía es la que recoge la evidencia para que la fiscalía
+pueda acusar. Es decir, la policía armaría la “base de datos” de
+evidencia.</p></li>
+<li><p>La labor de la fiscalía (la parte que acusa) es armar el caso. Es
+decir, presentar la evidencia recogida por la policía de tal manera que
+el jurado se convenza del caso. La fiscalía sería como la prueba de
+inferencia estadística.</p></li>
+<li><p>Mientras más y mejor evidencia presente la fiscalía, más
+elementos para que el jurado rechace la H0 de “presunción de
+inocencia”.</p></li>
+<li><p>Si la evidencia no es sólida, el jurado tendrá dudas y puede no
+rechazar la Ho de presunción de inocencia.</p></li>
+<li><p>En el juicio no hay una medida matemática que resuma la evidencia
+a favor o en contra (como el p-value) ni un valor crítico para tomar una
+decisión. Se asume que los jurados sabrán establecer ese límite en el
+cual la evidencia es lo suficientemente sólida para rechazar la
+H0.</p></li>
+<li><p>Si la evidencia cruza ese umbral de los jurados, se rechazará la
+H0. El jurado recomendará su decisión al juez. El juez anunciará que el
+acusado es “culpable”. Es decir, se afirma la HA.</p></li>
+<li><p>Si la evidencia no cruza ese umbral de los jurados, no se rechaza
+la H0. El jurado trasladará su decisión al juez y el juez anunciará que
+el acusado “no es culpable”. Es decir, no se puede rechazar la
+H0.</p></li>
+<li><p>Es importante notar la decisión cuando la evidencia no es sólida.
+No es lo mismo decir “no es culpable” a decir “es inocente”. Decir que
+el acusado no es culpable involucra una situación de incertidumbre. Por
+ejemplo, si la policía no hizo bien su trabajo y no recogió la evidencia
+de manera adecuada, es posible que haya dudas con respecto al acusado.
+Decir que el acusado es inocente, por el contrario, implica una certeza,
+que la evidencia es contundente en apuntar en esa dirección.</p></li>
+<li><p>A pesar que este método es científico puede llevar a
+errores.</p></li>
+<li><p>Falso positivo (o error de tipo I): cuando declaras culpable a un
+inocente.</p></li>
+<li><p>Falso negativo (o error de tipo II): cuando declaras no culpable
+a un culpable.</p></li>
+</ul>
+<p><img src="error%20tipo%201%20y%202.jpg" width="466" /></p>
+<ul>
+<li>Para evitar falsos positivos se propone pedir evidencia cada vez más
+sólida para condenar a alguien. Pero, si se exige evidencia cada vez más
+solida, aumenta la probabilidad de falsos negativos. Ambos tipos de
+errores se contrabalancean mutuamente.</li>
+</ul>
+<p><img src="chef.png" width="439" /></p>
+<p>¿Qué tipo de error es más pernicioso? Es un tema que los filósofos
+tratan de responder.</p>
+<p>“There are two ways to be fooled. One is to believe what isn´t true.
+The other is to refuse to believe what is true” (Soren Kierkegaard).</p>
+</div>
+<div id="nota-final" class="section level1">
+<h1>Nota final</h1>
+<p>Este procedimiento se podría decir que es parte del método
+científico, en el sentido popperiano de “falseabilidad”. Desde esta
+perspectiva, una investigación científica parte de una hipótesis de no
+efecto que busca negar con evidencia empírica para llegar a la
+conclusión que sí existen ese efecto. Las conclusiones a las que se
+llegan siempre tienen un componente de incertidumbre.</p>
+<p>Este método es contraintuitivo. El ser humano, por el contrario,
+generalmente busca evidencia para afirmar una hipótesis de que existe un
+efecto o relación. En cierto sentido, se busca reafirmar las
+prenociones.</p>
+<p>Por ejemplo, no es lo mismo partir de la hipótesis que la “revolución
+capitalista” en el Perú trajo bienestar y desarrollo y buscar evidencia
+que apoya esta hipótesis, que partir de la hipótesis que la “revolución
+capitalista” NO trajo bienestar y desarrollo y buscar evidencia
+suficiente para negar esa hipótesis y afirmar que sí lo hizo. Para una
+muestra de esta diferencia ver el <a
+href="https://www.youtube.com/watch?v=935LKOuri54&amp;t=43s">comentario
+de Cotler al libro de Althaus</a>.</p>
+</div>
+<div id="section" class="section level1">
+<h1></h1>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xhc2UgNzogUHJ1ZWJhcyBkZSBzaWduaWZpY2FuY2lhIgphdXRob3I6ICJBcnR1cm8gTWFsZG9uYWRvIgpkYXRlOiAiMzAvMDQvMjAyNCIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgY29sbGFwc2VkOiBmYWxzZQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgdG9jX2RlcHRoOiAxCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICB0aGVtZTogY29zbW8KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUKZWRpdG9yX29wdGlvbnM6CiAgbWFya2Rvd246CiAgICB3cmFwOiBzZW50ZW5jZQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKYGBgCgojIEludHJvZHVjY2nDs24KCkxhIGNvbXBhcmFjacOzbiBkZSBsb3MgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEgZGUgMiBncnVwb3MgZXMgdW4gbcOpdG9kbyAiaW5mb3JtYWwiIHBhcmEgc2FiZXIgc2kgbGFzIGRpZmVyZW5jaWFzIGVuIGxhcyBtZWRpYXMgbyBsYXMgcHJvcG9yY2lvbmVzIGVudHJlIGRvcyBncnVwb3Mgc2UgcHVlZGVuIGV4dHJhcG9sYXIgYSBsYSBwb2JsYWNpw7NuLgpMYSBpZGVhIGVyYSBjYWxjdWxhciBsb3MgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEgcGFyYSBjYWRhIGdydXBvIHkgdmVyIHNpIGxvcyBpbnRlcnZhbG9zIHNlIGludGVyY2VwdGFuIG8gbm8uCkxhIHJlZ2xhIGVyYSBxdWUgc2kgbG9zIGludGVydmFsb3MgZGUgYW1ib3MgZ3J1cG9zIG5vIHNlIGludGVyY2VwdGFiYW4sIHBvZMOtYW1vcyBleHRyYXBvbGFyIHF1ZSBsYSBkaWZlcmVuY2lhIG11ZXN0cmFsIGV4aXN0ZSBlbiBsYSBwb2JsYWNpw7NuIGFsIDk1JSBkZSBjb25maWFuemEuClNpIGxvcyBpbnRlcnZhbG9zIG5vIHNlIHRyYXNsYXBhbiwgZW50b25jZXMgbm8gcG9kZW1vcyBhZmlybWFyIHF1ZSBsYXMgZGlmZXJlbmNpYXMgc2VhbiBzaWduaWZpY2F0aXZhcy4KRW4gZXN0YSBzZWNjacOzbiBzZSB2ZXLDoSBjw7NtbyBwYXNhciBkZSBsYSBldmFsdWFjacOzbiAiaW5mb3JtYWwiIGEgbGEgImZvcm1hbCIgbWVkaWFudGUgbGEgaW50cm9kdWNjacOzbiBhIGxhIHBydWViYSB0IGRlIGRpZmVyZW5jaWEgZGUgbWVkaWFzLgoKIyBQcnVlYmEgdCBkZSBkaWZlcmVuY2lhIGRlIG1lZGlhcwoKRXN0YSBwcnVlYmEgY29tcGFyYSBsYSBtZWRpYSBkZSB1bmEgdmFyaWFibGUgbnVtw6lyaWNhIGVudHJlIGRvcyBncnVwb3MgbyBjYXRlZ29yw61hcyBkZSB1bmEgdmFyaWFibGUgbm9taW5hbCB1IG9yZGluYWwuCkxvcyBncnVwb3MgcXVlIGZvcm1hbiBsYSB2YXJpYWJsZSBub21pbmFsL29yZGluYWwgdGllbmVuIHF1ZSBzZXIgaW5kZXBlbmRpZW50ZXMuCkVzIGRlY2lyLCBjYWRhIG9ic2VydmFjacOzbiBkZWJlIHBlcnRlbmVjZXIgYSB1biBncnVwbyBvIGFsIG90cm8sIHBlcm8gbm8gYSBhbWJvcy4KClBvciBlamVtcGxvLCBzaSBzZSBxdWlzaWVyYSBldmFsdWFyIHNpIGV4aXN0ZW4gZGlmZXJlbmNpYXMgZW4gZWwgcmVuZGltaWVudG8gYWNhZMOpbWljbyBlbnRyZSBhbHVtbm9zIGhvbWJyZXMgeSBtdWplcmVzIGVuIGxhIFBVQ1AsIHRlw7NyaWNhbWVudGUsIHNlIGhhYnLDrWEgcmVnaXN0cmFkbyBlbCBDUkFFU1QgZGUgdG9kb3MgbG9zIGFsdW1ub3MgZGUgbGEgdW5pdmVyc2lkYWQgKFZhcmlhYmxlIFgpIHkgcG9yIGxvIHRhbnRvIHNlIHBvZHLDrWEgdGVuZXIgbG9zIHBhcsOhbWV0cm9zIGRlbCBDUkFFU1QgcGFyYSBsb3MgYWx1bW5vcyBob21icmVzIHkgbGFzIGFsdW1uYXMgbXVqZXJlcy4KCkNvbW8gbm8gc2UgdGllbmUgcmVjdXJzb3MgcGFyYSBsbGVnYXIgYSB0b2RhIGxhIHBvYmxhY2nDs24sIHNlIGV4dHJhZSB1bmEgbXVlc3RyYSwgcXVlIGluY2x1eWUgYWx1bW5vcyB5IGFsdW1uYXMuCkVuIGNhZGEgZ3J1cG8gc2UgcHVlZGUgY2FsY3VsYXIgZWwgcHJvbWVkaW8gZGVsIENSQUVTVCB5IHNlIHB1ZWRlbiBjb21wYXJhciBlc29zIHByb21lZGlvcyBtdWVzdHJhbGVzLgoKIVtdKDUuMS5wbmcpe3dpZHRoPSIzODYifQoKRXMgZGVjaXIsIGVzdGEgcHJ1ZWJhIGJ1c2NhciBkYXIgbHVjZXMgc2kgbGEgZGlmZXJlbmNpYSAkXG92ZXJsaW5le1h9XzEgLSBcb3ZlcmxpbmV7WH1fMiQgc2UgcHVlZGUgZXh0cmFwb2xhciBhIGxhIGRpZmVyZW5jaWEgJFxtdV97eDF9IC0gXG11X3t4Mn0kLgoKIyBMb3MgNiBwYXNvcyBkZSBsYSBpbmZlcmVuY2lhIGVzdGFkw61zdGljYQoKRXN0b3MgNiBwYXNvcyBiw6FzaWNhbWVudGUgc2Ugc2VndWlyw6FuIGVuIHRvZGEgcHJ1ZWJhIGluZmVyZW5jaWFsLCBkb25kZSBzZSBxdWllcmEgZXh0cmFwb2xhciB1biByZXN1bHRhZG8gZGUgbGEgbXVlc3RyYSBhIGxhIHBvYmxhY2nDs24uCgojIyBQYXNvIDE6IGhpcMOzdGVzaXMKCipBTkFMT0fDjUEgREVMIEpVSUNJTzogZWwgYWN1c2FkbyBlbnRyYSBlbCBqdWljaW8gY29uIHByZXN1bmNpw7NuIGRlIGlub2NlbmNpYS4qCgpGb3JtdWxhciBsYSBoaXDDs3Rlc2lzIG51bGEgeSBsYSBoaXDDs3Rlc2lzIGFsdGVybmF0aXZhLgpBbWJhcyBoaXDDs3Rlc2lzIHNvbiBhY2VyY2EgZGUgbG9zIHBhcsOhbWV0cm9zLgoKSDA6ICRcbXVfe3gxfSAtIFxtdV97eDJ9ID0gMCQKCkhBOiAkXG11X3t4MX0gLSBcbXVfe3gyfSBcbmUgMCQKCkxhIEgwIGVzIGdlbmVyYWxtZW50ZSBsYSBoaXDDs3Rlc2lzIGRlIG5vIGVmZWN0bywgZGUgbm8gZGlmZXJlbmNpYXMuClNlIHBhcnRlIHNpZW1wcmUgZGUgdW5hIGhpcMOzdGVzaXMgZGUgbm8gZGlmZXJlbmNpYXMuCkVzdGEgZXMgbGEgaGlww7N0ZXNpcyBxdWUgc2UgYnVzY2EgbmVnYXIgbWVkaWFudGUgbG9zIHJlc3VsdGFkb3Mgb2J0ZW5pZG9zIGVuIGxhIG11ZXN0cmEuCgpMYSBpZGVhIGNlbnRyYWwgZXMgcXVlIHNpIGxhIEgwIGZ1ZXJhIGNpZXJ0YSBlbiBsYSBwb2JsYWNpw7NuLCBsb3MgcmVzdWx0YWRvcyBtdWVzdHJhbGVzIG9jdXJyaXLDrWFuIG11eSBjZXJjYSBhIDAgZW4gbXVjaGFzIG11ZXN0cmFzIHkgcG9jYXMgbXVlc3RyYXMgdGVuZHLDoW4gdmFsb3JlcyBtdXkgZGlmZXJlbnRlcyBkZSBjZXJvLgoKIyMgUGFzbyAyOiBkaXN0cmlidWNpw7NuIG11ZXN0cmFsCgoqQU5BTE9Hw41BIERFTCBKVUlDSU86IFNpIGVsIGFjdXNhZG8gZXMgaW5vY2VudGUsIGVudG9uY2VzIG5vIGRlYmVyw61hIGV4aXN0aXIgdGFsZXMgbyBjdWFsZXMgcHJ1ZWJhcyoKClNpIGxhIEgwIGVzIHZlcmRhZGVyYSB5IHNlIGV4dHJhZW4gbXVlc3RyYXMgcmVwZXRpZGFtZW50ZSwgbGFzIGRpZmVyZW5jaWFzIG11ZXN0cmFsZXMgc2UgY2VudHJhcsOhbiBhbHJlZGVkb3IgZGUgY2VybyBjb21vIHVuYSBkaXN0cmlidWNpw7NuIHQgYXByb3hpbWFkYW1lbnRlIG5vcm1hbC4KRXN0YSBkaXN0cmlidWNpw7NuIHRlbmRyw6EgdW4gZXJyb3IgZXN0w6FuZGFyIGNhbGN1bGFkbwoKLSAgIFNpIGxhcyB2YXJpYW56YXMgcG9ibGFjaW9uYWxlcyBzb24gaWd1YWxlcyBkZToKCiQkCnNfe1xvdmVybGluZXt4MX0tXG92ZXJsaW5le3gyfX0gPSBcc3FydHtcZnJhY3sobl8xLTEpc197eDF9XjIrKG5fMi0xKXNfe3gyfV4yfXtuXzErbl8yLTJ9fSpcc3FydHtcZnJhY3tuXzErbl8yfXtuXzFuXzJ9fQokJAoKLSAgIFNpIGxhcyB2YXJpYW56YXMgcG9ibGFjaW9uYWxlcyBzb24gZGlmZXJlbnRlcyBkZToKCiQkCnNfe1xvdmVybGluZXt4MX0tXG92ZXJsaW5le3gyfX0gPSBcc3FydHtcZnJhY3tzX3tYMX1eMn17bl8xLTF9K1xmcmFje3Nfe1gyfV4yfXtuXzItMX19CiQkCgojIyBQYXNvIDM6IG5pdmVsIGRlIHNpZ25pZmljYW5jaWEKCipBTkFMT0fDjUEgREVMIEpVSUNJTzogcXXDqSB0YW50YXMgcHJ1ZWJhcyBkZWJlIGhhYmVyIHBhcmEgc2VudGVuY2lhciBhbCBhY3VzYWRvPyoKClNlIHRyYXRhIGRlIGxhIHByb2JhYmlsaWRhZCBxdWUgZGVmaW5lIHF1w6kgdGFuIGludXN1YWwgZGViZSBzZXIgbGEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgbXVlc3RyYWwgcGFyYSByZWNoYXphciBsYSBIMCAocXVlIGxhIGRpZmVyZW5jaWEgZGUgbWVkaWFzIHBvYmxhY2lvbmFsZXMgc2VhIDApLgpFbCB2YWxvciBtw6FzIGNvbcO6biBlcyBkZSAkXGFscGhhPTAuMDUkLgoKRXMgZGVjaXIsIHF1w6kgdGFuIGRpZmVyZW50ZSBkZWJlIHNlciBsYSBkaWZlcmVuY2lhIGRlIG1lZGlhcyBtdWVzdHJhbGVzIGRlIGNlcm8gcGFyYSBwb2RlciBhZmlybWFyIHF1ZSBlc3RlIHZhbG9yIGVzIG11eSAicmFybyIgbyAiZGlmZXJlbnRlIiBzaSBlcyBxdWUgbGEgSDAgZnVlcmEgY2llcnRhLgoKIyMgUGFzbyA0OiBvYnNlcnZhY2nDs24KCipBTkFMT0fDjUEgREVMIEpVSUNJTzogUXXDqSBwcnVlYmFzIHRyYWUgZWwgZmlzY2FsIHkgbGEgcG9saWPDrWE/KgoKU2UgY2FsY3VsYSBlbCBlc3RhZMOtc3RpY28gZGUgbGEgcHJ1ZWJhLgpFc3RlIGVzdGFkw61zdGljbyBsbyBxdWUgaGFjZSBlcyAibWVkaXIiIHF1w6kgdGFuICJyYXJvIiBvICJkaWZlcmVudGUiIGVzIGVsIHZhbG9yIGVuY29udHJhZG8uCgokJAp0X3tcb3ZlcmxpbmV7eDF9LVxvdmVybGluZXt4Mn19PVxmcmFje1xvdmVybGluZXtYfV8xLVxvdmVybGluZXtYfV8yfXtzX3tcb3ZlcmxpbmV7WH1fMS1cb3ZlcmxpbmV7WH1fMn19CiQkCgpFc3RlIHZhbG9yIGRlbCBlc3RhZMOtc3RpY28gZGUgbGEgcHJ1ZWJhIGVzdMOhIGVuIHVuaWRhZGVzIGRlbCBlcnJvciBlc3TDoW5kYXIsIGVzIGRlY2lyLCBxdcOpIHRhbiBjZXJjYSBvIGxlam9zIHNlIGVuY3VlbnRyYSBkZWwgY2VudHJvIGRlIGxhIGRpc3RyaWJ1Y2nDs24gKGNlbnRyYWRhIGVuIDApLgoKQ29uIGVzdGUgdmFsb3IsIGVuIGxhIGRpc3RyaWJ1Y2nDs24gdCBzZSBjYWxjdWxhIGxhIHByb2JhYmlsaWRhZCBkZSBxdWUgZXN0ZSB2YWxvciBvY3VycmEsIGVsIHZhbG9yIGRlIHAtdmFsdWUuCkVzIGRlY2lyLCBlbCBwLXZhbHVlIG1pZGUgbGEgcHJvYmFiaWxpZGFkIGRlIG9ic2VydmFyIGVuIHVuYSBtdWVzdHJhIHVuYSBkaWZlcmVuY2lhIGRlIG1lZGlhcyBjb21vIGxhIG9ic2VydmFkYSwgc2kgbGEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgcG9ibGFjaW9uYWwgZnVlcmEgY2Vyby4KClNlIHB1ZWRlIHVzYXIgdW5hIGNhbGN1bGFkb3JhIGRlIHAtdmFsdWUgZGUgbGEgZGlzdHJpYnVjacOzbiB0IGRpc3BvbmlibGUgW2FxdcOtXShodHRwczovL3d3dy5zb2NzY2lzdGF0aXN0aWNzLmNvbS90ZXN0cy8pLgpFbiBsYSBwcsOhY3RpY2EsIGN1YWxxdWllciBzb2Z0d2FyZSBlc3RhZMOtc3RpY28gbm9zIGJyaW5kYSBlbCByZXN1bHRhZG8gZGVsIHAtdmFsdWUuCgojIyBQYXNvIDU6IGRlY2lzacOzbgoKKkFOQUxPR8ONQSBERUwgSlVJQ0lPOiBKdWV6IGRlY2lkZSBzaSBsYXMgcHJ1ZWJhcyBubyBzb24gbG8gc3VmaWNpZW50ZW1lbnRlIHPDs2xpZGFzIHBhcmEgY29uZGVuYXIgYWwgYWN1c2Fkby4gTywgc2kgc29uIGxvIHN1ZmljaWVudGVtZW50ZSBzw7NsaWRhcyBwYXJhIGNvbmRlbmFybG8uKgoKLSAgIFNpIGVsIHAtdmFsdWUgXD4gMC4wNSwgZW50b25jZXMgc2UgZmFsbGEgZW4gcmVjaGF6YXIgbGEgSG8uIEVzdG8gaW5kaWNhcsOtYSBxdWUgZXhpc3RlIG3DoXMgZGUgNSUgZGUgcHJvYmFiaWxpZGFkZXMgcXVlIHVuYSBtdWVzdHJhIGFsZWF0b3JpYSBjdWFscXVpZXJhIGVuY3VlbnRyZSB1bmEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgY29tbyBsYSBvYnNlcnZhZGEgc2kgZXMgcXVlIGxhIGRpZmVyZW5jaWEgZGUgbWVkaWFzIHBvYmxhY2lvbmFsIGZ1ZXNlIDAuCgohW10oNS4yLnBuZyl7d2lkdGg9IjExMiJ9CgotICAgU2kgZWwgcC12YWx1ZSBcPD0gMC4wNSBlbnRvbmNlcyBzZSByZWNoYXphIEgwIHkgc2UgYWZpcm1hIEhBIChzaWVtcHJlIGNvbiB1biBncmFkbyBkZSBpbmNlcnRpZHVtYnJlKS4gRXN0byBpbmRpY2Fyw61hIHF1ZSBsYSBwcm9iYWJpbGlkYWQgZGUgb2JzZXJ2YXIgdW5hIGRpZmVyZW5jaWEgZGUgbWVkaWFzIGNvbW8gbGEgb2JzZXJ2YWRhIGVuIGxhIG11ZXN0cmEgZXMgYmFqYSAobWVub3IgYSA1JSkuIENvbW8gc8OtIHNlIGhhIG9ic2VydmFkbyBlc2EgZGlmZXJlbmNpYSBkZSBtZWRpYXMgZW4gbGEgbXVlc3RyYSwgZW50b25jZXMgc2UgY29uY2x1eWUgcXVlIGxvIG3DoXMgcHJvYmFibGUgZXMgcXVlIGxhIGhpcMOzdGVzaXMgcXVlIGluZGljYSBxdWUgbGEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgcG9ibGFjaW9uYWwgZXMgMCBzZWEgZmFsc2EuCgohW10oNS4zLnBuZyl7d2lkdGg9IjE1MCJ9CgojIyBQYXNvIDY6IGludGVycHJldGFjacOzbgoKKkFOQUxPR8ONQSBERUwgSlVJQ0lPOiBTaSBubyBoYXkgc3VmaWNpZW50ZXMgcHJ1ZWJhcywgbnVuY2Egc2UgYWZpcm1hIHF1ZSBlbCBhY3VzYWRvIGVzIGlub2NlbnRlISEhIFNlIGFmaXJtYSBxdWUgbm8gZXMgY3VscGFibGUuIFNpIGhheSBzdWZpY2llbnRlcyBwcnVlYmFzLCBzZSBhZmlybWEgcXVlIGVsIGFjdXNhZG8gZXMgY3VscGFibGUuKgoKLSAgIFNpIGVsIHAtdmFsdWUgZXMgXD4gMC4wNSwgbGEgY29uY2x1c2nDs24gZXMgcXVlIG5vIHNlIHB1ZWRlIHJlY2hhemFyIGxhIEhvLgogICAgTGEgY29uY2x1c2nDs24gTk8gZXMgcXVlIHNlIGFmaXJtYSBsYSBIMC4KICAgIE51bmNhIHNlIGFmaXJtYSBxdWUgbGFzIG1lZGlhcyBzZWFuIGlndWFsZXMhISEKCi0gICBDb24gbG9zIGRhdG9zIG9idGVuaWRvcywgbm8gc2UgcHVlZGUgZGVjaXIgcXVlIGV4aXN0ZSB1bmEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgZW50cmUgYW1ib3MgZ3J1cG9zLgoKLSAgIFNpIGVsIHAtdmFsdWUgZXMgXDw9IDAuMDUsIHNlIGFmaXJtYSBxdWUgc8OtIGV4aXN0ZSB1bmEgZGlmZXJlbmNpYSBkZSBtZWRpYXMgZW50cmUgYW1ib3MgZ3J1cG9zIGNvbiB1biA5NSUgZGUgY29uZmlhbnphLgoKIyBFamVtcGxvIDEgZGUgdmFyaWFibGUgbnVtw6lyaWNhOiBFTkRPIDIwMjAKCkltcG9ydGFtb3MgbGEgYmFzZSBkZSBkYXRvcwoKYGBge3IgYmFzZSBlbmRvLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHJpbykKZW5kbzIwMjAgPSBpbXBvcnQoImJhc2VzL0VORE9fUkVNT1RPXzIwMjAuZHRhIikKYGBgCgpGYWN0b3JpemFtb3MgbGEgdmFyaWFibGUgUDFfMSB5IGNyZWFtb3MgdmFyaWFibGUgc2V4byBjb24gc3VzIGV0aXF1ZXRhcy4KCmBgYHtyIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZHBseXIpCmxpYnJhcnkodGlkeXZlcnNlKQplbmRvMjAyMCA9IGVuZG8yMDIwIHw+CiAgbXV0YXRlKHNleG8gPSBmYWN0b3IoUDFfMSwgbGFiZWxzPWMoIkhvbWJyZSIsICJNdWplciIpKSkKYGBgCgpRdWVyZW1vcyBldmFsdWFyIGxhIGRpZmVyZW5jaWEgZGUgbWVkaWFzIGVudHJlIGVsIG7Dum1lcm8gZGUgYWx1bW5vcyBjb24gbG9zIHF1ZSB0cmFiYWphIHVuIHByb2Zlc29yIGhvbWJyZSB5IHVuYSBwcm9mZXNvcmEgbXVqZXIuClBhcmEgZXN0byBjYWxjdWxhbW9zIGxhIG1lZGlhIGRlIGFsdW1ub3MgcGFyYSBjYWRhIGdydXBvLgoKYGBge3IgZGlmIGFsdW1ub3MgcG9yIHNleG99CmFsdW14c2V4byA9IGVuZG8yMDIwIHw+IAogIGdyb3VwX2J5KHNleG8pIHw+CiAgc3VtbWFyaXplKE1lZGlhID0gbWVhbihQMV82LCBuYS5ybSA9IFQpKQphbHVteHNleG8KYGBgCgpDb24gZXN0YSB0YWJsYSwgY2FsY3VsYW1vcyBsYSBkaWZlcmVuY2lhIGVudHJlIGxhcyBtZWRpYXMgZGUgbG9zIGdydXBvcy4KCmBgYHtyfQphbHVteHNleG9bMSwyXSAtIGFsdW14c2V4b1syLDJdCmBgYAoKTGEgZGlmZXJlbmNpYSBlcyBkZSAxOC4yIGFsdW1ub3MuCkVzdGEgZGlmZXJlbmNpYSBlcyBwYXJhIGVsIGdydXBvIGRlIDI4IG1pbCBwcm9mZXNvcmVzIGVuY3Vlc3RhZG9zLgpMYSBwcmVndW50YSBlczogwr9TZSBwdWVkZSBhZmlybWFyIHF1ZSBleGlzdGUgZXN0YSBkaWZlcmVuY2lhIGVuIGxhIHBvYmxhY2nDs24/CgpQYXJhIGVzdG8sIGxvIHByaW1lcm8gZXMgZXZhbHVhciBsYSBoaXDDs3Rlc2lzIGRlIGxhIGlndWFsZGFkIGRlIHZhcmlhbnphcyBtZWRpYW50ZSBlbCB0ZXN0IGRlIExldmVuZS4KUGFyYSBlc3RvIHVzYW1vcyBlbCBjb21hbmRvIGBMZXZlbmVUZXN0LGAgcXVlIGVzIHBhcnRlIGRlIGxhIGxpYnJlcsOtYSBgRGVzY1Rvb2xzYC4KCmBgYHtyIExldmVuZX0KbGlicmFyeShEZXNjVG9vbHMpCkxldmVuZVRlc3QoZW5kbzIwMjAkUDFfNiwgZW5kbzIwMjAkc2V4bykKYGBgCgpDb21vIGVsIHAtdmFsdWUgZXMgXDwgMC4wNSwgc2UgcmVjaGF6YXIgbGEgaWd1YWxkYWQgZGUgdmFyaWFuemFzLCBwb3IgbG8gcXVlIHNlIHRpZW5lIHF1ZSBhc3VtaXIgcXVlIHNvbiBkaWZlcmVudGVzLgpQYXJhIGV2YWx1YXIgc2kgZXhpc3RlbiBvIG5vIGRpZmVyZW5jaWFzIHBvYmxhY2lvbmFsZXMsIHVzYW1vcyBlbCBjb21hbmRvIGB0LnRlc3RgLgpFc3RlIGNvbWFuZG8gcmVxdWllcmUgZGUgbGEgZXNwZWNpZmljYWNpw7NuIGB2YXIuZXF1YWw9RmAsIGRlIGFjdWVyZG8gYSBsb3MgcmVzdWx0YWRvcyBkZSBsYSBwcnVlYmEgZGUgTGV2ZW5lLgoKYGBge3IgcHJ1ZWJhIHR9CnQudGVzdChQMV82IH4gc2V4bywgZGF0YSA9IGVuZG8yMDIwLCB2YXIuZXF1YWw9RikKYGBgCgpDb21vIGVsIHAtdmFsdWUgXDwgMC4wNSwgZW50b25jZXMgc2UgcmVjaGF6YSBsYSBIMCB5IHNlIHB1ZWRlIGFmaXJtYXIgcXVlIGVzYSBkaWZlcmVuY2lhIGV4aXN0ZSBlbiBsYSBwb2JsYWNpw7NuIGEgdGFsIG5pdmVsIGRlIHNpZ25pZmljYW5jaWEuCgojIEVqZW1wbG8gMiBkZSB2YXJpYWJsZSBudW3DqXJpY2E6IExBUE9QCgpgYGB7cn0KbGFwb3AgPSBpbXBvcnQoImJhc2VzL1BFUl8yMDA2LTIwMjEuZHRhIikKYGBgCgrCv0V4aXN0ZW4gZGlmZXJlbmNpYXMgZW4gZWwgYXBveW8gYSBsYXMgZnVlcnphcyBkZWwgb3JkZW4gZW50cmUgaG9tYnJlcyB5IG11amVyZXM/CgpTZSBwb2Ryw61hIGhpcG90ZXRpemFyIHF1ZSBsb3MgaG9rbWJyZXMgdGVuZHLDrWFuIHVuIG1heW9yIGFwb3lvIGEgbGFzIGZ1ZXJ6YXMgZGVsIG9yZGVuLgpFc3RhIHByZWd1bnRhIHNlIHJlc3BvbmRlIG1lZGlhbnRlIHVuYSBwcnVlYmEgZXN0YWTDrXN0aWNhLgpEYWRvIHF1ZSBwb2RlbW9zIHRyYXRhciBhbCDDrW5kaWNlIGFkaXRpdm8gY29tbyB1bmEgdmFyaWFibGUgbnVtw6lyaWNhIHkgcXVlcmVtb3MgY29tcGFyYXIgZXN0ZSDDrW5kaWNlIGVudHJlIDIgZ3J1cG9zLCBzZSBwdWVkZSB1c2FyIGxhIHBydWViYSB0IHBhcmEgZGFyIGV2aWRlbmNpYSBzb2JyZSBlc3RhIHByZWd1bnRhLgoKYGBge3J9CmxpYnJhcnkoZHBseXIpCmxhcG9wID0gbGFwb3AgfD4KICBtdXRhdGUoaW5kaWNlID0gKGIxMitiMTgtMikvMTIqMTAwKQpgYGAKCmBgYHtyfQpsaWJyYXJ5KERlc2NUb29scykKTGV2ZW5lVGVzdChsYXBvcCRpbmRpY2UsIGxhcG9wJHExKQpgYGAKCmBgYHtyfQp0LnRlc3QoaW5kaWNlIH4gcTEsIGRhdGEgPSBsYXBvcCwgdmFyLmVxdWFsPVQpCmBgYAoKIyBFamVtcGxvIGRlIHZhcmlhYmxlIGNhdGVnw7NyaWNhIHBhcmEgbGEgZGlmZXJlbmNpYSBkZSBwcm9wb3JjaW9uZXM6IEVORE8KClNlIHZpbyBlbiBlbCBtw7NkdWxvIGFudGVyaW9yIHF1ZSBzZSBwb2TDrWEgZXZhbHVhciBzaSBleGlzdGVuIGRpZmVyZW5jaWFzIGVudHJlIGxhIHByb3BvcmNpw7NuIGRlIHByb2Zlc29yZXMgaG9tYnJlcyBxdWUgaGFiw61hbiByZWNpYmlkbyBhcG95byBwc2ljb2zDs2dpY28gY29tcGFyYWRvIGNvbiBsYXMgcHJvZmVzb3JhcyBtdWplcmVzLgoKTGEgcHJ1ZWJhIGFkZWN1YWRhIHBhcmEgZXZhbHVhciB1bmEgcHJ1ZWJhIGRlIGRpZmVyZW5jaWEgZGUgcHJvcG9yY2lvbmVzIGVzIG1lZGlhbnRlIGVsIGNvbWFuZG8gYHByb3AudGVzdGAuCkVzdGUgY29tYW5kbywgY29tbyBzZSBwdWVkZSB2ZXIgZW4gZWwgImhlbHAiLCBwaWRlIGNvbW8gYXJndW1lbnRvcyBsb3MgZGF0b3MgZGUgIsOpeGl0b3MiIChsYSBwcm9wb3JjacOzbiBxdWUgc2UgcXVpZXJlIGV2YWx1YXIpIHkgbG9zIGRhdG9zIGRlICJpbnRlbnRvcyIgKGVsIG4gdG90YWwpLgpFcyBkZWNpciwgYSBkaWZlcmVuY2lhIGRlbCBjb21hbmRvIGB0LnRlc3RgIHF1ZSBwaWRvIGNvbW8gYXJndW1lbnRvcyBsYXMgdmFyaWFibGVzLCBhcXXDrSBzZSB0aWVuZSBwcmltZXJvIHF1ZSBlbmNvbnRyYXIgbG9zICLDqXhpdG9zIiBlICJpbnRlbnRvcyIuCgpQcmltZXJvIHNlIHRpZW5lIHF1ZSB0cmFuc2Zvcm1hciBsYSB2YXJpYWJsZSBQMV8xMyBxdWUgZXMgaW1wb3J0YWRhIGNvbW8gbnVtw6lyaWNhLCBjb21vIHVuYSB2YXJpYWJsZSBkZSBmYWN0b3IgeSBjb24gc3VzIGV0aXF1ZXRhcy4KCmBgYHtyfQplbmRvMjAyMCA9IGVuZG8yMDIwIHw+CiAgbXV0YXRlKGFwb3lvID0gZmFjdG9yKFAxXzEzLCBsYWJlbHM9YygiU8OtIiwgIk5vIikpKQpgYGAKCkx1ZWdvLCBwYXJhIHJlc3BvbmRlciBhIGxhIHByZWd1bnRhIGRlIHNpIGVzdGEgcHJvcG9yY2nDs24gdmFyw61hIGVudHJlIGRvY2VudGVzIGhvbWJyZXMgeSBtdWplcmVzLCB0ZW5lbW9zIHF1ZSBjcmVhciBvdHJhIHRhYmxhIGNvbiBsYXMgZnJlY3VlbmNpYXMgcG9yIGNhZGEgZ3J1cG8gZGUgbGEgdmFyaWFibGUgInNleG8iIHkgImFwb3lvIi4KCkEgZGlmZXJlbmNpYSBkZWwgbcOzZHVsbyBhbnRlcmlvciwgYXF1w60gdmFtb3MgYSB1c2FyIGBncm91cF9ieWAgZGUgYW1iYXMgdmFyaWFibGVzIHkgZW4gY2FkYSBncnVwbyBjYWxjdWxhciBlbCBOIHRvdGFsLgpFc3RvIG5vcyBkYXLDoSBsb3Mgw6l4aXRvcyBxdWUgcmVxdWVyaW1vcy4KCmBgYHtyfQp0YWJsYTEgPSBlbmRvMjAyMCB8PgogIGZpbHRlcihhcG95byA9PSJTw60iIHwgYXBveW8gPT0gIk5vIikgfD4KICBncm91cF9ieShzZXhvKSB8PgogIGNvdW50KGFwb3lvID0gYXBveW8sIG5hbWU9Ik4iKXw+CiAgbXV0YXRlKHRvdGFsID0gc3VtKE4pKQp0YWJsYTEKYGBgCgpDb24gZXN0b3MgZGF0b3MsIGNvcnJlbW9zIGVsIGNvbWFuZG8gYHByb3AudGVzdGAuCgpgYGB7cn0KcHJvcC50ZXN0KGMoMjc3NywgNjY5OSksIGMoNjE2MywxMjc2NykpCmBgYAoKU2Vnw7puIGxvcyByZXN1bHRhZG9zLCBzZSBlbmN1ZW50cmEgcXVlIGVsIDUyLjUlIGRlIGRvY2VudGVzIG11amVyZXMgcmVjaWJpZXJvbiBhcG95byBwc2ljb2zDs2dpY28gdmVyc3VzIGVsIDQ1LjElIGRlIGRvY2VudGVzIGhvbWJyZXMuCkVzdGUgY29tYW5kbyBub3MgYnJpbmRhIGVsIElDIGRlIGxhIGRpZmVyZW5jaWEgZGUgcHJvcG9yY2lvbmVzIGFsIDk1JSBkZSBjb25maWFuemEuCkVzdGUgSUMgZGUgbGEgZGlmZXJlbmNpYSBkZSBwcm9wb3JjaW9uZXMgdmFyw61hIGVudHJlIC04LjklIHkgLTUuOSUuCkxhIGRpZmVyZW5jaWEgZGUgcHJvcG9yY2lvbmVzIHRpZW5lIHVuIHAtdmFsdWUgXDwgMi4yZS0xNiwgcXVlIGVzIG1lbm9yIGEgMC4wNSwgcG9yIGxvIHF1ZSBzZSByZWNoYXphIGxhIEgwIHkgc2UgYWZpcm1hIHF1ZSBsYSBkaWZlcmVuY2lhIGVuIHBvcmNlbnRhamVzIGVudHJlIGhvbWJyZXMgeSBtdWplcmVzIGVzIGVzdGFkw61zdGljYW1lbnRlIHNpZ25pZmljYXRpdmEgZW4gbGEgcG9ibGFjacOzbi4KRXMgZGVjaXIsIHF1ZSBsYXMgcHJvZmVzb3JhcyBwZXJ1YW5hcyByZWNpYmVuIG3DoXMgYXl1ZGEgcHNpY29sw7NnaWNhIHF1ZSBsb3MgcHJvZmVzb3JlcyBwZXJ1YW5vcy4KCk90cm8gZWplbXBsbyBlcyBldmFsdWFyIHNpIGxhIGNvbmRpY2nDs24gbGFib3JhbCBkZSAiTm9tYnJhZG8iIChQMV83KSB2YXLDrWEgZW50cmUgaG9tYnJlcyB5IG11amVyZXMuCkxvIHByaW1lcm8gZXMgZmFjdG9yaXphciBsYSB2YXJpYWJsZS4KCmBgYHtyfQplbmRvMjAyMCA9IGVuZG8yMDIwIHw+CiAgbXV0YXRlKGNvbmRpY2lvbiA9IGZhY3RvcihQMV83LCBsYWJlbHM9YygiTm9tYnJhZG8iLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJDb250cmF0YWRvIHBvciBjb25jdXJzbyIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkNvbnRyYXRhZG8gY29uIG90cmEgbW9kYWxpZGFkIikpKQpgYGAKCkx1ZWdvLCBzZSBjcmVhIGxhIHRhYmxhIGNvbiBsb3MgZGF0b3MgcXVlIHJlcXVlcmltb3MuCgpgYGB7cn0KdGFibGEyID0gZW5kbzIwMjAgfD4KICBmaWx0ZXIoY29uZGljaW9uID09Ik5vbWJyYWRvIiB8IGNvbmRpY2lvbiA9PSAiQ29udHJhdGFkbyBwb3IgY29uY3Vyc28iCiAgfCBjb25kaWNpb24gPT0gIkNvbnRyYXRhZG8gY29uIG90cmEgbW9kYWxpZGFkIikgfD4KICBncm91cF9ieShzZXhvKSB8PgogIGNvdW50KGNvbmRpY2lvbiA9IGNvbmRpY2lvbiwgbmFtZT0iTiIpfD4KICBtdXRhdGUodG90YWwgPSBzdW0oTikpCnRhYmxhMgpgYGAKCkNvbiBlc3RhIHRhYmxhIHNlIGVuY3VlbnRyYSBxdWUgZW50cmUgbG9zIGhvbWJyZXMgc2UgdGllbmUgMzMwMyDDqXhpdG9zIHkgcGFyYSBsYXMgbXVqZXJlcyB1biB0b3RhbCBkZSA3MTQwIMOpeGl0b3MuCkxvIHF1ZSBubyBzZSBlbmN1ZW50cmEgZGlyZWN0YW1lbnRlIGVzIGVsIHRvdGFsLCBxdWUgc2UgdGllbmUgcXVlIGNhbGN1bGFyIHNvYnJlIGNhZGEgZ3J1cG8sIHNvYnJlIGNhZGEgY29sdW1uYS4KCkRlIGVzdGEgbWFuZXJhIHNlIGVuY3VlbnRyYSBxdWUgZW50cmUgbG9zIGhvbWJyZXMgc2UgdGllbmUgMzMwMyDDqXhpdG9zIGRlIHVuIHRvdGFsIGRlIDYxNzEgaW50ZW50b3MgKDUzLjUuNCUpLgpFbnRyZSBsb3MgbXVqZXJlcyBzZSB0aWVuZSA3MTQwIGludGVudG9zIGRlIHVuIHRvdGFsIGRlIDEyNzc5IGludGVudG9zICg1NS45JSkuCgpQYXJhIHRlbmVyIHVuYSBtZWpvciBwcmVzZW50YWNpw7NuIGRlIGxhIHRhYmxhIGN1YW5kbyBzZSBwcm9kdWNlIGVsIGh0bWwsIHNlIHB1ZWRlIHVzYXIgbGEgbGlicmVyw61hIGBrbml0cmAgeSBlbCBjb21hbmRvIGBrYWJsZWAuCgpgYGB7cn0KbGlicmFyeShrbml0cikKa2FibGUoaGVhZCh0YWJsYTIpLCBmb3JtYXQ9Im1hcmtkb3duIiwgZGlnaXRzPTEpCmBgYAoKRXN0b3MgZGF0b3Mgc29uIGxvcyBxdWUgcmVxdWllcmUgZWwgY29tYW5kbyBgcHJvcC50YWJsZWAgcGFyYSBldmFsdWFyIGxhIGRpZmVyZW5jaWEgZGUgcHJvcG9yY2lvbmVzICg5LjctNi40PSAzLjMlKS4KCmBgYHtyIHByb3AgdGVzdCAwfQpwcm9wLnRlc3QoeD1jKDMzMDMsIDcxNDApLCBuPWMoNjE3MSwgMTI3NzkpLCBjb25mLmxldmVsPTAuOTUpCmBgYAoKQ29tbyBzZSBvYnNlcnZhIGRlIGxvcyByZXN1bHRhZG9zLCBlbCBlc3RhZMOtc3RpY28gZGUgbGEgcHJ1ZWJhICJYLXNxdWFyZWQiIHNlIGxsYW1hIGNoaS1jdWFkcmFkbyB5IG5vIGVzIGVsIG1pc21vIHF1ZSBlbCBlc3RhZMOtc3RpY28gdC4KRWwgcC12YWx1ZSBhc29jaWFkbyBlcyAwLjAwMjUgXDwgMC4wNSwgcG9yIGxvIHF1ZSBsbGV2YSBhIGxhIGNvbmNsdXNpw7NuIGRlIHJlY2hhemFyIGxhIEgwIGRlIGlndWFsZGFkIGRlIHByb3BvcmNpb25lcyB5IGFmaXJtYXIgcXVlIGVudHJlIGFtYm9zIGdydXBvcyBleGlzdGUgdW5hIGRpZmVyZW5jaWEgZW4gbGEgcHJvcG9yY2nDs24gZGUgIm5vbWJyYWRvcyIgZW50cmUgaG9tYnJlcyB5IG11amVyZXMgZW4gbGEgcG9ibGFjacOzbi4KCkVzIGltcG9ydGFudGUgbm90YXIgY3VhbmRvIHNlIGNvbmNsdXllIHF1ZSAqbm8gc2UgcHVlZGUgZGVjaXIqIG8gKm5vIHNlIHB1ZWRlIGFmaXJtYXIuKiBDdWFuZG8gc2Ugb2J0aWVuZSB1biBwLXZhbHVlIFw8PSAwLjA1LCBzZSByZWNoYXphIGxhIEgwIHkgc2UgYWZpcm1hIGxhIEhBLCBxdWUgbGEgZGlmZXJlbmNpYSBleGlzdGUgZW4gbGEgcG9ibGFjacOzbiBjb24gdW4gOTUlIGRlIGNvbmZpYW56YS4KUGVybywgY3VhbmRvIHNlIG9idGllbmUgdW4gcC12YWx1ZSBcPiAwLjA1LCBubyBzZSBhZmlybWEgbGEgSEEsIGxvIHF1ZSBzZSBjb25jbHV5ZSBlcyBxdWUgbm8gc2UgcHVlZGUgcmVjaGF6YXIgbGEgSDAuCkVzdG8gcXVpZXJlIGRlY2lyIHF1ZSBubyBhZmlybWFtb3MgcXVlIGxhcyBtZWRpYXMgcG9ibGFjaW9uYWxlcyBzZWFuIGlndWFsZXMsIHNpbm8gcXVlLCBjb24gbG9zIGRhdG9zIHF1ZSB0ZW5lbW9zLCBubyBwb2RlbW9zIGRlY2lyIHF1ZSBzb24gZGlmZXJlbnRlcy4KClBhcmEgYWNsYXJhciBlc3RvLCB2YWxlIGxhIHBlbmEgaGFjZXIgdW5hIGFuYWxvZ8OtYSBqdXLDrWRpY2EuCgojIEFuYWxvZ8OtYSBkZWwganVpY2lvCgpZYSBzZWEgbWVkaWFudGUgbnVlc3RyYSBleHBlcmllbmNpYSB2aWVuZG8gSnVzdGljaWFUViBvIHZpZW5kbyBzZXJpZXMgc29icmUgYWJvZ2Fkb3MsIGxhIGltYWdlbiBxdWUgdGVuZW1vcyBkZSB1biBqdWljaW8gZXMgY29tbyBlc3RhIGltYWdlbi4KCiFbXSg1Lmp1aWNpby5qcGVnKXt3aWR0aD0iNDcyIn0KCkVuIGVzdGEgaW1hZ2VuIGhheSB2YXJpb3MgYWN0b3JlczoKCi0gICBFbCBhY3VzYWRvOiBlbnRyZSByZWphcyB5IGNvbiBlbCB0cmFqZSBuYXJhbmphLgoKLSAgIEVsIHBvbGljw61hIHF1ZSBjdWlkYSBhbCBhY3VzYWRvLCBwZXJvIHF1ZSB0YW1iacOpbiBzaW1ib2xpemEgYSBsYSBpbnN0aXR1Y2nDs24gcXVlIHNlIGVuY2FyZ2EgZGVsIHJlY29qbyBkZSBwcnVlYmFzLgoKLSAgIEVsIGZpc2NhbCBvIHBhcnRlIGFjdXNhZG9yYTogcXVlIHNlIGVuY3VlbnRyYSBtb3N0cmFuZG8gdW5hIGltYWdlbiBkZSB1biBjdWNoaWxsbywgcG9zaWJsZW1lbnRlIHRvbWFkYSBwb3IgdW4gcG9saWPDrWEuCgotICAgTG9zIGFib2dhZG9zIGRlZmVuc29yZXM6IHNlbnRhZG9zLgoKLSAgIEVsIGp1cmFkbzogcXVlIGV2YWzDumFuIGxhcyBwcnVlYmFzIHkgdGllbmVuIGxhIGZhY3VsdGFkIGRlIGVtaXRpciB1biB2ZXJlZGljdG8uCgotICAgRWwganVlejogcXVlIGFudW5jaWEgZWwgdmVyZWRpY3RvIHkgbGUgZGEgY2Fyw6FjdGVyIGxlZ2FsLgoKTGEgbMOzZ2ljYSBxdWUgc2lndWUgZXN0ZSB0aXBvIGRlIHByb2NlZGltaWVudG8gZXMgc2ltaWxhciBhIGxhIHF1ZSBzaWd1ZSB1bmEgcHJ1ZWJhIGRlIGluZmVyZW5jaWEgZXN0YWTDrXN0aWNhLgoKLSAgIExhIEgwIGVzIGxhIGhpcMOzdGVzaXMgZGUgbm8gZWZlY3RvLgogICAgRW4gZWwgY2FzbyBkZWwganVpY2lvIGVzIGVsIHN1cHVlc3RvIGRlIGVudHJhZGEgZGUgcXVlIGVsIGFjdXNhZG8gZXMgaW5vY2VudGUuCiAgICBTZSBsbGFtYSAicHJlc3VuY2nDs24gZGUgaW5vY2VuY2lhIi4KICAgIExhIGhpcMOzdGVzaXMgYWx0ZXJuYXRpdmEgZXMgcXVlIGVzIGN1bHBhYmxlLCBwZXJvIHBhcmEgbGxlZ2FyIGEgZWxsYSBzZSByZXF1aWVyZSBuZWdhciBsYSBIMCBtZWRpYW50ZSBkYXRvcyBvICJldmlkZW5jaWEiLgoKLSAgIExhIHBvbGljw61hIGVzIGxhIHF1ZSByZWNvZ2UgbGEgZXZpZGVuY2lhIHBhcmEgcXVlIGxhIGZpc2NhbMOtYSBwdWVkYSBhY3VzYXIuCiAgICBFcyBkZWNpciwgbGEgcG9saWPDrWEgYXJtYXLDrWEgbGEgImJhc2UgZGUgZGF0b3MiIGRlIGV2aWRlbmNpYS4KCi0gICBMYSBsYWJvciBkZSBsYSBmaXNjYWzDrWEgKGxhIHBhcnRlIHF1ZSBhY3VzYSkgZXMgYXJtYXIgZWwgY2Fzby4KICAgIEVzIGRlY2lyLCBwcmVzZW50YXIgbGEgZXZpZGVuY2lhIHJlY29naWRhIHBvciBsYSBwb2xpY8OtYSBkZSB0YWwgbWFuZXJhIHF1ZSBlbCBqdXJhZG8gc2UgY29udmVuemEgZGVsIGNhc28uCiAgICBMYSBmaXNjYWzDrWEgc2Vyw61hIGNvbW8gbGEgcHJ1ZWJhIGRlIGluZmVyZW5jaWEgZXN0YWTDrXN0aWNhLgoKLSAgIE1pZW50cmFzIG3DoXMgeSBtZWpvciBldmlkZW5jaWEgcHJlc2VudGUgbGEgZmlzY2Fsw61hLCBtw6FzIGVsZW1lbnRvcyBwYXJhIHF1ZSBlbCBqdXJhZG8gcmVjaGFjZSBsYSBIMCBkZSAicHJlc3VuY2nDs24gZGUgaW5vY2VuY2lhIi4KCi0gICBTaSBsYSBldmlkZW5jaWEgbm8gZXMgc8OzbGlkYSwgZWwganVyYWRvIHRlbmRyw6EgZHVkYXMgeSBwdWVkZSBubyByZWNoYXphciBsYSBIbyBkZSBwcmVzdW5jacOzbiBkZSBpbm9jZW5jaWEuCgotICAgRW4gZWwganVpY2lvIG5vIGhheSB1bmEgbWVkaWRhIG1hdGVtw6F0aWNhIHF1ZSByZXN1bWEgbGEgZXZpZGVuY2lhIGEgZmF2b3IgbyBlbiBjb250cmEgKGNvbW8gZWwgcC12YWx1ZSkgbmkgdW4gdmFsb3IgY3LDrXRpY28gcGFyYSB0b21hciB1bmEgZGVjaXNpw7NuLgogICAgU2UgYXN1bWUgcXVlIGxvcyBqdXJhZG9zIHNhYnLDoW4gZXN0YWJsZWNlciBlc2UgbMOtbWl0ZSBlbiBlbCBjdWFsIGxhIGV2aWRlbmNpYSBlcyBsbyBzdWZpY2llbnRlbWVudGUgc8OzbGlkYSBwYXJhIHJlY2hhemFyIGxhIEgwLgoKLSAgIFNpIGxhIGV2aWRlbmNpYSBjcnV6YSBlc2UgdW1icmFsIGRlIGxvcyBqdXJhZG9zLCBzZSByZWNoYXphcsOhIGxhIEgwLgogICAgRWwganVyYWRvIHJlY29tZW5kYXLDoSBzdSBkZWNpc2nDs24gYWwganVlei4KICAgIEVsIGp1ZXogYW51bmNpYXLDoSBxdWUgZWwgYWN1c2FkbyBlcyAiY3VscGFibGUiLgogICAgRXMgZGVjaXIsIHNlIGFmaXJtYSBsYSBIQS4KCi0gICBTaSBsYSBldmlkZW5jaWEgbm8gY3J1emEgZXNlIHVtYnJhbCBkZSBsb3MganVyYWRvcywgbm8gc2UgcmVjaGF6YSBsYSBIMC4KICAgIEVsIGp1cmFkbyB0cmFzbGFkYXLDoSBzdSBkZWNpc2nDs24gYWwganVleiB5IGVsIGp1ZXogYW51bmNpYXLDoSBxdWUgZWwgYWN1c2FkbyAibm8gZXMgY3VscGFibGUiLgogICAgRXMgZGVjaXIsIG5vIHNlIHB1ZWRlIHJlY2hhemFyIGxhIEgwLgoKLSAgIEVzIGltcG9ydGFudGUgbm90YXIgbGEgZGVjaXNpw7NuIGN1YW5kbyBsYSBldmlkZW5jaWEgbm8gZXMgc8OzbGlkYS4KICAgIE5vIGVzIGxvIG1pc21vIGRlY2lyICJubyBlcyBjdWxwYWJsZSIgYSBkZWNpciAiZXMgaW5vY2VudGUiLgogICAgRGVjaXIgcXVlIGVsIGFjdXNhZG8gbm8gZXMgY3VscGFibGUgaW52b2x1Y3JhIHVuYSBzaXR1YWNpw7NuIGRlIGluY2VydGlkdW1icmUuCiAgICBQb3IgZWplbXBsbywgc2kgbGEgcG9saWPDrWEgbm8gaGl6byBiaWVuIHN1IHRyYWJham8geSBubyByZWNvZ2nDsyBsYSBldmlkZW5jaWEgZGUgbWFuZXJhIGFkZWN1YWRhLCBlcyBwb3NpYmxlIHF1ZSBoYXlhIGR1ZGFzIGNvbiByZXNwZWN0byBhbCBhY3VzYWRvLgogICAgRGVjaXIgcXVlIGVsIGFjdXNhZG8gZXMgaW5vY2VudGUsIHBvciBlbCBjb250cmFyaW8sIGltcGxpY2EgdW5hIGNlcnRlemEsIHF1ZSBsYSBldmlkZW5jaWEgZXMgY29udHVuZGVudGUgZW4gYXB1bnRhciBlbiBlc2EgZGlyZWNjacOzbi4KCi0gICBBIHBlc2FyIHF1ZSBlc3RlIG3DqXRvZG8gZXMgY2llbnTDrWZpY28gcHVlZGUgbGxldmFyIGEgZXJyb3Jlcy4KCi0gICBGYWxzbyBwb3NpdGl2byAobyBlcnJvciBkZSB0aXBvIEkpOiBjdWFuZG8gZGVjbGFyYXMgY3VscGFibGUgYSB1biBpbm9jZW50ZS4KCi0gICBGYWxzbyBuZWdhdGl2byAobyBlcnJvciBkZSB0aXBvIElJKTogY3VhbmRvIGRlY2xhcmFzIG5vIGN1bHBhYmxlIGEgdW4gY3VscGFibGUuCgohW10oZXJyb3IlMjB0aXBvJTIwMSUyMHklMjAyLmpwZyl7d2lkdGg9IjQ2NiJ9CgotICAgUGFyYSBldml0YXIgZmFsc29zIHBvc2l0aXZvcyBzZSBwcm9wb25lIHBlZGlyIGV2aWRlbmNpYSBjYWRhIHZleiBtw6FzIHPDs2xpZGEgcGFyYSBjb25kZW5hciBhIGFsZ3VpZW4uIFBlcm8sIHNpIHNlIGV4aWdlIGV2aWRlbmNpYSBjYWRhIHZleiBtw6FzIHNvbGlkYSwgYXVtZW50YSBsYSBwcm9iYWJpbGlkYWQgZGUgZmFsc29zIG5lZ2F0aXZvcy4gQW1ib3MgdGlwb3MgZGUgZXJyb3JlcyBzZSBjb250cmFiYWxhbmNlYW4gbXV0dWFtZW50ZS4KCiFbXShjaGVmLnBuZyl7d2lkdGg9IjQzOSJ9CgrCv1F1w6kgdGlwbyBkZSBlcnJvciBlcyBtw6FzIHBlcm5pY2lvc28/CkVzIHVuIHRlbWEgcXVlIGxvcyBmaWzDs3NvZm9zIHRyYXRhbiBkZSByZXNwb25kZXIuCgoiVGhlcmUgYXJlIHR3byB3YXlzIHRvIGJlIGZvb2xlZC4gT25lIGlzIHRvIGJlbGlldmUgd2hhdCBpc27CtHQgdHJ1ZS4gVGhlIG90aGVyIGlzIHRvIHJlZnVzZSB0byBiZWxpZXZlIHdoYXQgaXMgdHJ1ZSIgKFNvcmVuIEtpZXJrZWdhYXJkKS4KCiMgTm90YSBmaW5hbAoKRXN0ZSBwcm9jZWRpbWllbnRvIHNlIHBvZHLDrWEgZGVjaXIgcXVlIGVzIHBhcnRlIGRlbCBtw6l0b2RvIGNpZW50w61maWNvLCBlbiBlbCBzZW50aWRvIHBvcHBlcmlhbm8gZGUgImZhbHNlYWJpbGlkYWQiLgpEZXNkZSBlc3RhIHBlcnNwZWN0aXZhLCB1bmEgaW52ZXN0aWdhY2nDs24gY2llbnTDrWZpY2EgcGFydGUgZGUgdW5hIGhpcMOzdGVzaXMgZGUgbm8gZWZlY3RvIHF1ZSBidXNjYSBuZWdhciBjb24gZXZpZGVuY2lhIGVtcMOtcmljYSBwYXJhIGxsZWdhciBhIGxhIGNvbmNsdXNpw7NuIHF1ZSBzw60gZXhpc3RlbiBlc2UgZWZlY3RvLgpMYXMgY29uY2x1c2lvbmVzIGEgbGFzIHF1ZSBzZSBsbGVnYW4gc2llbXByZSB0aWVuZW4gdW4gY29tcG9uZW50ZSBkZSBpbmNlcnRpZHVtYnJlLgoKRXN0ZSBtw6l0b2RvIGVzIGNvbnRyYWludHVpdGl2by4KRWwgc2VyIGh1bWFubywgcG9yIGVsIGNvbnRyYXJpbywgZ2VuZXJhbG1lbnRlIGJ1c2NhIGV2aWRlbmNpYSBwYXJhIGFmaXJtYXIgdW5hIGhpcMOzdGVzaXMgZGUgcXVlIGV4aXN0ZSB1biBlZmVjdG8gbyByZWxhY2nDs24uCkVuIGNpZXJ0byBzZW50aWRvLCBzZSBidXNjYSByZWFmaXJtYXIgbGFzIHByZW5vY2lvbmVzLgoKUG9yIGVqZW1wbG8sIG5vIGVzIGxvIG1pc21vIHBhcnRpciBkZSBsYSBoaXDDs3Rlc2lzIHF1ZSBsYSAicmV2b2x1Y2nDs24gY2FwaXRhbGlzdGEiIGVuIGVsIFBlcsO6IHRyYWpvIGJpZW5lc3RhciB5IGRlc2Fycm9sbG8geSBidXNjYXIgZXZpZGVuY2lhIHF1ZSBhcG95YSBlc3RhIGhpcMOzdGVzaXMsIHF1ZSBwYXJ0aXIgZGUgbGEgaGlww7N0ZXNpcyBxdWUgbGEgInJldm9sdWNpw7NuIGNhcGl0YWxpc3RhIiBOTyB0cmFqbyBiaWVuZXN0YXIgeSBkZXNhcnJvbGxvIHkgYnVzY2FyIGV2aWRlbmNpYSBzdWZpY2llbnRlIHBhcmEgbmVnYXIgZXNhIGhpcMOzdGVzaXMgeSBhZmlybWFyIHF1ZSBzw60gbG8gaGl6by4KUGFyYSB1bmEgbXVlc3RyYSBkZSBlc3RhIGRpZmVyZW5jaWEgdmVyIGVsIFtjb21lbnRhcmlvIGRlIENvdGxlciBhbCBsaWJybyBkZSBBbHRoYXVzXShodHRwczovL3d3dy55b3V0dWJlLmNvbS93YXRjaD92PTkzNUxLT3VyaTU0JnQ9NDNzKS4KCiMgCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("clase5.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

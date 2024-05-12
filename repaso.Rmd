@@ -24,15 +24,65 @@ En esta base usaremos una base de datos de hogares afiliados y abonados al progr
 
 ```{r base, message=FALSE, warning=FALSE}
 library(rio)
-juntos = import("juntos2023-1.xlsx")
+juntos = import("juntos.xlsx")
 ```
 
 ## Describir una variable numérica
 
+```{r}
+library(tidyverse)
+juntos = juntos |>
+  mutate(tranxpob = transfer/Poblacion)
+```
+
+```{r}
+tabla1 = juntos |>
+  summarise(minimo = min(tranxpob), media = mean(tranxpob), 
+            mediana = median(tranxpob),
+            maximo = max(tranxpob), desviacion = sd(tranxpob))
+tabla1
+```
+
+```{r}
+tabla2 = juntos |>
+  filter(tranxpob == 0)
+tabla2
+```
+
+```{r}
+library(ggplot2)
+graf1 = ggplot(juntos, aes(x=tranxpob))+
+  geom_histogram()+
+  geom_vline(xintercept = mean(juntos$tranxpob), color = "red")+
+  geom_vline(xintercept = median(juntos$tranxpob), color = "green")+
+  xlab("Gasto per cápita de programa Juntos") +
+  ylab("Frecuencia")+
+  theme_minimal()
+graf1
+```
+
+```{r}
+juntos = juntos |>
+  mutate(limaprov = case_when(
+    prov == "LIMA" ~ 1,
+    prov != "LIMA" ~ 0
+  ))
+```
+
+```{r}
+tabla2 = juntos |> 
+  group_by(limaprov) |>
+  summarise(minimo = min(tranxpob), 
+            media = mean(tranxpob), 
+            mediana = median(tranxpob),
+            desviacion = sd(tranxpob),
+            maximo = max(tranxpob))
+tabla2
+```
+
 Esta base de datos incluye la variable acerca del número de población objetivo por distrito (variable "miembros"). Queremos tener una idea acerca de la magnitud de este programa. Para esto describimos la variable.
 
 ```{r}
-library(tidyverse)
 tabla1 = juntos |>
   summarise(minimo = min(miembros), media = mean(miembros), 
             mediana = median(miembros),
@@ -176,7 +226,7 @@ graf6 = ggplot(miembrosxreg, aes(x=region, y=Media))+
 graf6
 ```
 
-## Pruebas de significancia
+## NO VIENE EN EL PARCIAL 2024-1 Pruebas de significancia
 
 ```{r}
 anova1 = aov(juntos$miembros~juntos$region)

@@ -175,20 +175,11 @@ La diferencia es de 18.2 alumnos.
 Esta diferencia es para el grupo de 28 mil profesores encuestados.
 La pregunta es: ¿Se puede afirmar que existe esta diferencia en la población?
 
-Para esto, lo primero es evaluar la hipótesis de la igualdad de varianzas mediante el test de Levene.
-Para esto usamos el comando `LeveneTest,` que es parte de la librería `DescTools`.
-
-```{r Levene}
-library(DescTools)
-LeveneTest(endo2020$P1_6, endo2020$sexo)
-```
-
-Como el p-value es \< 0.05, se rechazar la igualdad de varianzas, por lo que se tiene que asumir que son diferentes.
 Para evaluar si existen o no diferencias poblacionales, usamos el comando `t.test`.
-Este comando requiere de la especificación `var.equal=F`, de acuerdo a los resultados de la prueba de Levene.
+E
 
 ```{r prueba t}
-t.test(P1_6 ~ sexo, data = endo2020, var.equal=F)
+t.test(P1_6 ~ sexo, data = endo2020)
 ```
 
 Como el p-value \< 0.05, entonces se rechaza la H0 y se puede afirmar que esa diferencia existe en la población a tal nivel de significancia.
@@ -201,7 +192,7 @@ lapop = import("bases/PER_2006-2021.dta")
 
 ¿Existen diferencias en el apoyo a las fuerzas del orden entre hombres y mujeres?
 
-Se podría hipotetizar que los hokmbres tendrían un mayor apoyo a las fuerzas del orden.
+Se podría hipotetizar que los hombres tendrían un mayor apoyo a las fuerzas del orden.
 Esta pregunta se responde mediante una prueba estadística.
 Dado que podemos tratar al índice aditivo como una variable numérica y queremos comparar este índice entre 2 grupos, se puede usar la prueba t para dar evidencia sobre esta pregunta.
 
@@ -212,12 +203,7 @@ lapop = lapop |>
 ```
 
 ```{r}
-library(DescTools)
-LeveneTest(lapop$indice, lapop$q1)
-```
-
-```{r}
-t.test(indice ~ q1, data = lapop, var.equal=T)
+t.test(indice ~ q1, data = lapop)
 ```
 
 # Ejemplo de variable categórica para la diferencia de proporciones: ENDO

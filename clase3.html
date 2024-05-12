@@ -14,7 +14,7 @@
 
 <title>Clase 3: Visualización</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -38,8 +38,8 @@
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -760,7 +760,8 @@ diferencia de 18 alumnos en promedio.</p>
 ggplot(endo2020, aes(y=P1_6, x=sexo))+
   geom_boxplot()</code></pre>
 <pre><code>## Warning: Removed 9266 rows containing non-finite
-## values (`stat_boxplot()`).</code></pre>
+## outside the scale range
+## (`stat_boxplot()`).</code></pre>
 <p><img src="clase3_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre class="r"><code>endo2020 = endo2020 |&gt;
   mutate(condicion = factor(P1_7, labels=c(&quot;Nombrado&quot;, &quot;Contratado x concurso&quot;, &quot;Contratado otro&quot;)))</code></pre>
@@ -795,9 +796,11 @@ del número de alumnos por sexo del profesor, se puede usar:</p>
   xlab(&quot;Sexo del docente&quot;) +
   geom_text(aes(label=round(Media,1)), vjust=1.30, color=&quot;white&quot;, size=3)+
   theme_minimal()</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values
-## (`position_stack()`).</code></pre>
-<pre><code>## Warning: Removed 1 rows containing missing values
+<pre><code>## Warning: Removed 1 row containing missing values
+## or values outside the scale range
+## (`geom_bar()`).</code></pre>
+<pre><code>## Warning: Removed 1 row containing missing values
+## or values outside the scale range
 ## (`geom_text()`).</code></pre>
 <p><img src="clase3_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>¿Cómo se pueden extrapolar estos resultados al universo de profesores

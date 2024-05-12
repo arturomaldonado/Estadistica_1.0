@@ -14,7 +14,7 @@
 
 <title>Clase 14</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -38,8 +38,8 @@
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -518,7 +518,7 @@ tabla2</code></pre>
   ylab(&quot;Frecuencia&quot;)+
   theme_classic()</code></pre>
 <pre><code>## Warning: Removed 18 rows containing non-finite
-## values (`stat_bin()`).</code></pre>
+## outside the scale range (`stat_bin()`).</code></pre>
 <p><img src="Clase14_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ul>
 <li>¿Cuál es el promedio de votos obtenidos por candidatos
@@ -539,7 +539,7 @@ tabla3</code></pre>
   ylab(&quot;Frecuencia&quot;)+
   theme_classic()</code></pre>
 <pre><code>## Warning: Removed 7 rows containing non-finite
-## values (`stat_bin()`).</code></pre>
+## outside the scale range (`stat_bin()`).</code></pre>
 <p><img src="Clase14_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ul>
 <li>Cuál es la ideología promedio de los candidatos presidenciales en
@@ -564,7 +564,7 @@ tabla.ideo</code></pre>
   ylab(&quot;Frecuencia&quot;)+
   theme_classic()</code></pre>
 <pre><code>## Warning: Removed 47 rows containing non-finite
-## values (`stat_bin()`).</code></pre>
+## outside the scale range (`stat_bin()`).</code></pre>
 <p><img src="Clase14_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="comparación-entre-grupos" class="section level1">
@@ -713,8 +713,10 @@ summary(anova)</code></pre>
   theme_light()</code></pre>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 25 rows containing non-finite
-## values (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 25 rows containing missing values
+## outside the scale range
+## (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 25 rows containing missing
+## values or values outside the scale range
 ## (`geom_point()`).</code></pre>
 <p><img src="Clase14_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
@@ -821,13 +823,15 @@ summary(modelo4)</code></pre>
   facet_wrap(~ mujer) </code></pre>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 25 rows containing non-finite
-## values (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 25 rows containing missing values
+## outside the scale range
+## (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 25 rows containing missing
+## values or values outside the scale range
 ## (`geom_point()`).</code></pre>
 <p><img src="Clase14_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre class="r"><code>  theme_light()</code></pre>
-<pre><code>## List of 97
-##  $ line                      :List of 6
+<pre><code>## List of 136
+##  $ line                            :List of 6
 ##   ..$ colour       : chr &quot;black&quot;
 ##   ..$ linewidth    : num 0.5
 ##   ..$ linetype     : num 1
@@ -835,14 +839,14 @@ summary(modelo4)</code></pre>
 ##   ..$ arrow        : logi FALSE
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ rect                      :List of 5
+##  $ rect                            :List of 5
 ##   ..$ fill         : chr &quot;white&quot;
 ##   ..$ colour       : chr &quot;black&quot;
 ##   ..$ linewidth    : num 0.5
 ##   ..$ linetype     : num 1
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ text                      :List of 11
+##  $ text                            :List of 11
 ##   ..$ family       : chr &quot;&quot;
 ##   ..$ face         : chr &quot;plain&quot;
 ##   ..$ colour       : chr &quot;black&quot;
@@ -856,10 +860,10 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : logi FALSE
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ title                     : NULL
-##  $ aspect.ratio              : NULL
-##  $ axis.title                : NULL
-##  $ axis.title.x              :List of 11
+##  $ title                           : NULL
+##  $ aspect.ratio                    : NULL
+##  $ axis.title                      : NULL
+##  $ axis.title.x                    :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -873,7 +877,7 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.title.x.top          :List of 11
+##  $ axis.title.x.top                :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -887,8 +891,8 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.title.x.bottom       : NULL
-##  $ axis.title.y              :List of 11
+##  $ axis.title.x.bottom             : NULL
+##  $ axis.title.y                    :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -902,14 +906,14 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.title.y.left         : NULL
-##  $ axis.title.y.right        :List of 11
+##  $ axis.title.y.left               : NULL
+##  $ axis.title.y.right              :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
 ##   ..$ size         : NULL
 ##   ..$ hjust        : NULL
-##   ..$ vjust        : num 0
+##   ..$ vjust        : num 1
 ##   ..$ angle        : num -90
 ##   ..$ lineheight   : NULL
 ##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 0points 2.75points
@@ -917,7 +921,7 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text                 :List of 11
+##  $ axis.text                       :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : chr &quot;grey30&quot;
@@ -930,7 +934,7 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.x               :List of 11
+##  $ axis.text.x                     :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -944,7 +948,7 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.x.top           :List of 11
+##  $ axis.text.x.top                 :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -958,8 +962,8 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.x.bottom        : NULL
-##  $ axis.text.y               :List of 11
+##  $ axis.text.x.bottom              : NULL
+##  $ axis.text.y                     :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -973,8 +977,8 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.y.left          : NULL
-##  $ axis.text.y.right         :List of 11
+##  $ axis.text.y.left                : NULL
+##  $ axis.text.y.right               :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
@@ -988,272 +992,146 @@ summary(modelo4)</code></pre>
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.ticks                :List of 6
-##   ..$ colour       : chr &quot;grey70&quot;
-##   ..$ linewidth    : &#39;rel&#39; num 0.5
-##   ..$ linetype     : NULL
-##   ..$ lineend      : NULL
-##   ..$ arrow        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ axis.ticks.x              : NULL
-##  $ axis.ticks.x.top          : NULL
-##  $ axis.ticks.x.bottom       : NULL
-##  $ axis.ticks.y              : NULL
-##  $ axis.ticks.y.left         : NULL
-##  $ axis.ticks.y.right        : NULL
-##  $ axis.ticks.length         : &#39;simpleUnit&#39; num 2.75points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ axis.ticks.length.x       : NULL
-##  $ axis.ticks.length.x.top   : NULL
-##  $ axis.ticks.length.x.bottom: NULL
-##  $ axis.ticks.length.y       : NULL
-##  $ axis.ticks.length.y.left  : NULL
-##  $ axis.ticks.length.y.right : NULL
-##  $ axis.line                 : list()
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
-##  $ axis.line.x               : NULL
-##  $ axis.line.x.top           : NULL
-##  $ axis.line.x.bottom        : NULL
-##  $ axis.line.y               : NULL
-##  $ axis.line.y.left          : NULL
-##  $ axis.line.y.right         : NULL
-##  $ legend.background         :List of 5
-##   ..$ fill         : NULL
-##   ..$ colour       : logi NA
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ legend.margin             : &#39;margin&#39; num [1:4] 5.5points 5.5points 5.5points 5.5points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ legend.spacing            : &#39;simpleUnit&#39; num 11points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ legend.spacing.x          : NULL
-##  $ legend.spacing.y          : NULL
-##  $ legend.key                :List of 5
-##   ..$ fill         : chr &quot;white&quot;
-##   ..$ colour       : logi NA
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ legend.key.size           : &#39;simpleUnit&#39; num 1.2lines
-##   ..- attr(*, &quot;unit&quot;)= int 3
-##  $ legend.key.height         : NULL
-##  $ legend.key.width          : NULL
-##  $ legend.text               :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : &#39;rel&#39; num 0.8
-##   ..$ hjust        : NULL
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ legend.text.align         : NULL
-##  $ legend.title              :List of 11
+##  $ axis.text.theta                 : NULL
+##  $ axis.text.r                     :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
 ##   ..$ size         : NULL
-##   ..$ hjust        : num 0
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ legend.title.align        : NULL
-##  $ legend.position           : chr &quot;right&quot;
-##  $ legend.direction          : NULL
-##  $ legend.justification      : chr &quot;center&quot;
-##  $ legend.box                : NULL
-##  $ legend.box.just           : NULL
-##  $ legend.box.margin         : &#39;margin&#39; num [1:4] 0cm 0cm 0cm 0cm
-##   ..- attr(*, &quot;unit&quot;)= int 1
-##  $ legend.box.background     : list()
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
-##  $ legend.box.spacing        : &#39;simpleUnit&#39; num 11points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ panel.background          :List of 5
-##   ..$ fill         : chr &quot;white&quot;
-##   ..$ colour       : logi NA
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ panel.border              :List of 5
-##   ..$ fill         : logi NA
-##   ..$ colour       : chr &quot;grey70&quot;
-##   ..$ linewidth    : &#39;rel&#39; num 1
-##   ..$ linetype     : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ panel.spacing             : &#39;simpleUnit&#39; num 5.5points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ panel.spacing.x           : NULL
-##  $ panel.spacing.y           : NULL
-##  $ panel.grid                :List of 6
-##   ..$ colour       : chr &quot;grey87&quot;
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ lineend      : NULL
-##   ..$ arrow        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ panel.grid.major          :List of 6
-##   ..$ colour       : NULL
-##   ..$ linewidth    : &#39;rel&#39; num 0.5
-##   ..$ linetype     : NULL
-##   ..$ lineend      : NULL
-##   ..$ arrow        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ panel.grid.minor          :List of 6
-##   ..$ colour       : NULL
-##   ..$ linewidth    : &#39;rel&#39; num 0.25
-##   ..$ linetype     : NULL
-##   ..$ lineend      : NULL
-##   ..$ arrow        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ panel.grid.major.x        : NULL
-##  $ panel.grid.major.y        : NULL
-##  $ panel.grid.minor.x        : NULL
-##  $ panel.grid.minor.y        : NULL
-##  $ panel.ontop               : logi FALSE
-##  $ plot.background           :List of 5
-##   ..$ fill         : NULL
-##   ..$ colour       : chr &quot;white&quot;
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ plot.title                :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : &#39;rel&#39; num 1.2
-##   ..$ hjust        : num 0
-##   ..$ vjust        : num 1
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 5.5points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ plot.title.position       : chr &quot;panel&quot;
-##  $ plot.subtitle             :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : num 0
-##   ..$ vjust        : num 1
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 5.5points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ plot.caption              :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : &#39;rel&#39; num 0.8
-##   ..$ hjust        : num 1
-##   ..$ vjust        : num 1
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 5.5points 0points 0points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ plot.caption.position     : chr &quot;panel&quot;
-##  $ plot.tag                  :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : &#39;rel&#39; num 1.2
 ##   ..$ hjust        : num 0.5
-##   ..$ vjust        : num 0.5
+##   ..$ vjust        : NULL
 ##   ..$ angle        : NULL
 ##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
+##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 2.2points 0points 2.2points
+##   .. ..- attr(*, &quot;unit&quot;)= int 8
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ plot.tag.position         : chr &quot;topleft&quot;
-##  $ plot.margin               : &#39;margin&#39; num [1:4] 5.5points 5.5points 5.5points 5.5points
+##  $ axis.ticks                      :List of 6
+##   ..$ colour       : chr &quot;grey70&quot;
+##   ..$ linewidth    : &#39;rel&#39; num 0.5
+##   ..$ linetype     : NULL
+##   ..$ lineend      : NULL
+##   ..$ arrow        : logi FALSE
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
+##  $ axis.ticks.x                    : NULL
+##  $ axis.ticks.x.top                : NULL
+##  $ axis.ticks.x.bottom             : NULL
+##  $ axis.ticks.y                    : NULL
+##  $ axis.ticks.y.left               : NULL
+##  $ axis.ticks.y.right              : NULL
+##  $ axis.ticks.theta                : NULL
+##  $ axis.ticks.r                    : NULL
+##  $ axis.minor.ticks.x.top          : NULL
+##  $ axis.minor.ticks.x.bottom       : NULL
+##  $ axis.minor.ticks.y.left         : NULL
+##  $ axis.minor.ticks.y.right        : NULL
+##  $ axis.minor.ticks.theta          : NULL
+##  $ axis.minor.ticks.r              : NULL
+##  $ axis.ticks.length               : &#39;simpleUnit&#39; num 2.75points
 ##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ strip.background          :List of 5
-##   ..$ fill         : chr &quot;grey70&quot;
+##  $ axis.ticks.length.x             : NULL
+##  $ axis.ticks.length.x.top         : NULL
+##  $ axis.ticks.length.x.bottom      : NULL
+##  $ axis.ticks.length.y             : NULL
+##  $ axis.ticks.length.y.left        : NULL
+##  $ axis.ticks.length.y.right       : NULL
+##  $ axis.ticks.length.theta         : NULL
+##  $ axis.ticks.length.r             : NULL
+##  $ axis.minor.ticks.length         : &#39;rel&#39; num 0.75
+##  $ axis.minor.ticks.length.x       : NULL
+##  $ axis.minor.ticks.length.x.top   : NULL
+##  $ axis.minor.ticks.length.x.bottom: NULL
+##  $ axis.minor.ticks.length.y       : NULL
+##  $ axis.minor.ticks.length.y.left  : NULL
+##  $ axis.minor.ticks.length.y.right : NULL
+##  $ axis.minor.ticks.length.theta   : NULL
+##  $ axis.minor.ticks.length.r       : NULL
+##  $ axis.line                       : list()
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
+##  $ axis.line.x                     : NULL
+##  $ axis.line.x.top                 : NULL
+##  $ axis.line.x.bottom              : NULL
+##  $ axis.line.y                     : NULL
+##  $ axis.line.y.left                : NULL
+##  $ axis.line.y.right               : NULL
+##  $ axis.line.theta                 : NULL
+##  $ axis.line.r                     : NULL
+##  $ legend.background               :List of 5
+##   ..$ fill         : NULL
 ##   ..$ colour       : logi NA
 ##   ..$ linewidth    : NULL
 ##   ..$ linetype     : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ strip.background.x        : NULL
-##  $ strip.background.y        : NULL
-##  $ strip.clip                : chr &quot;inherit&quot;
-##  $ strip.placement           : chr &quot;inside&quot;
-##  $ strip.text                :List of 11
+##  $ legend.margin                   : &#39;margin&#39; num [1:4] 5.5points 5.5points 5.5points 5.5points
+##   ..- attr(*, &quot;unit&quot;)= int 8
+##  $ legend.spacing                  : &#39;simpleUnit&#39; num 11points
+##   ..- attr(*, &quot;unit&quot;)= int 8
+##  $ legend.spacing.x                : NULL
+##  $ legend.spacing.y                : NULL
+##  $ legend.key                      : NULL
+##  $ legend.key.size                 : &#39;simpleUnit&#39; num 1.2lines
+##   ..- attr(*, &quot;unit&quot;)= int 3
+##  $ legend.key.height               : NULL
+##  $ legend.key.width                : NULL
+##  $ legend.key.spacing              : &#39;simpleUnit&#39; num 5.5points
+##   ..- attr(*, &quot;unit&quot;)= int 8
+##  $ legend.key.spacing.x            : NULL
+##  $ legend.key.spacing.y            : NULL
+##  $ legend.frame                    : NULL
+##  $ legend.ticks                    : NULL
+##  $ legend.ticks.length             : &#39;rel&#39; num 0.2
+##  $ legend.axis.line                : NULL
+##  $ legend.text                     :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
-##   ..$ colour       : chr &quot;white&quot;
+##   ..$ colour       : NULL
 ##   ..$ size         : &#39;rel&#39; num 0.8
 ##   ..$ hjust        : NULL
 ##   ..$ vjust        : NULL
 ##   ..$ angle        : NULL
 ##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 4.4points 4.4points 4.4points 4.4points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
+##   ..$ margin       : NULL
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ strip.text.x              : NULL
-##  $ strip.text.x.bottom       : NULL
-##  $ strip.text.x.top          : NULL
-##  $ strip.text.y              :List of 11
+##  $ legend.text.position            : NULL
+##  $ legend.title                    :List of 11
 ##   ..$ family       : NULL
 ##   ..$ face         : NULL
 ##   ..$ colour       : NULL
 ##   ..$ size         : NULL
-##   ..$ hjust        : NULL
+##   ..$ hjust        : num 0
 ##   ..$ vjust        : NULL
-##   ..$ angle        : num -90
+##   ..$ angle        : NULL
 ##   ..$ lineheight   : NULL
 ##   ..$ margin       : NULL
 ##   ..$ debug        : NULL
 ##   ..$ inherit.blank: logi TRUE
 ##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ strip.text.y.left         :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : NULL
-##   ..$ angle        : num 90
-##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ strip.text.y.right        : NULL
-##  $ strip.switch.pad.grid     : &#39;simpleUnit&#39; num 2.75points
+##  $ legend.title.position           : NULL
+##  $ legend.position                 : chr &quot;right&quot;
+##  $ legend.position.inside          : NULL
+##  $ legend.direction                : NULL
+##  $ legend.byrow                    : NULL
+##  $ legend.justification            : chr &quot;center&quot;
+##  $ legend.justification.top        : NULL
+##  $ legend.justification.bottom     : NULL
+##  $ legend.justification.left       : NULL
+##  $ legend.justification.right      : NULL
+##  $ legend.justification.inside     : NULL
+##  $ legend.location                 : NULL
+##  $ legend.box                      : NULL
+##  $ legend.box.just                 : NULL
+##  $ legend.box.margin               : &#39;margin&#39; num [1:4] 0cm 0cm 0cm 0cm
+##   ..- attr(*, &quot;unit&quot;)= int 1
+##  $ legend.box.background           : list()
+##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
+##  $ legend.box.spacing              : &#39;simpleUnit&#39; num 11points
 ##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ strip.switch.pad.wrap     : &#39;simpleUnit&#39; num 2.75points
-##   ..- attr(*, &quot;unit&quot;)= int 8
+##   [list output truncated]
 ##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
 ##  - attr(*, &quot;complete&quot;)= logi TRUE
 ##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>

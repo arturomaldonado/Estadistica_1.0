@@ -14,7 +14,7 @@
 
 <title>Clase 12</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -38,8 +38,8 @@
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -477,12 +477,12 @@ ggplot(data16, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="clase12_files/figure-html/dispersion1-1.png" width="672" /></p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching core tidyverse packages ─────
-## ✔ dplyr     1.1.3     ✔ readr     2.1.4
-## ✔ forcats   1.0.0     ✔ stringr   1.5.0
-## ✔ lubridate 1.9.2     ✔ tibble    3.2.1
-## ✔ purrr     1.0.2     ✔ tidyr     1.3.0
-## ── Conflicts ──── tidyverse_conflicts() ──
+<pre><code>## ── Attaching core tidyverse packages ────
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ lubridate 1.9.3     ✔ tibble    3.2.1
+## ✔ purrr     1.0.2     ✔ tidyr     1.3.1
+## ── Conflicts ─── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
@@ -802,160 +802,27 @@ librería <code>jtools</code>, que cuenta con el comando
 para que se presenten los coeficientes estandarizados.</p>
 <pre class="r"><code>library(jtools)
 summ(modelo4, scale=T)</code></pre>
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-Observations
-</td>
-<td style="text-align:right;">
-24 (1 missing obs. deleted)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-Dependent variable
-</td>
-<td style="text-align:right;">
-Voto_VM_2016_1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-Type
-</td>
-<td style="text-align:right;">
-OLS linear regression
-</td>
-</tr>
-</tbody>
-</table>
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-F(3,20)
-</td>
-<td style="text-align:right;">
-7.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-R²
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-Adj. R²
-</td>
-<td style="text-align:right;">
-0.44
-</td>
-</tr>
-</tbody>
-</table>
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-Est.
-</th>
-<th style="text-align:right;">
-S.E.
-</th>
-<th style="text-align:right;">
-t val.
-</th>
-<th style="text-align:right;">
-p
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-(Intercept)
-</td>
-<td style="text-align:right;">
-25.94
-</td>
-<td style="text-align:right;">
-2.14
-</td>
-<td style="text-align:right;">
-12.11
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-Uso_internet
-</td>
-<td style="text-align:right;">
-4.88
-</td>
-<td style="text-align:right;">
-4.07
-</td>
-<td style="text-align:right;">
-1.20
-</td>
-<td style="text-align:right;">
-0.24
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-Analfabetismo_2014
-</td>
-<td style="text-align:right;">
-14.01
-</td>
-<td style="text-align:right;">
-3.44
-</td>
-<td style="text-align:right;">
-4.07
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-</tr>
-<tr>
-<td style="text-align:left;font-weight: bold;">
-pbipc_2014
-</td>
-<td style="text-align:right;">
-3.04
-</td>
-<td style="text-align:right;">
-3.02
-</td>
-<td style="text-align:right;">
-1.01
-</td>
-<td style="text-align:right;">
-0.33
-</td>
-</tr>
-</tbody>
-<tfoot>
-<tr>
-<td style="padding: 0; " colspan="100%">
-<sup></sup> Standard errors: OLS; Continuous predictors are
-mean-centered and scaled by 1 s.d.
-</td>
-</tr>
-</tfoot>
-</table>
+<pre><code>## MODEL INFO:
+## Observations: 24 (1 missing obs. deleted)
+## Dependent Variable: Voto_VM_2016_1
+## Type: OLS linear regression 
+## 
+## MODEL FIT:
+## F(3,20) = 7.00, p = 0.00
+## R² = 0.51
+## Adj. R² = 0.44 
+## 
+## Standard errors: OLS
+## -------------------------------------------------------
+##                             Est.   S.E.   t val.      p
+## ------------------------ ------- ------ -------- ------
+## (Intercept)                25.94   2.14    12.11   0.00
+## Uso_internet                4.88   4.07     1.20   0.24
+## Analfabetismo_2014         14.01   3.44     4.07   0.00
+## pbipc_2014                  3.04   3.02     1.01   0.33
+## -------------------------------------------------------
+## 
+## Continuous predictors are mean-centered and scaled by 1 s.d. The outcome variable remains in its original units.</code></pre>
 <p>De acuerdo a estos resultados, la variable independiente que tiene un
 efecto mayor sobre la variable dependiente es el PBI per cápita. Este
 análisis es mucho más útil cuando tenemos una mayor cantidad de

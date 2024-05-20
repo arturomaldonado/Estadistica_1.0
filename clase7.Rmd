@@ -1,7 +1,7 @@
 ---
 title: "Clase 10"
 author: "Arturo Maldonado"
-date: "17/10/2023"
+date: "21/05/2024"
 output:
   html_document:
     toc: true
@@ -36,8 +36,6 @@ Esta evaluación se realiza mediante la prueba de chi-cuadrado.
 
     -   Variable independiente(nivel educativo) -\> Variable dependiente (satisfacción con la democracia)
 
-Como dijimos en clases anteriores, la comparación de proporciones es un caso especial de lo que veremos ahora.
-
 # Tablas de contingencia
 
 Se trata de tablas de doble entrada (como mínimo) para analizar los datos de variables categóricas.
@@ -57,18 +55,22 @@ Si se calcula los porcentajes por columnas de esta manera, se podrá comparar la
 
 En este documento vamos a trabajar con el reporte comparado *El Pulso de la Democracia*, disponible [aquí](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf).
 Este reporte presenta los principales hallazgos del proyecto del Barómetro de las Américas, organizado por el Proyecto de Opinión Pública en América Latina ([LAPOP](https://www.vanderbilt.edu/lapop/), por sus siglas en inglés).
-En este documento se reportan los resultados de la última ronda disponible de 2018/19.
+En este documento se reportan los resultados de la última ronda disponible de 2023.
 
 Pueden descargar los datos de manera libre [aquí](%5Bhttp://datasets.americasbarometer.org/database/login.php).](<http://datasets.americasbarometer.org/database/login.php>).) En este enlace, se pueden registrar o entrar como "Free User".
-En el buscador, se puede ingresar el texto "2021".
-Ahí se tendrá acceso a las bases de datos completas de cada país de la ronda 2021en versión para STATA.
+En el buscador, se puede ingresar el texto "2023".
+Ahí se tendrá acceso a las bases de datos completas de la ronda 2021 y de todas las rondas de cada país en versión para STATA.
 Se descarga la base de datos en formato .dta.
 Una vez descargada y guardada en el directorio de trabajo, se tiene que leer la base de datos como un objeto dataframe en R.
 El cuestionario de esta base de datos puede ser visto en este [enlace](https://www.vanderbilt.edu/lapop/ab2018/AB2018-v12.0-Spa-190131_W.pdf).
 
 ```{r base}
 library(rio)
-peru = import("PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
+peru = import("bases/PER_merge_2006-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
+```
+
+```{r}
+peru23 = subset(peru, wave==2023)
 ```
 
 Desde la pag.
@@ -87,22 +89,24 @@ Antes de proceder, tenemos que recodificar las variables, ponerlas en forma de f
 
 ```{r reco0}
 library(tidyverse)
-peru = peru |>
-  mutate(sexo=recode(q1tb, '1' = '1', '2' = '2', '3' = '2')) |>
-  mutate(sexo = factor(sexo, labels=c("Hombre", "Mujer/Otro")))
+peru23 = peru23 |>
+  mutate(sexo = factor(q1tc_r, labels=c("Hombre", "Mujer")))
 ```
 
 ```{r reco1}
-table(peru$sexo)
+table(peru23$sexo)
 ```
 
 Lo mismo para la variable PN4 que se transforma en la variable "satis".
 
 ```{r reco2}
-peru = peru |>
+peru23 = peru23 |>
   mutate(satis = factor(pn4, labels= c("Muy satisfecho", "Satisfecho", 
                                        "Insatisfecho", "Muy insatisfecho")))
-tabla1 = table(peru$satis)
+```
+
+```{r}
+tabla1 = table(peru23$satis)
 tabla1
 ```
 
@@ -110,7 +114,6 @@ Para calcular la tabla de satisfacción con la democracia, independiente del gé
 Se multuplica por 100 para tener el formato de porcentaje.
 
 ```{r satisporc}
-library(knitr)
 tabla1 |>
   prop.table()*100
 ```
@@ -118,10 +121,10 @@ tabla1 |>
 Ahora, se puede calcular la tabla de contingencia entre satisfacción y género.
 El comando `table` nos brinda las frecuencias absolutas del cruce entre ambas variables.
 La variable dependiente "satisfacción con la democracia" se ubica en las filas y la variable independiente "sexo" en las columnas.
-Se verifica que las 31 observaciones que están muy satisfechas con la democracia, se dividen en 19 hombres y 12 mujeres.
+Se verifica que las 58 observaciones que están muy satisfechas con la democracia, se dividen en 27 hombres y 29 mujeres.
 
 ```{r tabla}
-tabla2 = table(peru$satis, peru$sexo)
+tabla2 = table(peru23$satis, peru23$sexo)
 tabla2
 ```
 
@@ -137,8 +140,8 @@ tabla3
 ```
 
 En esta tabla se muestra las distribuciones condicionales de satisfacción con la democracia por cada grupo de género.
-Por ejemplo, el 2.4% de los hombres se encuentras muy satisfechos con la democracia, un porcentaje algo similar el 1.7% de las mujeres.
-El 20.4% de los hombres se encuentran satisfechos con la democracia, 4 puntos porcentuales por encima que las mujeres.
+Por ejemplo, el 3.5% de los hombres se encuentras muy satisfechos con la democracia, un porcentaje algo similar al 3.9% de las mujeres.
+El 17.3% de los hombres se encuentran satisfechos con la democracia, 4 puntos porcentuales por encima que las mujeres.
 
 De esta manera, se pueden comparar los porcentajes por cada categoría de la variable dependiente entre grupos de la variable independiente y, además, se puede comparar con los porcentajes no condicionales de la variable satisfacción con la democracia.
 
@@ -180,15 +183,15 @@ ggplot(data=tabla4, aes(x=Var2, y=Freq, fill=Var1))+
 
 Decimos que dos variables categóricas son ***estadísticamente independientes*** si las distribuciones condicionales (poblacionales) son idénticas por cada categoría de la variable independiente.
 Por ejemplo, la siguiente tabla, si mostrara los porcentajes poblacionales condicionales, estos son idénticos entre grupos de la variable independiente.
-Es decir, independientemante de ser hombre o mujer, las distribución de satisfacción por la democracia es la misma.
+Es decir, independientemente de ser hombre o mujer, las distribución de satisfacción por la democracia es la misma.
 Ser hombre o mujer no cambia nada las opiniones con respecto a la satisfacción con la democracia.
 
 | Satisfacción con la democracia | Hombre | Mujer |
 |--------------------------------|:------:|:-----:|
-| Muy satisfecho                 |  2.4%  | 1.7%  |
-| Satisfecho                     | 20.4%  | 16.5% |
-| Insatisfecho                   |  59%   |  64%  |
-| Muy insatisfecho               |  9.8%  | 8.3%  |
+| Muy satisfecho                 |  3.5%  | 3.9%  |
+| Satisfecho                     | 17.3%  | 13.5% |
+| Insatisfecho                   | 59.8%  | 64.9% |
+| Muy insatisfecho               | 19.4%  | 17.7% |
 
 VI: fuma ---------\> VD: cáncer de pulmón
 
@@ -209,25 +212,25 @@ En ese sentido $H_0: f_e = f_o$ o lo que es lo mismo que las variables son indep
 
 Si no hubiera relación entre las variables, tendríamos los mismo porcentajes reproducidos en las distribuciones condicionales.
 
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| Col1 | Hombres                                                        | Mujeres                                                          |
-+======+================================================================+==================================================================+
-| MS   | 2.1% de hombres -\> #observaciones si no hay relación          | 2.1% de mujeres -\> #observaciones si no hay relación            |
-|      |                                                                |                                                                  |
-|      | cuánto es el 2.1% de 1617 = 34 -\> #obs si NO hubiera relación | cuánto es el 2.1% de 1421 = 29.8 -\> #obs si NO hubiera relación |
-|      |                                                                |                                                                  |
-|      | Pero, 19 es lo realmente observado                             | Pero, 12 es lo realmente observado                               |
-|      |                                                                |                                                                  |
-|      | (19-34)\^2                                                     | (12-29.8)\^2                                                     |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| S    | 18.6%                                                          | 18.6%                                                            |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| I    | 61.3%                                                          | 61.3%                                                            |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-| MI   | 18%                                                            | 18%                                                              |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
-|      | 100%                                                           | 100%                                                             |
-+------+----------------------------------------------------------------+------------------------------------------------------------------+
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| Col1       | Hombres                                                        | Mujeres                                                          |
++============+================================================================+==================================================================+
+| MS         | 2.1% de hombres -\> #observaciones si no hay relación          | 2.1% de mujeres -\> #observaciones si no hay relación            |
+|            |                                                                |                                                                  |
+|            | cuánto es el 2.1% de 1617 = 34 -\> #obs si NO hubiera relación | cuánto es el 2.1% de 1421 = 29.8 -\> #obs si NO hubiera relación |
+|            |                                                                |                                                                  |
+|            | Pero, 19 es lo realmente observado                             | Pero, 12 es lo realmente observado                               |
+|            |                                                                |                                                                  |
+|            | (19-34)\^2                                                     | (12-29.8)\^2                                                     |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| S          | 18.6%                                                          | 18.6%                                                            |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| I          | 61.3%                                                          | 61.3%                                                            |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+| MI         | 18%                                                            | 18%                                                              |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
+|            | 100%                                                           | 100%                                                             |
++------------+----------------------------------------------------------------+------------------------------------------------------------------+
 
 # Prueba estadística
 
@@ -249,9 +252,7 @@ En R se usa el comando `chisq.test` para calcular el estadístico y el p-value.
 Esta prueba es mejor guardarla en un objeto nuevo
 
 ```{r prueba}
-prueba = chisq.test(peru$satis, peru$sexo)
-prueba$observed
-prueba$expected
+prueba = chisq.test(peru23$satis, peru23$sexo)
 ```
 
 La primera tabla presenta las frecuencias observadas, que es lo que realmente se recoge en campo.
@@ -264,48 +265,56 @@ El estadístico $\chi^2$ resume las diferencias entre las frecuencias observadas
 prueba
 ```
 
-La prueba nos da como resultado un p-value = 0.15, por lo que NO se puede rechazar la hipótesis nula y se concluye que no sabemos si existe asociación/relación/dependencia entre las variables.
+La prueba nos da como resultado un p-value = 0.12, por lo que NO se puede rechazar la hipótesis nula y se concluye que no sabemos si existe asociación/relación/dependencia entre las variables.
 
 # Tabla cruzada de satisfacción con la democracia según nivel educativo
 
-```{r}
-lapop = import("lapop21.RData")
-```
-
 El Gráfico 1.14 del reporte muestra los datos de satisfacción con la democracia (según la variable recodificada dummy) por niveles educativo.
-Como segundo ejemplo, aquí vamos a replicar esa relación usando la variable original de tipo factor pero ahora usando la base de datos de todos los países.
-
-```{r}
-lapop = lapop |>
-  mutate(satis = factor(pn4, labels= c("Muy satisfecho", "Satisfecho", 
-                                       "Insatisfecho", "Muy insatisfecho")))
-table(peru$satis)
-```
+Como segundo ejemplo, aquí vamos a replicar esa relación usando la variable original de tipo factor para Perú 2023.
 
 Vamos a recodificar la variable educación.
-La variable original "edr" separa a los analfabetos de los que tienen primaria.
+La variable original "edre" separa los niveles educativos en 7 niveles (del 0 al 6).
 Los analfabetos son un grupo muy pequeño y podrían causar problemas.
 
-Primero, creamos una variable "educ", como el factor de "edr".
+Primero, creamos una variable "educ", como el factor de "edre".
+Luego, se etiqueta.
 
 ```{r}
-lapop = lapop |>
-  mutate(educ = factor(edr))
+peru23 = peru23 |>
+  mutate(educ = factor(edre, labels=c("Analfabeto", "Primaria incompleta", "Primaria completa",
+                                      "Secundaria incompleta", "Secundaria completa",
+                                      "Universitaria o técnica incompleta", 
+                                      "Universitaria o técnica completa")))
+table(peru23$educ)
 ```
 
-Finalmente, se etiqueta.
+Vamos a crear otra variable de educación "educ2" que junte categorías para que no hayan 7 niveles educativos.
 
 ```{r}
-lapop = lapop |>
-  mutate(educ = factor(educ, labels=c("Analfabeto", "Primaria",
-                                      "Secundaria", "Superior")))
-table(lapop$educ)
+peru23 = peru23 |>
+    mutate(educ2= case_when(
+    edre == 0 ~ 1,
+    edre == 1 ~ 1,
+    edre == 2 ~ 1,
+    edre == 3 ~ 2,
+    edre == 4 ~ 2,
+    edre == 5 ~ 3,
+    edre == 6 ~ 4,
+    ))
+```
+
+```{r}
+peru23 = peru23 |>
+  mutate(educ2 = factor(educ2, labels=c("Hasta primaria ", "Hasta secundaria",
+                                      "Universitaria o técnica incompleta", 
+                                      "Universitaria o técnica completa")))
+table(peru23$educ2)
 ```
 
 Con la variable recodificada se puede calcular la tabla cruzada de satisfacción con la democracia según niveles educativos.
 
 ```{r tabla ed}
-tabla4 = table(lapop$satis, lapop$educ)
+tabla4 = table(peru23$satis, peru23$educ2)
 tabla4
 ```
 
@@ -338,9 +347,9 @@ Para comprobar la relación entre estas variables, también se puede usar la pru
 Esta evaluación se guarda en un objeto "prueba2".
 
 ```{r chi ed}
-prueba2 = chisq.test(lapop$satis, lapop$educ)
+prueba2 = chisq.test(peru23$satis, peru23$educ2)
 prueba2
 ```
 
 Con el valor de estadístico se obtiene un p-value menor a 0.05, con lo que se rechaza la hipótesis nula y se afirma que las frecuencias observadas son diferentes de las esperadas, con lo que concluimos que sí existe una relación de dependencia entre las variables.
-Esto quiere decir que en la región de América Latina existen diferencias en la satisfacción con la democracia entre diferentes grupos por nivel educativo.
+Esto quiere decir que en Perú en 2023 existen diferencias en la satisfacción con la democracia entre diferentes grupos por nivel educativo.

@@ -1,7 +1,7 @@
 ---
 title: "Clase 11 y 12"
 author: "Arturo Maldonado"
-date: "28/05/2024"
+date: "04/06/2024"
 output:
   html_document:
     toc: true
@@ -61,7 +61,7 @@ Por ejemplo:
 -   El conjunto de individuos (o puntos) formará una "nube" de puntos en este espacio.
     Este tipo de gráfico se llama Gráfico o Diagrama de Dispersión.
 
-![](9.1.png){width="488"}
+![](IZAWOL.336.ga.png){width="525"}
 
 Ahora presentaremos un ejemplo más político.
 Esta base incluye información a nivel departamental, sociodemográfica y electoral de 2016, todas variables numéricas.
@@ -90,6 +90,11 @@ ggplot(data, aes(x=Analfabetismo, y=VotoPL_1))+
 
 Esta "nube" de puntos nos dan una idea visual de la probable relación entre las variables.
 En estos casos vemos que las variables forman un patrón ascendente positivo: a medida que los departamentos reportan un mayor tasa de analfabetismo, también se observa un mayor porcentaje de voto a PL en 2021.
+
+Por ejemplo, en el libro "El Profe" (IEP, 2021) se examina la relación entre el porcentaje de población autoidentificada como indígena y el voto a Pedro Castillo.
+El gráfico que se obtiene a nivel provincial es.
+
+![](FAUaTInXEAYY3cn.png)
 
 # Relación lineal
 
@@ -172,50 +177,26 @@ modelo1 = lm(data$VotoPL_1 ~ data$Analfabetismo)
 summary(modelo1)
 ```
 
-Se pueden usar con la función `resid` para calcular los residuos de un modelo lineal.
-Estos residuos se elevan al cuadrado y se suman.
-Se obtiene que la suma total de residuos al cuadrado es 3231.8.
-Este residuo se calcula sobre la base de la mejor recta de aproximación.
-Cualquier otra recta debería tener una suma total de residuos al cuadrado mayor a este valor.
-
-```{r suma}
-sum(resid(modelo1)^2)
-```
-
-Se puede comparar esta suma de residuos al cuadrado con los residuos que generan otra recta.
-Una forma de "predecir" el voto a PL si no se tuviera información sería solo mediante el promedio del voto a PL.
-El voto promedio a PL es 27.3%.
-Sin otra información esta sería la mejor aproximación.
-
-```{r media}
-mean(data$VotoPL_1, na.rm=T)
-```
-
-Esta aproximación se puede graficar con una recta horizontal Y=27.3.
-Esta recta genera otros residuos que se calculan como la resta entre el valor observado y la media.
-
-Se calcula el residuo con respecto a esta recta horizontal y luego se suman estos residuos al cuadrado.
-
-```{r}
-data$res2 = data$VotoPL_1-27.28
-sum(data$res2^2, na.rm=T)
-```
-
-Se observa que la suma de residuos de la recta calculada por R tiene una suma de residuos al cuadrado (3231.8) menor que la suma de residuos al cuadrado con respecto a la recta horizontal (6086.4).
-En realidad, se podría hacer este ejercicio con cualquier recta y se obtendría una suma de residuos al cuadrado mayor de 3231.8.
-
 # Recta de aproximación
-
-Esta recta es un modelo de la distribución de los datos.
-Este modelo se calcula con el comando `lm` (de linear model) y se reporta con `summary`.
-
-```{r resumen modelo}
-summary(modelo1)
-```
 
 Los primeros datos a analizar están en la columna "Estimate".
 Estos datos definen la ecuación de la recta.
 Según estos datos se tendría $$\hat{Y} = 6.57 + 3.03*X$$
+
+# Modelo lineal
+
+Como indicamos, la relación entre dos variables cuantitativas se modela mediante una recta de aproximación.
+Para evaluar una relación entre dos variables numéricas, tenemos que responder las siguientes preguntas:
+
+-   ¿Existe asociación?
+
+-   ¿En qué dirección?
+
+-   ¿Con qué fuerza?
+
+-   Predecir para valores significativos
+
+# Predicción
 
 Con esta ecuación se puede **estimar** el valor de Y (es decir, el voto a PL) para cualquier valor de X (de analfabetismo).
 
@@ -272,42 +253,6 @@ Por ejemplo:
 De manera más gráfica:
 
 ![](notcausation.png){width="400"}
-
-# Modelo lineal
-
-Como indicamos, la relación entre dos variables cuantitativas se modela mediante una recta de aproximación.
-Para evaluar una relación entre dos variables numéricas, tenemos que responder las siguientes preguntas:
-
--   ¿Existe asociación?
-
--   ¿En qué dirección?
-
--   ¿Con qué fuerza?
-
--   Predecir para valores significativos
-
-Hemos usado el voto a Pedro Castillo en primera vuelta por departamento como variable dependiente y el porcentaje de personas analfabetas como variable independiente.
-Se parte de la hipótesis que existiría una relación directa entre estas variables.
-Para hacer una primera verificación de esta relación, se puede crear el diagrama de dispersión.
-
-```{r dispersion21}
-ggplot(data, aes(x=Analfabetismo, y=VotoPL_1))+
-  geom_point()+
-  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
-  geom_text(data=data, aes(label=Departamento), cex=2.5, nudge_y = 0.6, check_overlap = T)+ #Pata etiquetar los puntos, darles un tamalo, ubicación y prevenir que se sobrepongan
-  labs(x="Porcentaje de Analfabetismo", 
-       y="Voto a Castillo (1era vuelta)")+ #para etiquetar los ejes
-  theme_light()
-```
-
-El gráfico nos muestra una relación clara entre las variables.
-Para analizar en más detalle, más allá de la relación visual, analizaremos el modelo de regresión lineal.
-Como indicamos antes, el modelo se calcula con el comando `lm` donde se indica la variable Y y luego la X.
-Este modelo de guardó en un objeto "modelo1" el que se puede describir con el comando `summary`.
-
-```{r modelo2}
-summary(modelo1)
-```
 
 # ¿Existe una asociación o relación entre las variables?
 

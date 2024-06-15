@@ -1,7 +1,7 @@
 ---
 title: "Clase 12"
 author: "Arturo Maldonado"
-date: "7/11/2023"
+date: "15/06/2024"
 output:
   html_document:
     toc: true
@@ -189,7 +189,7 @@ Para esto, se realiza un modelo lineal múltiple usando el voto a PPK como varia
 El comando `lm` permite incluir varios predictores independientes en un mismo modelo con el símbolo +.
 
 ```{r ols multiple}
-modelo4 = lm(Voto_VM_2016_1 ~ Uso_internet + Analfabetismo_2014 + pbipc_2014, data=data16)
+modelo4 = lm(Voto_PPK_2016_1 ~ Uso_internet + Analfabetismo_2014 + pbipc_2014, data=data16)
 summary(modelo4)
 ```
 
@@ -197,13 +197,11 @@ summary(modelo4)
 
 ## ¿Es válido el modelo?
 
-Como ahora tenemos dos variables independientes, la validez del modelo ya no depende solo de la relación de una variable independiente con la dependiente.
+Como ahora tenemos tres variables independientes, la validez del modelo ya no depende solo de la relación de una variable independiente con la dependiente.
 Para evaluar la validez del modelo se tiene que hacer una evaluación general.
 Esta evaluación plantea una hipótesis cero que todas las pendientes (o coeficientes) son iguales a cero.
 
-$H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$
-
-La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
+$H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
 
 Para evaluar esta hipótesis se analiza los resultados de la prueba F (en la última línea de resultados del modelo).
 El estadístico F = 7.74 tiene un p-value asociado de 0.0030.
@@ -216,20 +214,23 @@ Esta pregunta se responde para cada variable independiente, evaluación que se h
 Cada variable independiente tiene una fila de resultados con su propia prueba de independencia.
 Esta pruebas tiene las siguientes hipótesis:
 
-$H0: \beta_1 = 0$ y $H0: \beta_2 = 0$
+$H0: \beta_1 = 0$ $H0: \beta_2 = 0$
 
-Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de 0.186.
-Para esta variable el estadístico de la prueba t tiene un valor de 1.367, con un p-value de 0.186.
+Para la variable uso de internet, la fila correspondiente nos indica que tenemos un coeficiente de -0.06.
+Para esta variable el estadístico de la prueba t tiene un p-value de 0.71.
 Este p-value es mayor de 0.05, por lo que fallamos en rechazar la H0.
-Es decir, se tiene 18.6% de probabilidades de tener un coeficiente de 0.18, si el verdadero valor del parámetro es 0.
+Es decir, se tiene 71% de probabilidades de tener un coeficiente de -0.06, si el verdadero valor del parámetro es 0.
 En resumen, con estos valores, no encontramos una relación entre acceso a internet y voto a PPK.
 
-Para la variable, PBI per cápita, tenemos un coeficiente de 0.0003, con un estadístico de la prueba t de 1.74 y un p-value de 0.096.
+Para la variable, PBI per cápita, tenemos un coeficiente de 0.0003, con un estadístico de la prueba t de 1.98 y un p-value de 0.06.
 Con este p-value no podemos rechazar la H0 a un valor crítico de 0.05).
 Este p-value no es menos a 0.05, por lo que no sería significativo.
 Pero, si se relaja el criterio, este p-value es menor a 0.10.
-Es decir, se tiene 9.6% de probabilidades de observar una pendiente de 0.0003 si la verdadera pendiente fuera 0.
+Es decir, se tiene 6% de probabilidades de observar una pendiente de 0.0003 si la verdadera pendiente fuera 0.
 Podemos asumir que esta probabilidad es baja, por lo que podemos concluir que sí existe una relación entre PBI y voto a PPK al 0.1 de valor crítico.
+
+Para la variable de analfabetismo, se tiene un coeficiente de -0.85 con un estadístico de -2.2 y un p-value de 0.04, que es menor que 0.05, por lo que podemos rechazar la H0.
+Se concluye que sí existe relación entre analfabetismo y voto a PPK, controlando por otros factores, como riqueza y uso de internet.
 
 En conclusión, la relación entre acceso a internet y voto a PPK, que se había encontrado en el análisis bivariado, no se mantiene en un análisis multivariado, cuando se controla por la variable PBI.
 Muy probablemente estemos hablando de una relación espúrea, pues PBI podría tener un efecto tanto en el acceso a internet (departamentos más ricos, tienen familias que pueden pagar por el servicio de internet), como en el voto a PPK (departamentos más ricos, votan en mayor medida a PPK).
@@ -238,8 +239,9 @@ Muy probablemente estemos hablando de una relación espúrea, pues PBI podría t
 
 De la misma manera que en análisis bivariado, la dirección de la relación entre las variables independientes y la dependiente está marcado por el signo del coeficiente.
 
-En este caso, solo se analiza el signo del coeficiente de la variable PBI, pues es la única significativa al 0.10.
-El signo del coeficiente es positivo (+), lo que indica que departamentos con un mayor PBI per cápita tendrían un mayor porcentaje de voto a PPK en promedio.
+En este caso, se analiza el signo del coeficiente de la variable PBI y analfabetismo.
+El signo del coeficiente de PBI es positivo (+), lo que indica que departamentos con un mayor PBI per cápita tendrían un mayor porcentaje de voto a PPK, en promedio.
+De El signo del coeficiente de analfabetismo es negativo (-), con lo que se concluye que departamentos que muestran mayor analfabetismo tienen menor voto a PPK, en promedio.
 
 ## Ajuste del modelo
 
@@ -256,8 +258,8 @@ El $R^2$ ajustado controla por esta inflación artificial.
 ## Predicción
 
 Para la predicción se tiene que construir la ecuación del modelo.
-Esta ecuación se construye con los valores de los coeficientes de ambas variables, así alguna de ellas no haya salido significativa.
-A esto de se agrega el valor de la constante.
+Esta ecuación se construye con los valores de los coeficientes de todas las variables, así alguna de ellas no haya salido significativa.
+A esto se agrega el valor de la constante.
 
 En nuestro ejemplo se tiene la siguiente ecuación, siendo Y el voto a PPK, X1 el acceso a internet y X2 en PBi per cápita:
 
@@ -267,9 +269,9 @@ Para hallar el voto estimado a PPK, se tiene que agregar valores de las dos vari
 Para poder aproximar valores estándar de estas variables, estas se pueden describir.
 
 ```{r describir}
-summary(data16$Uso_internet)
-summary(data16$Analfabetismo_2014)
-summary(data16$pbipc_2014)
+data16 |>
+  summarise(mean(Uso_internet, na.rm=T), mean(Analfabetismo_2014, na.rm=T), 
+            mean(pbipc_2014, na.rm=T))
 ```
 
 Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8, X2=7.8 y X3=14946.
@@ -294,7 +296,7 @@ library(jtools)
 summ(modelo4, scale=T)
 ```
 
-De acuerdo a estos resultados, la variable independiente que tiene un efecto mayor sobre la variable dependiente es el PBI per cápita.
+De acuerdo a estos resultados, la variable independiente que tiene un efecto mayor sobre la variable dependiente es analfabetismo.
 Este análisis es mucho más útil cuando tenemos una mayor cantidad de variables independientes y de variables significativas en diferentes unidades de medición.
 
 Para graficar los coeficientes

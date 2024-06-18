@@ -169,7 +169,7 @@ summary(modelo2)
 ```
 
 ```{r}
-modelo3 = lm(data16$Voto_PPK_2016_1 ~ data16$Analfabetismo_2014)
+modelo3 = lm(Voto_PPK_2016_1 ~ Analfabetismo_2014, data=data16)
 summary(modelo3)
 ```
 
@@ -201,7 +201,7 @@ Como ahora tenemos tres variables independientes, la validez del modelo ya no de
 Para evaluar la validez del modelo se tiene que hacer una evaluación general.
 Esta evaluación plantea una hipótesis cero que todas las pendientes (o coeficientes) son iguales a cero.
 
-$H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
+$H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$ La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
 
 Para evaluar esta hipótesis se analiza los resultados de la prueba F (en la última línea de resultados del modelo).
 El estadístico F = 7.74 tiene un p-value asociado de 0.0030.
@@ -274,12 +274,33 @@ data16 |>
             mean(pbipc_2014, na.rm=T))
 ```
 
-Por lo tanto, si queremos calcular un voto promedio estimado a PPK, se podría reemplazar X1=32.8, X2=7.8 y X3=14946.
+Por lo tanto, si queremos calcular un voto promedio general estimado a PPK, se podría reemplazar las variables independientes, en su promedio: X1=32.8, X2=7.8 y X3=14946.
 
 $$\hat{Y} = 19.2 - 0.06*32.8 - 0.85*7.8 + 0.0003*14946 = 15.1 % $$
 
 En conclusión, para valores promedio de las variables independientes, el voto estimado a PPK, según el modelo, sería de 15.1%.
 Este mismo ejercicio se puede hacer para los valores mínimos, máximos, para algunos percentiles particulares, etc.
+
+Si se quiere predecir el voto a PPK para diferentes valores de una variable independiente, se puede reemplazar dejando las otras variables en el promedio.
+Por ejemplo, se quiere calcular el voto estimado a PPK para diferentes valores de analfabetismo.
+Lo primero es calcular los valores de analfabetismo a reemplazar.
+En este caso usaremos el mínimo, media.
+mediana y máximo.
+
+```{r}
+data16 |>
+  summarise(min(Analfabetismo_2014, na.rm=T), mean(Analfabetismo_2014, na.rm=T), 
+            median(Analfabetismo_2014, na.rm=T), max(Analfabetismo_2014, na.rm=T))
+```
+
+Luego, podemos reemplazar estos diferentes valores de analfabetismo, dejando las otras dos variables constantes en el promedio.
+
+```{r}
+19.2 - 0.06*32.76 - 0.85*2 + 0.0003*14946
+19.2 - 0.06*32.76 - 0.85*6 + 0.0003*14946
+19.2 - 0.06*32.76 - 0.85*7.76 + 0.0003*14946
+19.2 - 0.06*32.76 - 0.85*17 + 0.0003*14946
+```
 
 ## Comparando entre variables
 

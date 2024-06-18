@@ -1,7 +1,7 @@
 ---
 title: "Clase 13"
 author: "Arturo Maldonado"
-date: "14/11/2023"
+date: "18/06/2024"
 output:
   html_document:
     toc: true
@@ -57,18 +57,11 @@ data16 |>
 
 Para analizar si la diferencia entre 29.5 y 17.9 es significativa, se puede correr una prueba t de diferencias de medias.
 
-```{r levene}
-library(DescTools)
-LeveneTest(data16$Voto_VM_2016_1, data16$costa)
-```
-
-Luego del test de igualdad de varianzas, se puede correr la prueba t.
-
 ```{r prueba t}
 t.test(Voto_VM_2016_1 ~ costa, data=data16, var.equal=T)
 ```
 
-De estos resultados, vemos que se obtiene un p-value de 0.04, que es menor a 0.05.
+De estos resultados, vemos que se obtiene un p-value de 0.03, que es menor a 0.05.
 Es decir, la diferencia en el voto a VM entre departamentos de la costa y los que no son de la costa sería significativa.
 
 Para graficar la relación entre ambas variables antes se ha usado un boxplot, que no muestra datos para la inferencia, solo datos descriptivos.
@@ -138,7 +131,7 @@ De acuerdo al p-value de ANOVA se concluye que debe haber al menos una diferenci
 Luego, mediante la prueba de Tukey vemos que existen dos emparejamientos significativos.
 
 Para replicar estos resultados mediante el análisis de regresión, se tiene que crear variables dummy por cada grupo de la variable "region".
-Es decir, 3 variables: "costa", "sierra" y "selva", En el modelo de regresión, sin embargo, solo se debe incluir 2 de esas variables dummy (por qué?).
+Es decir, 3 variables: "costa", "sierra" y "selva", En el modelo de regresión, sin embargo, solo se debe incluir 2 de esas variables dummy.
 
 ```{r modelo aov}
 modelo2 = lm(data16$Voto_KF_2016_1 ~  data16$costa + data16$sierra)

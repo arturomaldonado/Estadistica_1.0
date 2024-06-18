@@ -183,7 +183,7 @@ Para responder a esta pregunta, usaremos la Encuesta Nacional de Lectura de 2022
 
 ```{r}
 library(rio)
-#enl = import("~/Library/CloudStorage/GoogleDrive-arturo.maldonado@pucp.pe/Mi unidad/A Cursos/Estadistica_1/Data/ENL2022/ENL2022.sav")
+enl = import("~/Library/CloudStorage/GoogleDrive-arturo.maldonado@pucp.pe/Mi unidad/A Cursos/Estadistica_1/Data/ENL2022/ENL2022.sav")
 ```
 
 Esta encuesta tiene una pregunta que indaga directamente (P408).
@@ -481,7 +481,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:----------------:|:------------------------------------:|:---------------|
+|:----------------:|:-----------------------------------:|:-----------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

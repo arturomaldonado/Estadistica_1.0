@@ -92,6 +92,11 @@ modelo1 = lm(data16$Voto_VM_2016_1 ~ data16$costa)
 summary(modelo1)
 ```
 
+```{r}
+modelo2 = lm(data16$Voto_VM_2016_1 ~ data16$costa + data16$Analfabetismo_2014)
+summary(modelo2)
+```
+
 Los resultados indican que la recta es $\hat{Y} = 29.5 - 11.6*X$.
 Esta recta tiene el valor de 29.5 cuando X=0.
 Es decir, para los departamentos que no son de la costa, el promedio de voto a VM es 29.5, tal cual encontramos de manera descriptiva.
@@ -105,36 +110,24 @@ La hipótesis nula que se evalúa aquí es: $\mu_{costa} - \mu_{no costa}$.
 El estadístico de la prueba t es -2.13 y un p-value de 0.044.
 Estos datos también se encuentran en la línea de la variable independiente.
 
-# Regresión lineal como ANOVA
+# Regresión lineal para variables factor
 
-Si quisiéremos evaluar las diferencias en el voto a Fujimori en 2016 entre las 3 regiones: costa, sierra y selva, podríamos usar el test de ANOVA.
-Se tiene una variable dependiente numérica y una variable independiente nominal con 3 categorías.
+Si quisiéremos evaluar las diferencias en el voto a Fujimori en 2016 entre las 3 regiones: costa, sierra y selva, podríamos usar una variable dependiente numérica y una variable independiente nominal con 3 categorías.
 
 Lo primero es ver las medias del voto a Fujimori para cada grupo.
 
 ```{r medias2}
-data16 |>
+tabla1 = data16 |>
   group_by(region) |>
   summarise(Media = mean(Voto_KF_2016_1, na.rm = T))
+tabla1
 ```
 
-Luego, se puede evaluar si alguna de las diferencias entre estas medias es significativa mediante ANOVA.
-
-```{r anova}
-anova = aov(data16$Voto_KF_2016_1 ~ as.factor(data16$region))
-summary(anova)
-TukeyHSD(anova)
-```
-
-Recordemos que ANOVA pone a prueba la siguiente hipótesis nula: $\mu_{costa} = \mu_{sierra} = \mu_{selva}$.
-De acuerdo al p-value de ANOVA se concluye que debe haber al menos una diferencia significativa.
-Luego, mediante la prueba de Tukey vemos que existen dos emparejamientos significativos.
-
-Para replicar estos resultados mediante el análisis de regresión, se tiene que crear variables dummy por cada grupo de la variable "region".
+Para evaluar estas medias mediante el análisis de regresión, se tiene que crear variables dummy por cada grupo de la variable "region".
 Es decir, 3 variables: "costa", "sierra" y "selva", En el modelo de regresión, sin embargo, solo se debe incluir 2 de esas variables dummy.
 
 ```{r modelo aov}
-modelo2 = lm(data16$Voto_KF_2016_1 ~  data16$costa + data16$sierra)
+modelo2 = lm(data16$Voto_KF_2016_1 ~  data16$costa + data16$sierra+ data16$Analfabetismo_2014)
 summary(modelo2)
 ```
 

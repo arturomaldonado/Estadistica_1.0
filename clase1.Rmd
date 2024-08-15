@@ -1,7 +1,7 @@
 ---
 title: "Clase 1"
 author: "Arturo Maldonado"
-date: "19/3/2024"
+date: "20/8/2024"
 output: 
   html_document:
     toc: true
@@ -153,6 +153,14 @@ En formato de base de datos o de "dataframe":
 
 ------------------------------------------------------------------------
 
+Asumiendo que este dataframe se llama "alumnos", entonces
+
+-   Variable sexo: `alumnos$sexo`
+
+-   Variable educación: `alumnos$educ`
+
+-   Variable edad: `alumnos$edad`
+
 ## Ejemplo 2
 
 -   Unidad de análisis: distritos del Perú
@@ -175,6 +183,14 @@ En formato de base de datos o de "dataframe":
 | ...  |        |      |       |
 | 1821 |   3    |  1   |   0   |
 
+Si el dataframe se llama "distritos", entonces:
+
+-   Variable región: `distritos$region`
+
+-   Variable agua: `distritos$agua`
+
+-   Variable posta: `distritos$posta`
+
 ## Ejemplo 3
 
 ![](dptos.png)
@@ -182,3 +198,13 @@ En formato de base de datos o de "dataframe":
 ## Ejemplo 4
 
 ![](comis.png){width="715"}
+
+# Tarea
+
+Imagínese que quiere crear una base de datos de los alumnos del curso.
+
+1.  Proponga un nombre para el dataframe.
+
+2.  Proponga 3 variables (una nominal, una ordinal y una numérica), que no sean las sociodemográficas (sexo, edad, educación).
+
+3.  Cómo se llamarían estas variables en RStudio? Nombre cada una.

@@ -47,7 +47,7 @@ Si queremos guardar el nombre de un país en un objeto, se puede nombrar al obje
 pais1 = "México"
 ```
 
-Como se observa, el nombre del objeto no lleva tilde. Es posible crear un objeto con tildes, pero se recomienda no hacerlo pues puede crear problemas posteriores. La cadena de caracteres "México" sí incluye la tilde. Esto no representa ningún problema.
+Como se observa, el nombre del objeto no lleva tilde. Es posible crear un objeto con tildes, pero se recomienda no hacerlo pues puede crear problemas posteriores. La cadena de caracteres "México" sí incluye la tilde. Esto no representa ningún problema. Es importante notar que los caracteres en R se ponen entre comillas.
 
 # Vectores
 
@@ -191,3 +191,7 @@ Incluya estos resultados en el dataframe "apoyoAL" como un nuevo vector/columna 
 -   Los resultados para el 2023 incluyen más países.
 
 -   Puede sobreescribir el dataframe "apoyoAL" de ser necesario.
+
+1.  Calcule la media de apoyo a la democracia en 2023.
+
+2.  Calcule la diferencia por país en el apoyo a la democracia entre 2021 y 2023.

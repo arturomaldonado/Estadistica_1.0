@@ -15,7 +15,7 @@ output:
 
 [R](http://www.r-project.org) es un programa de software libre que puede ser usado para el análisis estadístico, la visualización de datos y muchas otras cosas. En este caso lo usaremos para el análisis de datos de ciencia política. R puede ser descargado desde su propio repositorio (<https://cran.r-project.org>)
 
-Otro programa de software libre es [RStudio](http://www.rstudio.com), que es una interface gráfica IDE para R. En estos enlaces se pueden descargar estos programas. Primero descargue R y luego RStudio. Ambos tiene versiones para Windows, IOS o Linux.
+Otro programa de software libre es [RStudio](https://posit.co/downloads/), que es una interface gráfica IDE para R. En estos enlaces se pueden descargar estos programas. Primero descargue R y luego RStudio. Ambos tiene versiones para Windows, IOS o Linux.
 
 # RStudio
 
@@ -46,4 +46,5 @@ Una vez seleccionado un directorio nuevo o ya existente, todos los archivos que 
 # Recursos
 
 1.  Google es la principal fuente para resolver cualquier problema que tenga en R. Recuerde que en R se pueden obtener los mismos resultados de diferentes formas.
-2.  [Stackoverflow](https://stackoverflow.com) es un foro especializado donde seguramente encontrará una entrada de alguien que se ha hecho la misma pregunta que usted y que ha sido respondida por muchas personas. Tome en cuenta que en R pueden haber muchas respuestas para la misma pregunta, es decir, muchas maneras de realizar una misma operación.
+2.  Está permitido usar ChatGPT como herramienta de solución de problemas. Es altamente recomendado que usted mismo intente escribir el código y usar ChatGPT solo para resolver sus errores. NO lo use para escribir sus códigos. NO SE PERMITIRÁ el uso de ChatGPT en los exámenes ni en las evaluaciones cortas!!!
+3.  [Stackoverflow](https://stackoverflow.com) es un foro especializado donde seguramente encontrará una entrada de alguien que se ha hecho la misma pregunta que usted y que ha sido respondida por muchas personas. Tome en cuenta que en R pueden haber muchas respuestas para la misma pregunta, es decir, muchas maneras de realizar una misma operación.

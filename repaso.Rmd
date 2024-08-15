@@ -16,6 +16,69 @@ output:
 
 En este documento se repasará los principales conceptos y procedimientos vistos en la primera mitad del curso.
 
+```{r}
+library(rio)
+data = import("bases/congresistas.xlsx")
+```
+
+# Variable numérica
+
+## Descripción
+
+Cuál es el promedio de edad de un congresista peruano?
+
+```{r}
+library(tidyverse)
+tabla1 = data |>
+  summarise(minimo = min(ed), media = mean(ed), 
+            mediana = median(ed),
+            maximo = max(ed), desviacion = sd(ed))
+tabla1
+```
+
+## Visualización
+
+```{r}
+library(ggplot2)
+graf1 = ggplot(data, aes(x=ed))+
+  geom_histogram(binwidth = 5)+
+  geom_vline(xintercept = mean(data$ed), color = "red")+
+  geom_vline(xintercept = median(data$ed), color = "green")+
+  xlab("Edad") +
+  ylab("Frecuencia")+
+  theme_minimal()
+graf1
+```
+
+## Comparación descriptiva entre grupos
+
+Existe diferencia entre las edad de congresistas hombres y mujeres?
+
+```{r}
+data = data |>
+  mutate(sexcong = factor(sex, labels=c("Hombre", "Mujer")))
+```
+
+```{r}
+tabla2 = data |>
+  group_by(sexcong) |>
+  summarise(minimo = min(ed), media = mean(ed), 
+            mediana = median(ed),
+            maximo = max(ed), desviacion = sd(ed))
+tabla2
+```
+
+## Visualización de la comparación
+
+```{r}
+graf3 = ggplot(data, aes(y=ed, x=sexcong))+
+  geom_boxplot()+
+  ylab("Edad")+
+  xlab("Sexo")+
+  theme_minimal()
+graf3
+```
+
 # Ejemplo 1: variable numérica
 
 ## Base de datos

@@ -1,0 +1,101 @@
+---
+title: "Spotify"
+author: "AMN"
+date: "2024-08-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rio)
+spotify = import("bases/spotify-2023.csv")
+```
+
+```{r}
+spotify = spotify %>%
+  mutate(streams_1 = as.numeric(streams))
+```
+
+```{r}
+spotify %>%
+  summarise(minimo=min(streams_1, na.rm=T), 
+            media=mean(streams_1, na.rm=T),
+            mediana=median(streams_1, na.rm=T),
+            maximo=max(streams_1, na.rm=T))
+```
+
+```{r}
+spotify %>%
+  summarise(minimo=min(in_spotify_playlists, na.rm=T), 
+            media=mean(in_spotify_playlists, na.rm=T),
+            mediana=median(in_spotify_playlists, na.rm=T),
+            maximo=max(in_spotify_playlists, na.rm=T))
+```
+
+```{r}
+spotify = spotify %>%
+  mutate(in_deezer_playlists_1 = as.numeric(in_deezer_playlists))
+```
+
+```{r}
+spotify = spotify %>%
+  mutate(playlist_total = in_spotify_playlists+in_apple_playlists+in_deezer_playlists_1)
+```
+
+```{r}
+ spotify %>%
+  summarise(minimo=min(playlist_total, na.rm=T), 
+            media=mean(playlist_total, na.rm=T),
+            mediana=median(playlist_total, na.rm=T),
+            maximo=max(playlist_total, na.rm=T))
+```
+
+```{r}
+spotify %>%
+  summarise(minimo=min(bpm, na.rm=T), 
+            media=mean(bpm, na.rm=T),
+            mediana=median(bpm, na.rm=T),
+            maximo=max(bpm, na.rm=T))
+```
+
+```{r}
+spotify <- spotify %>%
+  mutate(bpm_fx = case_when(
+    bpm < 90 ~ 1,
+    bpm >= 90 & bpm < 100 ~ 2,
+    bpm >= 100 & bpm < 130 ~ 3,
+    bpm >= 130 & bpm < 140 ~ 4,
+    bpm >= 140 & bpm < 150 ~ 5,
+    bpm >= 150 ~ 6
+  ))
+```
+
+```{r}
+spotify <- spotify %>%
+  mutate(bpm_fx = factor(bpm_fx, labels=c("Dub", "Hip hop", "House", "Techno",
+                                              "Dubstep", "Drum and bass")))
+# Convertir la variable bpm_fx en un factor
+```
+
+```{r}
+spotify %>%
+  group_by(bpm_fx) %>%
+  summarise(minimo=min(streams_1, na.rm=T), 
+            media=mean(streams_1, na.rm=T),
+            mediana=median(streams_1, na.rm=T),
+            maximo=max(streams_1, na.rm=T))
+```
+
+```{r}
+spotify %>%
+  group_by(bpm_fx) %>%
+  summarise(
+            media=mean(`danceability_%`, na.rm=T),
+            mediana=median(`danceability_%`, na.rm=T),
+            )
+```
+
+

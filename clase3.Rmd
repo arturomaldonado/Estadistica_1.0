@@ -1,7 +1,7 @@
 ---
 title: 'Clase 3: Visualización'
 author: "Arturo Maldonado"
-date: "2/4/2023"
+date: "3/9/2023"
 output:
   html_document:
     toc: true
@@ -87,7 +87,6 @@ ggplot(res2016, aes(y=fp))+
 El aspecto más útil de los gráficos de cajas es la comparación.
 Por ejemplo, si se quisiera comparar el voto a Fuerza Popular entre departamentos del país.
 Para hacer esto se debe definir que la variable en el eje Y sea el porcentaje de votos a Fuerza Popular "fp" y en el eje X la variable que define los departamentos "dpto".
-Incluimos la especificación `coord_flip()` para voltear los ejes y que las etiquetas de los departamentos se lean más claramente.
 
 En el gráfico se pueden hacer varias comparaciones.
 Lo más importante es comparar medianas y anchos de cajas entre departamentos.
@@ -104,13 +103,13 @@ ggplot(res2016, aes(y=fp, x=dpto))+
   theme_minimal()
 ```
 
-Si se quisiera comparar entre regiones (costa, sierre y selva), se tendría que crear esta variable, a partir de la variable "dpto".
+Si se quisiera comparar entre regiones (costa, sierra y selva), se tendría que crear esta variable, a partir de la variable "dpto".
 
 ## Recodificando variables
 
 ```{r}
 library(tidyverse)
-res2016 = res2016 |>
+res2016 = res2016 %>%
   mutate(region = case_when(
     dpto=="AMAZONAS"~3,
     dpto=="ANCASH"~2,
@@ -141,7 +140,7 @@ res2016 = res2016 |>
 ```
 
 ```{r}
-res2016 |>
+res2016 %>%
   count(Region = region, name="Frecuencia")
 ```
 
@@ -151,7 +150,7 @@ Podemos convertir cualquier variable a una de factor y etiquetar cada valor.
 
 ```{r}
 library(forcats)
-res2016 = res2016 |>
+res2016 = res2016 %>%
   mutate(region2 = factor(region, labels=c("Costa", "Sierra", "Selva")))
 ```
 
@@ -170,8 +169,8 @@ Se observa en este gráfico que el voto mediano a Fuerza Popular fue mayor entre
 Este mismo patrón se observa si calculáramos la media del porcentaje de voto provincial a Fuerza Popular por región.
 
 ```{r}
-res2016 |> 
-  group_by(region2) |>
+res2016 %>% 
+  group_by(region2) %>%
   summarise(mean(fp), sd(fp))
 ```
 
@@ -193,7 +192,7 @@ Se usa el comando `mutate` para crear una nueva variable y el comando `factor` p
 
 ```{r}
 library(tidyverse)
-enl = enl |>
+enl = enl %>%
   mutate(lee = factor(P408, labels=c("Sí", "No")))
 ```
 
@@ -205,7 +204,7 @@ Podemos usar el comando `count` para calcular la tabla de distribución de frecu
 Se guarda esta tabla en un objeto "tabla1".
 
 ```{r}
-tabla1 = enl |>
+tabla1 = enl %>%
   filter(lee == "Sí" | lee == "No") |>
   count(Lee = lee, name="Frecuencia")
 tabla1
@@ -215,7 +214,7 @@ Para calcular los porcentajes, se puede agregar a la tabla una columna "Porcenta
 Se encuentra que Fuerza Popular ganó en el 57% de provincias del Perú.
 
 ```{r}
-tabla1 = tabla1 |>
+tabla1 = tabla1 %>%
   mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
 tabla1
 ```
@@ -237,17 +236,17 @@ La encuesta también incluye la pregunta P209 sobre género.
 Esta variable se importa como una numérica, por lo que nuevamente la transformamos en una variable de tipo factor "sexo" con sus etiquetas.
 
 ```{r}
-enl = enl |>
+enl = enl %>%
   mutate(sexo = factor(P209, labels=c("Hombre", "Mujer")))
 ```
 
 Ahora usamos esta variable para calcular las frecuencias y porcentajes por grupos de sexo.
 
 ```{r}
-tabla2 = enl |>
-  filter(lee == "Sí" | lee == "No") |> 
-  group_by(sexo) |>
-  count(Lee = lee, name="N")|>
+tabla2 = enl %>%
+  filter(lee == "Sí" | lee == "No") %>%
+  group_by(sexo) %>%
+  count(Lee = lee, name="N")%>%
   mutate(total = sum(N), 
          Por = N / total * 100)
 tabla2
@@ -276,17 +275,17 @@ La base de datos incluye una variable "nse", que refiere al nivel socioeconómic
 Este nivel socioeconómico está categorizado en 4 niveles.
 
 ```{r}
-enl = enl |>
+enl = enl %>%
   mutate(nse1 = factor(nse, labels=c("Rural", "Bajo", "Medio", "Alto")))
 ```
 
 Pasamos a calcular los porcentajes de lectura por los 4 niveles socioeconómicos.
 
 ```{r}
-tabla3 = enl |>
-  filter(lee == "Sí" | lee == "No") |> 
-  group_by(nse1) |>
-  count(Lee = lee, name="N")|>
+tabla3 = enl %>%
+  filter(lee == "Sí" | lee == "No") %>%
+  group_by(nse1) %>%
+  count(Lee = lee, name="N")%>%
   mutate(total = sum(N), 
          Por = N / total * 100)
 tabla3
@@ -343,7 +342,7 @@ Esta encuesta tiene una pregunta que nos permite calcular esta media y la desvia
 ```{r desc alumnos, message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyverse)
-endo2020 |> 
+endo2020 %>%
   summarize(Media =mean(P1_6, na.rm = T), Desv.Std = sd(P1_6, na.rm = T))
 ```
 
@@ -359,15 +358,15 @@ str(endo2020$P1_1)
 La podemos transformar a una variable de tipo factor.
 
 ```{r}
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(sexo = factor(P1_1, labels=c("Hombre", "Mujer")))
 ```
 
 Calculamos los datos para hombres y mujeres.
 
 ```{r docentes hombre}
-tabla1 = endo2020 |> 
-  group_by(sexo) |>
+tabla1 = endo2020 %>%
+  group_by(sexo) %>%
   summarize(Media = mean(P1_6, na.rm = T), 
             Desv.Std = sd(P1_6, na.rm = T),
             Mediana = median(P1_6, na.rm = T))
@@ -387,13 +386,13 @@ ggplot(endo2020, aes(y=P1_6, x=sexo))+
 ```
 
 ```{r}
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(condicion = factor(P1_7, labels=c("Nombrado", "Contratado x concurso", "Contratado otro")))
 ```
 
 ```{r}
-tabla2 = endo2020 |> 
-  group_by(condicion) |>
+tabla2 = endo2020 %>%
+  group_by(condicion) %>%
   summarize(Media = mean(P1_6, na.rm = T), 
             Desv.Std = sd(P1_6, na.rm = T),
             Mediana = median(P1_6, na.rm = T))
@@ -403,8 +402,8 @@ tabla2
 ```{r}
 library(ggplot2)
 library(tidyverse)
-endo2020 |>
-  drop_na(P1_6) |>
+endo2020 %>%
+  drop_na(P1_6) %>%
   ggplot(aes(y=P1_6, x=condicion))+
   geom_boxplot()
 ```
@@ -481,7 +480,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:----------------:|:-----------------------------------:|:-----------------|
+|:----------------:|:------------------------------------:|:---------------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

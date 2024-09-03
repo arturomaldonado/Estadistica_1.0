@@ -60,7 +60,7 @@ apoyoAL %>%
 También se puede calcular la mediana, con el comando `median` y presentar ambas medidas juntas.
 
 ```{r}
-apoyoAL |>
+apoyoAL %>%
   summarise(Promedio_Apoyo2023=mean(apoyo2023, na.rm=T), 
             Mediana_Apoyo2023=median(apoyo2023, na.rm=T))
 ```
@@ -165,7 +165,7 @@ Si existiera un dato perdido, el comando no correría, y se tendría que añadir
 ```{r}
 library(dplyr)
 library(tidyverse)
-res2016 |>
+res2016 %>%
   summarise(sd(fp), sd(ppk), sd(fa))
 ```
 
@@ -183,8 +183,8 @@ En nuestro caso vamos a seleccionar las observaciones, con el comando `filter` y
 Ojo, en mayúsculas, dado que así está en la base de datos y entre comillas porque es una cadena de caracteres.
 
 ```{r}
-res2016 |> 
-  filter(dpto =="LIMA") |>
+res2016 %>%
+  filter(dpto =="LIMA") %>%
   summarise(sd(fp), sd(ppk), sd(fa))
 ```
 
@@ -192,8 +192,8 @@ Encontramos que en Lima la desviación estándar del voto provincial a Fuerza Po
 También se puede calcular los mismo para el caso de Cusco.
 
 ```{r message=FALSE, warning=FALSE}
-res2016 |> 
-  filter(dpto =="CUSCO") |>
+res2016 %>% 
+  filter(dpto =="CUSCO") %>%
   summarize(mean(fp, na.rm=T), mean(ppk, na.rm=T), mean(fa, na.rm=T), 
     sd(fp), sd(ppk), sd(fa))
 #Cómo calcularían esta media usando la variable "id"?

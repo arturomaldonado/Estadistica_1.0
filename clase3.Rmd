@@ -480,7 +480,7 @@ Dependiendo de qué muestra de todas las posibles sea la que se observa, los est
 En el caso de la proporción de hombres, se puede tabular los resultados de cada muestra probable.
 
 | Resultados muestrales | Número de muestras que arrojaron ese resultado | Frecuencia |
-|:----------------:|:------------------------------------:|:---------------|
+|:---------------------:|:----------------------------------------------:|:-----------|
 |          0%           |                       1                        | X          |
 |          50%          |                       5                        | XXXXX      |
 |         100%          |                       4                        | XXXX       |

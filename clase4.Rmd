@@ -22,7 +22,7 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Caso 1: Efectivos en las Comisarias del Perú
+# Efectivos en las Comisarias del Perú
 
 *Pregunta: ¿los policías en el Perú están distribuidos equitativamente entre las comisarías del Perú?*
 
@@ -162,7 +162,7 @@ ggplot(comi17, aes(y=INF110_TOT, x=region2))+
   theme_get()
 ```
 
-# Caso 2: Servicios básicos en las comisarías del Perú
+# Servicios básicos en las comisarías del Perú
 
 *Pregunta: ¿Las comisarías del Perú cuentan con los servicios básicos? ¿Cuentan con internet?*
 
@@ -364,7 +364,114 @@ La regla de decisión "informal" es:
 
 -   Si los IC de ambos grupos NO se cruzan, entonces se puede afirmar, al 95% de confianza, que el parámetro de un grupo es mayor/menor al parámetro del otro grupo.
 
-# Ejemplo 1 para una variable numérica: ENDO
+# Ejemplo 1 para una variable numérica: ENL
+
+*Pregunta: ¿existen diferencia en la cantidad de libros que leen hombres y mujeres?* ¿y entre diferentes niveles socioeconómicos?
+
+La hipótesis cero sería:
+
+Ho: Promedio de libros que lee un hombre = Promedio de libros que lee una mujer.
+
+```{r}
+library(rio)
+enl = import("~/Library/CloudStorage/GoogleDrive-arturo.maldonado@pucp.pe/Mi unidad/A Cursos/Estadistica_1/Data/ENL2022/ENL2022.sav")
+```
+
+```{r}
+enl = enl %>%
+  mutate(sexo = factor(P209, labels=c("Hombre", "Mujer")))
+```
+
+```{r}
+enl = enl %>%
+  mutate(nse1 = factor(nse, labels=c("Rural", "Bajo", "Medio", "Alto")))
+```
+
+```{r}
+library(tidyverse)
+enl = enl %>%
+  mutate(libros = P412_1 + P412_2)
+```
+
+```{r}
+enl %>%
+  summarize(mean(P412_1, na.rm=T), 
+            mean(P412_2, na.rm=T), 
+            mean(libros, na.rm=T))
+```
+
+```{r}
+tabla1 = enl %>%
+  group_by(sexo) %>%
+  summarize(media = mean(libros, na.rm=T), 
+            RIC = IQR(libros, na.rm=T),
+            mediana = median(libros, na.rm=T),
+            desviacion = sd(libros, na.rm=T))
+tabla1
+```
+
+```{r}
+ggplot(enl, aes(y= libros, x= sexo))+
+  geom_boxplot()+
+  scale_y_continuous(limits = c(0, 20))+
+  ylab("Total libros leídos")+
+  xlab("Sexo")+
+  theme_get()
+```
+
+El cálculo del intervalo de confianza de una media es:
+
+$$
+IC =  \bar{X} \pm 1.96 * \frac{s} {\sqrt{n}}
+$$
+
+Para una comparación usando los intervalos de confianza, se puede usar el comando `ciMean` de la librería `lsr`.
+Este comando regresa el límite inferior y el límite superior del intervalo de confianza.
+Por lo tanto, para guardar solo el mínimo se tiene que especificar `lsr::ciMean(P1_6, na.rm=T)[1]` y para el máximo cambiaría a `[2]`.
+
+```{r}
+library(lsr)
+tabla2 = enl %>%
+  summarise(media = mean(libros, na.rm=T),
+            desv = sd(libros, na.rm = T),
+            liminf = ciMean(libros, na.rm=T)[1],
+            limsup = ciMean(libros, na.rm=T)[2]
+            )
+tabla2
+```
+
+```{r}
+tabla2xsexo = enl %>%
+  group_by(sexo) %>%
+  summarise(media = mean(libros, na.rm=T),
+            desv = sd(libros, na.rm = T),
+            liminf = ciMean(libros, na.rm=T)[1],
+            limsup = ciMean(libros, na.rm=T)[2]
+            )
+tabla2xsexo
+```
+
+-   El IC al 95% de confianza, el promedio de libros que lee un hombre está en el siguiente intervalo $$3.80 - 4.05$$
+
+-   El IC al 95% de confianza el libros que lee una mujer está en el siguiente intervalo $$3.69 - 3.87$$
+
+Como ambos intervalos SÍ se traslapan, entonces NO se puede afirmar que esas diferencias se pueden extrapolar la población.
+NO se puede afirmar que existan diferencias entre hombres y mujeres en el número de libros que leen (sería un "empate técnico").
+
+## Gráfico de IC para comparar medias
+
+```{r}
+library(ggplot2)
+graf = ggplot(tabla2xsexo, aes(x=sexo, y=media))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=round(media, 1)), vjust=-1, size=4)+
+  xlab("Sexo") + ylab("Promedio de libros que lee")+
+  ylim(0, 5)
+graf
+```
+
+# Ejemplo 2 para una variable numérica: ENDO
 
 *Pregunta: ¿a cuántos alumnos en promedio atiende un profesor peruano? ¿Existen diferencias de género?*
 
@@ -388,19 +495,19 @@ Se puede crear una nueva variable "sexo" con la variable transformada y etiqueta
 ```{r medias, message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyverse)
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(sexo = factor(P1_1, labels=c("Hombre", "Mujer")))
 ```
 
 ```{r}
-endo2020 |> 
+endo2020 %>%
   summarize(Media = mean(P1_6, na.rm = T), 
             Desv.Std = sd(P1_6, na.rm = T))
 ```
 
 ```{r}
-alumxsexo = endo2020 |> 
-  group_by(sexo) |>
+alumxsexo = endo2020 %>%
+  group_by(sexo) %>%
   summarize(Media = mean(P1_6, na.rm = T), 
             Desv.Std = sd(P1_6, na.rm = T))
 alumxsexo
@@ -420,7 +527,7 @@ Por lo tanto, para guardar solo el mínimo se tiene que especificar `lsr::ciMean
 
 ```{r}
 library(lsr)
-endo2020 |>
+endo2020 %>%
   summarise(media = mean(P1_6, na.rm=T),
             desv = sd(P1_6, na.rm = T),
             liminf = ciMean(P1_6, na.rm=T)[1],
@@ -429,14 +536,14 @@ endo2020 |>
 ```
 
 ```{r}
-ci_alumxsexo = endo2020 |>
-  group_by(sexo) |>
+alumxsexo = endo2020 %>%
+  group_by(sexo) %>%
   summarise(media = mean(P1_6, na.rm=T),
             desv = sd(P1_6, na.rm = T),
             liminf = ciMean(P1_6, na.rm=T)[1],
             limsup = ciMean(P1_6, na.rm=T)[2]
             )
-ci_alumxsexo
+alumxsexo
 ```
 
 -   El IC al 95% de confianza, el promedio de alumnos que acompañan los docentes hombre está en el siguiente intervalo $$50.7 - 53.8$$
@@ -462,8 +569,8 @@ Para eliminar se tiene que especificar la tabla y con los brackets `[filas, colu
 Se elimina con el signo "-" y como no hay datos luego de la ",", se indica que no se cambia ninguna columna.
 
 ```{r ci x sexo}
-ci_alumxsexo = ci_alumxsexo[-3,]
-ci_alumxsexo
+alumxsexo = alumxsexo[-3,]
+alumxsexo
 ```
 
 Esta tabla se puede usar para crear un gráfico que compare ambos IC con la librería `ggplot2` y con la geometría `geom_errorbar`.
@@ -471,7 +578,7 @@ Se agrega `geom_text` para incluir el "texto" con los valores promedio de ambos 
 
 ```{r grafico1}
 library(ggplot2)
-graf1 = ggplot(ci_alumxsexo, aes(x=sexo, y=media))+
+graf1 = ggplot(alumxsexo, aes(x=sexo, y=media))+
   geom_bar(stat="identity")+
   geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
   geom_text(aes(label=round(media, 1)), vjust=-1, size=4)+
@@ -497,7 +604,7 @@ OJO: no se debe confundir este gráfico con un gráfico de cajas.
 
 TAREA: Analizar si existen diferencias en el número de alumnos entre docentes con diferentes condiciones laborales (P1_7).
 
-# Ejemplo 2 para una variable numérica: LAPOP
+# Ejemplo 3 para una variable numérica: LAPOP
 
 ```{r}
 library(rio)
@@ -526,7 +633,7 @@ Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar d
 Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
 
 |                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
-|-----------|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+|---------------------------------------------------------|:-----------------:|:--------------------:|:-----------------:|:---------------------:|:----------------------------:|:---------------------------------:|
 | Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
 | Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
 | Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |
@@ -538,7 +645,7 @@ Esto se puede calcular en R.
 
 ```{r}
 library(tidyverse)
-lapop = lapop |>
+lapop = lapop %>%
   mutate(indice = (b12+b18-2)/12*100)
 ```
 
@@ -546,7 +653,7 @@ Podemos asumir que este índice es una variable cuantitativa, por lo que podemos
 
 ```{r}
 library(lsr)
-lapop |>
+lapop %>%
   summarise(media = mean(indice, na.rm=T),
             liminf = ciMean(indice, na.rm=T)[1],
             limsup = ciMean(indice, na.rm=T)[2]
@@ -556,8 +663,8 @@ lapop |>
 Mejor aún, podemos calcular el índice de confianza en las fuerzas del orden por año de la encuesta.
 
 ```{r}
-indicexwave = lapop |>
-  group_by(wave) |>
+indicexwave = lapop %>%
+  group_by(wave) %>%
   summarise(media = mean(indice, na.rm=T),
             liminf = ciMean(indice, na.rm=T)[1],
             limsup = ciMean(indice, na.rm=T)[2]
@@ -587,7 +694,7 @@ La hipótesis cero sería: La proporción de docentes que han recibido apoyo psi
 Lo primero es transformar la variable P1_13 que es importada como numérica, como una variable de factor y con sus etiquetas.
 
 ```{r}
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(apoyo = factor(P1_13, labels=c("Sí", "No")))
 ```
 
@@ -597,9 +704,9 @@ Es por esto que antes de calcular las frecuencias, tenemos que filtrar para que 
 Luego de las frecuencias, incluimos el porcentaje con `mutate`.
 
 ```{r}
-tabla = endo2020 |>
-  filter(apoyo =="Sí" | apoyo == "No") |>
-  count(Apoyo = apoyo, name="N")|>
+tabla = endo2020 %>%
+  filter(apoyo =="Sí" | apoyo == "No") %>%
+  count(Apoyo = apoyo, name="N") %>%
   mutate(total = sum(N), 
          Porcentaje = N / total * 100)
 tabla
@@ -619,10 +726,10 @@ Luego, para responder a la pregunta de si esta proporción varía entre docentes
 Para esto, al código anterior le agregamos el comando `group_by`.
 
 ```{r}
-tabla2 = endo2020 |>
-  filter(apoyo =="Sí" | apoyo == "No") |>
-  group_by(sexo) |>
-  count(Apoyo = apoyo, name="N")|>
+tabla2 = endo2020 %>%
+  filter(apoyo =="Sí" | apoyo == "No") %>%
+  group_by(sexo) %>%
+  count(Apoyo = apoyo, name="N") %>%
   mutate(total = sum(N), 
          Por = N / total * 100,
          err = sqrt(Por*(100-Por)/N), 
@@ -683,7 +790,7 @@ El resultado es una variable dicotómica (0=No, 1=Sí), que es una variable cate
 
 ```{r}
 library(dplyr)
-lapop = lapop |>
+lapop = lapop %>%
   mutate(ing4rec= case_when(
     ing4 >= 1 & ing4 <= 4 ~ 0,
     ing4 >= 5 & ing4 <= 7 ~ 1,
@@ -693,7 +800,7 @@ lapop = lapop |>
 Se verifica la recodificación.
 
 ```{r}
-lapop |>
+lapop %>%
   count(ing4, name="Frecuencia")
 ```
 
@@ -701,7 +808,7 @@ Lo que queremos es encontrar el intervalo de confianza de la proporción (o porc
 Ojo que la tabla muestra a 393 personas con NAs.
 
 ```{r}
-lapop |>
+lapop %>%
   count(ing4rec, name="Frecuencia")
 ```
 
@@ -710,7 +817,7 @@ La variable que registra el año de la encuesta es "wave".
 Esta variable se carga como una numérica (por este motivo, en el gráfico anterior el eje X del gráfico aparece como una variable continua) y se tiene que transformar a una de factor llamada "ronda".
 
 ```{r}
-lapop = lapop |>
+lapop = lapop %>%
   mutate(ronda = factor(wave))
 ```
 
@@ -724,10 +831,10 @@ Recuerden que la fórmula que se tiene que usar es la de intervalos de confianza
 Dentro del comando `mutate` calculamos el total en cada grupo (total), la proporción (Por), el error estándar (err que es igual a la raíz cuadrada del porcentaje por 100-porcentaje entre N) y el límite inferior y superior del intervalo de confianza.
 
 ```{r}
-tabla3 = lapop |>
-  filter(ing4rec ==0 | ing4rec == 1) |>
-  group_by(ronda) |>
-  count(Apoyo = ing4rec, name="N")|>
+tabla3 = lapop %>%
+  filter(ing4rec ==0 | ing4rec == 1) %>%
+  group_by(ronda) %>%
+  count(Apoyo = ing4rec, name="N") %>%
   mutate(total = sum(N), 
          Por = N / total * 100, 
          err = sqrt(Por*(100-Por)/N), 

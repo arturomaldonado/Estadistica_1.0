@@ -1,7 +1,7 @@
 ---
 title: "Clase 4: Ejemplos e Intervalos de Confianza"
 author: "Arturo Maldonado"
-date: "10/09/2024"
+date: "10-17/09/2024"
 output:
   html_document:
     toc: true
@@ -164,12 +164,13 @@ ggplot(comi17, aes(y=INF110_TOT, x=region2))+
 
 # Servicios básicos en las comisarías del Perú
 
-*Pregunta: ¿Las comisarías del Perú cuentan con los servicios básicos? ¿Cuentan con internet?*
+*Pregunta: ¿Las comisarías del Perú cuentan con servicios básicos?*
 
 Para responder estas preguntas, la Encuesta Nacional de Comisarías de 2017 tiene otro módulo sobre infraestructura.
 Cargamos esa base de datos.
 
 ```{r}
+library(rio)
 comi17_2 = import("bases/comi2017_2.sav")
 ```
 
@@ -188,6 +189,7 @@ table(comi17_2$INF216)
 Se procede a crear otra variable "luz", como la factorización de INF216 con etiquetas Sí y No.
 
 ```{r}
+library(tidyverse)
 comi17_2 = comi17_2 %>%
   mutate(luz = factor(INF216, labels=c("Sí", "No")))
 ```
@@ -239,31 +241,7 @@ tabla3 = comi17_2 %>%
 tabla3
 ```
 
-Se hace el mismo procedimiento con la variable sobre desagüe.
-
-```{r}
-class(comi17_2$INF230)
-table(comi17_2$INF230)
-```
-
-```{r}
-comi17_2 = comi17_2 %>%
-  mutate(desague = factor(INF230, labels=c("Red pública dentro del local", 
-                                        "Pozo séptico",
-                                        "Letrina",
-                                        "Otro",
-                                        "No tiene baño")))
-table(comi17_2$desague)
-```
-
 ¿Qué conclusiones saca de estos resultados?
-
-```{r}
-tabla4 = comi17_2 %>%
-  count(Desague = desague, name="Frecuencia") %>%
-  mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
-tabla4
-```
 
 Finalmente, se hace lo mismo para la pregunta sobre internet.
 
@@ -378,6 +356,7 @@ enl = import("~/Library/CloudStorage/GoogleDrive-arturo.maldonado@pucp.pe/Mi uni
 ```
 
 ```{r}
+library(tidyverse)
 enl = enl %>%
   mutate(sexo = factor(P209, labels=c("Hombre", "Mujer")))
 ```
@@ -404,7 +383,6 @@ enl %>%
 tabla1 = enl %>%
   group_by(sexo) %>%
   summarize(media = mean(libros, na.rm=T), 
-            RIC = IQR(libros, na.rm=T),
             mediana = median(libros, na.rm=T),
             desviacion = sd(libros, na.rm=T))
 tabla1
@@ -633,7 +611,7 @@ Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar d
 Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
 
 |                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
-|---------------------------------------------------------|:-----------------:|:--------------------:|:-----------------:|:---------------------:|:----------------------------:|:---------------------------------:|
+|-----------|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
 | Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
 | Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
 | Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |

@@ -1,5 +1,5 @@
 ---
-title: "Clase 7: Pruebas de significancia"
+title: "Clase 5 y 6: Pruebas de significancia"
 author: "Arturo Maldonado"
 date: "24/09/2024"
 output:
@@ -151,7 +151,7 @@ Factorizamos la variable P1_1 y creamos variable sexo con sus etiquetas.
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyverse)
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(sexo = factor(P1_1, labels=c("Hombre", "Mujer")))
 ```
 
@@ -159,8 +159,8 @@ Queremos evaluar la diferencia de medias entre el número de alumnos con los que
 Para esto calculamos la media de alumnos para cada grupo.
 
 ```{r dif alumnos por sexo}
-alumxsexo = endo2020 |> 
-  group_by(sexo) |>
+alumxsexo = endo2020 %>%
+  group_by(sexo) %>%
   summarize(Media = mean(P1_6, na.rm = T))
 alumxsexo
 ```
@@ -217,7 +217,7 @@ Es decir, a diferencia del comando `t.test` que pido como argumentos las variabl
 Primero se tiene que transformar la variable P1_13 que es importada como numérica, como una variable de factor y con sus etiquetas.
 
 ```{r}
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(apoyo = factor(P1_13, labels=c("Sí", "No")))
 ```
 
@@ -227,10 +227,10 @@ A diferencia del módulo anterior, aquí vamos a usar `group_by` de ambas variab
 Esto nos dará los éxitos que requerimos.
 
 ```{r}
-tabla1 = endo2020 |>
-  filter(apoyo =="Sí" | apoyo == "No") |>
-  group_by(sexo) |>
-  count(apoyo = apoyo, name="N")|>
+tabla1 = endo2020 %>%
+  filter(apoyo =="Sí" | apoyo == "No") %>%
+  group_by(sexo) %>%
+  count(apoyo = apoyo, name="N") %>%
   mutate(total = sum(N))
 tabla1
 ```
@@ -251,7 +251,7 @@ Otro ejemplo es evaluar si la condición laboral de "Nombrado" (P1_7) varía ent
 Lo primero es factorizar la variable.
 
 ```{r}
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(condicion = factor(P1_7, labels=c("Nombrado", 
                                            "Contratado por concurso", 
                                            "Contratado con otra modalidad")))
@@ -260,11 +260,11 @@ endo2020 = endo2020 |>
 Luego, se crea la tabla con los datos que requerimos.
 
 ```{r}
-tabla2 = endo2020 |>
+tabla2 = endo2020 %>%
   filter(condicion =="Nombrado" | condicion == "Contratado por concurso"
-  | condicion == "Contratado con otra modalidad") |>
-  group_by(sexo) |>
-  count(condicion = condicion, name="N")|>
+  | condicion == "Contratado con otra modalidad") %>%
+  group_by(sexo) %>%
+  count(condicion = condicion, name="N") %>%
   mutate(total = sum(N))
 tabla2
 ```

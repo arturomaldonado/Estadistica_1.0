@@ -610,12 +610,12 @@ Cualquier puntaje intermedio, expresará una confianza intermedia.
 Como NO es intuitivo tener un índice que varíe entre 2 y 14, se puede restar dos a la suma para que el índice varíe entre 0 y 12.
 Como esta variación tampoco es intuitiva, se puede dividir todo entre 12 para que el índice varíe entre 0 y 1.
 
-|                                                         | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
-|-----------|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
-| Persona con mucha desconfianza en las fuerzas del orden |         1         |          1           |         2         |           0           |              0               |                 0                 |
-| Persona con mucha confianza en las fuerzas del orden    |         7         |          7           |        14         |          12           |              1               |                100                |
-| Persona con confianza media en las fuerzas del orden    |         4         |          5           |         9         |           7           |             0.58             |                58                 |
-| Persona con confianza media en las fuerzas del orden    |         6         |          4           |        10         |           8           |             0.66             |                66                 |
+|   | Confianza en FFAA | Confianza en policía | Confianza general | Confianza general - 2 | (Confianza general - 2) / 12 | (Confianza general - 2) / 12\*100 |
+|----|:--:|:--:|:--:|:--:|:--:|:--:|
+| Persona con mucha desconfianza en las fuerzas del orden | 1 | 1 | 2 | 0 | 0 | 0 |
+| Persona con mucha confianza en las fuerzas del orden | 7 | 7 | 14 | 12 | 1 | 100 |
+| Persona con confianza media en las fuerzas del orden | 4 | 5 | 9 | 7 | 0.58 | 58 |
+| Persona con confianza media en las fuerzas del orden | 6 | 4 | 10 | 8 | 0.66 | 66 |
 
 De esta manera cada persona tiene un puntaje que puede variar entre 0 y 1, dependiendo de las respuestas que dio a cada una de las preguntas individuales.
 

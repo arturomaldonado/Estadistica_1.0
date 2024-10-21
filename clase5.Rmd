@@ -184,6 +184,25 @@ t.test(P1_6 ~ sexo, data = endo2020)
 
 Como el p-value \< 0.05, entonces se rechaza la H0 y se puede afirmar que esa diferencia existe en la población a tal nivel de significancia.
 
+```{r}
+endo2020 = endo2020 %>%
+  mutate(nivel = case_when(
+    NIVEL==1~1,
+    NIVEL==2~2,
+    NIVEL==3~2))
+```
+
+```{r}
+alumxnivel = endo2020 %>%
+  group_by(nivel) %>%
+  summarize(Media = mean(P1_6, na.rm = T))
+alumxnivel
+```
+
+```{r}
+t.test(P1_6 ~ nivel, data = endo2020)
+```
+
 # Ejemplo 2 de variable numérica: LAPOP
 
 ```{r}

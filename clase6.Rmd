@@ -1,7 +1,7 @@
 ---
 title: "Clase 7"
 author: "Arturo Maldonado"
-date: "01/10/2024"
+date: "21/10/2024"
 output:
   html_document:
     toc: true
@@ -118,14 +118,14 @@ Primero se tiene que factorizar la variable tipo de profesor (P1_7).
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyverse)
-endo2020 = endo2020 |>
+endo2020 = endo2020 %>%
   mutate(tipo = factor(P1_7, labels=c("Nombrado", "Contratado por concurso",
                                       "Contratado por otra modalidad")))
 ```
 
 ```{r}
-alumxtipo = endo2020 |> 
-  group_by(tipo) |>
+alumxtipo = endo2020 %>% 
+  group_by(tipo) %>%
   summarize(media = mean(P1_6, na.rm = T), desv = sd(P1_6, na.rm = T))
 alumxtipo
 ```
@@ -138,8 +138,8 @@ Para tener una descripción completa entre los 3 grupos, también se puede usar:
 
 ```{r}
 library(lsr)
-ICalumxtipo = endo2020 |>
-  group_by(tipo) |>
+ICalumxtipo = endo2020 %>%
+  group_by(tipo) %>%
   summarise(media = mean(P1_6, na.rm=T),
             liminf = ciMean(P1_6, na.rm=T)[1],
             limsup = ciMean(P1_6, na.rm=T)[2]
@@ -230,29 +230,30 @@ lapop = import("bases/PER_2006-2021.dta")
 
 ```{r}
 library(dplyr)
-lapop = lapop |>
+lapop = lapop %>%
   mutate(indice = (b12+b18-2)/12*100)
 ```
 
 ```{r}
 library(dplyr)
 library(tidyverse)
-lapop = lapop |>
-  mutate(ronda = factor(wave))
+lapop = lapop %>%
+  mutate(gedad = factor(edad, labels=c("18-25", "26-35", "36-45", "46-55",
+                                       "56-65", "66+")))
 ```
 
 ```{r}
-indicexwave = lapop |>
-  group_by(ronda) |>
+indicexedad = lapop %>%
+  group_by(gedad) %>%
   summarise(media = mean(indice, na.rm=T),
             liminf = ciMean(indice, na.rm=T)[1],
             limsup = ciMean(indice, na.rm=T)[2]
             )
-indicexwave
+indicexedad
 ```
 
 ```{r}
-anova2 = aov(lapop$indice~lapop$ronda)
+anova2 = aov(lapop$indice~lapop$gedad)
 summary(anova2)
 ```
 
@@ -267,9 +268,9 @@ compara.df2$compara = rownames(compara.df2)
 ```
 
 ```{r}
-graf3 = ggplot(compara.df2, aes(x=compara, y=lapop.ronda.diff))+
-  geom_errorbar(aes(ymin=lapop.ronda.lwr, ymax=lapop.ronda.upr), width=0.2)+
-  geom_text(aes(label=paste(round(lapop.ronda.diff, 1))), vjust=-0.2, size=2)+
+graf3 = ggplot(compara.df2, aes(x=compara, y=lapop.gedad.diff))+
+  geom_errorbar(aes(ymin=lapop.gedad.lwr, ymax=lapop.gedad.upr), width=0.2)+
+  geom_text(aes(label=paste(round(lapop.gedad.diff, 1))), vjust=-0.2, size=2)+
   xlab("Comparación") + ylab("Diferencia")+
   ylim(-10, 20) +
   coord_flip() +
@@ -290,7 +291,12 @@ Este índice sintetizaría la opinión de los ciudadanos acerca de las principal
 Se quiere hacer esta evaluación para la ronda 2018
 
 ```{r}
-lapop18 = lapop |>
+lapop = lapop %>%
+  mutate(ronda = factor(wave))
+```
+
+```{r}
+lapop18 = lapop %>%
   filter(ronda==2018)
 ```
 

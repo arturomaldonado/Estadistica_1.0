@@ -1,7 +1,7 @@
 ---
 title: "Clase 11 y 12"
 author: "Arturo Maldonado"
-date: "04/06/2024"
+date: "29/10/2024"
 output:
   html_document:
     toc: true
@@ -95,6 +95,9 @@ Por ejemplo, en el libro "El Profe" (IEP, 2021) se examina la relación entre el
 El gráfico que se obtiene a nivel provincial es.
 
 ![](FAUaTInXEAYY3cn.png)
+
+Cuando se trabaja con bases de datos con muchas más observaciones, a veces no es fácil distinguir una tendencia en la "nube" de puntos.
+Dado que nuestra percepción tiene esos límites, confiamos en el modelamiento mediante una relación lineal para el establecimiento de relaciones.
 
 # Relación lineal
 

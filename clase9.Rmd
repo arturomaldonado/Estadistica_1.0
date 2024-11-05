@@ -279,7 +279,7 @@ En la fila correspondiente a la variable independiente se observa que el p-value
 Es decir, que tenemos muy bajas probabilidades de observar una pendiente de 3.03 si la verdadera pendiente es cero.
 Como este valor es menor a 0.05, se puede rechazar la H0.
 
-Con esto se concluye que se puede decir que SÍ hay una relación entre ambas variables.
+Con esto se concluye que se puede decir que SÍ hay una (cor)relación entre ambas variables.
 
 # Dirección
 

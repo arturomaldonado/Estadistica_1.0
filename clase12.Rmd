@@ -1,7 +1,7 @@
 ---
 title: "Clase 12"
 author: "Arturo Maldonado"
-date: "15/06/2024"
+date: "04/11/2024"
 output:
   html_document:
     toc: true
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Introducción a la regresión lineal múltiple
 
 -   El análisis bivariado es un primer paso en el análisis estadístico.
-    Se encuentran (co)rrelaciones: X - Y
+    Se encuentran (cor)relaciones: X - Y
 
 -   ¿Por qué agregar más variables?
     Se busca aproximarse a la causalidad: X -\> Y
@@ -34,19 +34,29 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   Para hablar de causalidad, se requieren ciertos criterios:
 
-    -   Asociación entre las variables, pero asociación no implica causalidad.
+    -   Asociación estadística entre las variables, pero asociación no implica causalidad.
 
     -   Orden temporal: que la causa ocurra antes que el efecto.
 
     -   Eliminación de hipótesis alternativas.
         Estas hipótesis alternativas regularmente parten de la literatura.
 
+    -   Consistencia: la relación debe ser consistente en diferentes estudios, poblaciones y contextos.
+
+    -   Dosificación: cambios en la magnitud de X llevan a cambios correspondientes en Y.
+
+    -   Plausibilidad: debe haber una explicación teórica o mecanismo plausible que respalde la relación causal.
+
+    -   Especificidad: si una causa X lleva a un efecto Y específico y no a múltiples efectos diferentes.
+
+    -   Coherencia: la relación causal debe ser coherente con el conocimiento general existente, por ejemplo en diferentes disciplinas.
+
 # Control estadístico
 
 Para evaluar (o eliminar) las hipótesis alternativas, se realiza un "control estadístico".
 La idea es:
 
--   Evaluar si la asociación entre X - Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable.
+-   Evaluar si la asociación entre X - Y permanece si se remueve el efecto de otra variable, es decir, si se controla por una tercera variable (o cuarta o quinta o etc.).
 
 -   Para controlar por variables importantes, como las sociodemográficas.
 

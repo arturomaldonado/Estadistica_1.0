@@ -361,9 +361,6 @@ div.tocify {
   <a href="clase6.html">Clase 6</a>
 </li>
 <li>
-  <a href="repaso.html">Repaso</a>
-</li>
-<li>
   <a href="clase7.html">Clase 10</a>
 </li>
 <li>
@@ -376,7 +373,10 @@ div.tocify {
   <a href="clase13.html">Clase 13</a>
 </li>
 <li>
-  <a href="clase14.html">Clase 14</a>
+  <a href="Clase14.html">Clase 14</a>
+</li>
+<li>
+  <a href="repaso.html">Repaso</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -408,439 +408,332 @@ div.tocify {
 </div>
 
 
-<div id="introducción" class="section level1">
-<h1>Introducción</h1>
-<p>En este documento se repasará los principales conceptos y
-procedimientos vistos en la primera mitad del curso.</p>
+<div id="analizando-opinión-pública" class="section level1">
+<h1>Analizando opinión pública</h1>
 <pre class="r"><code>library(rio)
-data = import(&quot;bases/congresistas.xlsx&quot;)</code></pre>
-</div>
-<div id="variable-numérica" class="section level1">
-<h1>Variable numérica</h1>
-<div id="descripción" class="section level2">
-<h2>Descripción</h2>
-<p>Cuál es el promedio de edad de un congresista peruano?</p>
-<pre class="r"><code>library(tidyverse)
-tabla1 = data |&gt;
-  summarise(minimo = min(ed), media = mean(ed), 
-            mediana = median(ed),
-            maximo = max(ed), desviacion = sd(ed))
-tabla1</code></pre>
-<pre><code>##   minimo media mediana maximo desviacion
-## 1     27  48.5      48     78   11.16421</code></pre>
-</div>
-<div id="visualización" class="section level2">
-<h2>Visualización</h2>
-<pre class="r"><code>library(ggplot2)
-graf1 = ggplot(data, aes(x=ed))+
-  geom_histogram(binwidth = 5)+
-  geom_vline(xintercept = mean(data$ed), color = &quot;red&quot;)+
-  geom_vline(xintercept = median(data$ed), color = &quot;green&quot;)+
-  xlab(&quot;Edad&quot;) +
-  ylab(&quot;Frecuencia&quot;)+
-  theme_minimal()
-graf1</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
-<div id="comparación-descriptiva-entre-grupos" class="section level2">
-<h2>Comparación descriptiva entre grupos</h2>
-<p>Existe diferencia entre las edad de congresistas hombres y
-mujeres?</p>
-<pre class="r"><code>data = data |&gt;
-  mutate(sexcong = factor(sex, labels=c(&quot;Hombre&quot;, &quot;Mujer&quot;)))</code></pre>
-<pre class="r"><code>tabla2 = data |&gt;
-  group_by(sexcong) |&gt;
-  summarise(minimo = min(ed), media = mean(ed), 
-            mediana = median(ed),
-            maximo = max(ed), desviacion = sd(ed))
-tabla2</code></pre>
-<pre><code>## # A tibble: 2 × 6
-##   sexcong minimo media mediana maximo desviacion
-##   &lt;fct&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Hombre      28  48.6    46.5     78       11.0
-## 2 Mujer       27  48.1    50       71       11.8</code></pre>
-</div>
-<div id="visualización-de-la-comparación" class="section level2">
-<h2>Visualización de la comparación</h2>
-<pre class="r"><code>graf3 = ggplot(data, aes(y=ed, x=sexcong))+
-  geom_boxplot()+
-  ylab(&quot;Edad&quot;)+
-  xlab(&quot;Sexo&quot;)+
-  theme_minimal()
-graf3</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-</div>
-</div>
-<div id="ejemplo-1-variable-numérica" class="section level1">
-<h1>Ejemplo 1: variable numérica</h1>
-<div id="base-de-datos" class="section level2">
-<h2>Base de datos</h2>
-<p>En esta base usaremos una base de datos de hogares afiliados y
-abonados al programa Juntos. Como se indica en la página de <a
-href="https://www.datosabiertos.gob.pe/dataset/resumen-de-hogares-afiliados-y-abonados-por-ubigeo-2023-programa-juntos">Datos
-Abiertos</a>, “Esta información del Programa Juntos, es generada de
-manera bimestral a nivel de distrito, considerando datos sobre la
-cantidad de hogares afiliados, cantidad de hogares abonados, número de
-miembros objetivos y los montos transferidos por los conceptos de
-afiliación y cumplimiento de corresponsabilidad base en el periodo”.</p>
-<pre class="r"><code>library(rio)
-juntos = import(&quot;juntos.xlsx&quot;)</code></pre>
-</div>
+peru23 = import(&quot;bases/PER_2023_LAPOP_AmericasBarometer_v1.0_w.sav&quot;)</code></pre>
 <div id="describir-una-variable-numérica" class="section level2">
 <h2>Describir una variable numérica</h2>
-<pre class="r"><code>library(tidyverse)
-juntos = juntos |&gt;
-  mutate(tranxpob = transfer/Poblacion)</code></pre>
-<pre class="r"><code>tabla1 = juntos |&gt;
-  summarise(minimo = min(tranxpob), media = mean(tranxpob), 
-            mediana = median(tranxpob),
-            maximo = max(tranxpob), desviacion = sd(tranxpob))
-tabla1</code></pre>
-<pre><code>##   minimo    media  mediana   maximo desviacion
-## 1      0 10.01723 9.668669 50.66124   7.965191</code></pre>
-<pre class="r"><code>tabla2 = juntos |&gt;
-  filter(tranxpob == 0)
-tabla2</code></pre>
-<pre><code>##    Ubigeo  num periodo ubigeo  dpto       prov                    dist afil
-## 1  110405 1033  2023-1 110405   ICA      PALPA                 TIBILLO    1
-## 2  120429 1119  2023-1 120429 JUNÍN      JAUJA     SAN PEDRO DE CHUNÁN    1
-## 3  150104 1290  2023-1 150104  LIMA       LIMA                BARRANCO    1
-## 4  150105 1291  2023-1 150105  LIMA       LIMA                   BREÑA    1
-## 5  150120 1305  2023-1 150120  LIMA       LIMA       MAGDALENA DEL MAR    1
-## 6  150127 1310  2023-1 150127  LIMA       LIMA             PUNTA NEGRA    1
-## 7  150609 1362  2023-1 150609  LIMA     HUARAL      SAN MIGUEL DE ACOS    1
-## 8  150610 1363  2023-1 150610  LIMA     HUARAL SANTA CRUZ DE ANDAMARCA    1
-## 9  150702 1367  2023-1 150702  LIMA HUAROCHIRÍ               ANTIOQUÍA    4
-## 10 150703 1368  2023-1 150703  LIMA HUAROCHIRÍ             CALLAHUANCA    1
-##    abon miembros transfer Poblacion Superficie        Y        X tranxpob
-## 1     0        3        0       316     328.04 -14.0931 -75.1728        0
-## 2     0        3        0       839       8.44 -11.7247 -75.4894        0
-## 3     0        2        0     29424       3.33 -12.1494 -77.0247        0
-## 4     0        1        0     75882       3.22 -12.0567 -77.0536        0
-## 5     0        1        0     55786       3.61 -12.0967 -77.0747        0
-## 6     0        5        0      8500     130.50 -12.3661 -76.7947        0
-## 7     0        1        0       777      48.16 -11.2736 -76.8214        0
-## 8     0        2        0      1469     216.92 -11.1947 -76.6336        0
-## 9     0       10        0      1246     387.98 -12.0814 -76.5133        0
-## 10    0        2        0      4357      57.47 -11.8275 -76.6203        0</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>peru23 %&gt;%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Mediana_Matri=median(d6, na.rm=T))</code></pre>
+<pre><code>##   Promedio_Matri Mediana_Matri
+## 1       4.082731             3</code></pre>
+<pre class="r"><code>peru23 %&gt;%
+  summarise(Promedio_Adopcion=mean(d7a, na.rm=T), 
+            Mediana_Adopcion=median(d7a, na.rm=T))</code></pre>
+<pre><code>##   Promedio_Adopcion Mediana_Adopcion
+## 1          4.023841                3</code></pre>
+</div>
+<div id="visualización-variable-numérica" class="section level2">
+<h2>Visualización variable numérica</h2>
 <pre class="r"><code>library(ggplot2)
-graf1 = ggplot(juntos, aes(x=tranxpob))+
-  geom_histogram()+
-  geom_vline(xintercept = mean(juntos$tranxpob), color = &quot;red&quot;)+
-  geom_vline(xintercept = median(juntos$tranxpob), color = &quot;green&quot;)+
-  xlab(&quot;Gasto per cápita de programa Juntos&quot;) +
+ggplot(peru23, aes(x=d6))+
+  geom_histogram(binwidth = 1)+
+  xlab(&quot;Aprobación matrimonio igualitario&quot;) +
   ylab(&quot;Frecuencia&quot;)+
-  theme_minimal()
-graf1</code></pre>
-<pre><code>## `stat_bin()` using `bins =
-## 30`. Pick better value with
-## `binwidth`.</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code>juntos = juntos |&gt;
-  mutate(limaprov = case_when(
-    prov == &quot;LIMA&quot; ~ 1,
-    prov != &quot;LIMA&quot; ~ 0
-  ))</code></pre>
-<pre class="r"><code>tabla2 = juntos |&gt; 
-  group_by(limaprov) |&gt;
-  summarise(minimo = min(tranxpob), 
-            media = mean(tranxpob), 
-            mediana = median(tranxpob),
-            desviacion = sd(tranxpob),
-            maximo = max(tranxpob))
-tabla2</code></pre>
-<pre><code>## # A tibble: 2 × 6
-##   limaprov minimo  media mediana desviacion maximo
-##      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
-## 1        0      0 10.2    9.96        7.92  50.7  
-## 2        1      0  0.115  0.0748      0.157  0.629</code></pre>
-<p>Esta base de datos incluye la variable acerca del número de población
-objetivo por distrito (variable “miembros”). Queremos tener una idea
-acerca de la magnitud de este programa. Para esto describimos la
-variable.</p>
-<pre class="r"><code>tabla1 = juntos |&gt;
-  summarise(minimo = min(miembros), media = mean(miembros), 
-            mediana = median(miembros),
-            maximo = max(miembros), desviacion = sd(miembros), 
-            IQR(miembros))
-tabla1</code></pre>
-<pre><code>##   minimo    media mediana maximo desviacion IQR(miembros)
-## 1      1 806.4546   348.5  17518   1354.163           817</code></pre>
-<p>Se observa que la mediana es de aproximadamente 340 miembros por
-distrito. Esta es la magnitud de atención estándar de este programa a lo
-largo del Perú. Sin embargo, la media es de poco más de 800 miembros, lo
-que indica que existen distritos con una alta carga de miembros, que
-podrían considerarse atípicos, y que sesgan la media hacia los valores
-altos.</p>
-</div>
-<div id="graficando-una-variable-numérica" class="section level2">
-<h2>Graficando una variable numérica</h2>
-<pre class="r"><code>library(ggplot2)
-graf1 = ggplot(juntos, aes(x=miembros))+
-  geom_histogram(binwidth = 100)+
-  geom_vline(xintercept = 801.2, color = &quot;red&quot;)+
-  geom_vline(xintercept = 339.5, color = &quot;green&quot;)+
-  xlab(&quot;Número de miembros programa Juntos&quot;) +
+  theme_minimal()</code></pre>
+<pre><code>## Warning: Removed 12 rows containing non-finite outside the scale range
+## (`stat_bin()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(peru23, aes(x=d7a))+
+  geom_histogram(binwidth = 1)+
+  xlab(&quot;Aprobación adopción&quot;) +
   ylab(&quot;Frecuencia&quot;)+
-  theme_minimal()
-graf1</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>El histograma permite distinguir esta situación más claramente. Vemos
-que los distritos en el Perú generalmente acumulan menos de 5000
-usuarios. Son raros y puntuales los distritos con más usuarios.</p>
-<pre class="r"><code>graf2 = ggplot(juntos, aes(y=miembros))+
-  geom_boxplot()+
-  ylab(&quot;Número de miembros de programa Junto&quot;)+
-  scale_y_continuous(limits = c(0, 2000), breaks = seq(0, 2000, 500))
-graf2</code></pre>
-<pre><code>## Warning: Removed 195 rows containing
-## non-finite outside the scale
-## range (`stat_boxplot()`).</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+  theme_minimal()</code></pre>
+<pre><code>## Warning: Removed 780 rows containing non-finite outside the scale range
+## (`stat_bin()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
-<div id="comparando-descriptivos" class="section level2">
-<h2>Comparando descriptivos</h2>
-<pre class="r"><code>juntos = juntos |&gt;
-  mutate(departa = as.factor(dpto))</code></pre>
-<pre class="r"><code>tabla2 = juntos |&gt; 
-  group_by(departa) |&gt;
-  summarise(media = mean(miembros), desviacion = sd(miembros),
-            mediana = median(miembros))
-tabla2</code></pre>
-<pre><code>## # A tibble: 25 × 4
-##    departa      media desviacion mediana
-##    &lt;fct&gt;        &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
-##  1 AMAZONAS      838.      1700.    214 
-##  2 ÁNCASH        439.       555.    246 
-##  3 APURÍMAC      685.       687.    411 
-##  4 AREQUIPA      107.       151.     51 
-##  5 AYACUCHO      507.       538.    308 
-##  6 CAJAMARCA    1614.      1683.   1036 
-##  7 CALLAO        635.       840.    240.
-##  8 CUSCO         739.       714.    538.
-##  9 HUANCAVELICA  594.       856.    303 
-## 10 HUÁNUCO      1078.       919.    794 
-## # ℹ 15 more rows</code></pre>
-</div>
-<div id="comparando-descriptivos-gráficamente" class="section level2">
-<h2>Comparando descriptivos gráficamente</h2>
-<pre class="r"><code>graf3 = ggplot(tabla2, aes(x=media, y=departa))+
-  geom_bar(stat=&quot;identity&quot;, width=0.5)
-graf3</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<pre class="r"><code>graf4 = ggplot(juntos, aes(y=miembros, x=departa))+
-  geom_boxplot()+
-  scale_y_continuous(limits = c(0, 8000), breaks = seq(0, 8000, 1000))+
-  ylab(&quot;Número de miembros en Programa Juntos&quot;)+
-  xlab(&quot;Departamento&quot;)+
-  theme_minimal()+
-  coord_flip()
-graf4</code></pre>
-<pre><code>## Warning: Removed 12 rows containing
-## non-finite outside the scale
-## range (`stat_boxplot()`).</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<pre class="r"><code>juntos = juntos |&gt;
-  mutate(region = case_when(
-    dpto==&quot;AMAZONAS&quot;~&quot;Selva&quot;,
-    dpto==&quot;ÁNCASH&quot;~&quot;Sierra&quot;,
-    dpto==&quot;APURÍMAC&quot;~&quot;Sierra&quot;,
-    dpto==&quot;AREQUIPA&quot;~&quot;Sierra&quot;,
-    dpto==&quot;AYACUCHO&quot;~&quot;Sierra&quot;,
-    dpto==&quot;CAJAMARCA&quot;~&quot;Sierra&quot;,
-    dpto==&quot;CUSCO&quot;~&quot;Sierra&quot;,
-    dpto==&quot;CALLAO&quot;~&quot;Costa&quot;,
-    dpto==&quot;HUANCAVELICA&quot;~&quot;Sierra&quot;,
-    dpto==&quot;HUÁNUCO&quot;~&quot;Selva&quot;,
-    dpto==&quot;ICA&quot;~&quot;Costa&quot;,
-    dpto==&quot;JUNÍN&quot;~&quot;Sierra&quot;,
-    dpto==&quot;LA LIBERTAD&quot;~&quot;Costa&quot;,
-    dpto==&quot;LAMBAYEQUE&quot;~&quot;Costa&quot;,
-    dpto==&quot;LIMA&quot;~&quot;Costa&quot;,
-    dpto==&quot;LORETO&quot;~&quot;Selva&quot;,
-    dpto==&quot;MADRE DE DIOS&quot;~&quot;Selva&quot;,
-    dpto==&quot;MOQUEGUA&quot;~&quot;Costa&quot;,
-    dpto==&quot;PASCO&quot;~&quot;Sierra&quot;,
-    dpto==&quot;PIURA&quot;~&quot;Costa&quot;,
-    dpto==&quot;PUNO&quot;~&quot;Sierra&quot;,
-    dpto==&quot;SAN MARTÍN&quot;~&quot;Selva&quot;,
-    dpto==&quot;TACNA&quot;~&quot;Costa&quot;,
-    dpto==&quot;TUMBES&quot;~&quot;Costa&quot;,
-    dpto==&quot;UCAYALI&quot;~&quot;Selva&quot;
-  )) </code></pre>
-<pre class="r"><code>tabla3 =juntos |&gt; 
-  group_by(region) |&gt;
-  summarise(media = mean(miembros), desviacion = sd(miembros))
-tabla3</code></pre>
-<pre><code>## # A tibble: 3 × 3
-##   region media desviacion
-##   &lt;chr&gt;  &lt;dbl&gt;      &lt;dbl&gt;
-## 1 Costa   861.      1803.
-## 2 Selva  1246.      1627.
-## 3 Sierra  650.       955.</code></pre>
-<pre class="r"><code>graf5 = ggplot(juntos, aes(y=miembros, x=region))+
-  geom_boxplot()+
-  scale_y_continuous(limits = c(0, 4000), breaks = seq(0, 4000, 500))+
-  ylab(&quot;Número de miembros en Programa Juntos&quot;)+
-  xlab(&quot;Departamento&quot;)+
-  theme_minimal()
-graf5</code></pre>
-<pre><code>## Warning: Removed 53 rows containing
-## non-finite outside the scale
-## range (`stat_boxplot()`).</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-</div>
-<div id="comparando-grupos-mediante-intervalos-de-confianza"
+<div id="comparando-variable-numérica-entre-grupos"
 class="section level2">
-<h2>Comparando grupos mediante intervalos de confianza</h2>
-<pre class="r"><code>library(lsr)
-ciMean(juntos$miembros)</code></pre>
-<pre><code>##          2.5%    97.5%
-## [1,] 744.7408 868.1685</code></pre>
-<pre class="r"><code>miembrosxreg = juntos |&gt;
-  group_by(region) |&gt;
-  summarise(Media = mean(miembros, na.rm=T),
-            min = ciMean(miembros, na.rm=T)[1],
-            max = ciMean(miembros, na.rm=T)[2]
-            )
-miembrosxreg</code></pre>
-<pre><code>## # A tibble: 3 × 4
-##   region Media   min   max
-##   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 Costa   861.  694. 1028.
-## 2 Selva  1246. 1069. 1423.
-## 3 Sierra  650.  593.  707.</code></pre>
-<pre class="r"><code>graf6 = ggplot(miembrosxreg, aes(x=region, y=Media))+
-  geom_bar(stat=&quot;identity&quot;)+
-  geom_errorbar(aes(ymin=min, ymax=max), width=0.2)+
-  geom_text(aes(label=paste(round(Media, 1))), vjust=-3.5, size=4)+
-  xlab(&quot;Region&quot;) + ylab(&quot;Miembros de Programa Juntos&quot;)+
-  ylim(0, 1500)
-graf6</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<h2>Comparando variable numérica entre grupos</h2>
+<pre class="r"><code>peru23 = peru23 %&gt;%
+  mutate(educ = case_when(
+    edre &lt;= 3 ~ 1,
+    edre == 4 ~ 2,
+    edre == 5 ~ 3,
+    edre == 6 ~ 4,
+    ))</code></pre>
+<pre class="r"><code>peru23 = peru23 %&gt;%
+  mutate(educ2 = factor(educ, labels=c(&quot;Colegio incompleto&quot;, 
+                                       &quot;Colegio completo&quot;, 
+                                       &quot;Superior incompleta&quot;, 
+                                       &quot;Superior completa&quot;)))</code></pre>
+<pre class="r"><code>peru23 %&gt;%
+  group_by(educ2) %&gt;%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Mediana_Matri=median(d6, na.rm=T))</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   educ2               Promedio_Matri Mediana_Matri
+##   &lt;fct&gt;                        &lt;dbl&gt;         &lt;dbl&gt;
+## 1 Colegio incompleto            3.24             1
+## 2 Colegio completo              3.97             3
+## 3 Superior incompleta           4.83             5
+## 4 Superior completa             4.34             4</code></pre>
 </div>
-<div id="no-viene-en-el-parcial-2024-1-pruebas-de-significancia"
-class="section level2">
-<h2>NO VIENE EN EL PARCIAL 2024-1 Pruebas de significancia</h2>
-<pre class="r"><code>anova1 = aov(juntos$miembros~juntos$region)
-summary(anova1)</code></pre>
-<pre><code>##                 Df    Sum Sq  Mean Sq F value  Pr(&gt;F)    
-## juntos$region    2 9.052e+07 45261516   25.33 1.4e-11 ***
-## Residuals     1849 3.304e+09  1786782                    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>compara = TukeyHSD(anova1)
-compara</code></pre>
-<pre><code>##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = juntos$miembros ~ juntos$region)
-## 
-## $`juntos$region`
-##                   diff       lwr        upr     p adj
-## Selva-Costa   384.6268  156.6965  612.55703 0.0002312
-## Sierra-Costa -210.9734 -386.8764  -35.07042 0.0137307
-## Sierra-Selva -595.6002 -793.8417 -397.35872 0.0000000</code></pre>
-<pre class="r"><code>compara.df = as.data.frame(compara[1])
-compara.df$compara = rownames(compara.df)</code></pre>
-<pre class="r"><code>graf7 = ggplot(compara.df, aes(x=compara, y=juntos.region.diff))+
-  geom_errorbar(aes(ymin=juntos.region.lwr, ymax=juntos.region.upr), width=0.2)+
-  geom_text(aes(label=paste(round(juntos.region.diff, 1))), vjust=-1, size=3)+
-  xlab(&quot;Comparación&quot;) + ylab(&quot;Diferencia&quot;)+
-  ylim(-800, 700) +
-  coord_flip() +
-  geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
-  theme_classic()
-graf7</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<div id="graficando-la-comparación" class="section level2">
+<h2>Graficando la comparación</h2>
+<pre class="r"><code>ggplot(peru23, aes(y=d6, x=educ2))+
+  geom_boxplot()+
+  ylab(&quot;Aprobación matrimonio igualitario&quot;)+
+  xlab(&quot;Nivel educativo&quot;)+
+  theme_get()</code></pre>
+<pre><code>## Warning: Removed 12 rows containing non-finite outside the scale range
+## (`stat_boxplot()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
-</div>
-<div id="ejemplo-2-variable-categórica" class="section level1">
-<h1>Ejemplo 2: variable categórica</h1>
-<pre class="r"><code>library(rio)
-peru = import(&quot;PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta&quot;)</code></pre>
 <div id="describir-una-variable-categórica" class="section level2">
 <h2>Describir una variable categórica</h2>
-<pre class="r"><code>library(tidyverse)
-peru = peru |&gt;
-  mutate(ing4rec=recode(ing4, &#39;5&#39; = &#39;1&#39;, &#39;6&#39; = &#39;1&#39;, &#39;7&#39; = &#39;1&#39;,  .default = &#39;0&#39;))</code></pre>
-<pre class="r"><code>table(peru$ing4)</code></pre>
-<pre><code>## 
-##   1   2   3   4   5   6   7 
-## 291 216 407 546 757 347 458</code></pre>
-<pre class="r"><code>table(peru$ing4rec)</code></pre>
-<pre><code>## 
-##    0    1 
-## 1460 1562</code></pre>
-<pre class="r"><code>peru = peru |&gt;
-  mutate(ing4rec = factor(ing4rec, labels=c(&quot;No&quot;, &quot;Sí&quot;)))</code></pre>
-<pre class="r"><code>tabla4 = peru |&gt;
-  filter(ing4rec == &quot;No&quot; | ing4rec == &quot;Sí&quot;) |&gt;
-  count(apoyo = ing4rec, name=&quot;Frecuencia&quot;) |&gt;
+<pre class="r"><code>peru23 = peru23 %&gt;%
+  mutate(aborto = factor(w14a, labels=c(&quot;Sí se justifica&quot;, 
+                                          &quot;No se justifica&quot;)))</code></pre>
+<pre class="r"><code>tabla1 = peru23 %&gt;%
+  filter(aborto == &quot;Sí se justifica&quot; | aborto == &quot;No se justifica&quot;) %&gt;%
+  count(Aborto = aborto, name=&quot;Frecuencia&quot;)
+tabla1</code></pre>
+<pre><code>##            Aborto Frecuencia
+## 1 Sí se justifica       1090
+## 2 No se justifica        414</code></pre>
+<pre class="r"><code>tabla1 = tabla1 %&gt;%
   mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
-tabla4</code></pre>
-<pre><code>##   apoyo Frecuencia Porcentaje
-## 1    No       1460   48.31238
-## 2    Sí       1562   51.68762</code></pre>
+tabla1</code></pre>
+<pre><code>##            Aborto Frecuencia Porcentaje
+## 1 Sí se justifica       1090    72.4734
+## 2 No se justifica        414    27.5266</code></pre>
 </div>
-<div id="graficar-una-variable-categórica" class="section level2">
-<h2>Graficar una variable categórica</h2>
-<pre class="r"><code>graf8 = ggplot(tabla4, aes(y=Porcentaje, x=apoyo))+
+<div id="visualización-variable-factor" class="section level2">
+<h2>Visualización variable factor</h2>
+<pre class="r"><code>graf1 = ggplot(tabla1, aes(x=Aborto,y=Porcentaje))+
   geom_bar(stat=&quot;identity&quot;, width=0.5)
-graf8</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+graf1</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
-<div id="comparando-proporciones" class="section level2">
-<h2>Comparando proporciones</h2>
-<pre class="r"><code>peru = peru |&gt;
-  mutate(sexo=recode(q1tb, &#39;1&#39; = &#39;1&#39;, &#39;2&#39; = &#39;2&#39;, &#39;3&#39; = &#39;2&#39;)) |&gt;
-  mutate(sexo = factor(sexo, labels=c(&quot;Hombre&quot;, &quot;Mujer/Otro&quot;)))</code></pre>
-<pre class="r"><code>tabla5 = peru |&gt;
-  filter(ing4rec == &quot;No&quot; | ing4rec == &quot;Sí&quot;) |&gt; 
-  group_by(sexo) |&gt;
-  count(Apoyo = ing4rec, name=&quot;N&quot;)|&gt;
+<div id="comparando-variable-factor-entre-grupos"
+class="section level2">
+<h2>Comparando variable factor entre grupos</h2>
+<pre class="r"><code>tabla2 = peru23 %&gt;%
+  filter(aborto == &quot;Sí se justifica&quot; | aborto == &quot;No se justifica&quot;) %&gt;%
+  group_by(educ2) %&gt;%
+  count(Aborto = aborto, name=&quot;N&quot;) %&gt;%
   mutate(total = sum(N), 
          Por = N / total * 100, 
          err = sqrt(Por*(100-Por)/N), 
          liminf = Por - 1.96*err, 
          limsup = Por + 1.96*err)
-tabla5</code></pre>
-<pre><code>## # A tibble: 4 × 8
-## # Groups:   sexo [2]
-##   sexo       Apoyo     N total   Por   err liminf limsup
-##   &lt;fct&gt;      &lt;fct&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Hombre     No      807  1610  50.1  1.76   46.7   53.6
-## 2 Hombre     Sí      803  1610  49.9  1.76   46.4   53.3
-## 3 Mujer/Otro No      653  1412  46.2  1.95   42.4   50.1
-## 4 Mujer/Otro Sí      759  1412  53.8  1.81   50.2   57.3</code></pre>
+tabla2</code></pre>
+<pre><code>## # A tibble: 8 × 8
+## # Groups:   educ2 [4]
+##   educ2               Aborto              N total   Por   err liminf limsup
+##   &lt;fct&gt;               &lt;fct&gt;           &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Colegio incompleto  Sí se justifica   200   305  65.6  3.36   59.0   72.2
+## 2 Colegio incompleto  No se justifica   105   305  34.4  4.64   25.3   43.5
+## 3 Colegio completo    Sí se justifica   339   497  68.2  2.53   63.3   73.2
+## 4 Colegio completo    No se justifica   158   497  31.8  3.70   24.5   39.1
+## 5 Superior incompleta Sí se justifica   210   268  78.4  2.84   72.8   83.9
+## 6 Superior incompleta No se justifica    58   268  21.6  5.41   11.0   32.2
+## 7 Superior completa   Sí se justifica   341   434  78.6  2.22   74.2   82.9
+## 8 Superior completa   No se justifica    93   434  21.4  4.25   13.1   29.8</code></pre>
+<pre class="r"><code>tabla2 = tabla2[-c(2,4, 6, 8),]</code></pre>
 </div>
-<div id="comparando-proporciones-gráficamente" class="section level2">
-<h2>Comparando proporciones gráficamente</h2>
-<pre class="r"><code>graf9 = ggplot(tabla5, aes(x=sexo, y=Por, fill=Apoyo))+
-  geom_bar(stat=&quot;identity&quot;, width=0.5)+
-  labs(x=&quot;Sexo&quot;, y=&quot;Porcentaje&quot;,
-       caption=&quot;Barómetro de las Américas por LAPOP, 2021&quot;)+
+<div id="graficando-la-comparación-1" class="section level2">
+<h2>Graficando la comparación</h2>
+<pre class="r"><code>graf2 = ggplot(tabla2, aes(x=educ2, y=Por))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=3)+
+  labs(x=&quot;Sexo&quot;, y=&quot;Porcentaje que justifica aborto&quot;)+
   theme_classic()
-graf9</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+graf2</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="comparando-variables-numéricas-con-intervalos-de-confianza"
+class="section level2">
+<h2>Comparando variables numéricas con intervalos de confianza</h2>
+<pre class="r"><code>library(lsr)
+tabla3 = peru23 %&gt;%
+  group_by(educ2) %&gt;%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Desv_Matri=sd(d6, na.rm=T),
+            liminf = ciMean(d6, na.rm=T)[1],
+            limsup = ciMean(d6, na.rm=T)[2])
+tabla3</code></pre>
+<pre><code>## # A tibble: 4 × 5
+##   educ2               Promedio_Matri Desv_Matri liminf limsup
+##   &lt;fct&gt;                        &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Colegio incompleto            3.24       3.05   2.90   3.58
+## 2 Colegio completo              3.97       3.15   3.70   4.25
+## 3 Superior incompleta           4.83       3.41   4.42   5.24
+## 4 Superior completa             4.34       3.29   4.04   4.65</code></pre>
+</div>
+<div id="graficando-comparación-de-ic-para-variable-numérica"
+class="section level2">
+<h2>Graficando comparación de IC para variable numérica</h2>
+<pre class="r"><code>graf3 = ggplot(tabla3, aes(x=educ2, y=Promedio_Matri))+
+  geom_bar(stat=&quot;identity&quot;)+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=round(Promedio_Matri, 1)), vjust=-2.8, size=3)+
+  xlab(&quot;Nivel educativo&quot;) + ylab(&quot;Aprobación matrimonio igualitario&quot;)+
+  ylim(0, 6)
+graf3</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="comparando-proporciones-con-intervalos-de-confianza"
 class="section level2">
 <h2>Comparando proporciones con intervalos de confianza</h2>
-<pre class="r"><code>tabla5 = tabla5[-c(1,3),]</code></pre>
-<pre class="r"><code>graf10 = ggplot(tabla5, aes(x=sexo, y=Por))+
+<pre class="r"><code>tabla4 = peru23 %&gt;%
+  filter(aborto == &quot;Sí se justifica&quot; | aborto == &quot;No se justifica&quot;) %&gt;%
+  group_by(educ2) %&gt;%
+  count(Aborto = aborto, name=&quot;N&quot;) %&gt;%
+  mutate(total = sum(N), 
+         Por = N / total * 100,
+         err = sqrt(Por*(100-Por)/N), 
+         liminf = Por - 1.96*err, 
+         limsup = Por + 1.96*err)
+tabla4</code></pre>
+<pre><code>## # A tibble: 8 × 8
+## # Groups:   educ2 [4]
+##   educ2               Aborto              N total   Por   err liminf limsup
+##   &lt;fct&gt;               &lt;fct&gt;           &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Colegio incompleto  Sí se justifica   200   305  65.6  3.36   59.0   72.2
+## 2 Colegio incompleto  No se justifica   105   305  34.4  4.64   25.3   43.5
+## 3 Colegio completo    Sí se justifica   339   497  68.2  2.53   63.3   73.2
+## 4 Colegio completo    No se justifica   158   497  31.8  3.70   24.5   39.1
+## 5 Superior incompleta Sí se justifica   210   268  78.4  2.84   72.8   83.9
+## 6 Superior incompleta No se justifica    58   268  21.6  5.41   11.0   32.2
+## 7 Superior completa   Sí se justifica   341   434  78.6  2.22   74.2   82.9
+## 8 Superior completa   No se justifica    93   434  21.4  4.25   13.1   29.8</code></pre>
+<pre class="r"><code>tabla4 = tabla4[-c(2,4,6,8),]</code></pre>
+<pre class="r"><code>graf4 = ggplot(tabla4, aes(x=educ2, y=Por))+
   geom_bar(stat=&quot;identity&quot;)+
   geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
-  geom_text(aes(label=paste(round(Por, 1))), vjust=-1.5, size=4)+
-  labs(x=&quot;Sexo&quot;, y=&quot;Porcentaje&quot;,
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-3, size=3)+
+  labs(x=&quot;Nivel educativo&quot;, y=&quot;Porcentaje que justifica el aborto&quot;,
        caption=&quot;Barómetro de las Américas por LAPOP, 2021&quot;)+
   theme_classic()
-graf10</code></pre>
-<p><img src="repaso_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+graf4</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
-<div id="prueba-de-significancia-para-proporciones"
+<div id="prueba-de-significancia-para-variables-numéricas-dicotómicas"
 class="section level2">
-<h2>Prueba de significancia para proporciones</h2>
+<h2>Prueba de significancia para variables numéricas dicotómicas</h2>
+<pre class="r"><code>peru23 = peru23 %&gt;%
+  mutate(sexo = factor(q1tc_r, labels=c(&quot;Hombre&quot;, &quot;Mujer&quot;)))</code></pre>
+<pre class="r"><code>tabla5 = peru23 %&gt;%
+  group_by(sexo) %&gt;%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Desv_Matri=sd(d6, na.rm=T),
+            liminf = ciMean(d6, na.rm=T)[1],
+            limsup = ciMean(d6, na.rm=T)[2])
+tabla5</code></pre>
+<pre><code>## # A tibble: 3 × 5
+##   sexo   Promedio_Matri Desv_Matri liminf limsup
+##   &lt;fct&gt;           &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Hombre           3.79       3.17  3.56    4.01
+## 2 Mujer            4.38       3.32  4.14    4.61
+## 3 &lt;NA&gt;             4.6        3.36  0.426   8.77</code></pre>
+<pre class="r"><code>t.test(d6 ~ sexo, data = peru23)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  d6 by sexo
+## t = -3.5255, df = 1510.5, p-value = 0.0004353
+## alternative hypothesis: true difference in means between group Hombre and group Mujer is not equal to 0
+## 95 percent confidence interval:
+##  -0.9142069 -0.2605747
+## sample estimates:
+## mean in group Hombre  mean in group Mujer 
+##             3.789267             4.376658</code></pre>
+</div>
+<div id="prueba-de-significancia-para-variables-numéricas-politómicas"
+class="section level2">
+<h2>Prueba de significancia para variables numéricas politómicas</h2>
+<pre class="r"><code>anova1 = aov(peru23$d6~peru23$educ2)
+summary(anova1)</code></pre>
+<pre><code>##                Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## peru23$educ2    3    401  133.66    12.9 2.52e-08 ***
+## Residuals    1519  15737   10.36                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 12 observations deleted due to missingness</code></pre>
+<pre class="r"><code>compara = TukeyHSD(anova1)
+compara</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = peru23$d6 ~ peru23$educ2)
+## 
+## $`peru23$educ2`
+##                                              diff        lwr       upr
+## Colegio completo-Colegio incompleto     0.7285841  0.1293353 1.3278329
+## Superior incompleta-Colegio incompleto  1.5858853  0.8926390 2.2791316
+## Superior completa-Colegio incompleto    1.1012851  0.4859595 1.7166106
+## Superior incompleta-Colegio completo    0.8573012  0.2313543 1.4832480
+## Superior completa-Colegio completo      0.3727009 -0.1656712 0.9110730
+## Superior completa-Superior incompleta  -0.4846002 -1.1259549 0.1567545
+##                                            p adj
+## Colegio completo-Colegio incompleto    0.0097272
+## Superior incompleta-Colegio incompleto 0.0000000
+## Superior completa-Colegio incompleto   0.0000267
+## Superior incompleta-Colegio completo   0.0024820
+## Superior completa-Colegio completo     0.2831338
+## Superior completa-Superior incompleta  0.2104477</code></pre>
+</div>
+<div id="graficando-la-comparación-politómica" class="section level2">
+<h2>Graficando la comparación politómica</h2>
+<pre class="r"><code>compara.df = as.data.frame(compara[1])
+compara.df$compara = rownames(compara.df)</code></pre>
+<pre class="r"><code>graf5 = ggplot(compara.df, aes(x=compara, y=peru23.educ2.diff))+
+  geom_errorbar(aes(ymin=peru23.educ2.lwr, ymax=peru23.educ2.upr), 
+                width=0.2)+
+  geom_text(aes(label=paste(round(peru23.educ2.diff, 1))), 
+            vjust=-1, size=3)+
+  xlab(&quot;Comparación&quot;) + ylab(&quot;Diferencia&quot;)+
+  ylim(-3, 3) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = &quot;red&quot;, linetype=&quot;dotted&quot;) +
+  theme_classic()
+graf5</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="tabla-de-contingencia" class="section level2">
+<h2>Tabla de contingencia</h2>
+<pre class="r"><code>tabla6 = table(peru23$aborto, peru23$educ2)
+tabla6</code></pre>
+<pre><code>##                  
+##                   Colegio incompleto Colegio completo Superior incompleta
+##   Sí se justifica                200              339                 210
+##   No se justifica                105              158                  58
+##                  
+##                   Superior completa
+##   Sí se justifica               341
+##   No se justifica                93</code></pre>
+<pre class="r"><code>tabla7 = tabla6 %&gt;%
+  prop.table(2) %&gt;%
+  round(3)*100 
+tabla7</code></pre>
+<pre><code>##                  
+##                   Colegio incompleto Colegio completo Superior incompleta
+##   Sí se justifica               65.6             68.2                78.4
+##   No se justifica               34.4             31.8                21.6
+##                  
+##                   Superior completa
+##   Sí se justifica              78.6
+##   No se justifica              21.4</code></pre>
+</div>
+<div id="prueba-de-significancia-para-proporciones-chi-cuadrado"
+class="section level2">
+<h2>Prueba de significancia para proporciones: Chi cuadrado</h2>
 <pre class="r"><code>prop.test(c(803, 759), c(1610,1412))</code></pre>
 <pre><code>## 
 ##  2-sample test for equality of proportions with continuity correction
@@ -853,10 +746,91 @@ class="section level2">
 ## sample estimates:
 ##    prop 1    prop 2 
 ## 0.4987578 0.5375354</code></pre>
+<pre class="r"><code>prueba1 = chisq.test(peru23$aborto, peru23$educ2)
+prueba1</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  peru23$aborto and peru23$educ2
+## X-squared = 24.55, df = 3, p-value = 1.917e-05</code></pre>
+<pre class="r"><code>ggplot(data=tabla4, aes(x=Aborto, y=Por, fill=educ2))+
+  geom_bar(position = &quot;dodge&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Por, 1), &quot;%&quot;, sep=&quot;&quot;)), 
+            position = position_dodge(width = 0.9), 
+            vjust=0, size = 3)+
+  labs(x=&quot;Justificación del aborto&quot;, y=&quot;Porcentaje&quot;, 
+       fill=&quot;Nivel educativo&quot;)</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data=tabla4, aes(x=educ2, y=Por, fill=Aborto))+
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;)+
+  geom_text(aes(label=paste(round(Por, 1), &quot;%&quot;, sep=&quot;&quot;)), 
+            position = position_stack(), vjust=1, size = 3)+
+  labs(x=&quot;Nivel educativo&quot;, y=&quot;Porcentaje&quot;, fill=&quot;Justificación del aborto&quot;)</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+</div>
+<div id="relación-entre-dos-variables-numéricas" class="section level2">
+<h2>Relación entre dos variables numéricas</h2>
+<pre class="r"><code>ggplot(peru23, aes(x=d6, y=d7a))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  labs(x=&quot;Aprobación de matrimonio igualitario&quot;, 
+       y=&quot;Aprobación de adopción&quot;)+ #para etiquetar los ejes
+  theme_light()</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 781 rows containing non-finite outside the scale range
+## (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 781 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="repaso_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<pre class="r"><code>modelo1 = lm(peru23$d7a ~ peru23$d6)
+summary(modelo1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = peru23$d7a ~ peru23$d6)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.2226 -1.3931 -0.5396  1.8506  7.6069 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.85649    0.15316   12.12   &lt;2e-16 ***
+## peru23$d6    0.53661    0.02952   18.18   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.633 on 752 degrees of freedom
+##   (781 observations deleted due to missingness)
+## Multiple R-squared:  0.3053, Adjusted R-squared:  0.3044 
+## F-statistic: 330.5 on 1 and 752 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>peru23 = peru23 %&gt;%
+  mutate(mujer = q1tc_r-1)</code></pre>
+<pre class="r"><code>modelo2 = lm(peru23$d7a ~ peru23$d6 + peru23$mujer)
+summary(modelo2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = peru23$d7a ~ peru23$d6 + peru23$mujer)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.3401 -1.5450 -0.6761  1.7911  7.7294 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.73783    0.17549   9.903   &lt;2e-16 ***
+## peru23$d6     0.53279    0.02964  17.975   &lt;2e-16 ***
+## peru23$mujer  0.27434    0.19283   1.423    0.155    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.634 on 749 degrees of freedom
+##   (783 observations deleted due to missingness)
+## Multiple R-squared:  0.3071, Adjusted R-squared:  0.3053 
+## F-statistic:   166 on 2 and 749 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUmVwYXNvIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjb2xsYXBzZWQ6IGZhbHNlCiAgICBudW1iZXJfc2VjdGlvbnM6IGZhbHNlCiAgICB0b2NfZGVwdGg6IDEKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjb3NtbwogICAgaGlnaGxpZ2h0OiB0ZXh0bWF0ZQotLS0KCiMgSW50cm9kdWNjacOzbgoKRW4gZXN0ZSBkb2N1bWVudG8gc2UgcmVwYXNhcsOhIGxvcyBwcmluY2lwYWxlcyBjb25jZXB0b3MgeSBwcm9jZWRpbWllbnRvcyB2aXN0b3MgZW4gbGEgcHJpbWVyYSBtaXRhZCBkZWwgY3Vyc28uCgpgYGB7cn0KbGlicmFyeShyaW8pCmRhdGEgPSBpbXBvcnQoImJhc2VzL2NvbmdyZXNpc3Rhcy54bHN4IikKYGBgCgojIFZhcmlhYmxlIG51bcOpcmljYQoKIyMgRGVzY3JpcGNpw7NuCgpDdcOhbCBlcyBlbCBwcm9tZWRpbyBkZSBlZGFkIGRlIHVuIGNvbmdyZXNpc3RhIHBlcnVhbm8/CgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCnRhYmxhMSA9IGRhdGEgfD4KICBzdW1tYXJpc2UobWluaW1vID0gbWluKGVkKSwgbWVkaWEgPSBtZWFuKGVkKSwgCiAgICAgICAgICAgIG1lZGlhbmEgPSBtZWRpYW4oZWQpLAogICAgICAgICAgICBtYXhpbW8gPSBtYXgoZWQpLCBkZXN2aWFjaW9uID0gc2QoZWQpKQp0YWJsYTEKYGBgCgojIyBWaXN1YWxpemFjacOzbgoKYGBge3J9CmxpYnJhcnkoZ2dwbG90MikKZ3JhZjEgPSBnZ3Bsb3QoZGF0YSwgYWVzKHg9ZWQpKSsKICBnZW9tX2hpc3RvZ3JhbShiaW53aWR0aCA9IDUpKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IG1lYW4oZGF0YSRlZCksIGNvbG9yID0gInJlZCIpKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IG1lZGlhbihkYXRhJGVkKSwgY29sb3IgPSAiZ3JlZW4iKSsKICB4bGFiKCJFZGFkIikgKwogIHlsYWIoIkZyZWN1ZW5jaWEiKSsKICB0aGVtZV9taW5pbWFsKCkKZ3JhZjEKYGBgCgojIyBDb21wYXJhY2nDs24gZGVzY3JpcHRpdmEgZW50cmUgZ3J1cG9zCgpFeGlzdGUgZGlmZXJlbmNpYSBlbnRyZSBsYXMgZWRhZCBkZSBjb25ncmVzaXN0YXMgaG9tYnJlcyB5IG11amVyZXM/CgpgYGB7cn0KZGF0YSA9IGRhdGEgfD4KICBtdXRhdGUoc2V4Y29uZyA9IGZhY3RvcihzZXgsIGxhYmVscz1jKCJIb21icmUiLCAiTXVqZXIiKSkpCmBgYAoKYGBge3J9CnRhYmxhMiA9IGRhdGEgfD4KICBncm91cF9ieShzZXhjb25nKSB8PgogIHN1bW1hcmlzZShtaW5pbW8gPSBtaW4oZWQpLCBtZWRpYSA9IG1lYW4oZWQpLCAKICAgICAgICAgICAgbWVkaWFuYSA9IG1lZGlhbihlZCksCiAgICAgICAgICAgIG1heGltbyA9IG1heChlZCksIGRlc3ZpYWNpb24gPSBzZChlZCkpCnRhYmxhMgpgYGAKCiMjIFZpc3VhbGl6YWNpw7NuIGRlIGxhIGNvbXBhcmFjacOzbgoKYGBge3J9CmdyYWYzID0gZ2dwbG90KGRhdGEsIGFlcyh5PWVkLCB4PXNleGNvbmcpKSsKICBnZW9tX2JveHBsb3QoKSsKICB5bGFiKCJFZGFkIikrCiAgeGxhYigiU2V4byIpKwogIHRoZW1lX21pbmltYWwoKQpncmFmMwpgYGAKCiMgRWplbXBsbyAxOiB2YXJpYWJsZSBudW3DqXJpY2EKCiMjIEJhc2UgZGUgZGF0b3MKCkVuIGVzdGEgYmFzZSB1c2FyZW1vcyB1bmEgYmFzZSBkZSBkYXRvcyBkZSBob2dhcmVzIGFmaWxpYWRvcyB5IGFib25hZG9zIGFsIHByb2dyYW1hIEp1bnRvcy4gQ29tbyBzZSBpbmRpY2EgZW4gbGEgcMOhZ2luYSBkZSBbRGF0b3MgQWJpZXJ0b3NdKGh0dHBzOi8vd3d3LmRhdG9zYWJpZXJ0b3MuZ29iLnBlL2RhdGFzZXQvcmVzdW1lbi1kZS1ob2dhcmVzLWFmaWxpYWRvcy15LWFib25hZG9zLXBvci11YmlnZW8tMjAyMy1wcm9ncmFtYS1qdW50b3MpLCAiRXN0YSBpbmZvcm1hY2nDs24gZGVsIFByb2dyYW1hIEp1bnRvcywgZXMgZ2VuZXJhZGEgZGUgbWFuZXJhIGJpbWVzdHJhbCBhIG5pdmVsIGRlIGRpc3RyaXRvLCBjb25zaWRlcmFuZG8gZGF0b3Mgc29icmUgbGEgY2FudGlkYWQgZGUgaG9nYXJlcyBhZmlsaWFkb3MsIGNhbnRpZGFkIGRlIGhvZ2FyZXMgYWJvbmFkb3MsIG7Dum1lcm8gZGUgbWllbWJyb3Mgb2JqZXRpdm9zIHkgbG9zIG1vbnRvcyB0cmFuc2Zlcmlkb3MgcG9yIGxvcyBjb25jZXB0b3MgZGUgYWZpbGlhY2nDs24geSBjdW1wbGltaWVudG8gZGUgY29ycmVzcG9uc2FiaWxpZGFkIGJhc2UgZW4gZWwgcGVyaW9kbyIuCgpgYGB7ciBiYXNlLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHJpbykKanVudG9zID0gaW1wb3J0KCJqdW50b3MueGxzeCIpCmBgYAoKIyMgRGVzY3JpYmlyIHVuYSB2YXJpYWJsZSBudW3DqXJpY2EKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKanVudG9zID0ganVudG9zIHw+CiAgbXV0YXRlKHRyYW54cG9iID0gdHJhbnNmZXIvUG9ibGFjaW9uKQpgYGAKCmBgYHtyfQp0YWJsYTEgPSBqdW50b3MgfD4KICBzdW1tYXJpc2UobWluaW1vID0gbWluKHRyYW54cG9iKSwgbWVkaWEgPSBtZWFuKHRyYW54cG9iKSwgCiAgICAgICAgICAgIG1lZGlhbmEgPSBtZWRpYW4odHJhbnhwb2IpLAogICAgICAgICAgICBtYXhpbW8gPSBtYXgodHJhbnhwb2IpLCBkZXN2aWFjaW9uID0gc2QodHJhbnhwb2IpKQp0YWJsYTEKYGBgCgpgYGB7cn0KdGFibGEyID0ganVudG9zIHw+CiAgZmlsdGVyKHRyYW54cG9iID09IDApCnRhYmxhMgpgYGAKCmBgYHtyfQpsaWJyYXJ5KGdncGxvdDIpCmdyYWYxID0gZ2dwbG90KGp1bnRvcywgYWVzKHg9dHJhbnhwb2IpKSsKICBnZW9tX2hpc3RvZ3JhbSgpKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IG1lYW4oanVudG9zJHRyYW54cG9iKSwgY29sb3IgPSAicmVkIikrCiAgZ2VvbV92bGluZSh4aW50ZXJjZXB0ID0gbWVkaWFuKGp1bnRvcyR0cmFueHBvYiksIGNvbG9yID0gImdyZWVuIikrCiAgeGxhYigiR2FzdG8gcGVyIGPDoXBpdGEgZGUgcHJvZ3JhbWEgSnVudG9zIikgKwogIHlsYWIoIkZyZWN1ZW5jaWEiKSsKICB0aGVtZV9taW5pbWFsKCkKZ3JhZjEKYGBgCgpgYGB7cn0KanVudG9zID0ganVudG9zIHw+CiAgbXV0YXRlKGxpbWFwcm92ID0gY2FzZV93aGVuKAogICAgcHJvdiA9PSAiTElNQSIgfiAxLAogICAgcHJvdiAhPSAiTElNQSIgfiAwCiAgKSkKYGBgCgpgYGB7cn0KdGFibGEyID0ganVudG9zIHw+IAogIGdyb3VwX2J5KGxpbWFwcm92KSB8PgogIHN1bW1hcmlzZShtaW5pbW8gPSBtaW4odHJhbnhwb2IpLCAKICAgICAgICAgICAgbWVkaWEgPSBtZWFuKHRyYW54cG9iKSwgCiAgICAgICAgICAgIG1lZGlhbmEgPSBtZWRpYW4odHJhbnhwb2IpLAogICAgICAgICAgICBkZXN2aWFjaW9uID0gc2QodHJhbnhwb2IpLAogICAgICAgICAgICBtYXhpbW8gPSBtYXgodHJhbnhwb2IpKQp0YWJsYTIKYGBgCgpFc3RhIGJhc2UgZGUgZGF0b3MgaW5jbHV5ZSBsYSB2YXJpYWJsZSBhY2VyY2EgZGVsIG7Dum1lcm8gZGUgcG9ibGFjacOzbiBvYmpldGl2byBwb3IgZGlzdHJpdG8gKHZhcmlhYmxlICJtaWVtYnJvcyIpLiBRdWVyZW1vcyB0ZW5lciB1bmEgaWRlYSBhY2VyY2EgZGUgbGEgbWFnbml0dWQgZGUgZXN0ZSBwcm9ncmFtYS4gUGFyYSBlc3RvIGRlc2NyaWJpbW9zIGxhIHZhcmlhYmxlLgoKYGBge3J9CnRhYmxhMSA9IGp1bnRvcyB8PgogIHN1bW1hcmlzZShtaW5pbW8gPSBtaW4obWllbWJyb3MpLCBtZWRpYSA9IG1lYW4obWllbWJyb3MpLCAKICAgICAgICAgICAgbWVkaWFuYSA9IG1lZGlhbihtaWVtYnJvcyksCiAgICAgICAgICAgIG1heGltbyA9IG1heChtaWVtYnJvcyksIGRlc3ZpYWNpb24gPSBzZChtaWVtYnJvcyksIAogICAgICAgICAgICBJUVIobWllbWJyb3MpKQp0YWJsYTEKYGBgCgpTZSBvYnNlcnZhIHF1ZSBsYSBtZWRpYW5hIGVzIGRlIGFwcm94aW1hZGFtZW50ZSAzNDAgbWllbWJyb3MgcG9yIGRpc3RyaXRvLiBFc3RhIGVzIGxhIG1hZ25pdHVkIGRlIGF0ZW5jacOzbiBlc3TDoW5kYXIgZGUgZXN0ZSBwcm9ncmFtYSBhIGxvIGxhcmdvIGRlbCBQZXLDui4gU2luIGVtYmFyZ28sIGxhIG1lZGlhIGVzIGRlIHBvY28gbcOhcyBkZSA4MDAgbWllbWJyb3MsIGxvIHF1ZSBpbmRpY2EgcXVlIGV4aXN0ZW4gZGlzdHJpdG9zIGNvbiB1bmEgYWx0YSBjYXJnYSBkZSBtaWVtYnJvcywgcXVlIHBvZHLDrWFuIGNvbnNpZGVyYXJzZSBhdMOtcGljb3MsIHkgcXVlIHNlc2dhbiBsYSBtZWRpYSBoYWNpYSBsb3MgdmFsb3JlcyBhbHRvcy4KCiMjIEdyYWZpY2FuZG8gdW5hIHZhcmlhYmxlIG51bcOpcmljYQoKYGBge3J9CmxpYnJhcnkoZ2dwbG90MikKZ3JhZjEgPSBnZ3Bsb3QoanVudG9zLCBhZXMoeD1taWVtYnJvcykpKwogIGdlb21faGlzdG9ncmFtKGJpbndpZHRoID0gMTAwKSsKICBnZW9tX3ZsaW5lKHhpbnRlcmNlcHQgPSA4MDEuMiwgY29sb3IgPSAicmVkIikrCiAgZ2VvbV92bGluZSh4aW50ZXJjZXB0ID0gMzM5LjUsIGNvbG9yID0gImdyZWVuIikrCiAgeGxhYigiTsO6bWVybyBkZSBtaWVtYnJvcyBwcm9ncmFtYSBKdW50b3MiKSArCiAgeWxhYigiRnJlY3VlbmNpYSIpKwogIHRoZW1lX21pbmltYWwoKQpncmFmMQpgYGAKCkVsIGhpc3RvZ3JhbWEgcGVybWl0ZSBkaXN0aW5ndWlyIGVzdGEgc2l0dWFjacOzbiBtw6FzIGNsYXJhbWVudGUuIFZlbW9zIHF1ZSBsb3MgZGlzdHJpdG9zIGVuIGVsIFBlcsO6IGdlbmVyYWxtZW50ZSBhY3VtdWxhbiBtZW5vcyBkZSA1MDAwIHVzdWFyaW9zLiBTb24gcmFyb3MgeSBwdW50dWFsZXMgbG9zIGRpc3RyaXRvcyBjb24gbcOhcyB1c3Vhcmlvcy4KCmBgYHtyfQpncmFmMiA9IGdncGxvdChqdW50b3MsIGFlcyh5PW1pZW1icm9zKSkrCiAgZ2VvbV9ib3hwbG90KCkrCiAgeWxhYigiTsO6bWVybyBkZSBtaWVtYnJvcyBkZSBwcm9ncmFtYSBKdW50byIpKwogIHNjYWxlX3lfY29udGludW91cyhsaW1pdHMgPSBjKDAsIDIwMDApLCBicmVha3MgPSBzZXEoMCwgMjAwMCwgNTAwKSkKZ3JhZjIKYGBgCgojIyBDb21wYXJhbmRvIGRlc2NyaXB0aXZvcwoKYGBge3J9Cmp1bnRvcyA9IGp1bnRvcyB8PgogIG11dGF0ZShkZXBhcnRhID0gYXMuZmFjdG9yKGRwdG8pKQpgYGAKCmBgYHtyfQp0YWJsYTIgPSBqdW50b3MgfD4gCiAgZ3JvdXBfYnkoZGVwYXJ0YSkgfD4KICBzdW1tYXJpc2UobWVkaWEgPSBtZWFuKG1pZW1icm9zKSwgZGVzdmlhY2lvbiA9IHNkKG1pZW1icm9zKSwKICAgICAgICAgICAgbWVkaWFuYSA9IG1lZGlhbihtaWVtYnJvcykpCnRhYmxhMgpgYGAKCiMjIENvbXBhcmFuZG8gZGVzY3JpcHRpdm9zIGdyw6FmaWNhbWVudGUKCmBgYHtyfQpncmFmMyA9IGdncGxvdCh0YWJsYTIsIGFlcyh4PW1lZGlhLCB5PWRlcGFydGEpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIsIHdpZHRoPTAuNSkKZ3JhZjMKYGBgCgpgYGB7cn0KZ3JhZjQgPSBnZ3Bsb3QoanVudG9zLCBhZXMoeT1taWVtYnJvcywgeD1kZXBhcnRhKSkrCiAgZ2VvbV9ib3hwbG90KCkrCiAgc2NhbGVfeV9jb250aW51b3VzKGxpbWl0cyA9IGMoMCwgODAwMCksIGJyZWFrcyA9IHNlcSgwLCA4MDAwLCAxMDAwKSkrCiAgeWxhYigiTsO6bWVybyBkZSBtaWVtYnJvcyBlbiBQcm9ncmFtYSBKdW50b3MiKSsKICB4bGFiKCJEZXBhcnRhbWVudG8iKSsKICB0aGVtZV9taW5pbWFsKCkrCiAgY29vcmRfZmxpcCgpCmdyYWY0CmBgYAoKYGBge3J9Cmp1bnRvcyA9IGp1bnRvcyB8PgogIG11dGF0ZShyZWdpb24gPSBjYXNlX3doZW4oCiAgICBkcHRvPT0iQU1BWk9OQVMifiJTZWx2YSIsCiAgICBkcHRvPT0iw4FOQ0FTSCJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iQVBVUsONTUFDIn4iU2llcnJhIiwKICAgIGRwdG89PSJBUkVRVUlQQSJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iQVlBQ1VDSE8ifiJTaWVycmEiLAogICAgZHB0bz09IkNBSkFNQVJDQSJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iQ1VTQ08ifiJTaWVycmEiLAogICAgZHB0bz09IkNBTExBTyJ+IkNvc3RhIiwKICAgIGRwdG89PSJIVUFOQ0FWRUxJQ0EifiJTaWVycmEiLAogICAgZHB0bz09IkhVw4FOVUNPIn4iU2VsdmEiLAogICAgZHB0bz09IklDQSJ+IkNvc3RhIiwKICAgIGRwdG89PSJKVU7DjU4ifiJTaWVycmEiLAogICAgZHB0bz09IkxBIExJQkVSVEFEIn4iQ29zdGEiLAogICAgZHB0bz09IkxBTUJBWUVRVUUifiJDb3N0YSIsCiAgICBkcHRvPT0iTElNQSJ+IkNvc3RhIiwKICAgIGRwdG89PSJMT1JFVE8ifiJTZWx2YSIsCiAgICBkcHRvPT0iTUFEUkUgREUgRElPUyJ+IlNlbHZhIiwKICAgIGRwdG89PSJNT1FVRUdVQSJ+IkNvc3RhIiwKICAgIGRwdG89PSJQQVNDTyJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iUElVUkEifiJDb3N0YSIsCiAgICBkcHRvPT0iUFVOTyJ+IlNpZXJyYSIsCiAgICBkcHRvPT0iU0FOIE1BUlTDjU4ifiJTZWx2YSIsCiAgICBkcHRvPT0iVEFDTkEifiJDb3N0YSIsCiAgICBkcHRvPT0iVFVNQkVTIn4iQ29zdGEiLAogICAgZHB0bz09IlVDQVlBTEkifiJTZWx2YSIKICApKSAKYGBgCgpgYGB7cn0KdGFibGEzID1qdW50b3MgfD4gCiAgZ3JvdXBfYnkocmVnaW9uKSB8PgogIHN1bW1hcmlzZShtZWRpYSA9IG1lYW4obWllbWJyb3MpLCBkZXN2aWFjaW9uID0gc2QobWllbWJyb3MpKQp0YWJsYTMKYGBgCgpgYGB7cn0KZ3JhZjUgPSBnZ3Bsb3QoanVudG9zLCBhZXMoeT1taWVtYnJvcywgeD1yZWdpb24pKSsKICBnZW9tX2JveHBsb3QoKSsKICBzY2FsZV95X2NvbnRpbnVvdXMobGltaXRzID0gYygwLCA0MDAwKSwgYnJlYWtzID0gc2VxKDAsIDQwMDAsIDUwMCkpKwogIHlsYWIoIk7Dum1lcm8gZGUgbWllbWJyb3MgZW4gUHJvZ3JhbWEgSnVudG9zIikrCiAgeGxhYigiRGVwYXJ0YW1lbnRvIikrCiAgdGhlbWVfbWluaW1hbCgpCmdyYWY1CmBgYAoKIyMgQ29tcGFyYW5kbyBncnVwb3MgbWVkaWFudGUgaW50ZXJ2YWxvcyBkZSBjb25maWFuemEKCmBgYHtyfQpsaWJyYXJ5KGxzcikKY2lNZWFuKGp1bnRvcyRtaWVtYnJvcykKYGBgCgpgYGB7cn0KbWllbWJyb3N4cmVnID0ganVudG9zIHw+CiAgZ3JvdXBfYnkocmVnaW9uKSB8PgogIHN1bW1hcmlzZShNZWRpYSA9IG1lYW4obWllbWJyb3MsIG5hLnJtPVQpLAogICAgICAgICAgICBtaW4gPSBjaU1lYW4obWllbWJyb3MsIG5hLnJtPVQpWzFdLAogICAgICAgICAgICBtYXggPSBjaU1lYW4obWllbWJyb3MsIG5hLnJtPVQpWzJdCiAgICAgICAgICAgICkKbWllbWJyb3N4cmVnCmBgYAoKYGBge3J9CmdyYWY2ID0gZ2dwbG90KG1pZW1icm9zeHJlZywgYWVzKHg9cmVnaW9uLCB5PU1lZGlhKSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX2Vycm9yYmFyKGFlcyh5bWluPW1pbiwgeW1heD1tYXgpLCB3aWR0aD0wLjIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocm91bmQoTWVkaWEsIDEpKSksIHZqdXN0PS0zLjUsIHNpemU9NCkrCiAgeGxhYigiUmVnaW9uIikgKyB5bGFiKCJNaWVtYnJvcyBkZSBQcm9ncmFtYSBKdW50b3MiKSsKICB5bGltKDAsIDE1MDApCmdyYWY2CmBgYAoKIyMgTk8gVklFTkUgRU4gRUwgUEFSQ0lBTCAyMDI0LTEgUHJ1ZWJhcyBkZSBzaWduaWZpY2FuY2lhCgpgYGB7cn0KYW5vdmExID0gYW92KGp1bnRvcyRtaWVtYnJvc35qdW50b3MkcmVnaW9uKQpzdW1tYXJ5KGFub3ZhMSkKYGBgCgpgYGB7cn0KY29tcGFyYSA9IFR1a2V5SFNEKGFub3ZhMSkKY29tcGFyYQpgYGAKCmBgYHtyfQpjb21wYXJhLmRmID0gYXMuZGF0YS5mcmFtZShjb21wYXJhWzFdKQpjb21wYXJhLmRmJGNvbXBhcmEgPSByb3duYW1lcyhjb21wYXJhLmRmKQpgYGAKCmBgYHtyfQpncmFmNyA9IGdncGxvdChjb21wYXJhLmRmLCBhZXMoeD1jb21wYXJhLCB5PWp1bnRvcy5yZWdpb24uZGlmZikpKwogIGdlb21fZXJyb3JiYXIoYWVzKHltaW49anVudG9zLnJlZ2lvbi5sd3IsIHltYXg9anVudG9zLnJlZ2lvbi51cHIpLCB3aWR0aD0wLjIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocm91bmQoanVudG9zLnJlZ2lvbi5kaWZmLCAxKSkpLCB2anVzdD0tMSwgc2l6ZT0zKSsKICB4bGFiKCJDb21wYXJhY2nDs24iKSArIHlsYWIoIkRpZmVyZW5jaWEiKSsKICB5bGltKC04MDAsIDcwMCkgKwogIGNvb3JkX2ZsaXAoKSArCiAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCwgY29sb3IgPSAicmVkIiwgbGluZXR5cGU9ImRvdHRlZCIpICsKICB0aGVtZV9jbGFzc2ljKCkKZ3JhZjcKYGBgCgojIEVqZW1wbG8gMjogdmFyaWFibGUgY2F0ZWfDs3JpY2EKCmBgYHtyfQpsaWJyYXJ5KHJpbykKcGVydSA9IGltcG9ydCgiUEVSXzIwMjFfTEFQT1BfQW1lcmljYXNCYXJvbWV0ZXJfdjEuMl93LmR0YSIpCmBgYAoKIyMgRGVzY3JpYmlyIHVuYSB2YXJpYWJsZSBjYXRlZ8OzcmljYQoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpwZXJ1ID0gcGVydSB8PgogIG11dGF0ZShpbmc0cmVjPXJlY29kZShpbmc0LCAnNScgPSAnMScsICc2JyA9ICcxJywgJzcnID0gJzEnLCAgLmRlZmF1bHQgPSAnMCcpKQpgYGAKCmBgYHtyfQp0YWJsZShwZXJ1JGluZzQpCnRhYmxlKHBlcnUkaW5nNHJlYykKYGBgCgpgYGB7cn0KcGVydSA9IHBlcnUgfD4KICBtdXRhdGUoaW5nNHJlYyA9IGZhY3Rvcihpbmc0cmVjLCBsYWJlbHM9YygiTm8iLCAiU8OtIikpKQpgYGAKCmBgYHtyfQp0YWJsYTQgPSBwZXJ1IHw+CiAgZmlsdGVyKGluZzRyZWMgPT0gIk5vIiB8IGluZzRyZWMgPT0gIlPDrSIpIHw+CiAgY291bnQoYXBveW8gPSBpbmc0cmVjLCBuYW1lPSJGcmVjdWVuY2lhIikgfD4KICBtdXRhdGUoUG9yY2VudGFqZSA9IChGcmVjdWVuY2lhIC8gc3VtKEZyZWN1ZW5jaWEpKjEwMCApKQp0YWJsYTQKYGBgCgojIyBHcmFmaWNhciB1bmEgdmFyaWFibGUgY2F0ZWfDs3JpY2EKCmBgYHtyfQpncmFmOCA9IGdncGxvdCh0YWJsYTQsIGFlcyh5PVBvcmNlbnRhamUsIHg9YXBveW8pKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIsIHdpZHRoPTAuNSkKZ3JhZjgKYGBgCgojIyBDb21wYXJhbmRvIHByb3BvcmNpb25lcwoKYGBge3J9CnBlcnUgPSBwZXJ1IHw+CiAgbXV0YXRlKHNleG89cmVjb2RlKHExdGIsICcxJyA9ICcxJywgJzInID0gJzInLCAnMycgPSAnMicpKSB8PgogIG11dGF0ZShzZXhvID0gZmFjdG9yKHNleG8sIGxhYmVscz1jKCJIb21icmUiLCAiTXVqZXIvT3RybyIpKSkKYGBgCgpgYGB7cn0KdGFibGE1ID0gcGVydSB8PgogIGZpbHRlcihpbmc0cmVjID09ICJObyIgfCBpbmc0cmVjID09ICJTw60iKSB8PiAKICBncm91cF9ieShzZXhvKSB8PgogIGNvdW50KEFwb3lvID0gaW5nNHJlYywgbmFtZT0iTiIpfD4KICBtdXRhdGUodG90YWwgPSBzdW0oTiksIAogICAgICAgICBQb3IgPSBOIC8gdG90YWwgKiAxMDAsIAogICAgICAgICBlcnIgPSBzcXJ0KFBvciooMTAwLVBvcikvTiksIAogICAgICAgICBsaW1pbmYgPSBQb3IgLSAxLjk2KmVyciwgCiAgICAgICAgIGxpbXN1cCA9IFBvciArIDEuOTYqZXJyKQp0YWJsYTUKYGBgCgojIyBDb21wYXJhbmRvIHByb3BvcmNpb25lcyBncsOhZmljYW1lbnRlCgpgYGB7cn0KZ3JhZjkgPSBnZ3Bsb3QodGFibGE1LCBhZXMoeD1zZXhvLCB5PVBvciwgZmlsbD1BcG95bykpKwogIGdlb21fYmFyKHN0YXQ9ImlkZW50aXR5Iiwgd2lkdGg9MC41KSsKICBsYWJzKHg9IlNleG8iLCB5PSJQb3JjZW50YWplIiwKICAgICAgIGNhcHRpb249IkJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBwb3IgTEFQT1AsIDIwMjEiKSsKICB0aGVtZV9jbGFzc2ljKCkKZ3JhZjkKYGBgCgojIyBDb21wYXJhbmRvIHByb3BvcmNpb25lcyBjb24gaW50ZXJ2YWxvcyBkZSBjb25maWFuemEKCmBgYHtyfQp0YWJsYTUgPSB0YWJsYTVbLWMoMSwzKSxdCmBgYAoKYGBge3J9CmdyYWYxMCA9IGdncGxvdCh0YWJsYTUsIGFlcyh4PXNleG8sIHk9UG9yKSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX2Vycm9yYmFyKGFlcyh5bWluPWxpbWluZiwgeW1heD1saW1zdXApLCB3aWR0aD0wLjIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocm91bmQoUG9yLCAxKSkpLCB2anVzdD0tMS41LCBzaXplPTQpKwogIGxhYnMoeD0iU2V4byIsIHk9IlBvcmNlbnRhamUiLAogICAgICAgY2FwdGlvbj0iQmFyw7NtZXRybyBkZSBsYXMgQW3DqXJpY2FzIHBvciBMQVBPUCwgMjAyMSIpKwogIHRoZW1lX2NsYXNzaWMoKQpncmFmMTAKICAKYGBgCgojIyBQcnVlYmEgZGUgc2lnbmlmaWNhbmNpYSBwYXJhIHByb3BvcmNpb25lcwoKYGBge3J9CnByb3AudGVzdChjKDgwMywgNzU5KSwgYygxNjEwLDE0MTIpKQpgYGAK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUmVwYXNvIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBjb2xsYXBzZWQ6IGZhbHNlCiAgICBudW1iZXJfc2VjdGlvbnM6IGZhbHNlCiAgICB0b2NfZGVwdGg6IDEKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIHRoZW1lOiBjb3NtbwogICAgaGlnaGxpZ2h0OiB0ZXh0bWF0ZQotLS0KCiMgQW5hbGl6YW5kbyBvcGluacOzbiBww7pibGljYQoKYGBge3J9CmxpYnJhcnkocmlvKQpwZXJ1MjMgPSBpbXBvcnQoImJhc2VzL1BFUl8yMDIzX0xBUE9QX0FtZXJpY2FzQmFyb21ldGVyX3YxLjBfdy5zYXYiKQpgYGAKCiMjIERlc2NyaWJpciB1bmEgdmFyaWFibGUgbnVtw6lyaWNhCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCnBlcnUyMyAlPiUKICBzdW1tYXJpc2UoUHJvbWVkaW9fTWF0cmk9bWVhbihkNiwgbmEucm09VCksIAogICAgICAgICAgICBNZWRpYW5hX01hdHJpPW1lZGlhbihkNiwgbmEucm09VCkpCmBgYAoKYGBge3J9CnBlcnUyMyAlPiUKICBzdW1tYXJpc2UoUHJvbWVkaW9fQWRvcGNpb249bWVhbihkN2EsIG5hLnJtPVQpLCAKICAgICAgICAgICAgTWVkaWFuYV9BZG9wY2lvbj1tZWRpYW4oZDdhLCBuYS5ybT1UKSkKYGBgCgojIyBWaXN1YWxpemFjacOzbiB2YXJpYWJsZSBudW3DqXJpY2EKCmBgYHtyfQpsaWJyYXJ5KGdncGxvdDIpCmdncGxvdChwZXJ1MjMsIGFlcyh4PWQ2KSkrCiAgZ2VvbV9oaXN0b2dyYW0oYmlud2lkdGggPSAxKSsKICB4bGFiKCJBcHJvYmFjacOzbiBtYXRyaW1vbmlvIGlndWFsaXRhcmlvIikgKwogIHlsYWIoIkZyZWN1ZW5jaWEiKSsKICB0aGVtZV9taW5pbWFsKCkKYGBgCgpgYGB7cn0KZ2dwbG90KHBlcnUyMywgYWVzKHg9ZDdhKSkrCiAgZ2VvbV9oaXN0b2dyYW0oYmlud2lkdGggPSAxKSsKICB4bGFiKCJBcHJvYmFjacOzbiBhZG9wY2nDs24iKSArCiAgeWxhYigiRnJlY3VlbmNpYSIpKwogIHRoZW1lX21pbmltYWwoKQpgYGAKCiMjIENvbXBhcmFuZG8gdmFyaWFibGUgbnVtw6lyaWNhIGVudHJlIGdydXBvcwoKYGBge3J9CnBlcnUyMyA9IHBlcnUyMyAlPiUKICBtdXRhdGUoZWR1YyA9IGNhc2Vfd2hlbigKICAgIGVkcmUgPD0gMyB+IDEsCiAgICBlZHJlID09IDQgfiAyLAogICAgZWRyZSA9PSA1IH4gMywKICAgIGVkcmUgPT0gNiB+IDQsCiAgICApKQpgYGAKCmBgYHtyfQpwZXJ1MjMgPSBwZXJ1MjMgJT4lCiAgbXV0YXRlKGVkdWMyID0gZmFjdG9yKGVkdWMsIGxhYmVscz1jKCJDb2xlZ2lvIGluY29tcGxldG8iLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkNvbGVnaW8gY29tcGxldG8iLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlN1cGVyaW9yIGluY29tcGxldGEiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIlN1cGVyaW9yIGNvbXBsZXRhIikpKQpgYGAKCmBgYHtyfQpwZXJ1MjMgJT4lCiAgZ3JvdXBfYnkoZWR1YzIpICU+JQogIHN1bW1hcmlzZShQcm9tZWRpb19NYXRyaT1tZWFuKGQ2LCBuYS5ybT1UKSwgCiAgICAgICAgICAgIE1lZGlhbmFfTWF0cmk9bWVkaWFuKGQ2LCBuYS5ybT1UKSkKYGBgCgojIyBHcmFmaWNhbmRvIGxhIGNvbXBhcmFjacOzbgoKYGBge3J9CmdncGxvdChwZXJ1MjMsIGFlcyh5PWQ2LCB4PWVkdWMyKSkrCiAgZ2VvbV9ib3hwbG90KCkrCiAgeWxhYigiQXByb2JhY2nDs24gbWF0cmltb25pbyBpZ3VhbGl0YXJpbyIpKwogIHhsYWIoIk5pdmVsIGVkdWNhdGl2byIpKwogIHRoZW1lX2dldCgpCmBgYAoKIyMgRGVzY3JpYmlyIHVuYSB2YXJpYWJsZSBjYXRlZ8OzcmljYQoKYGBge3J9CnBlcnUyMyA9IHBlcnUyMyAlPiUKICBtdXRhdGUoYWJvcnRvID0gZmFjdG9yKHcxNGEsIGxhYmVscz1jKCJTw60gc2UganVzdGlmaWNhIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJObyBzZSBqdXN0aWZpY2EiKSkpCmBgYAoKYGBge3J9CnRhYmxhMSA9IHBlcnUyMyAlPiUKICBmaWx0ZXIoYWJvcnRvID09ICJTw60gc2UganVzdGlmaWNhIiB8IGFib3J0byA9PSAiTm8gc2UganVzdGlmaWNhIikgJT4lCiAgY291bnQoQWJvcnRvID0gYWJvcnRvLCBuYW1lPSJGcmVjdWVuY2lhIikKdGFibGExCmBgYAoKYGBge3J9CnRhYmxhMSA9IHRhYmxhMSAlPiUKICBtdXRhdGUoUG9yY2VudGFqZSA9IChGcmVjdWVuY2lhIC8gc3VtKEZyZWN1ZW5jaWEpKjEwMCApKQp0YWJsYTEKYGBgCgojIyBWaXN1YWxpemFjacOzbiB2YXJpYWJsZSBmYWN0b3IKCmBgYHtyfQpncmFmMSA9IGdncGxvdCh0YWJsYTEsIGFlcyh4PUFib3J0byx5PVBvcmNlbnRhamUpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIsIHdpZHRoPTAuNSkKZ3JhZjEKYGBgCgojIyBDb21wYXJhbmRvIHZhcmlhYmxlIGZhY3RvciBlbnRyZSBncnVwb3MKCmBgYHtyfQp0YWJsYTIgPSBwZXJ1MjMgJT4lCiAgZmlsdGVyKGFib3J0byA9PSAiU8OtIHNlIGp1c3RpZmljYSIgfCBhYm9ydG8gPT0gIk5vIHNlIGp1c3RpZmljYSIpICU+JQogIGdyb3VwX2J5KGVkdWMyKSAlPiUKICBjb3VudChBYm9ydG8gPSBhYm9ydG8sIG5hbWU9Ik4iKSAlPiUKICBtdXRhdGUodG90YWwgPSBzdW0oTiksIAogICAgICAgICBQb3IgPSBOIC8gdG90YWwgKiAxMDAsIAogICAgICAgICBlcnIgPSBzcXJ0KFBvciooMTAwLVBvcikvTiksIAogICAgICAgICBsaW1pbmYgPSBQb3IgLSAxLjk2KmVyciwgCiAgICAgICAgIGxpbXN1cCA9IFBvciArIDEuOTYqZXJyKQp0YWJsYTIKYGBgCgpgYGB7cn0KdGFibGEyID0gdGFibGEyWy1jKDIsNCwgNiwgOCksXQpgYGAKCiMjIEdyYWZpY2FuZG8gbGEgY29tcGFyYWNpw7NuCgpgYGB7cn0KZ3JhZjIgPSBnZ3Bsb3QodGFibGEyLCBhZXMoeD1lZHVjMiwgeT1Qb3IpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cGFzdGUocm91bmQoUG9yLCAxKSkpLCB2anVzdD0tMSwgc2l6ZT0zKSsKICBsYWJzKHg9IlNleG8iLCB5PSJQb3JjZW50YWplIHF1ZSBqdXN0aWZpY2EgYWJvcnRvIikrCiAgdGhlbWVfY2xhc3NpYygpCmdyYWYyCmBgYAoKIyMgQ29tcGFyYW5kbyB2YXJpYWJsZXMgbnVtw6lyaWNhcyBjb24gaW50ZXJ2YWxvcyBkZSBjb25maWFuemEKCmBgYHtyfQpsaWJyYXJ5KGxzcikKdGFibGEzID0gcGVydTIzICU+JQogIGdyb3VwX2J5KGVkdWMyKSAlPiUKICBzdW1tYXJpc2UoUHJvbWVkaW9fTWF0cmk9bWVhbihkNiwgbmEucm09VCksIAogICAgICAgICAgICBEZXN2X01hdHJpPXNkKGQ2LCBuYS5ybT1UKSwKICAgICAgICAgICAgbGltaW5mID0gY2lNZWFuKGQ2LCBuYS5ybT1UKVsxXSwKICAgICAgICAgICAgbGltc3VwID0gY2lNZWFuKGQ2LCBuYS5ybT1UKVsyXSkKdGFibGEzCmBgYAoKIyMgR3JhZmljYW5kbyBjb21wYXJhY2nDs24gZGUgSUMgcGFyYSB2YXJpYWJsZSBudW3DqXJpY2EKCmBgYHtyfQpncmFmMyA9IGdncGxvdCh0YWJsYTMsIGFlcyh4PWVkdWMyLCB5PVByb21lZGlvX01hdHJpKSkrCiAgZ2VvbV9iYXIoc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX2Vycm9yYmFyKGFlcyh5bWluPWxpbWluZiwgeW1heD1saW1zdXApLCB3aWR0aD0wLjIpKwogIGdlb21fdGV4dChhZXMobGFiZWw9cm91bmQoUHJvbWVkaW9fTWF0cmksIDEpKSwgdmp1c3Q9LTIuOCwgc2l6ZT0zKSsKICB4bGFiKCJOaXZlbCBlZHVjYXRpdm8iKSArIHlsYWIoIkFwcm9iYWNpw7NuIG1hdHJpbW9uaW8gaWd1YWxpdGFyaW8iKSsKICB5bGltKDAsIDYpCmdyYWYzCmBgYAoKIyMgQ29tcGFyYW5kbyBwcm9wb3JjaW9uZXMgY29uIGludGVydmFsb3MgZGUgY29uZmlhbnphCgpgYGB7cn0KdGFibGE0ID0gcGVydTIzICU+JQogIGZpbHRlcihhYm9ydG8gPT0gIlPDrSBzZSBqdXN0aWZpY2EiIHwgYWJvcnRvID09ICJObyBzZSBqdXN0aWZpY2EiKSAlPiUKICBncm91cF9ieShlZHVjMikgJT4lCiAgY291bnQoQWJvcnRvID0gYWJvcnRvLCBuYW1lPSJOIikgJT4lCiAgbXV0YXRlKHRvdGFsID0gc3VtKE4pLCAKICAgICAgICAgUG9yID0gTiAvIHRvdGFsICogMTAwLAogICAgICAgICBlcnIgPSBzcXJ0KFBvciooMTAwLVBvcikvTiksIAogICAgICAgICBsaW1pbmYgPSBQb3IgLSAxLjk2KmVyciwgCiAgICAgICAgIGxpbXN1cCA9IFBvciArIDEuOTYqZXJyKQp0YWJsYTQKYGBgCgpgYGB7cn0KdGFibGE0ID0gdGFibGE0Wy1jKDIsNCw2LDgpLF0KYGBgCgpgYGB7cn0KZ3JhZjQgPSBnZ3Bsb3QodGFibGE0LCBhZXMoeD1lZHVjMiwgeT1Qb3IpKSsKICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIpKwogIGdlb21fZXJyb3JiYXIoYWVzKHltaW49bGltaW5mLCB5bWF4PWxpbXN1cCksIHdpZHRoPTAuMikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChQb3IsIDEpKSksIHZqdXN0PS0zLCBzaXplPTMpKwogIGxhYnMoeD0iTml2ZWwgZWR1Y2F0aXZvIiwgeT0iUG9yY2VudGFqZSBxdWUganVzdGlmaWNhIGVsIGFib3J0byIsCiAgICAgICBjYXB0aW9uPSJCYXLDs21ldHJvIGRlIGxhcyBBbcOpcmljYXMgcG9yIExBUE9QLCAyMDIxIikrCiAgdGhlbWVfY2xhc3NpYygpCmdyYWY0CiAgCmBgYAoKIyMgUHJ1ZWJhIGRlIHNpZ25pZmljYW5jaWEgcGFyYSB2YXJpYWJsZXMgbnVtw6lyaWNhcyBkaWNvdMOzbWljYXMKCmBgYHtyfQpwZXJ1MjMgPSBwZXJ1MjMgJT4lCiAgbXV0YXRlKHNleG8gPSBmYWN0b3IocTF0Y19yLCBsYWJlbHM9YygiSG9tYnJlIiwgIk11amVyIikpKQpgYGAKCmBgYHtyfQp0YWJsYTUgPSBwZXJ1MjMgJT4lCiAgZ3JvdXBfYnkoc2V4bykgJT4lCiAgc3VtbWFyaXNlKFByb21lZGlvX01hdHJpPW1lYW4oZDYsIG5hLnJtPVQpLCAKICAgICAgICAgICAgRGVzdl9NYXRyaT1zZChkNiwgbmEucm09VCksCiAgICAgICAgICAgIGxpbWluZiA9IGNpTWVhbihkNiwgbmEucm09VClbMV0sCiAgICAgICAgICAgIGxpbXN1cCA9IGNpTWVhbihkNiwgbmEucm09VClbMl0pCnRhYmxhNQpgYGAKCmBgYHtyfQp0LnRlc3QoZDYgfiBzZXhvLCBkYXRhID0gcGVydTIzKQpgYGAKCiMjIFBydWViYSBkZSBzaWduaWZpY2FuY2lhIHBhcmEgdmFyaWFibGVzIG51bcOpcmljYXMgcG9saXTDs21pY2FzCgpgYGB7cn0KYW5vdmExID0gYW92KHBlcnUyMyRkNn5wZXJ1MjMkZWR1YzIpCnN1bW1hcnkoYW5vdmExKQpgYGAKCmBgYHtyfQpjb21wYXJhID0gVHVrZXlIU0QoYW5vdmExKQpjb21wYXJhCmBgYAoKIyMgR3JhZmljYW5kbyBsYSBjb21wYXJhY2nDs24gcG9saXTDs21pY2EKCmBgYHtyfQpjb21wYXJhLmRmID0gYXMuZGF0YS5mcmFtZShjb21wYXJhWzFdKQpjb21wYXJhLmRmJGNvbXBhcmEgPSByb3duYW1lcyhjb21wYXJhLmRmKQpgYGAKCmBgYHtyfQpncmFmNSA9IGdncGxvdChjb21wYXJhLmRmLCBhZXMoeD1jb21wYXJhLCB5PXBlcnUyMy5lZHVjMi5kaWZmKSkrCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbj1wZXJ1MjMuZWR1YzIubHdyLCB5bWF4PXBlcnUyMy5lZHVjMi51cHIpLCAKICAgICAgICAgICAgICAgIHdpZHRoPTAuMikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChwZXJ1MjMuZWR1YzIuZGlmZiwgMSkpKSwgCiAgICAgICAgICAgIHZqdXN0PS0xLCBzaXplPTMpKwogIHhsYWIoIkNvbXBhcmFjacOzbiIpICsgeWxhYigiRGlmZXJlbmNpYSIpKwogIHlsaW0oLTMsIDMpICsKICBjb29yZF9mbGlwKCkgKwogIGdlb21faGxpbmUoeWludGVyY2VwdCA9IDAsIGNvbG9yID0gInJlZCIsIGxpbmV0eXBlPSJkb3R0ZWQiKSArCiAgdGhlbWVfY2xhc3NpYygpCmdyYWY1CmBgYAoKIyMgVGFibGEgZGUgY29udGluZ2VuY2lhCgpgYGB7cn0KdGFibGE2ID0gdGFibGUocGVydTIzJGFib3J0bywgcGVydTIzJGVkdWMyKQp0YWJsYTYKYGBgCgpgYGB7cn0KdGFibGE3ID0gdGFibGE2ICU+JQogIHByb3AudGFibGUoMikgJT4lCiAgcm91bmQoMykqMTAwIAp0YWJsYTcKYGBgCgojIyBQcnVlYmEgZGUgc2lnbmlmaWNhbmNpYSBwYXJhIHByb3BvcmNpb25lczogQ2hpIGN1YWRyYWRvCgpgYGB7cn0KcHJvcC50ZXN0KGMoODAzLCA3NTkpLCBjKDE2MTAsMTQxMikpCmBgYAoKYGBge3J9CnBydWViYTEgPSBjaGlzcS50ZXN0KHBlcnUyMyRhYm9ydG8sIHBlcnUyMyRlZHVjMikKcHJ1ZWJhMQpgYGAKCmBgYHtyfQpnZ3Bsb3QoZGF0YT10YWJsYTQsIGFlcyh4PUFib3J0bywgeT1Qb3IsIGZpbGw9ZWR1YzIpKSsKICBnZW9tX2Jhcihwb3NpdGlvbiA9ICJkb2RnZSIsIHN0YXQ9ImlkZW50aXR5IikrCiAgZ2VvbV90ZXh0KGFlcyhsYWJlbD1wYXN0ZShyb3VuZChQb3IsIDEpLCAiJSIsIHNlcD0iIikpLCAKICAgICAgICAgICAgcG9zaXRpb24gPSBwb3NpdGlvbl9kb2RnZSh3aWR0aCA9IDAuOSksIAogICAgICAgICAgICB2anVzdD0wLCBzaXplID0gMykrCiAgbGFicyh4PSJKdXN0aWZpY2FjacOzbiBkZWwgYWJvcnRvIiwgeT0iUG9yY2VudGFqZSIsIAogICAgICAgZmlsbD0iTml2ZWwgZWR1Y2F0aXZvIikKYGBgCgpgYGB7cn0KZ2dwbG90KGRhdGE9dGFibGE0LCBhZXMoeD1lZHVjMiwgeT1Qb3IsIGZpbGw9QWJvcnRvKSkrCiAgZ2VvbV9iYXIocG9zaXRpb249InN0YWNrIiwgc3RhdD0iaWRlbnRpdHkiKSsKICBnZW9tX3RleHQoYWVzKGxhYmVsPXBhc3RlKHJvdW5kKFBvciwgMSksICIlIiwgc2VwPSIiKSksIAogICAgICAgICAgICBwb3NpdGlvbiA9IHBvc2l0aW9uX3N0YWNrKCksIHZqdXN0PTEsIHNpemUgPSAzKSsKICBsYWJzKHg9Ik5pdmVsIGVkdWNhdGl2byIsIHk9IlBvcmNlbnRhamUiLCBmaWxsPSJKdXN0aWZpY2FjacOzbiBkZWwgYWJvcnRvIikKYGBgCgojIyBSZWxhY2nDs24gZW50cmUgZG9zIHZhcmlhYmxlcyBudW3DqXJpY2FzCgpgYGB7cn0KZ2dwbG90KHBlcnUyMywgYWVzKHg9ZDYsIHk9ZDdhKSkrCiAgZ2VvbV9wb2ludCgpKwogIGdlb21fc21vb3RoKG1ldGhvZD1sbSwgc2U9RikrICNhZ3JlZ2FyIGzDrW5lYSBkZSB0ZW5kZW5jaWEKICBsYWJzKHg9IkFwcm9iYWNpw7NuIGRlIG1hdHJpbW9uaW8gaWd1YWxpdGFyaW8iLCAKICAgICAgIHk9IkFwcm9iYWNpw7NuIGRlIGFkb3BjacOzbiIpKyAjcGFyYSBldGlxdWV0YXIgbG9zIGVqZXMKICB0aGVtZV9saWdodCgpCmBgYAoKYGBge3J9Cm1vZGVsbzEgPSBsbShwZXJ1MjMkZDdhIH4gcGVydTIzJGQ2KQpzdW1tYXJ5KG1vZGVsbzEpCmBgYAoKYGBge3J9CnBlcnUyMyA9IHBlcnUyMyAlPiUKICBtdXRhdGUobXVqZXIgPSBxMXRjX3ItMSkKYGBgCgpgYGB7cn0KbW9kZWxvMiA9IGxtKHBlcnUyMyRkN2EgfiBwZXJ1MjMkZDYgKyBwZXJ1MjMkbXVqZXIpCnN1bW1hcnkobW9kZWxvMikKYGBgCg==</div>
 
 
 </div>

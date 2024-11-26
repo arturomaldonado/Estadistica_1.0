@@ -22,8 +22,6 @@ navbar:
       href: clase5.html
     - text: "Clase 6"
       href: clase6.html
-    - text: "Repaso"
-      href: repaso.html
     - text: "Clase 10"
       href: clase7.html
     - text: "Clase 11"
@@ -34,6 +32,8 @@ navbar:
       href: clase13.html
     - text: "Clase 14"
       href: Clase14.html
+    - text: "Repaso"
+      href: repaso.html
     - text: "About"
       href: about.html
     - icon: fab fa-github

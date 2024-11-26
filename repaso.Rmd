@@ -12,105 +12,318 @@ output:
     highlight: textmate
 ---
 
-# Introducción
-
-## Ejemplo 1: variable categórica
+# Analizando opinión pública
 
 ```{r}
 library(rio)
-peru21 = import("PER_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
+peru23 = import("bases/PER_2023_LAPOP_AmericasBarometer_v1.0_w.sav")
+```
+
+## Describir una variable numérica
+
+```{r}
+library(tidyverse)
+peru23 %>%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Mediana_Matri=median(d6, na.rm=T))
 ```
 
 ```{r}
-peru23 = import("bases/PER_2023_LAPOP_AmericasBarometer_v1.0_w.sav")
+peru23 %>%
+  summarise(Promedio_Adopcion=mean(d7a, na.rm=T), 
+            Mediana_Adopcion=median(d7a, na.rm=T))
+```
+
+## Visualización variable numérica
+
+```{r}
+library(ggplot2)
+ggplot(peru23, aes(x=d6))+
+  geom_histogram(binwidth = 1)+
+  xlab("Aprobación matrimonio igualitario") +
+  ylab("Frecuencia")+
+  theme_minimal()
+```
+
+```{r}
+ggplot(peru23, aes(x=d7a))+
+  geom_histogram(binwidth = 1)+
+  xlab("Aprobación adopción") +
+  ylab("Frecuencia")+
+  theme_minimal()
+```
+
+## Comparando variable numérica entre grupos
+
+```{r}
+peru23 = peru23 %>%
+  mutate(educ = case_when(
+    edre <= 3 ~ 1,
+    edre == 4 ~ 2,
+    edre == 5 ~ 3,
+    edre == 6 ~ 4,
+    ))
+```
+
+```{r}
+peru23 = peru23 %>%
+  mutate(educ2 = factor(educ, labels=c("Colegio incompleto", 
+                                       "Colegio completo", 
+                                       "Superior incompleta", 
+                                       "Superior completa")))
+```
+
+```{r}
+peru23 %>%
+  group_by(educ2) %>%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Mediana_Matri=median(d6, na.rm=T))
+```
+
+## Graficando la comparación
+
+```{r}
+ggplot(peru23, aes(y=d6, x=educ2))+
+  geom_boxplot()+
+  ylab("Aprobación matrimonio igualitario")+
+  xlab("Nivel educativo")+
+  theme_get()
 ```
 
 ## Describir una variable categórica
 
 ```{r}
-library(tidyverse)
-peru = peru |>
-  mutate(ing4rec=recode(ing4, '5' = '1', '6' = '1', '7' = '1',  .default = '0'))
+peru23 = peru23 %>%
+  mutate(aborto = factor(w14a, labels=c("Sí se justifica", 
+                                          "No se justifica")))
 ```
 
 ```{r}
-table(peru$ing4)
-table(peru$ing4rec)
+tabla1 = peru23 %>%
+  filter(aborto == "Sí se justifica" | aborto == "No se justifica") %>%
+  count(Aborto = aborto, name="Frecuencia")
+tabla1
 ```
 
 ```{r}
-peru = peru |>
-  mutate(ing4rec = factor(ing4rec, labels=c("No", "Sí")))
-```
-
-```{r}
-tabla4 = peru |>
-  filter(ing4rec == "No" | ing4rec == "Sí") |>
-  count(apoyo = ing4rec, name="Frecuencia") |>
+tabla1 = tabla1 %>%
   mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
-tabla4
+tabla1
 ```
 
-## Graficar una variable categórica
+## Visualización variable factor
 
 ```{r}
-graf8 = ggplot(tabla4, aes(y=Porcentaje, x=apoyo))+
+graf1 = ggplot(tabla1, aes(x=Aborto,y=Porcentaje))+
   geom_bar(stat="identity", width=0.5)
-graf8
+graf1
 ```
 
-## Comparando proporciones
+## Comparando variable factor entre grupos
 
 ```{r}
-peru = peru |>
-  mutate(sexo=recode(q1tb, '1' = '1', '2' = '2', '3' = '2')) |>
-  mutate(sexo = factor(sexo, labels=c("Hombre", "Mujer/Otro")))
-```
-
-```{r}
-tabla5 = peru |>
-  filter(ing4rec == "No" | ing4rec == "Sí") |> 
-  group_by(sexo) |>
-  count(Apoyo = ing4rec, name="N")|>
+tabla2 = peru23 %>%
+  filter(aborto == "Sí se justifica" | aborto == "No se justifica") %>%
+  group_by(educ2) %>%
+  count(Aborto = aborto, name="N") %>%
   mutate(total = sum(N), 
          Por = N / total * 100, 
          err = sqrt(Por*(100-Por)/N), 
          liminf = Por - 1.96*err, 
          limsup = Por + 1.96*err)
-tabla5
+tabla2
 ```
 
-## Comparando proporciones gráficamente
+```{r}
+tabla2 = tabla2[-c(2,4, 6, 8),]
+```
+
+## Graficando la comparación
 
 ```{r}
-graf9 = ggplot(tabla5, aes(x=sexo, y=Por, fill=Apoyo))+
-  geom_bar(stat="identity", width=0.5)+
-  labs(x="Sexo", y="Porcentaje",
-       caption="Barómetro de las Américas por LAPOP, 2021")+
+graf2 = ggplot(tabla2, aes(x=educ2, y=Por))+
+  geom_bar(stat="identity")+
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-1, size=3)+
+  labs(x="Sexo", y="Porcentaje que justifica aborto")+
   theme_classic()
-graf9
+graf2
+```
+
+## Comparando variables numéricas con intervalos de confianza
+
+```{r}
+library(lsr)
+tabla3 = peru23 %>%
+  group_by(educ2) %>%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Desv_Matri=sd(d6, na.rm=T),
+            liminf = ciMean(d6, na.rm=T)[1],
+            limsup = ciMean(d6, na.rm=T)[2])
+tabla3
+```
+
+## Graficando comparación de IC para variable numérica
+
+```{r}
+graf3 = ggplot(tabla3, aes(x=educ2, y=Promedio_Matri))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
+  geom_text(aes(label=round(Promedio_Matri, 1)), vjust=-2.8, size=3)+
+  xlab("Nivel educativo") + ylab("Aprobación matrimonio igualitario")+
+  ylim(0, 6)
+graf3
 ```
 
 ## Comparando proporciones con intervalos de confianza
 
 ```{r}
-tabla5 = tabla5[-c(1,3),]
+tabla4 = peru23 %>%
+  filter(aborto == "Sí se justifica" | aborto == "No se justifica") %>%
+  group_by(educ2) %>%
+  count(Aborto = aborto, name="N") %>%
+  mutate(total = sum(N), 
+         Por = N / total * 100,
+         err = sqrt(Por*(100-Por)/N), 
+         liminf = Por - 1.96*err, 
+         limsup = Por + 1.96*err)
+tabla4
 ```
 
 ```{r}
-graf10 = ggplot(tabla5, aes(x=sexo, y=Por))+
+tabla4 = tabla4[-c(2,4,6,8),]
+```
+
+```{r}
+graf4 = ggplot(tabla4, aes(x=educ2, y=Por))+
   geom_bar(stat="identity")+
   geom_errorbar(aes(ymin=liminf, ymax=limsup), width=0.2)+
-  geom_text(aes(label=paste(round(Por, 1))), vjust=-1.5, size=4)+
-  labs(x="Sexo", y="Porcentaje",
+  geom_text(aes(label=paste(round(Por, 1))), vjust=-3, size=3)+
+  labs(x="Nivel educativo", y="Porcentaje que justifica el aborto",
        caption="Barómetro de las Américas por LAPOP, 2021")+
   theme_classic()
-graf10
+graf4
   
 ```
 
-## Prueba de significancia para proporciones
+## Prueba de significancia para variables numéricas dicotómicas
+
+```{r}
+peru23 = peru23 %>%
+  mutate(sexo = factor(q1tc_r, labels=c("Hombre", "Mujer")))
+```
+
+```{r}
+tabla5 = peru23 %>%
+  group_by(sexo) %>%
+  summarise(Promedio_Matri=mean(d6, na.rm=T), 
+            Desv_Matri=sd(d6, na.rm=T),
+            liminf = ciMean(d6, na.rm=T)[1],
+            limsup = ciMean(d6, na.rm=T)[2])
+tabla5
+```
+
+```{r}
+t.test(d6 ~ sexo, data = peru23)
+```
+
+## Prueba de significancia para variables numéricas politómicas
+
+```{r}
+anova1 = aov(peru23$d6~peru23$educ2)
+summary(anova1)
+```
+
+```{r}
+compara = TukeyHSD(anova1)
+compara
+```
+
+## Graficando la comparación politómica
+
+```{r}
+compara.df = as.data.frame(compara[1])
+compara.df$compara = rownames(compara.df)
+```
+
+```{r}
+graf5 = ggplot(compara.df, aes(x=compara, y=peru23.educ2.diff))+
+  geom_errorbar(aes(ymin=peru23.educ2.lwr, ymax=peru23.educ2.upr), 
+                width=0.2)+
+  geom_text(aes(label=paste(round(peru23.educ2.diff, 1))), 
+            vjust=-1, size=3)+
+  xlab("Comparación") + ylab("Diferencia")+
+  ylim(-3, 3) +
+  coord_flip() +
+  geom_hline(yintercept = 0, color = "red", linetype="dotted") +
+  theme_classic()
+graf5
+```
+
+## Tabla de contingencia
+
+```{r}
+tabla6 = table(peru23$aborto, peru23$educ2)
+tabla6
+```
+
+```{r}
+tabla7 = tabla6 %>%
+  prop.table(2) %>%
+  round(3)*100 
+tabla7
+```
+
+## Prueba de significancia para proporciones: Chi cuadrado
 
 ```{r}
 prop.test(c(803, 759), c(1610,1412))
+```
+
+```{r}
+prueba1 = chisq.test(peru23$aborto, peru23$educ2)
+prueba1
+```
+
+```{r}
+ggplot(data=tabla4, aes(x=Aborto, y=Por, fill=educ2))+
+  geom_bar(position = "dodge", stat="identity")+
+  geom_text(aes(label=paste(round(Por, 1), "%", sep="")), 
+            position = position_dodge(width = 0.9), 
+            vjust=0, size = 3)+
+  labs(x="Justificación del aborto", y="Porcentaje", 
+       fill="Nivel educativo")
+```
+
+```{r}
+ggplot(data=tabla4, aes(x=educ2, y=Por, fill=Aborto))+
+  geom_bar(position="stack", stat="identity")+
+  geom_text(aes(label=paste(round(Por, 1), "%", sep="")), 
+            position = position_stack(), vjust=1, size = 3)+
+  labs(x="Nivel educativo", y="Porcentaje", fill="Justificación del aborto")
+```
+
+## Relación entre dos variables numéricas
+
+```{r}
+ggplot(peru23, aes(x=d6, y=d7a))+
+  geom_point()+
+  geom_smooth(method=lm, se=F)+ #agregar línea de tendencia
+  labs(x="Aprobación de matrimonio igualitario", 
+       y="Aprobación de adopción")+ #para etiquetar los ejes
+  theme_light()
+```
+
+```{r}
+modelo1 = lm(peru23$d7a ~ peru23$d6)
+summary(modelo1)
+```
+
+```{r}
+peru23 = peru23 %>%
+  mutate(mujer = q1tc_r-1)
+```
+
+```{r}
+modelo2 = lm(peru23$d7a ~ peru23$d6 + peru23$mujer)
+summary(modelo2)
 ```

@@ -33,7 +33,7 @@ navbar:
     - text: "Clase 13"
       href: clase13.html
     - text: "Clase 14"
-      href: clase14.html
+      href: Clase14.html
     - text: "About"
       href: about.html
     - icon: fab fa-github

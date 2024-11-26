@@ -203,28 +203,6 @@ alumxnivel
 t.test(P1_6 ~ nivel, data = endo2020)
 ```
 
-# Ejemplo 2 de variable numérica: LAPOP
-
-```{r}
-lapop = import("bases/PER_2006-2021.dta")
-```
-
-¿Existen diferencias en el apoyo a las fuerzas del orden entre hombres y mujeres?
-
-Se podría hipotetizar que los hombres tendrían un mayor apoyo a las fuerzas del orden.
-Esta pregunta se responde mediante una prueba estadística.
-Dado que podemos tratar al índice aditivo como una variable numérica y queremos comparar este índice entre 2 grupos, se puede usar la prueba t para dar evidencia sobre esta pregunta.
-
-```{r}
-library(dplyr)
-lapop = lapop |>
-  mutate(indice = (b12+b18-2)/12*100)
-```
-
-```{r}
-t.test(indice ~ q1, data = lapop)
-```
-
 # Ejemplo de variable categórica para la diferencia de proporciones: ENDO
 
 Se vio en el módulo anterior que se podía evaluar si existen diferencias entre la proporción de profesores hombres que habían recibido apoyo psicológico comparado con las profesoras mujeres.

@@ -99,7 +99,7 @@ ggplot(data16, aes(x=Uso_internet, y=Voto_PPK_2016_1))+
 
 ```{r}
 library(tidyverse)
-data16 = data16 |>
+data16 = data16 %>%
   mutate(pbigrupo = factor(pbipc_grupos, labels=c("Bajo",
                                                   "Medio", 
                                                   "Alto")))
@@ -214,7 +214,7 @@ Esta evaluación plantea una hipótesis cero que todas las pendientes (o coefici
 $H0: \beta_1 = \beta_2 = \beta_3 =...\beta_n = 0$ La hipótesis alternativa indica que al menos una pendiente es diferente de cero, lo que indicaría que al menos una variable independiente tiene relación con la variable dependiente.
 
 Para evaluar esta hipótesis se analiza los resultados de la prueba F (en la última línea de resultados del modelo).
-El estadístico F = 7.74 tiene un p-value asociado de 0.0030.
+El estadístico F = 7.71 tiene un p-value asociado de 0.001.
 Este p-value es menor de 0.05, por lo que podemos rechazar la H0 y afirmar que al menos un coeficiente debe ser diferente de cero.
 
 ## Test de inferencia: ¿hay relación entre las VIs y la VD?
@@ -275,13 +275,13 @@ En nuestro ejemplo se tiene la siguiente ecuación, siendo Y el voto a PPK, X1 e
 
 $$\hat{Y} = 19.2 - 0.06*X_1 - 0.85*X_2 + 0.0003*X_3$$
 
-Para hallar el voto estimado a PPK, se tiene que agregar valores de las dos variables independientes.
+Para hallar el voto estimado a PPK, se tiene que agregar valores de las tres variables independientes.
 Para poder aproximar valores estándar de estas variables, estas se pueden describir.
 
 ```{r describir}
-data16 |>
-  summarise(mean(Uso_internet, na.rm=T), mean(Analfabetismo_2014, na.rm=T), 
-            mean(pbipc_2014, na.rm=T))
+data16 %>%
+  summarise(max(Uso_internet, na.rm=T), min(Analfabetismo_2014, na.rm=T), 
+            max(pbipc_2014, na.rm=T))
 ```
 
 Por lo tanto, si queremos calcular un voto promedio general estimado a PPK, se podría reemplazar las variables independientes, en su promedio: X1=32.8, X2=7.8 y X3=14946.
@@ -298,7 +298,7 @@ En este caso usaremos el mínimo, media.
 mediana y máximo.
 
 ```{r}
-data16 |>
+data16 %>%
   summarise(min(Analfabetismo_2014, na.rm=T), mean(Analfabetismo_2014, na.rm=T), 
             median(Analfabetismo_2014, na.rm=T), max(Analfabetismo_2014, na.rm=T))
 ```

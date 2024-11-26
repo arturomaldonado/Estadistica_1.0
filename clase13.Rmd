@@ -50,8 +50,8 @@ Lo primero es ver las medias de cada grupo.
 
 ```{r medias}
 library(dplyr)
-data16 |>
-  group_by(costa) |>
+data16 %>%
+  group_by(costa) %>%
   summarise(Media = mean(Voto_VM_2016_1, na.rm = T))
 ```
 
@@ -117,8 +117,8 @@ Si quisiéremos evaluar las diferencias en el voto a Fujimori en 2016 entre las 
 Lo primero es ver las medias del voto a Fujimori para cada grupo.
 
 ```{r medias2}
-tabla1 = data16 |>
-  group_by(region) |>
+tabla1 = data16 %>%
+  group_by(region) %>%
   summarise(Media = mean(Voto_KF_2016_1, na.rm = T))
 tabla1
 ```

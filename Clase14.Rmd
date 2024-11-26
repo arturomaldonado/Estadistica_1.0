@@ -1,7 +1,7 @@
 ---
 title: "Clase 14"
 author: "Arturo Maldonado"
-date: "21/11/2023"
+date: "26/12/2024"
 output:
   html_document:
     toc: true
@@ -39,7 +39,7 @@ cand = import("Numeric_election_DATOS.xlsx")
 
 ```{r}
 library(dplyr)
-cand = cand |>
+cand = cand %>%
   mutate(sexo = factor(csex, labels=c("Hombre", "Mujer")))
 ```
 
@@ -58,14 +58,14 @@ table(cand$cage)
 -   Esto se puede hacer de múltiples maneras, usando el comando `case_when`.
 
 ```{r}
-cand = cand |>
+cand = cand %>%
   mutate(gedad = case_when(
     cage == 33 ~ 1, cage == 34 ~ 1, cage == 35 ~ 1, cage == 36 ~ 1, cage == 37 ~ 1,
     cage == 38 ~ 1, cage == 39 ~ 1))
 ```
 
 ```{r}
-cand = cand |>
+cand = cand %>%
   mutate(gedad = case_when(
     cage <= 39 ~ 1,
     (cage >= 40) & (cage <=49) ~ 2,
@@ -76,7 +76,7 @@ cand = cand |>
 ```
 
 ```{r}
-cand = cand |>
+cand = cand %>%
   mutate(gedad2 = case_when(
     cage <= 39 ~ 1,
     cage %in% 40:49 ~ 2,
@@ -87,14 +87,14 @@ cand = cand |>
 ```
 
 ```{r}
-cand = cand |>
+cand = cand %>%
   mutate(gedad2 = factor(gedad2, labels=c("30-39", "40-49", "50-59", "60-69", "70+")))
 ```
 
 -   La variable que recoge el voto en primera vuelta está en forma de proporción y no de porcentaje. Vamos a transformarla en porcentaje.
 
 ```{r}
-cand = cand |>
+cand = cand %>%
   mutate(voto1 = v2porcvalido_1ra)
 ```
 
@@ -103,8 +103,8 @@ cand = cand |>
 -   ¿Qué proporción de candidatos en América Latina son hombres y mujeres?
 
 ```{r}
-tabla1 = cand |>
-  count(Sexo = sexo, name="Frecuencia") |>
+tabla1 = cand %>%
+  count(Sexo = sexo, name="Frecuencia") %>%
   mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
 tabla1
 ```
@@ -120,7 +120,7 @@ ggplot(tabla1, aes(x=Sexo,y=Porcentaje))+
 -   ¿Cuál es el promedio de edad de los candidatos presidenciales en América Latina?
 
 ```{r}
-tabla2 = cand |>
+tabla2 = cand %>%
   summarise(minimo = min(cage, na.rm = T), media = mean(cage, na.rm = T), 
             mediana = median(cage, na.rm = T),maximo = max(cage, na.rm = T), 
             desviacion = sd(cage, na.rm = T))
@@ -141,7 +141,7 @@ ggplot(cand, aes(x=cage))+
 -   ¿Cuál es el promedio de votos obtenidos por candidatos presidenciales en América Latina?
 
 ```{r}
-tabla3 = cand |>
+tabla3 = cand %>%
   summarise(minimo = min(voto1, na.rm = T), media = mean(voto1, na.rm = T), 
             mediana = median(voto1, na.rm = T),maximo = max(voto1, na.rm = T), 
             desviacion = sd(voto1, na.rm = T))
@@ -161,7 +161,7 @@ ggplot(cand, aes(x=voto1))+
 -   Cuál es la ideología promedio de los candidatos presidenciales en América Latina?
 
 ```{r}
-tabla.ideo = cand |>
+tabla.ideo = cand %>%
   summarise(minimo = min(v2ideology_core, na.rm = T), 
             media = mean(v2ideology_core, na.rm = T), 
             mediana = median(v2ideology_core, na.rm = T),
@@ -187,7 +187,7 @@ ggplot(cand, aes(x=v2ideology_core))+
 
 ```{r}
 library(lsr)
-votoxsexo = cand |> 
+votoxsexo = cand %>% 
   group_by(Sexo = sexo) |>
   summarize(Minimo = min(voto1, na.rm = T),
             Media = mean(voto1, na.rm = T),
@@ -214,7 +214,7 @@ graf1
 -   ¿Quiénes obtienen más votos en promedio, los candidatos jóvenes o los mayores?
 
 ```{r}
-votoxedad = cand |> 
+votoxedad = cand %>% 
   group_by(Edad = gedad2) |>
   summarize(Minimo = min(voto1, na.rm = T),
             Media = mean(voto1, na.rm = T),
@@ -242,14 +242,14 @@ graf1
 -   Y qué pasa en las segundas vueltas? Cuántas mujeres llegan?
 
 ```{r}
-cand = cand |>
+cand = cand %>%
   mutate(voto2 = v2porcval_2da)
 ```
 
 ```{r}
-tabla4 = cand |>
-  filter(v2candseg==1) |> 
-  count(Sexo = sexo, name="Frecuencia") |>
+tabla4 = cand %>%
+  filter(v2candseg==1) %>% 
+  count(Sexo = sexo, name="Frecuencia") %>%
   mutate(Porcentaje = (Frecuencia / sum(Frecuencia)*100 ))
 tabla4
 ```
@@ -257,9 +257,9 @@ tabla4
 -   Qué porcentaje de votos obtienen?
 
 ```{r}
-voto2daxsexo = cand |> 
-  filter(v2candseg==1) |> 
-  group_by(Sexo = sexo) |>
+voto2daxsexo = cand %>% 
+  filter(v2candseg==1) %>% 
+  group_by(Sexo = sexo) %>%
   summarize(Minimo = min(voto2, na.rm = T),
             Media = mean(voto2, na.rm = T),
             Maximo = max(voto2, na.rm = T),
